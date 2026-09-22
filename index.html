@@ -1,0 +1,319 @@
+<title>Flow Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F3F6F6; --surface:#FFFFFF; --raise:#E9EFEF;
+  --ink:#091314; --ink-2:#2C4144; --muted:#5E7679; --hair:#D6E0E0;
+  --spot:#1B47CC; --perp:#C75200; --bull:#00813A; --bear:#C40F30;
+  --glow:rgba(27,71,204,.10);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#050B0C; --surface:#0C1618; --raise:#132224;
+  --ink:#E9F2F2; --ink-2:#B4C7C9; --muted:#7C9497; --hair:#1C2E30;
+  --spot:#5B8CFF; --perp:#FF9340; --bull:#35D97C; --bear:#FF5E7A;
+  --glow:rgba(91,140,255,.16);
+}}
+:root[data-theme="dark"]{
+  --ground:#050B0C; --surface:#0C1618; --raise:#132224;
+  --ink:#E9F2F2; --ink-2:#B4C7C9; --muted:#7C9497; --hair:#1C2E30;
+  --spot:#5B8CFF; --perp:#FF9340; --bull:#35D97C; --bear:#FF5E7A;
+  --glow:rgba(91,140,255,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17.5px;line-height:1.65;-webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:Archivo,"Helvetica Neue",Arial,sans-serif;text-wrap:balance;margin:0;letter-spacing:-.02em}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+/* ── entrance ── */
+@keyframes rise{from{opacity:.001;transform:translateY(14px)}to{opacity:1;transform:none}}
+.r{animation:rise .62s cubic-bezier(.22,.7,.3,1) both}
+.d1{animation-delay:.04s}.d2{animation-delay:.12s}.d3{animation-delay:.20s}
+.d4{animation-delay:.28s}.d5{animation-delay:.36s}
+@media (prefers-reduced-motion:reduce){.r{animation:none}html{scroll-behavior:auto}}
+
+/* ── rail ── */
+.rail{
+  border-bottom:1px solid var(--hair);background:var(--surface);
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;
+  color:var(--muted);padding:10px 0;overflow-x:auto;white-space:nowrap;
+  position:sticky;top:0;z-index:20;backdrop-filter:saturate(140%) blur(8px);
+}
+.rail .wrap{display:flex;gap:24px;align-items:center}
+.rail b{color:var(--ink);font-weight:500;letter-spacing:.2em}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:1px}
+
+/* ── hero ── */
+header{padding:92px 0 72px;position:relative}
+header::after{
+  content:"";position:absolute;inset:-20% -30% auto -30%;height:520px;z-index:-1;
+  background:radial-gradient(60% 70% at 30% 0%,var(--glow),transparent 72%);
+  pointer-events:none;
+}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:26px}
+h1{font-size:clamp(38px,6.4vw,72px);line-height:1.02;font-weight:700;max-width:15ch}
+h1 em{font-style:normal;color:var(--spot)}
+.lede{font-size:clamp(19px,2.2vw,23px);font-weight:300;color:var(--ink-2);max-width:60ch;margin-top:26px;line-height:1.52}
+.lede b{font-weight:600;color:var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:34px}
+.tag{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.05em;border:1px solid var(--hair);border-radius:100px;padding:6px 14px;color:var(--muted);transition:border-color .25s,color .25s}
+.tag:hover{border-color:var(--spot);color:var(--ink)}
+
+section{padding:64px 0;border-top:1px solid var(--hair)}
+.kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+h2{font-size:clamp(27px,3.6vw,40px);font-weight:600;max-width:20ch}
+.sub{color:var(--muted);max-width:63ch;margin-top:16px;font-size:17px}
+.sub b{color:var(--ink-2);font-weight:600}
+
+/* ── cases ── */
+.case{margin-top:38px}
+.case+.case{margin-top:54px}
+figure{margin:0;border-radius:8px;overflow:hidden;border:1px solid var(--hair);background:#000;
+  box-shadow:0 1px 2px rgba(0,0,0,.18),0 30px 60px -44px rgba(0,0,0,.65);
+  transition:transform .5s cubic-bezier(.22,.7,.3,1),box-shadow .5s}
+figure:hover{transform:translateY(-3px);box-shadow:0 1px 2px rgba(0,0,0,.2),0 40px 70px -44px rgba(0,0,0,.8)}
+figure img{width:100%;display:block}
+.caption{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:baseline;margin-top:16px;font-size:15px;color:var(--muted)}
+.caption .sym{font-family:"JetBrains Mono",monospace;color:var(--ink);font-size:12.5px;letter-spacing:.07em}
+.move{font-family:"JetBrains Mono",monospace;font-size:13.5px;font-weight:500}
+.move.up{color:var(--bull)} .move.down{color:var(--bear)}
+
+/* ── services ── */
+.svc{margin-top:38px;border-top:1px solid var(--hair)}
+.svc-row{display:grid;grid-template-columns:1fr auto;gap:10px 36px;align-items:baseline;
+  padding:22px 4px;border-bottom:1px solid var(--hair);
+  transition:background .3s,padding-left .3s}
+.svc-row:hover{background:var(--surface);padding-left:14px}
+.svc-row h3{font-size:19px;font-weight:600}
+.svc-row p{margin:6px 0 0;color:var(--muted);font-size:16px;max-width:56ch}
+.price{font-family:"JetBrains Mono",monospace;font-size:16px;font-weight:500;white-space:nowrap;color:var(--ink)}
+.price small{display:block;font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.07em;text-align:right;margin-top:4px}
+
+/* ── steps ── */
+.steps{list-style:none;margin:34px 0 0;padding:0}
+.steps li{display:grid;grid-template-columns:38px 1fr;gap:18px;padding:17px 0;border-bottom:1px solid var(--hair)}
+.steps .n{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--spot);padding-top:4px}
+.steps b{font-weight:600;display:block;margin-bottom:3px;font-size:17px}
+.steps .t{color:var(--muted);font-size:16px}
+
+/* ── contact ── */
+.contact{background:var(--surface);border:1px solid var(--hair);border-radius:10px;padding:34px;margin-top:34px;
+  box-shadow:0 1px 2px rgba(0,0,0,.06),0 28px 60px -48px rgba(0,0,0,.6)}
+.row{display:grid;grid-template-columns:130px 1fr;gap:20px;padding:15px 0;border-top:1px solid var(--hair);align-items:baseline}
+.row:first-child{border-top:none;padding-top:0}
+.row .k{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.row .v{font-family:"JetBrains Mono",monospace;font-size:15.5px;word-break:break-word}
+.row .v a{color:var(--spot);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
+.row .v a:hover{border-bottom-color:var(--spot)}
+a:focus-visible,.tag:focus-visible{outline:2px solid var(--spot);outline-offset:3px;border-radius:3px}
+
+footer{padding:38px 0 64px;color:var(--muted);font-size:13.5px;border-top:1px solid var(--hair);margin-top:52px}
+footer p{margin:0;max-width:72ch;line-height:1.6}
+
+@media (max-width:640px){
+  body{font-size:16.5px}
+  header{padding:58px 0 46px}
+  .svc-row{grid-template-columns:1fr}
+  .price,.price small{text-align:left}
+  .row{grid-template-columns:1fr;gap:5px}
+  .steps li{grid-template-columns:30px 1fr;gap:12px}
+}
+</style>
+
+<div class="rail">
+  <div class="wrap">
+    <span><b>Flow Lab</b></span>
+    <span>WEBSITES</span>
+    <span>WEB APPS</span>
+    <span>MOBILE &amp; macOS</span>
+    <span>GAMES</span>
+    <span>AI ASSISTANTS</span>
+    <span>BOTS &amp; AUTOMATION</span>
+    <span>PINE SCRIPT v6</span>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow r d1">Websites · apps · AI assistants · automation</div>
+    <h1 class="r d2">Software that still works <em>a year later.</em></h1>
+    <p class="lede r d3">Most builds are handed over and abandoned. Six months on the form is broken, the integration expired, and nobody noticed. I build the thing you need — and every project comes with an optional monthly plan, so <b>someone is still watching when it quietly breaks.</b></p>
+    <div class="meta r d4">
+      <span class="tag">Websites &amp; web apps</span>
+      <span class="tag">iOS · Android · macOS</span>
+      <span class="tag">AI assistants &amp; chatbots</span>
+      <span class="tag">Telegram bots · n8n · Make · Zapier</span>
+      <span class="tag">Monthly support included</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Services</div>
+    <h2>What I build</h2>
+    <div class="svc">
+
+      <div class="svc-row">
+        <div><h3>Business websites and landing pages</h3><p>Loads in under two seconds on a phone. A contact form that actually delivers, tested before handover. Search setup done properly. You edit the text yourself afterwards.</p></div>
+        <div class="price">$500–2000<small>5–21 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>Web apps and internal tools</h3><p>Replaces the spreadsheet your team fights over. Roles and permissions, change history, reports you can export, your existing data imported so you don't start from zero.</p></div>
+        <div class="price">$800–3000<small>7–30 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>Mobile apps for iOS and Android</h3><p>One build, both platforms. Works offline and syncs when the signal comes back. Prepared for the App Store and Google Play: icons, screenshots, privacy answers, the lot.</p></div>
+        <div class="price">$500–3000<small>8–35 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>Native macOS applications</h3><p>Desktop tools that belong on a Mac — menu bar utilities, internal software, anything your team runs all day and shouldn't have to open a browser for.</p></div>
+        <div class="price">$500–3000<small>10–35 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>Browser and mobile games</h3><p>Opens from a link — no download, no store. Built for a thumb. Leaderboard that makes people play twice, and email capture at the moment they most want to give it.</p></div>
+        <div class="price">$300–1500<small>6–28 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>AI assistants and chatbots</h3><p>Answers from <em>your</em> documents, not invented ones. Says so when unsure and hands over to a human instead of guessing. Widget on your site, or the same bot in Telegram and WhatsApp.</p></div>
+        <div class="price">from $600<small>5–18 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>Telegram bots that take orders</h3><p>Shows the menu, collects the details, confirms the price, writes the order into your CRM and pings you — while you sleep. Real buttons, not a wall of text commands.</p></div>
+        <div class="price">from $500<small>3–16 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>Broken automation, repaired</h3><p>Zapier, Make and n8n fail quietly. An API changes, a token expires, and for three weeks your leads went nowhere. I find why, fix it, and add an alert so the next failure reaches you in minutes.</p></div>
+        <div class="price">from $300<small>1–7 days</small></div>
+      </div>
+
+      <div class="svc-row">
+        <div><h3>TradingView indicators in Pine Script v6</h3><p>Your idea as working code: every number exposed as a setting, alerts that fire on the condition you actually meant, nothing that repaints. I know order flow from the inside — a brief about spot and perp divergence needs no translation.</p></div>
+        <div class="price">$70–800<small>3–14 days</small></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">After launch</div>
+    <h2>The part most developers skip</h2>
+    <p class="sub">Every project above comes with an optional monthly plan. Not a lock-in — you can stop any month. It exists because software is not furniture: certificates expire, platforms change their rules, and the companies whose services you depend on rewrite their APIs without telling you.</p>
+    <div class="svc">
+      <div class="svc-row">
+        <div><h3>What the monthly plan covers</h3><p>Updates and backups · security patches · small text and image changes without a new order · failure alerts when something breaks silently · priority replies · a short monthly note on what changed and what needs attention.</p></div>
+        <div class="price">$80–180<small>per month</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Work · demos</div>
+    <h2>Three demos you can open and try</h2>
+    <p class="sub">Self-initiated demonstrations, not client work. Every company in them is invented, and each page says so on itself. Each one runs in the browser from a folder — no account, no key, no server.</p>
+    <div class="svc">
+      <div class="svc-row">
+        <div><h3>Shiftbloom &middot; support assistant</h3><p>Answers only from a company's own help centre and shows the source under every answer. It says "I don't know" and hands over to a person instead of guessing. 74 test questions run from a button on the page; all 74 pass.</p></div>
+      </div>
+      <div class="svc-row">
+        <div><h3>Palewood Ceramics &middot; a broken automation, repaired</h3><p>One shift replayed through both versions of an n8n order intake: 14 orders and EUR 2,504 lost before, zero after, and every remaining failure reported instead of swallowed. 45 automated checks confirm each figure.</p></div>
+      </div>
+      <div class="svc-row">
+        <div><h3>Cedarline Bakehouse &middot; Telegram order bot</h3><p>Eleven night-time chats become eight orders and $740 booked before the owner wakes up, with the one real question passed to a human. The page replays the night and counts the numbers as it opens.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Work · 01</div>
+    <h2>CVD Spot vs Perp</h2>
+    <p class="sub">A TradingView indicator built for my own research first. Two cumulative delta lines on one pane — <b style="color:var(--spot)">spot</b> against <b style="color:var(--perp)">perp</b> — with the background lit the moment they disagree. Perp flow is leveraged and eventually has to be unwound. Spot flow is money that actually changed hands. Averaging them into one number hides the only configuration worth watching.</p>
+
+    <div class="case">
+      <figure><img src="img/cvd-long.jpg" alt="BTCUSDT 1h chart with green divergence highlights where perps sell into spot absorption"></figure>
+      <div class="caption">
+        <span class="sym">BTCUSDT · 1H · BINANCE</span>
+        <span>Green — perps selling into spot absorption</span>
+      </div>
+    </div>
+
+    <div class="case">
+      <figure><img src="img/cvd-short.jpg" alt="BTCUSDT 1h chart with red divergence highlights where perps bid with no spot behind it"></figure>
+      <div class="caption">
+        <span class="sym">BTCUSDT · 1H · BINANCE</span>
+        <span>Red — perps bidding with no spot behind it</span>
+      </div>
+    </div>
+
+    <p class="sub" style="margin-top:34px">The detection threshold is not a fixed number. It is the average gap between the two lines over the last 200 bars, scaled by a user factor — so sensitivity travels across coins and timeframes instead of being tuned for one chart and broken everywhere else. Accumulation anchors to day, week or month depending on the timeframe, and every reset renders as a line break so it can never be mistaken for a real move. All series are requested with <span class="mono" style="font-size:14.5px">lookahead_off</span>: nothing repaints.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Work · 02</div>
+    <h2>Levels &amp; Sessions</h2>
+    <p class="sub">Previous day, week and month extremes drawn from the bar that actually made them through to current price — not floating lines with no origin. Plus the opens of Tokyo, London and New York in true local time, with daylight saving handled automatically. Every level and every session has its own switch, above a master kill-switch that leaves individual settings intact.</p>
+    <div class="case">
+      <figure><img src="img/levels.jpg" alt="SOLUSDT 30m chart showing PDH, PDL, WH and PMH levels with ASIA, LDN and NY session opens"></figure>
+      <div class="caption">
+        <span class="sym">SOLUSDT · 30M · BINANCE</span>
+        <span>PDH · PDL · WH · PMH with session opens marked</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">How it runs</div>
+    <h2>Five steps, no surprises</h2>
+    <ol class="steps">
+      <li><span class="n">01</span><span><b>Tell me the problem, not the solution</b><span class="t">Plain words are fine. A screenshot with an arrow on it beats a written spec.</span></span></li>
+      <li><span class="n">02</span><span><b>I write back what I understood</b><span class="t">As plain rules, before any code. This one step catches most misunderstandings while they are still free to fix.</span></span></li>
+      <li><span class="n">03</span><span><b>You get a fixed price and a delivery date</b><span class="t">Scoped before a line is written. No hourly drift, no surprise invoice.</span></span></li>
+      <li><span class="n">04</span><span><b>You see it working on a private link</b><span class="t">Real thing, your real data — not a status report. You test before the balance is due.</span></span></li>
+      <li><span class="n">05</span><span><b>Handover, then optional monthly care</b><span class="t">A short video showing how to change things yourself. After that, the monthly plan if you want someone watching.</span></span></li>
+    </ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Contact</div>
+    <h2>Tell me what is broken</h2>
+    <p class="sub">Describe what you need — or what stopped working. I'll tell you what it takes, and whether a smaller first version would serve you better. Scoping costs nothing.</p>
+    <div class="contact">
+      <div class="row"><span class="k">Email</span><span class="v"><a href="mailto:trading.flowlab@gmail.com">trading.flowlab@gmail.com</a></span></div>
+      <div class="row"><span class="k">Telegram</span><span class="v"><a href="https://t.me/flowlabdev">@flowlabdev</a></span></div>
+      <div class="row"><span class="k">Contra</span><span class="v"><a href="https://contra.com/flowlab_trading_0ng4zwrr">contra.com/flowlab_trading_0ng4zwrr</a></span></div>
+      <div class="row"><span class="k">TradingView</span><span class="v">Flow_Lab</span></div>
+      <div class="row"><span class="k">Payment</span><span class="v">PayPal · USDC · USDT TRC-20 · 50% up front</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Flow Lab builds software and analysis tools. An indicator describes what order flow is doing — it does not predict price, and nothing on this page is a claim of profitability or a piece of financial advice. The per-candle delta estimation used in CVD Spot vs Perp is the method published by LonesomeTheBlue under the Mozilla Public License 2.0.</p>
+  </div>
+</footer>
