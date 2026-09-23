@@ -109,6 +109,8 @@ figure img{width:100%;display:block}
 .row:first-child{border-top:none;padding-top:0}
 .row .k{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
 .row .v{font-family:"JetBrains Mono",monospace;font-size:15.5px;word-break:break-word}
+.demo-link{color:var(--spot);text-decoration:none;border-bottom:1px solid currentColor}
+.demo-link:hover{border-bottom-color:transparent}
 .row .v a{color:var(--spot);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s}
 .row .v a:hover{border-bottom-color:var(--spot)}
 a:focus-visible,.tag:focus-visible{outline:2px solid var(--spot);outline-offset:3px;border-radius:3px}
@@ -227,19 +229,23 @@ footer p{margin:0;max-width:72ch;line-height:1.6}
   <div class="wrap">
     <div class="kicker">Work · demos</div>
     <h2>Four demos you can open and try</h2>
-    <p class="sub">Self-initiated demonstrations, not client work. Every company in them is invented, and each page says so on itself. Each one runs in the browser from a folder — no account, no key, no server.</p>
+    <p class="sub">Self-initiated demonstrations, not client work. Every company in them is invented, and each page says so on itself. Each one opens in your browser from a link — no account, no key, no server.</p>
     <div class="svc">
       <div class="svc-row">
         <div><h3>Shiftbloom &middot; support assistant</h3><p>Answers only from a company's own help centre and shows the source under every answer. It says "I don't know" and hands over to a person instead of guessing. 74 test questions run from a button on the page; all 74 pass.</p></div>
+        <a class="price demo-link" href="https://flowlab-dev.github.io/demo/chatbot/">Open the demo &rarr;</a>
       </div>
       <div class="svc-row">
         <div><h3>Palewood Ceramics &middot; a broken automation, repaired</h3><p>One shift replayed through both versions of an n8n order intake: 14 orders and EUR 2,504 lost before, zero after, and every remaining failure reported instead of swallowed. 45 automated checks confirm each figure.</p></div>
+        <a class="price demo-link" href="https://flowlab-dev.github.io/demo/automation-repair/">Open the demo &rarr;</a>
       </div>
       <div class="svc-row">
         <div><h3>Cedarline Bakehouse &middot; Telegram order bot</h3><p>Eleven night-time chats become eight orders and $740 booked before the owner wakes up, with the one real question passed to a human. The page replays the night and counts the numbers as it opens.</p></div>
+        <a class="price demo-link" href="https://flowlab-dev.github.io/demo/telegram-orders/">Open the demo &rarr;</a>
       </div>
       <div class="svc-row">
         <div><h3>Northgate Metalworks &middot; a website that answers with a price</h3><p>A metal shop's site where the visitor describes a part and sees the price, the breakdown and the lead time while they type - then leaves with a numbered request ready to send. Rush charges and below-minimum orders are explained in plain words. 78 automated tests.</p></div>
+        <a class="price demo-link" href="https://flowlab-dev.github.io/demo/business-site/">Open the demo &rarr;</a>
       </div>
     </div>
   </div>
