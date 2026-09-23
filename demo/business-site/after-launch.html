@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>After launch - what the monthly plan covers</title>
+<meta name="description" content="What the monthly plan covers after a business website goes live: uptime watch, content edits, backups, form checks and a one-page monthly report.">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="After launch - what the monthly plan covers">
+<meta property="og:description" content="Uptime watch, an hour of edits, weekly form checks, backups and a one-page monthly report - and a plain list of what is not included.">
+<meta property="og:locale" content="en_US">
+<style>
+/* Northgate Metalworks - one stylesheet, no framework, no web fonts.
+   Palette and structure come from the shop: sheet grey, layout blue,
+   zinc yellow, and a shear line between sections. */
+
+:root {
+  color-scheme: light;
+
+  --sheet: #eff1ee;
+  --panel: #f7f8f6;
+  --panel-sunk: #e6e9e4;
+  --ink: #1a1e1c;
+  --graphite: #5f6763;
+  --rule: #c9cec8;
+  --rule-strong: #7f8881;
+  --layout-blue: #17418f;
+  --layout-blue-soft: #e3e9f6;
+  --zinc: #e4b200;
+  --zinc-ink: #2a2100;
+  --flag: #a8341c;
+  --flag-soft: #f7e5e1;
+  --good: #1f6b4a;
+
+  --shadow-lift: 0 1px 0 var(--rule);
+
+  --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.08rem);
+  --step-1: clamp(1.2rem, 1.12rem + 0.4vw, 1.4rem);
+  --step-2: clamp(1.5rem, 1.34rem + 0.8vw, 2rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3.1rem);
+  --step-4: clamp(2.6rem, 1.85rem + 3.6vw, 4.6rem);
+
+  --sans: "Helvetica Neue", Helvetica, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  --gutter: clamp(1.15rem, 0.6rem + 2.6vw, 3.25rem);
+  --measure: 66ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --sheet: #15181a;
+    --panel: #1d2124;
+    --panel-sunk: #23282b;
+    --ink: #e7e9e5;
+    --graphite: #a0a8a3;
+    --rule: #333a3d;
+    --rule-strong: #6a7478;
+    --layout-blue: #8faeea;
+    --layout-blue-soft: #1c2740;
+    --zinc: #d9a916;
+    --zinc-ink: #201900;
+    --flag: #e88b76;
+    --flag-soft: #33201c;
+    --good: #6bc39a;
+    --shadow-lift: 0 1px 0 #000;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --sheet: #15181a;
+  --panel: #1d2124;
+  --panel-sunk: #23282b;
+  --ink: #e7e9e5;
+  --graphite: #a0a8a3;
+  --rule: #333a3d;
+  --rule-strong: #6a7478;
+  --layout-blue: #8faeea;
+  --layout-blue-soft: #1c2740;
+  --zinc: #d9a916;
+  --zinc-ink: #201900;
+  --flag: #e88b76;
+  --flag-soft: #33201c;
+  --good: #6bc39a;
+  --shadow-lift: 0 1px 0 #000;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--sheet);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--step-0);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.04;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-3); }
+h3 { font-size: var(--step-1); letter-spacing: -0.02em; line-height: 1.25; }
+
+p { margin: 0 0 1rem; max-width: var(--measure); }
+p:last-child { margin-bottom: 0; }
+
+a { color: var(--layout-blue); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--layout-blue);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+/* Read aloud, never drawn. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  width: min(1180px, 100%);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--zinc);
+  color: var(--zinc-ink);
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  z-index: 40;
+}
+.skip-link:focus { left: 0; }
+
+/* ---------------------------------------------------------- demo notice */
+
+.demo-bar {
+  background: var(--ink);
+  color: var(--sheet);
+  font-size: var(--step--1);
+  line-height: 1.45;
+  padding-block: 0.55rem;
+}
+.demo-bar .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.demo-bar a { color: var(--zinc); font-weight: 600; }
+.demo-bar b { font-weight: 700; }
+
+/* ----------------------------------------------------------- site head */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--sheet); /* older Safari stops here, which is fine */
+  background: color-mix(in srgb, var(--sheet) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+.masthead .wrap {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 62px;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-size: 1.05rem;
+  color: inherit;
+  text-decoration: none;
+  margin-right: auto;
+}
+.wordmark svg { display: block; }
+.wordmark span small {
+  display: block;
+  font-weight: 500;
+  font-size: 0.68rem;
+  letter-spacing: 0.01em;
+  color: var(--graphite);
+  line-height: 1.2;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 1.6vw, 1.5rem);
+}
+.nav a {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.55rem 0.15rem;
+  border-bottom: 2px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.nav a:hover { border-bottom-color: var(--zinc); }
+.nav .nav-quote {
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  padding: 0.5rem 0.85rem;
+}
+.nav .nav-quote:hover { border-color: var(--ink); border-bottom-color: var(--ink); }
+
+.theme-toggle {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 0.7rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.theme-toggle:hover { border-color: var(--ink); }
+.theme-toggle svg { display: block; }
+
+/* On a phone the masthead stops being a single line: the wordmark and the
+   theme switch share the top row, the links take a row of their own, and the
+   whole bar stops sticking so it does not eat the screen. */
+@media (max-width: 46rem) {
+  .masthead { position: static; }
+  .masthead .wrap {
+    flex-wrap: wrap;
+    min-height: 0;
+    padding-block: 0.45rem;
+    row-gap: 0.3rem;
+  }
+  .wordmark { flex: 1 1 auto; }
+  .nav {
+    order: 3;
+    width: 100%;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+    row-gap: 0.15rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 0.2rem;
+  }
+  .nav a { font-size: 0.88rem; }
+  .nav .nav-quote { margin-left: auto; padding: 0.5rem 0.75rem; }
+}
+
+/* --------------------------------------------------------------- shear */
+
+.shear {
+  height: 9px;
+  border-top: 1px solid var(--rule-strong);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--rule-strong) 0 1px,
+    transparent 1px 14px
+  );
+  background-size: 100% 5px;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+}
+
+section { padding-block: clamp(3rem, 6vw, 5.5rem); }
+
+.section-head {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: clamp(1.8rem, 3vw, 2.8rem);
+  max-width: var(--measure);
+}
+.section-head p { color: var(--graphite); font-size: var(--step-1); line-height: 1.45; }
+
+/* ---------------------------------------------------------------- hero */
+
+.hero { padding-block: clamp(2.6rem, 5vw, 4.5rem) clamp(2rem, 4vw, 3rem); }
+.hero-grid {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+@media (min-width: 62rem) {
+  .hero-grid { grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr); }
+}
+.hero h1 { max-width: 13ch; }
+.hero-lede {
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--graphite);
+  margin-top: 1.4rem;
+  max-width: 44ch;
+}
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.4rem;
+  margin-top: 2rem;
+}
+.hero-call { font-size: 0.95rem; color: var(--graphite); }
+.hero-call a { font-weight: 600; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 1.5rem;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.12s ease, background-color 0.12s ease;
+}
+.btn-zinc { background: var(--zinc); color: var(--zinc-ink); }
+.btn-zinc:hover { background: #f0c42a; }
+.btn-zinc:hover { background: color-mix(in srgb, var(--zinc) 84%, #fff); }
+.btn-zinc:active { transform: translateY(1px); }
+.btn-quiet {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--rule-strong);
+  min-height: 44px;
+  font-weight: 600;
+  padding: 0 1rem;
+}
+.btn-quiet:hover { border-color: var(--ink); }
+
+.drawing {
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  padding: clamp(0.9rem, 2vw, 1.4rem);
+}
+.drawing svg { width: 100%; height: auto; display: block; }
+.drawing figcaption {
+  margin-top: 0.9rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--1);
+  color: var(--graphite);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.2rem;
+}
+
+/* drawing ink */
+.dw-outline { fill: none; stroke: var(--ink); stroke-width: 2; }
+.dw-hole { fill: var(--sheet); stroke: var(--ink); stroke-width: 1.6; }
+.dw-bend { stroke: var(--zinc); stroke-width: 2.4; stroke-dasharray: 9 6; }
+.dw-dim { stroke: var(--layout-blue); stroke-width: 1; }
+.dw-dim-text { fill: var(--layout-blue); font-family: var(--mono); font-size: 13px; }
+.dw-note { fill: var(--graphite); font-family: var(--mono); font-size: 12px; }
+
+.dw-animate .dw-dim,
+.dw-animate .dw-dim-text,
+.dw-animate .dw-bend {
+  opacity: 0;
+  animation: dw-in 0.5s ease forwards;
+}
+.dw-animate .dw-bend { animation-delay: 0.35s; }
+.dw-animate .dw-dim { animation-delay: 0.6s; }
+.dw-animate .dw-dim-text { animation-delay: 0.85s; }
+@keyframes dw-in { to { opacity: 1; } }
+
+/* ------------------------------------------------------------ spec bar */
+
+.specbar {
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--panel);
+}
+.specbar dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+.specbar div {
+  padding: 1.1rem var(--gutter);
+  border-right: 1px solid var(--rule);
+}
+.specbar div:last-child { border-right: 0; }
+.specbar dt { font-size: var(--step--1); color: var(--graphite); }
+.specbar dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--mono);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+/* ------------------------------------------------------------ capability */
+
+.cap-grid {
+  display: grid;
+  gap: clamp(1.6rem, 3vw, 2.6rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 52rem) {
+  .cap-grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); }
+}
+
+.process-list { margin: 0; padding: 0; list-style: none; }
+.process-list > li {
+  border-top: 1px solid var(--rule);
+  padding: 1.35rem 0;
+  display: grid;
+  gap: 0.45rem;
+}
+.process-list > li:last-child { border-bottom: 1px solid var(--rule); }
+.process-list h3 { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.process-list h3 .range {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--graphite);
+}
+.process-list p { color: var(--graphite); font-size: 0.97rem; }
+
+.spec-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.95rem;
+}
+.spec-table caption {
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  padding-bottom: 0.7rem;
+}
+.spec-table th, .spec-table td {
+  text-align: left;
+  padding: 0.62rem 0.5rem 0.62rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.spec-table th { font-weight: 500; color: var(--graphite); width: 42%; }
+.spec-table td { font-family: var(--mono); letter-spacing: -0.02em; }
+
+.aside-note {
+  margin-top: 1.5rem;
+  border-left: 3px solid var(--zinc);
+  padding: 0.35rem 0 0.35rem 1rem;
+  color: var(--graphite);
+  font-size: 0.95rem;
+}
+
+/* -------------------------------------------------------------- process */
+
+.steps { margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0 1rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--rule);
+}
+.steps li:last-child { border-bottom: 1px solid var(--rule); }
+.steps li::before {
+  content: counter(step);
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--layout-blue);
+  padding-top: 0.2rem;
+}
+/* Every part of a step is placed by hand. Left to auto-placement, the
+   description drops into the narrow timing column and reads one word per line. */
+.steps h3 { grid-column: 2; margin-bottom: 0.3rem; }
+.steps li > p { grid-column: 2; color: var(--graphite); font-size: 0.97rem; max-width: 62ch; }
+.steps .when {
+  grid-column: 2;
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--graphite);
+  margin-top: 0.35rem;
+}
+@media (min-width: 52rem) {
+  .steps li { grid-template-columns: 2.6rem minmax(0, 1fr) 11rem; }
+  .steps li::before { grid-column: 1; grid-row: 1; }
+  .steps h3 { grid-row: 1; }
+  .steps li > p:not(.when) { grid-row: 2; }
+  .steps .when { grid-column: 3; grid-row: 1; margin-top: 0.2rem; text-align: right; }
+}
+
+/* ----------------------------------------------------------------- rfq */
+
+.rfq { background: var(--panel); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.rfq-grid {
+  display: grid;
+  gap: clamp(1.8rem, 3.5vw, 3rem);
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+@media (min-width: 64rem) {
+  .rfq-grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .estimate-panel { position: sticky; top: 84px; }
+}
+
+fieldset { border: 0; margin: 0 0 1.6rem; padding: 0; }
+legend {
+  padding: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--rule-strong);
+  width: 100%;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.field-row {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  margin-bottom: 1rem;
+}
+@media (min-width: 30rem) {
+  .field-row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .field-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.field { margin-bottom: 1rem; display: flex; flex-direction: column; }
+/* A hint under one label must not push its input below the neighbour's. */
+.field-row .field { margin-bottom: 0; }
+.field-row .field .error { margin-top: 0.3rem; }
+.field label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+/* Hints sit under their control, so every label in a row starts on the
+   same line and the row reads straight. */
+.field .hint {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--graphite);
+  margin: 0.3rem 0 0;
+}
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--sheet);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+}
+.field input[inputmode="numeric"], .field input[type="date"] {
+  font-family: var(--mono);
+  letter-spacing: -0.02em;
+}
+.field textarea { min-height: 104px; resize: vertical; line-height: 1.5; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: var(--ink); }
+.field select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 18px) 21px, calc(100% - 12px) 21px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.2rem;
+}
+
+.field .error {
+  display: none;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--flag);
+  font-weight: 500;
+}
+.field.is-bad input,
+.field.is-bad select,
+.field.is-bad textarea { border-color: var(--flag); background: var(--flag-soft); }
+.field.is-bad .error { display: block; }
+
+.form-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid var(--rule-strong);
+  padding-top: 1.3rem;
+}
+.form-foot p { font-size: 0.85rem; color: var(--graphite); margin: 0; max-width: 34ch; }
+
+.form-alert {
+  display: none;
+  border: 1px solid var(--flag);
+  background: var(--flag-soft);
+  color: var(--ink);
+  padding: 0.8rem 0.9rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.93rem;
+}
+.form-alert.is-on { display: block; }
+
+/* ------------------------------------------------------- estimate panel */
+
+.estimate-panel {
+  border: 1px solid var(--rule-strong);
+  background: var(--sheet);
+}
+
+/* On one column the figure would sit below the whole form, where nobody
+   filling it in can see it. So it goes on top and stays there, cut down to
+   the price and the date. */
+@media (max-width: 63.99rem) {
+  /* A grid item can only stick inside its own row, so on one column the
+     wrapper becomes a flex column and the panel can travel with the page. */
+  .rfq-grid { display: flex; flex-direction: column; align-items: stretch; }
+  .estimate-panel {
+    order: -1;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  }
+  .estimate-body { padding: 0.9rem 1.1rem; }
+  .estimate-figure { font-size: 1.45rem; }
+  .estimate-rows { margin-top: 0.9rem; }
+  /* Written through .estimate-panel so these beat the base rules further down. */
+  .estimate-panel .estimate-rows div:not(:last-child),
+  .estimate-panel .estimate-flags,
+  .estimate-panel .honest { display: none; }
+}
+@media (min-width: 46.01rem) and (max-width: 63.99rem) {
+  .estimate-panel { top: 62px; }
+}
+.estimate-head {
+  padding: 1.1rem 1.2rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+.estimate-head h3 { font-size: 1.05rem; }
+.estimate-head .state { font-size: 0.8rem; color: var(--graphite); font-family: var(--mono); }
+
+.estimate-body { padding: 1.2rem; }
+.estimate-figure {
+  font-family: var(--mono);
+  font-size: clamp(1.5rem, 1rem + 2.2vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
+  padding-bottom: 0.4rem;
+  border-bottom: 3px solid var(--zinc);
+  display: inline-block;
+}
+.estimate-sub { margin-top: 0.7rem; color: var(--graphite); font-size: 0.92rem; }
+
+.estimate-rows { margin: 1.3rem 0 0; padding: 0; }
+.estimate-rows div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--rule);
+  font-size: 0.9rem;
+}
+.estimate-rows dt { color: var(--graphite); }
+.estimate-rows dd { margin: 0; font-family: var(--mono); letter-spacing: -0.02em; }
+
+.estimate-flags { margin-top: 1rem; display: grid; gap: 0.5rem; }
+.flagline {
+  font-size: 0.88rem;
+  border-left: 3px solid var(--zinc);
+  padding-left: 0.7rem;
+  color: var(--ink);
+}
+.flagline.is-quiet { border-left-color: var(--rule-strong); color: var(--graphite); }
+
+.estimate-empty { color: var(--graphite); font-size: 0.95rem; }
+
+.honest {
+  border-top: 1px solid var(--rule);
+  padding: 1rem 1.2rem;
+  font-size: 0.85rem;
+  color: var(--graphite);
+}
+
+/* ------------------------------------------------------------- receipt */
+
+.receipt { display: none; }
+.receipt.is-on { display: block; }
+.receipt-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 0.9rem;
+  margin-bottom: 1.1rem;
+}
+.receipt-ref {
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.receipt pre {
+  font-family: var(--mono);
+  font-size: 0.83rem;
+  line-height: 1.55;
+  background: var(--panel-sunk);
+  border: 1px solid var(--rule);
+  padding: 0.9rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0 0 1.1rem;
+}
+.receipt-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+.receipt-note { margin-top: 1.1rem; font-size: 0.87rem; color: var(--graphite); }
+.copy-state { font-size: 0.85rem; color: var(--good); font-weight: 600; align-self: center; }
+
+/* ----------------------------------------------------------------- faq */
+
+/* The answers keep the page's left edge instead of drifting to the middle;
+   only the line length is held back. */
+.faq > .section-head,
+.faq details { max-width: 54rem; }
+.faq details {
+  border-top: 1px solid var(--rule);
+  padding: 0.25rem 0;
+}
+.faq details:last-of-type { border-bottom: 1px solid var(--rule); }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1rem 2.2rem 1rem 0;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  position: relative;
+  min-height: 44px;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "";
+  position: absolute;
+  right: 0.4rem;
+  top: 1.45rem;
+  width: 11px;
+  height: 11px;
+  border-right: 2px solid var(--layout-blue);
+  border-bottom: 2px solid var(--layout-blue);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+.faq details[open] summary::after { transform: rotate(-135deg); top: 1.7rem; }
+.faq details p { padding: 0 0 1.1rem; color: var(--graphite); }
+
+/* -------------------------------------------------------------- footer */
+
+.site-foot {
+  border-top: 1px solid var(--rule-strong);
+  padding-block: clamp(2.2rem, 4vw, 3.2rem);
+  font-size: 0.93rem;
+}
+.foot-grid {
+  display: grid;
+  gap: 1.6rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 46rem) {
+  .foot-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.foot-grid h2 { font-size: 0.85rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.5rem; }
+.foot-grid p, .foot-grid address { color: var(--graphite); font-style: normal; }
+.foot-grid ul { margin: 0; padding: 0; list-style: none; }
+.foot-grid li { padding: 0.2rem 0; }
+.foot-bottom {
+  margin-top: 2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  color: var(--graphite);
+  font-size: 0.85rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+/* --------------------------------------------------- after-launch page */
+
+.plain-head { padding-block: clamp(2.4rem, 5vw, 4rem) clamp(1.4rem, 3vw, 2rem); }
+.plain-head h1 { max-width: 18ch; font-size: var(--step-3); }
+.plain-head p { margin-top: 1.2rem; font-size: var(--step-1); color: var(--graphite); line-height: 1.5; }
+
+/* On a wide screen the opening line and the paragraph share the row instead of
+   leaving half the page empty. */
+@media (min-width: 62rem) {
+  .plain-head .wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: end;
+  }
+  .plain-head p { margin-top: 0; }
+}
+
+.care-grid {
+  display: grid;
+  gap: clamp(1.4rem, 3vw, 2.4rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 52rem) {
+  .care-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.care-block {
+  border-top: 2px solid var(--ink);
+  padding-top: 1rem;
+}
+.care-block h3 { margin-bottom: 0.6rem; }
+.care-block ul { margin: 0; padding-left: 1.1rem; color: var(--graphite); }
+.care-block li { margin-bottom: 0.45rem; }
+
+.price-line {
+  margin-top: 2.4rem;
+  border: 1px solid var(--rule-strong);
+  background: var(--panel);
+  padding: clamp(1.2rem, 2.5vw, 1.8rem);
+  display: grid;
+  gap: 0.8rem;
+}
+.price-line .figure {
+  font-family: var(--mono);
+  font-size: var(--step-2);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1e1c'/%3E%3Cpath d='M7 24V8l18 16V8' fill='none' stroke='%23e4b200' stroke-width='3'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to the content</a>
+
+<div class="demo-bar">
+  <div class="wrap">
+    <p><b>Portfolio demo.</b> This page is written for whoever is buying the website, not for the invented company on the front page.</p>
+    <p><a href="index.html">Back to the demo site</a></p>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">
+      <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect width="32" height="32" fill="var(--ink)"></rect>
+        <path d="M7 24V8l18 16V8" fill="none" stroke="var(--zinc)" stroke-width="3"></path>
+      </svg>
+      <span>Northgate Metalworks<small>demo site</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="index.html#work">What we run</a>
+      <a href="index.html#rfq">Start an RFQ</a>
+    </nav>
+    <button class="theme-toggle" type="button" id="theme-toggle" aria-pressed="false">
+      <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <circle cx="8" cy="8" r="3.4" fill="currentColor"></circle>
+        <path d="M8 .8v2.4M8 12.8v2.4M.8 8h2.4M12.8 8h2.4M2.9 2.9l1.7 1.7M11.4 11.4l1.7 1.7M13.1 2.9l-1.7 1.7M4.6 11.4l-1.7 1.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+      </svg>
+      <span id="theme-label">Light</span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<section class="plain-head">
+  <div class="wrap">
+    <h1>A site is finished on the day it launches. It stops being finished the next morning.</h1>
+    <p>Prices change, a phone number changes, a browser ships an update, someone finds a form that no longer sends. The monthly plan is what keeps a working site working, and it is part of every website I offer.</p>
+  </div>
+</section>
+
+<div class="shear" role="presentation"></div>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>What the monthly plan covers</h2>
+      <p>Same four things every month, whether or not you ask for them.</p>
+    </div>
+
+    <div class="care-grid">
+      <div class="care-block">
+        <h3>It stays up and it stays fast</h3>
+        <ul>
+          <li>Uptime check every five minutes; if the site goes down I know before you do</li>
+          <li>Certificate and domain renewals watched, so the site never greets a customer with a security warning</li>
+          <li>Page speed measured monthly on a phone connection, not just on a desktop</li>
+          <li>Full backup weekly, kept for three months, restore tested twice a year</li>
+        </ul>
+      </div>
+
+      <div class="care-block">
+        <h3>The content keeps up with the business</h3>
+        <ul>
+          <li>Up to one hour of edits a month: prices, hours, staff, a new service, a seasonal notice</li>
+          <li>Small changes go live the same day they are asked for, on weekdays</li>
+          <li>New photographs sized and compressed properly instead of dropped in at 8 megabytes</li>
+          <li>Unused hours do not roll over, and I will tell you when you are not using them</li>
+        </ul>
+      </div>
+
+      <div class="care-block">
+        <h3>The form keeps arriving</h3>
+        <ul>
+          <li>A test enquiry sent through the live form every week, checked at the other end</li>
+          <li>Spam filtering tuned when junk starts getting through</li>
+          <li>Delivery problems chased with the mail provider, not handed back to you</li>
+          <li>If an enquiry ever goes missing, finding it is my job, not yours</li>
+        </ul>
+      </div>
+
+      <div class="care-block">
+        <h3>You can see what happened</h3>
+        <ul>
+          <li>One page a month: visitors, where they came from, enquiries received, edits made</li>
+          <li>Plain language, no dashboard you have to learn</li>
+          <li>One recommendation, with what it would cost, and no pressure to take it</li>
+          <li>Everything - files, domain, hosting account - stays in your name</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price-line">
+      <p class="figure">$120 per month</p>
+      <p>Billed monthly, cancel with 30 days notice, no tie-in. Anything beyond the included hour is quoted first at $50 an hour, and never starts without a written yes.</p>
+      <p>Stopping the plan does not switch anything off: the site, the domain and the hosting are yours and stay yours.</p>
+    </div>
+  </div>
+</section>
+
+<div class="shear" role="presentation"></div>
+
+<section>
+  <div class="wrap faq">
+    <div class="section-head">
+      <h2>What it does not cover</h2>
+      <p>So the first month is not a surprise.</p>
+    </div>
+
+    <details open>
+      <summary>A second website, or a shop bolted onto this one</summary>
+      <p>That is a new project with its own quote. The plan covers the site it was bought for.</p>
+    </details>
+    <details>
+      <summary>Writing your content from scratch</summary>
+      <p>Edits to existing pages are included. A new page written from an empty screen is quoted separately, usually an hour or two.</p>
+    </details>
+    <details>
+      <summary>Advertising, social media and SEO campaigns</summary>
+      <p>The site is built so search engines can read it properly, and that is included. Running paid ads or a content programme is a different job and I will say so rather than quietly bill for it.</p>
+    </details>
+    <details>
+      <summary>Hosting and domain fees</summary>
+      <p>Those are paid by you, to your own provider, in your own account, typically around $10 a month between them. I do not resell hosting because I do not want to be between you and your own site.</p>
+    </details>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-bottom">
+      <p>This page belongs to a portfolio demo. Northgate Metalworks is invented. The plan below is how ongoing care is presented to a client; the figures in any real agreement are confirmed in writing before work starts.</p>
+      <p><a href="index.html">Back to the demo site</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+/*
+ * Northgate Metalworks - budgetary estimate engine.
+ *
+ * One file, two homes: the browser loads it with <script src>, Node tests
+ * require() it. No build step, so the page and the tests can never drift.
+ *
+ * Every number below is a shop-floor assumption written down in the open:
+ * a buyer can check it, and a shop can change it without touching the page.
+ */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.NGQuote = api;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  /* ---------------------------------------------------------------- data */
+
+  var MATERIALS = {
+    crs: {
+      id: 'crs',
+      label: 'Mild steel (CRS 1008)',
+      density: 7.85e-6,        // kg per mm^3
+      pricePerKg: 1.45,        // USD, shop cost incl. current surcharges
+      thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
+      cutFactor: 1.0,
+      bendFactor: 1.0
+    },
+    ss304: {
+      id: 'ss304',
+      label: 'Stainless 304 (2B)',
+      density: 8.0e-6,
+      pricePerKg: 4.30,
+      thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0],
+      cutFactor: 1.45,         // slower cut, nitrogen assist
+      bendFactor: 1.2          // springback, more first-article fiddling
+    },
+    al5052: {
+      id: 'al5052',
+      label: 'Aluminium 5052-H32',
+      density: 2.68e-6,
+      pricePerKg: 5.60,
+      thickness: [1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
+      cutFactor: 1.15,
+      bendFactor: 1.15
+    }
+  };
+
+  var FINISHES = {
+    mill: { id: 'mill', label: 'Mill finish, deburred', perPart: 0.00, lotMinimum: 0, leadDays: 0 },
+    powder: { id: 'powder', label: 'Powder coat, one colour', perPart: 4.20, lotMinimum: 85, leadDays: 2 },
+    zinc: { id: 'zinc', label: 'Clear zinc plate', perPart: 3.10, lotMinimum: 110, leadDays: 2 }
+  };
+
+  var TOLERANCES = {
+    standard: { id: 'standard', label: 'Standard, +/-0.25 mm', formingFactor: 1.0, inspectMinPerPart: 0.15 },
+    tight: { id: 'tight', label: 'Tight, +/-0.10 mm', formingFactor: 1.18, inspectMinPerPart: 0.55 }
+  };
+
+  var SHOP = {
+    sheetMax: { length: 3000, width: 1500 },   // mm, the bed of the laser
+    partMin: 20,                                // mm, smallest side we will nest
+    quantityMax: 2000,
+    bendsMax: 20,
+    holesMax: 400,
+    laserRate: 95,        // USD per machine hour
+    brakeRate: 78,
+    inspectRate: 62,
+    programMinutes: 25,   // one-off laser programming per part number
+    brakeSetupMinutes: 12,// per bend, once per job
+    firstArticleMinutes: 30,
+    loadMinutesPerPart: 0.35,
+    pierceSeconds: 1.4,
+    bendSecondsPerHit: 18,
+    deburrMinutesPerPart: 0.6,
+    scrapFactor: 1.25,    // skeleton and offcut we pay for but do not ship
+    margin: 0.32,
+    spread: 0.12,         // half-width of the published range
+    minimumJob: 150,      // USD, below this it is not worth opening the file
+    baseLeadDays: 6,
+    rushSurcharge: 0.25,
+    areaPerFeature: 900,   // mm^2 of blank per hole or cutout before it is crowded
+    mmPerBend: 25,         // the brake needs a flange it can hold
+    quoteByHandOver: 50000 // above this a person quotes it, not a web page
+  };
+
+  // Laser feed in mm/min at a given thickness for mild steel; other materials
+  // scale by cutFactor. Interpolated between the points we actually run.
+  var FEED_POINTS = [
+    [0.8, 9200], [1.5, 7400], [2.0, 6100], [3.0, 4200], [4.0, 3000], [5.0, 2200], [6.0, 1600]
+  ];
+
+  function feedRate(material, thickness) {
+    var pts = FEED_POINTS;
+    var mmPerMin;
+    if (thickness <= pts[0][0]) mmPerMin = pts[0][1];
+    else if (thickness >= pts[pts.length - 1][0]) mmPerMin = pts[pts.length - 1][1];
+    else {
+      mmPerMin = pts[pts.length - 1][1];
+      for (var i = 1; i < pts.length; i++) {
+        if (thickness <= pts[i][0]) {
+          var t0 = pts[i - 1][0], t1 = pts[i][0], f0 = pts[i - 1][1], f1 = pts[i][1];
+          mmPerMin = f0 + (f1 - f0) * ((thickness - t0) / (t1 - t0));
+          break;
+        }
+      }
+    }
+    return mmPerMin / material.cutFactor;
+  }
+
+  /* ---------------------------------------------------------- validation */
+
+  var FIELD_ORDER = [
+    'partName', 'material', 'thickness', 'length', 'width', 'quantity',
+    'bends', 'holes', 'finish', 'tolerance', 'neededBy', 'contactName', 'email'
+  ];
+
+  function isBlank(value) {
+    return value === undefined || value === null || String(value).trim() === '';
+  }
+
+  function toNumber(value) {
+    if (typeof value === 'number') return Number.isFinite(value) ? value : NaN;
+    var text = String(value).trim().replace(',', '.');
+    if (!/^-?\d+(\.\d+)?$/.test(text)) return NaN;
+    return parseFloat(text);
+  }
+
+  function toInteger(value) {
+    if (typeof value === 'number') return Number.isInteger(value) ? value : NaN;
+    var text = String(value).trim();
+    if (!/^-?\d+$/.test(text)) return NaN;
+    return parseInt(text, 10);
+  }
+
+  function validateEmail(value) {
+    var text = String(value).trim();
+    if (text.length > 254) return false;
+    return /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(text);
+  }
+
+  function parseDateOnly(value) {
+    var text = String(value).trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return null;
+    var parts = text.split('-').map(Number);
+    var stamp = Date.UTC(parts[0], parts[1] - 1, parts[2]);
+    var back = new Date(stamp);
+    if (back.getUTCFullYear() !== parts[0] || back.getUTCMonth() !== parts[1] - 1 || back.getUTCDate() !== parts[2]) return null;
+    return stamp;
+  }
+
+  /*
+   * Dates in this file are calendar days, not moments. A date input hands us
+   * "2026-10-15" with no timezone, so we key every day by UTC midnight and map
+   * "now" through the visitor's own calendar first. Without that step a buyer
+   * west of UTC gets told that today has already passed.
+   */
+  function dayKey(stamp) {
+    var d = new Date(stamp);
+    return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  /**
+   * Checks one RFQ. Returns { ok, values, errors } where errors is keyed by
+   * field name and every message tells the person what to do next.
+   */
+  function validate(input, now) {
+    input = input || {};
+    var errors = {};
+    var values = {};
+    var today = dayKey(now === undefined ? Date.now() : now);
+
+    var partName = String(input.partName === undefined ? '' : input.partName).trim().replace(/\s+/g, ' ');
+    if (isBlank(partName)) errors.partName = 'Name the part so we can label the quote.';
+    else if (partName.length < 2) errors.partName = 'Use at least 2 characters.';
+    else if (partName.length > 60) errors.partName = 'Keep it under 60 characters.';
+    else values.partName = partName;
+
+    var material = MATERIALS[String(input.material === undefined ? '' : input.material).trim()];
+    if (!material) errors.material = 'Pick a material we stock.';
+    else values.material = material;
+
+    var thickness = toNumber(input.thickness);
+    if (isBlank(input.thickness)) errors.thickness = 'Pick a thickness.';
+    else if (Number.isNaN(thickness)) errors.thickness = 'Thickness has to be a number in millimetres.';
+    else if (!material) errors.thickness = 'Pick a material first.';
+    else if (material.thickness.indexOf(thickness) === -1) {
+      errors.thickness = 'We stock ' + material.label + ' in ' + material.thickness.map(function (mm) { return mm.toFixed(1); }).join(', ') + ' mm.';
+    } else values.thickness = thickness;
+
+    ['length', 'width'].forEach(function (key) {
+      var mm = toNumber(input[key]);
+      var limit = key === 'length' ? SHOP.sheetMax.length : SHOP.sheetMax.width;
+      if (isBlank(input[key])) errors[key] = 'Flat size is needed to nest the part.';
+      else if (Number.isNaN(mm) || mm <= 0) errors[key] = 'Enter the flat ' + key + ' in millimetres.';
+      else if (mm < SHOP.partMin) errors[key] = 'Smallest side we nest is ' + SHOP.partMin + ' mm.';
+      else if (mm > limit) errors[key] = 'Our bed is ' + SHOP.sheetMax.length + ' x ' + SHOP.sheetMax.width + ' mm - this side is over ' + limit + ' mm.';
+      else values[key] = mm;
+    });
+
+    var quantity = toInteger(input.quantity);
+    if (isBlank(input.quantity)) errors.quantity = 'How many parts?';
+    else if (Number.isNaN(quantity)) errors.quantity = 'Quantity has to be a whole number.';
+    else if (quantity < 1) errors.quantity = 'One part is our minimum - and it is welcome.';
+    else if (quantity > SHOP.quantityMax) errors.quantity = 'Over ' + SHOP.quantityMax + ' parts we quote by hand. Send the drawing and we will come back the same day.';
+    else values.quantity = quantity;
+
+    var bends = isBlank(input.bends) ? 0 : toInteger(input.bends);
+    if (Number.isNaN(bends)) errors.bends = 'Bend count has to be a whole number, 0 if the part stays flat.';
+    else if (bends < 0) errors.bends = 'Bends cannot be negative.';
+    else if (bends > SHOP.bendsMax) errors.bends = 'Over ' + SHOP.bendsMax + ' hits we quote by hand.';
+    else values.bends = bends;
+
+    var holes = isBlank(input.holes) ? 0 : toInteger(input.holes);
+    if (Number.isNaN(holes)) errors.holes = 'Holes and cutouts have to be a whole number.';
+    else if (holes < 0) errors.holes = 'Holes cannot be negative.';
+    else if (holes > SHOP.holesMax) errors.holes = 'Over ' + SHOP.holesMax + ' features we quote from the DXF instead.';
+    else values.holes = holes;
+
+    // A part only has room for so much. Past that the arithmetic is fiction,
+    // so we ask for the file instead of inventing a price.
+    if (values.length && values.width) {
+      var roomForHoles = Math.max(4, Math.floor((values.length * values.width) / SHOP.areaPerFeature));
+      if (values.holes > roomForHoles) {
+        errors.holes = 'A ' + values.length + ' x ' + values.width + ' mm part has room for about ' +
+          roomForHoles + ' features. Send the DXF and we will quote from the file.';
+        delete values.holes;
+      }
+      var roomForBends = Math.max(1, Math.floor(Math.max(values.length, values.width) / SHOP.mmPerBend));
+      if (values.bends > roomForBends) {
+        errors.bends = 'The brake needs about ' + SHOP.mmPerBend + ' mm between hits, so this part takes around ' +
+          roomForBends + '. Send the drawing and we will work it out.';
+        delete values.bends;
+      }
+    }
+
+    var finish = FINISHES[String(input.finish === undefined ? 'mill' : input.finish).trim()];
+    if (!finish) errors.finish = 'Pick a finish.';
+    else values.finish = finish;
+
+    var tolerance = TOLERANCES[String(input.tolerance === undefined ? 'standard' : input.tolerance).trim()];
+    if (!tolerance) errors.tolerance = 'Pick a tolerance.';
+    else values.tolerance = tolerance;
+
+    if (isBlank(input.neededBy)) {
+      values.neededBy = null;
+    } else {
+      var due = parseDateOnly(input.neededBy);
+      if (due === null) errors.neededBy = 'Use the date picker, or leave it empty.';
+      else if (due < today) errors.neededBy = 'That date has passed. Pick a day from today on.';
+      else values.neededBy = due;
+    }
+
+    var contactName = String(input.contactName === undefined ? '' : input.contactName).trim().replace(/\s+/g, ' ');
+    if (isBlank(contactName)) errors.contactName = 'Who should we reply to?';
+    else if (contactName.length < 2) errors.contactName = 'Use at least 2 characters.';
+    else if (contactName.length > 60) errors.contactName = 'Keep it under 60 characters.';
+    else values.contactName = contactName;
+
+    var email = String(input.email === undefined ? '' : input.email).trim();
+    if (isBlank(email)) errors.email = 'We send the quote by email.';
+    else if (!validateEmail(email)) errors.email = 'Check the address - it needs an @ and a domain.';
+    else values.email = email;
+
+    var company = String(input.company === undefined ? '' : input.company).trim().replace(/\s+/g, ' ');
+    if (company.length > 80) errors.company = 'Keep it under 80 characters.';
+    else values.company = company;
+
+    var notes = String(input.notes === undefined ? '' : input.notes).trim();
+    if (notes.length > 600) errors.notes = 'Keep notes under 600 characters - the drawing can carry the rest.';
+    else values.notes = notes;
+
+    return { ok: Object.keys(errors).length === 0, values: values, errors: errors };
+  }
+
+  function firstErrorField(errors) {
+    for (var i = 0; i < FIELD_ORDER.length; i++) {
+      if (errors[FIELD_ORDER[i]]) return FIELD_ORDER[i];
+    }
+    var keys = Object.keys(errors);
+    return keys.length ? keys[0] : null;
+  }
+
+  /* ------------------------------------------------------------ estimate */
+
+  function round2(n) { return Math.round(n * 100) / 100; }
+
+  function addBusinessDays(stamp, days) {
+    var d = new Date(stamp);
+    var added = 0;
+    while (added < days) {
+      d = new Date(d.getTime() + 86400000);
+      var day = d.getUTCDay();
+      if (day !== 0 && day !== 6) added++;
+    }
+    return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  }
+
+  function businessDaysBetween(from, to) {
+    if (to <= from) return 0;
+    var d = new Date(from);
+    var count = 0;
+    while (d.getTime() < to) {
+      d = new Date(d.getTime() + 86400000);
+      var day = d.getUTCDay();
+      if (day !== 0 && day !== 6) count++;
+    }
+    return count;
+  }
+
+  /**
+   * Turns validated values into money and days. Pure arithmetic: same input,
+   * same output, which is why the tests can pin every line of it.
+   */
+  function estimate(values, now) {
+    var today = dayKey(now === undefined ? Date.now() : now);
+    var m = values.material;
+    var qty = values.quantity;
+    var areaMm2 = values.length * values.width;
+    var massKg = areaMm2 * values.thickness * m.density;
+    var materialCost = massKg * m.pricePerKg * SHOP.scrapFactor;
+
+    var perimeter = 2 * (values.length + values.width);
+    var featureCut = values.holes * 28;          // a typical 9 mm hole plus small cutouts
+    var cutLength = perimeter + featureCut;
+    var cutMinutes = cutLength / feedRate(m, values.thickness);
+    var pierceMinutes = (values.holes + 1) * (SHOP.pierceSeconds / 60);
+    var laserMinutesPerPart = cutMinutes + pierceMinutes + SHOP.loadMinutesPerPart;
+
+    var bendMinutesPerPart = values.bends * (SHOP.bendSecondsPerHit / 60) * m.bendFactor * values.tolerance.formingFactor;
+    var deburrMinutes = SHOP.deburrMinutesPerPart;
+    var inspectMinutesPerPart = values.tolerance.inspectMinPerPart;
+
+    var setupMinutesLaser = SHOP.programMinutes;
+    var setupMinutesBrake = values.bends * SHOP.brakeSetupMinutes;
+    var setupMinutesInspect = SHOP.firstArticleMinutes;
+
+    var laserCost = (laserMinutesPerPart * qty + setupMinutesLaser) / 60 * SHOP.laserRate;
+    var brakeCost = (bendMinutesPerPart * qty + setupMinutesBrake) / 60 * SHOP.brakeRate;
+    var handCost = (deburrMinutes * qty) / 60 * SHOP.brakeRate;
+    var inspectCost = (inspectMinutesPerPart * qty + setupMinutesInspect) / 60 * SHOP.inspectRate;
+
+    var finishCost = values.finish.perPart * qty;
+    if (values.finish.lotMinimum > 0) finishCost = Math.max(finishCost, values.finish.lotMinimum);
+
+    var materialTotal = materialCost * qty;
+    var cost = materialTotal + laserCost + brakeCost + handCost + inspectCost + finishCost;
+
+    var leadDays = SHOP.baseLeadDays + values.finish.leadDays;
+    if (values.tolerance.id === 'tight') leadDays += 1;
+    if (qty > 250) leadDays += 2;
+    if (qty > 1000) leadDays += 2;
+
+    var readyBy = addBusinessDays(today, leadDays);
+    var rush = false;
+    var rushDaysShort = 0;
+    if (values.neededBy !== null && values.neededBy !== undefined && values.neededBy < readyBy) {
+      rush = true;
+      rushDaysShort = businessDaysBetween(values.neededBy, readyBy);
+    }
+
+    var price = cost * (1 + SHOP.margin);
+    if (rush) price *= (1 + SHOP.rushSurcharge);
+
+    var belowMinimum = price < SHOP.minimumJob;
+    if (belowMinimum) price = SHOP.minimumJob;
+
+    // The job minimum is a floor, not a midpoint: a range that starts below it
+    // would quote a price we have just said we do not take.
+    var low = belowMinimum ? SHOP.minimumJob : round2(price * (1 - SHOP.spread));
+    var high = belowMinimum ? SHOP.minimumJob : round2(price * (1 + SHOP.spread));
+    var overCeiling = price > SHOP.quoteByHandOver;
+
+    return {
+      quantity: qty,
+      massKgPerPart: round2(massKg),
+      cutLengthMm: Math.round(cutLength),
+      laserMinutesPerPart: round2(laserMinutesPerPart),
+      bendMinutesPerPart: round2(bendMinutesPerPart),
+      setupMinutes: Math.round(setupMinutesLaser + setupMinutesBrake + setupMinutesInspect),
+      breakdown: {
+        material: round2(materialTotal),
+        laser: round2(laserCost),
+        forming: round2(brakeCost),
+        hand: round2(handCost),
+        inspection: round2(inspectCost),
+        finishing: round2(finishCost)
+      },
+      cost: round2(cost),
+      total: round2(price),
+      low: low,
+      high: high,
+      perPart: round2(price / qty),
+      belowMinimum: belowMinimum,
+      overCeiling: overCeiling,
+      rush: rush,
+      rushDaysShort: rushDaysShort,
+      leadDays: leadDays,
+      readyBy: readyBy
+    };
+  }
+
+  /* ----------------------------------------------------------- reference */
+
+  function reference(values, stamp) {
+    var d = new Date(dayKey(stamp === undefined ? Date.now() : stamp));
+    var yy = String(d.getUTCFullYear()).slice(2);
+    var mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+    var dd = String(d.getUTCDate()).padStart(2, '0');
+    var seed = [values.partName, values.material.id, values.thickness, values.length,
+      values.width, values.quantity, values.bends, values.holes, values.email].join('|');
+    var hash = 5381;
+    for (var i = 0; i < seed.length; i++) {
+      hash = ((hash * 33) ^ seed.charCodeAt(i)) >>> 0;
+    }
+    var letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    var code = '';
+    for (var j = 0; j < 2; j++) {
+      code += letters[hash % letters.length];
+      hash = Math.floor(hash / letters.length);
+    }
+    code += String(hash % 100).padStart(2, '0');
+    return 'NG-' + yy + mm + dd + '-' + code;
+  }
+
+  /* ------------------------------------------------------------- summary */
+
+  function formatDate(stamp) {
+    if (stamp === null || stamp === undefined) return 'not set';
+    var d = new Date(stamp);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+  }
+
+  function money(n) {
+    return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  /** One figure when the price is pinned to the minimum, a range otherwise. */
+  function priceRange(result) {
+    return result.low === result.high ? money(result.low) : money(result.low) + ' - ' + money(result.high);
+  }
+
+  /** The plain-text RFQ a buyer can paste into email or a purchase system. */
+  function summaryText(values, result, ref) {
+    var lines = [];
+    lines.push('REQUEST FOR QUOTE ' + ref);
+    lines.push('Northgate Metalworks - laser cutting, forming, welded assemblies');
+    lines.push('');
+    lines.push('Part:        ' + values.partName);
+    lines.push('Material:    ' + values.material.label + ', ' + values.thickness + ' mm');
+    lines.push('Flat size:   ' + values.length + ' x ' + values.width + ' mm');
+    lines.push('Quantity:    ' + values.quantity);
+    lines.push('Bends:       ' + values.bends);
+    lines.push('Holes/cuts:  ' + values.holes);
+    lines.push('Finish:      ' + values.finish.label);
+    lines.push('Tolerance:   ' + values.tolerance.label);
+    lines.push('Needed by:   ' + formatDate(values.neededBy));
+    lines.push('');
+    lines.push('Budgetary estimate: ' + priceRange(result) +
+      ' for ' + result.quantity + ' (about ' + money(result.perPart) + ' each)');
+    lines.push('Estimated ready:    ' + result.leadDays + ' business days, around ' + formatDate(result.readyBy));
+    if (result.rush) lines.push('Rush:               needed ' + result.rushDaysShort + ' business day(s) sooner - rush surcharge included');
+    if (result.belowMinimum) lines.push('Note:               below our ' + money(SHOP.minimumJob) + ' job minimum, quoted at the minimum');
+    if (result.overCeiling) lines.push('Note:               a job this size is quoted by a person, not by the page');
+    lines.push('');
+    lines.push('Contact:     ' + values.contactName + (values.company ? ', ' + values.company : ''));
+    lines.push('Email:       ' + values.email);
+    if (values.notes) {
+      lines.push('');
+      lines.push('Notes:');
+      lines.push(values.notes);
+    }
+    lines.push('');
+    lines.push('This estimate comes from the numbers above, not from a drawing.');
+    lines.push('Send the DXF or STEP file in reply and we confirm within one business day.');
+    return lines.join('\n');
+  }
+
+  return {
+    MATERIALS: MATERIALS,
+    FINISHES: FINISHES,
+    TOLERANCES: TOLERANCES,
+    SHOP: SHOP,
+    FIELD_ORDER: FIELD_ORDER,
+    feedRate: feedRate,
+    validate: validate,
+    validateEmail: validateEmail,
+    parseDateOnly: parseDateOnly,
+    firstErrorField: firstErrorField,
+    estimate: estimate,
+    reference: reference,
+    summaryText: summaryText,
+    dayKey: dayKey,
+    addBusinessDays: addBusinessDays,
+    businessDaysBetween: businessDaysBetween,
+    formatDate: formatDate,
+    money: money,
+    priceRange: priceRange
+  };
+});
+
+</script>
+<script>
+/* Page behaviour for the Northgate demo. Plain script, no framework, no
+   network. All arithmetic lives in quote.js so the tests measure the same
+   code the visitor runs. */
+(function () {
+  'use strict';
+
+  var Q = window.NGQuote;
+  var root = document.documentElement;
+
+  /* ------------------------------------------------------------- theme */
+
+  var STORE_KEY = 'ng-theme';
+  var toggle = document.getElementById('theme-toggle');
+  var themeLabel = document.getElementById('theme-label');
+
+  function prefersDark() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function currentTheme() {
+    var set = root.getAttribute('data-theme');
+    if (set === 'dark' || set === 'light') return set;
+    return prefersDark() ? 'dark' : 'light';
+  }
+
+  function paintToggle() {
+    if (!toggle || !themeLabel) return;
+    var dark = currentTheme() === 'dark';
+    themeLabel.textContent = dark ? 'Day shift' : 'Night shift';
+    toggle.setAttribute('aria-label', dark ? 'Switch to day shift colours' : 'Switch to night shift colours');
+    toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  }
+
+  try {
+    var stored = localStorage.getItem(STORE_KEY);
+    if (stored === 'dark' || stored === 'light') root.setAttribute('data-theme', stored);
+  } catch (e) { /* private mode: the system setting still works */ }
+
+  paintToggle();
+
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem(STORE_KEY, next); } catch (e) { /* ignore */ }
+      paintToggle();
+    });
+  }
+
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onChange = function () { if (root.getAttribute('data-theme') === 'auto') paintToggle(); };
+    if (mq.addEventListener) mq.addEventListener('change', onChange);
+    else if (mq.addListener) mq.addListener(onChange);
+  }
+
+  /* --------------------------------------------------- hero drawing once */
+
+  var drawing = document.getElementById('hero-drawing');
+  if (drawing && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    drawing.classList.remove('dw-animate');
+  }
+
+  /* ---------------------------------------------------------- the form */
+
+  var form = document.getElementById('rfq-form');
+  if (!form || !Q) return;
+
+  var materialSel = document.getElementById('material');
+  var thicknessSel = document.getElementById('thickness');
+  var alertBox = document.getElementById('form-alert');
+  var stateEl = document.getElementById('estimate-state');
+  var emptyEl = document.getElementById('estimate-empty');
+  var figuresEl = document.getElementById('estimate-figures');
+  var flagsEl = document.getElementById('estimate-flags');
+  var receipt = document.getElementById('receipt');
+  var receiptRef = document.getElementById('receipt-ref');
+  var receiptText = document.getElementById('receipt-text');
+  var receiptMail = document.getElementById('receipt-mail');
+  var copyBtn = document.getElementById('receipt-copy');
+  var copyState = document.getElementById('copy-state');
+
+  function fillThickness(keepValue) {
+    var material = Q.MATERIALS[materialSel.value];
+    var previous = keepValue === undefined ? thicknessSel.value : keepValue;
+    thicknessSel.textContent = '';
+    material.thickness.forEach(function (mm) {
+      var option = document.createElement('option');
+      option.value = String(mm);
+      option.textContent = mm.toFixed(1) + ' mm';
+      thicknessSel.appendChild(option);
+    });
+    var wanted = material.thickness.indexOf(parseFloat(previous)) > -1 ? previous : '2.0';
+    if (material.thickness.indexOf(parseFloat(wanted)) === -1) wanted = String(material.thickness[0]);
+    thicknessSel.value = String(parseFloat(wanted));
+  }
+
+  fillThickness('2.0');
+  materialSel.addEventListener('change', function () { fillThickness(); update(); });
+
+  function readForm() {
+    var data = {};
+    ['partName', 'material', 'thickness', 'length', 'width', 'quantity', 'bends', 'holes',
+      'finish', 'tolerance', 'neededBy', 'contactName', 'company', 'email', 'notes'].forEach(function (name) {
+      var el = document.getElementById(name);
+      data[name] = el ? el.value : '';
+    });
+    return data;
+  }
+
+  function fieldWrap(name) {
+    var el = document.getElementById(name);
+    return el ? el.closest('.field') : null;
+  }
+
+  function showErrors(errors) {
+    Object.keys(errors).forEach(function (name) {
+      var wrap = fieldWrap(name);
+      var msg = document.getElementById('err-' + name);
+      if (wrap) wrap.classList.add('is-bad');
+      if (msg) msg.textContent = errors[name];
+      var input = document.getElementById(name);
+      if (input) {
+        input.setAttribute('aria-invalid', 'true');
+        input.setAttribute('aria-describedby', describedBy(name, true));
+      }
+    });
+  }
+
+  function clearError(name) {
+    var wrap = fieldWrap(name);
+    var msg = document.getElementById('err-' + name);
+    if (wrap) wrap.classList.remove('is-bad');
+    if (msg) msg.textContent = '';
+    var input = document.getElementById(name);
+    if (input) {
+      input.removeAttribute('aria-invalid');
+      var quiet = describedBy(name, false);
+      if (quiet) input.setAttribute('aria-describedby', quiet);
+      else input.removeAttribute('aria-describedby');
+    }
+  }
+
+  /* A field can be described by its hint, its error, or both. */
+  function describedBy(name, withError) {
+    var ids = [];
+    if (withError) ids.push('err-' + name);
+    if (document.getElementById('hint-' + name)) ids.push('hint-' + name);
+    return ids.join(' ');
+  }
+
+  function clearAllErrors() {
+    ['partName', 'material', 'thickness', 'length', 'width', 'quantity', 'bends', 'holes',
+      'finish', 'tolerance', 'neededBy', 'contactName', 'company', 'email', 'notes'].forEach(clearError);
+    if (alertBox) { alertBox.classList.remove('is-on'); alertBox.textContent = ''; }
+  }
+
+  /* An estimate needs less than a full RFQ: enough to size the job. */
+  var lastBlock = null;
+
+  function estimateInput(data) {
+    var probe = Q.validate({
+      partName: data.partName || 'Unnamed part',
+      material: data.material,
+      thickness: data.thickness,
+      length: data.length,
+      width: data.width,
+      quantity: data.quantity,
+      bends: data.bends,
+      holes: data.holes,
+      finish: data.finish,
+      tolerance: data.tolerance,
+      neededBy: data.neededBy,
+      contactName: data.contactName || 'Not given yet',
+      email: data.email || 'not.given@example.com'
+    });
+    var blocking = ['material', 'thickness', 'length', 'width', 'quantity', 'bends', 'holes', 'finish', 'tolerance', 'neededBy'];
+    lastBlock = null;
+    for (var i = 0; i < blocking.length; i++) {
+      if (probe.errors[blocking[i]]) {
+        // Only complain about a field the person has actually filled in.
+        if (!isFilled(data[blocking[i]])) return null;
+        lastBlock = probe.errors[blocking[i]];
+        return null;
+      }
+    }
+    return probe.values;
+  }
+
+  function isFilled(value) {
+    return value !== undefined && value !== null && String(value).trim() !== '';
+  }
+
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+
+  function flag(text, quiet) {
+    var p = document.createElement('p');
+    p.className = 'flagline' + (quiet ? ' is-quiet' : '');
+    p.textContent = text;
+    return p;
+  }
+
+  function update() {
+    var values = estimateInput(readForm());
+    if (!values) {
+      emptyEl.hidden = false;
+      figuresEl.hidden = true;
+      emptyEl.textContent = lastBlock ||
+        'Material, thickness, flat size and quantity are enough to get a number. The rest sharpens it.';
+      stateEl.textContent = lastBlock ? 'on hold' : 'waiting';
+      announce(lastBlock ? 'The estimate is on hold. ' + lastBlock : '');
+      return;
+    }
+
+    var result = Q.estimate(values);
+    emptyEl.hidden = true;
+    figuresEl.hidden = false;
+    stateEl.textContent = 'live';
+
+    setText('estimate-range', Q.priceRange(result));
+    setText('estimate-sub', 'for ' + result.quantity + (result.quantity === 1 ? ' part, ' : ' parts, ') +
+      'about ' + Q.money(result.perPart) + ' each');
+    setText('row-material', Q.money(result.breakdown.material));
+    setText('row-laser', Q.money(result.breakdown.laser));
+    setText('row-forming', Q.money(result.breakdown.forming));
+    setText('row-hand', Q.money(result.breakdown.hand + result.breakdown.inspection));
+    setText('row-finish', Q.money(result.breakdown.finishing));
+    setText('row-lead', result.leadDays + ' business days');
+
+    flagsEl.textContent = '';
+    if (result.rush) {
+      flagsEl.appendChild(flag('Your date is ' + result.rushDaysShort + ' business day' +
+        (result.rushDaysShort === 1 ? '' : 's') + ' inside our normal lead time. A ' +
+        Math.round(Q.SHOP.rushSurcharge * 100) + ' percent rush surcharge is already in the figure above.'));
+    }
+    if (result.belowMinimum) {
+      flagsEl.appendChild(flag('This job prices below our ' + Q.money(Q.SHOP.minimumJob) +
+        ' minimum, so the minimum is what you see. Adding parts costs very little from here.'));
+    }
+    if (result.overCeiling) {
+      flagsEl.appendChild(flag('A job this size gets quoted by a person, not by a web page. Send the file and we will come back the same day.'));
+    }
+    flagsEl.appendChild(flag(result.setupMinutes + ' minutes of setup is spread across the run, which is why the price per part falls as the quantity climbs.', true));
+    flagsEl.appendChild(flag('Ready around ' + Q.formatDate(result.readyBy) + ' if approved today.', true));
+
+    announce('Estimate ' + Q.priceRange(result) + ' for ' + result.quantity +
+      (result.quantity === 1 ? ' part' : ' parts') + ', ready in ' + result.leadDays + ' business days.');
+  }
+
+  /* One short spoken line, and only after typing stops. */
+  var announceEl = document.getElementById('estimate-announce');
+  var announceTimer = null;
+  function announce(text) {
+    if (!announceEl) return;
+    if (announceTimer) clearTimeout(announceTimer);
+    announceTimer = setTimeout(function () {
+      announceEl.textContent = text;
+    }, 450);
+  }
+
+  function retireReceipt() {
+    if (!receipt.classList.contains('is-on')) return;
+    receipt.classList.remove('is-on');
+    copyState.textContent = '';
+  }
+
+  form.addEventListener('input', function (event) {
+    if (event.target && event.target.id) clearError(event.target.id);
+    retireReceipt();
+    update();
+  });
+  form.addEventListener('change', function () {
+    retireReceipt();
+    update();
+  });
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    clearAllErrors();
+
+    var data = readForm();
+    var checked = Q.validate(data);
+
+    if (!checked.ok) {
+      showErrors(checked.errors);
+      var count = Object.keys(checked.errors).length;
+      alertBox.textContent = count === 1
+        ? 'One field needs fixing. The note under it says what to change.'
+        : count + ' fields need fixing. The note under each one says what to change.';
+      alertBox.classList.add('is-on');
+      var first = Q.firstErrorField(checked.errors);
+      var el = first ? document.getElementById(first) : null;
+      if (el) el.focus();
+      else alertBox.focus();
+      receipt.classList.remove('is-on');
+      return;
+    }
+
+    var result = Q.estimate(checked.values);
+    var ref = Q.reference(checked.values);
+    var text = Q.summaryText(checked.values, result, ref);
+
+    receiptRef.textContent = ref;
+    receiptText.textContent = text;
+    receiptMail.setAttribute('href', 'mailto:quotes@northgatemetalworks.example' +
+      '?subject=' + encodeURIComponent('RFQ ' + ref + ' - ' + checked.values.partName) +
+      '&body=' + encodeURIComponent(text));
+    copyState.textContent = '';
+    receipt.classList.add('is-on');
+    receipt.focus();
+    receipt.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  copyBtn.addEventListener('click', function () {
+    var text = receiptText.textContent;
+    function done(ok) {
+      copyState.textContent = ok ? 'Copied.' : 'Select the text above and copy it.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      return;
+    }
+    try {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', 'readonly');
+      area.style.position = 'fixed';
+      area.style.opacity = '0';
+      document.body.appendChild(area);
+      area.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(area);
+      done(ok);
+    } catch (e) {
+      done(false);
+    }
+  });
+
+  /* The example is the bracket drawn in the hero, so the two agree. */
+  var example = document.getElementById('fill-example');
+  if (example) {
+    example.addEventListener('click', function () {
+      clearAllErrors();
+      var fields = {
+        partName: 'Mount bracket NG-2291',
+        material: 'crs',
+        length: '390',
+        width: '220',
+        quantity: '50',
+        bends: '2',
+        holes: '5',
+        finish: 'powder',
+        tolerance: 'standard'
+      };
+      Object.keys(fields).forEach(function (name) {
+        var el = document.getElementById(name);
+        if (el) el.value = fields[name];
+      });
+      fillThickness('2.0');
+      update();
+      var next = document.getElementById('contactName');
+      if (next) next.focus();
+    });
+  }
+
+  update();
+})();
+
+</script>
+</body>
+</html>
