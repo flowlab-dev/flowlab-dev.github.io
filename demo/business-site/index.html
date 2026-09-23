@@ -174,8 +174,9 @@ a:hover { text-decoration-thickness: 2px; }
 /* ---------------------------------------------------------- demo notice */
 
 .demo-bar {
-  background: var(--ink);
-  color: var(--sheet);
+  /* Stays dark in both themes, so the yellow link on it always reads. */
+  background: #1a1e1c;
+  color: #eff1ee;
   font-size: var(--step--1);
   line-height: 1.45;
   padding-block: 0.55rem;
@@ -187,7 +188,7 @@ a:hover { text-decoration-thickness: 2px; }
   align-items: baseline;
   justify-content: space-between;
 }
-.demo-bar a { color: var(--zinc); font-weight: 600; }
+.demo-bar a { color: #e4b200; font-weight: 600; }
 .demo-bar b { font-weight: 700; }
 
 /* ----------------------------------------------------------- site head */
