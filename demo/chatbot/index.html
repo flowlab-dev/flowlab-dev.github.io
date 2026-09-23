@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shiftbloom — support assistant demo</title>
+<meta name="description" content="A support assistant that answers only from a company's own help centre, shows its source, and says when it does not know.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* Shiftbloom demo — visual system
+   Palette borrowed from a café at opening time: porcelain tiles, petrol ink,
+   eucalyptus on the counter, brass on the fittings. Brass appears in one place
+   only: the source line printed under every answer, like a docket. */
+
+:root {
+  --page: #E9EDEB;
+  --panel: #FFFFFF;
+  --panel-sunk: #F3F6F4;
+  --line: #D3DBD7;
+  --line-strong: #BDC8C3;
+  --ink: #0E262C;
+  --ink-soft: #4C6167;
+  --ink-faint: #566C71;
+  --euc: #24685A;
+  --euc-strong: #1A4F44;
+  --euc-wash: #E0EDE7;
+  --brass: #7A5717;
+  --brass-wash: #F5EDDC;
+  --signal: #A8413A;
+  --signal-wash: #F7E6E3;
+  --on-euc: #FFFFFF;
+  --shadow: 0 1px 2px rgba(14, 38, 44, .06), 0 12px 32px -18px rgba(14, 38, 44, .35);
+  --display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --gutter: 16px;
+}
+
+html[data-theme="dark"] {
+  --page: #0A1A1F;
+  --panel: #10272E;
+  --panel-sunk: #0D2127;
+  --line: #1E3C44;
+  --line-strong: #2C525C;
+  --ink: #E4EDE9;
+  --ink-soft: #A7BEBE;
+  --ink-faint: #85A0A2;
+  --euc: #62BB9E;
+  --euc-strong: #8AD3B9;
+  --euc-wash: #14342F;
+  --brass: #D6AB61;
+  --brass-wash: #2B2415;
+  --signal: #E58273;
+  --signal-wash: #3A1E1A;
+  --on-euc: #06211B;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 18px 40px -24px rgba(0, 0, 0, .8);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0; letter-spacing: -.015em; }
+h1 { font-size: clamp(2.1rem, 5.4vw, 3.5rem); font-weight: 800; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.05rem); font-weight: 700; }
+h3 { font-size: 1.05rem; font-weight: 700; letter-spacing: 0; }
+p { margin: 0 0 1rem; }
+a { color: var(--euc); }
+
+.wrap { width: min(1140px, 100% - calc(var(--gutter) * 2)); margin-inline: auto; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+
+:focus-visible { outline: 2.5px solid var(--euc); outline-offset: 2px; border-radius: 4px; }
+
+/* ---------- top bar ---------- */
+
+.topbar { border-bottom: 1px solid var(--line); background: var(--panel); }
+.topbar__inner { display: flex; align-items: center; justify-content: space-between; min-height: 62px; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand__mark { color: var(--euc); display: flex; }
+.brand__name { font-family: var(--display); font-weight: 700; font-size: 1.18rem; }
+.tag {
+  font-size: .72rem; font-weight: 600; color: var(--brass); white-space: nowrap;
+  background: var(--brass-wash); border-radius: 3px; padding: 3px 7px;
+}
+
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--panel-sunk); color: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 6px 14px 6px 10px; font: inherit; font-size: .88rem; cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--line-strong); color: var(--ink); }
+.theme-toggle__dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--ink); box-shadow: inset -4px -1px 0 var(--panel-sunk);
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+  gap: 44px; align-items: start; padding: 54px 0 40px;
+}
+.lede { font-size: 1.12rem; color: var(--ink-soft); max-width: 46ch; margin-top: 18px; }
+.disclaimer { font-size: .86rem; color: var(--ink-faint); max-width: 52ch; margin-top: 22px; }
+
+.rota {
+  margin-top: 30px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); max-width: 460px;
+}
+.rota__head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+  padding: 12px 16px; border-bottom: 1px solid var(--line); background: var(--panel-sunk);
+}
+.rota__day { font-family: var(--display); font-weight: 700; }
+.rota__meta { font-size: .82rem; color: var(--ink-faint); }
+.rota__list { list-style: none; margin: 0; padding: 6px; display: grid; gap: 4px; }
+.shift {
+  display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center;
+  padding: 9px 12px; border-radius: 8px; background: var(--panel-sunk);
+  border-left: 4px solid var(--line-strong); font-size: .92rem;
+}
+.shift--bar { border-left-color: var(--euc); }
+.shift--kitchen { border-left-color: var(--brass); }
+.shift--floor { border-left-color: #5C8AA8; }
+.shift__who { font-weight: 600; }
+.shift__role { color: var(--ink-faint); font-size: .84rem; }
+.shift__time { color: var(--ink-soft); font-size: .88rem; }
+
+/* ---------- assistant ---------- */
+
+.assistant {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: var(--shadow); display: flex; flex-direction: column;
+  position: sticky; top: 16px; overflow: hidden;
+}
+.assistant__head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+  padding: 14px 16px; border-bottom: 1px solid var(--line);
+}
+.assistant__title { font-family: var(--display); font-weight: 700; margin: 0; }
+.assistant__status { margin: 2px 0 0; font-size: .8rem; color: var(--ink-faint); display: flex; align-items: flex-start; gap: 6px; }
+.pulse { width: 7px; height: 7px; margin-top: 7px; flex: none; border-radius: 50%; background: var(--euc); box-shadow: 0 0 0 3px var(--euc-wash); }
+.linkish { background: none; border: 0; color: var(--ink-faint); font: inherit; font-size: .84rem; cursor: pointer; padding: 2px 4px; white-space: nowrap; }
+.linkish:hover { color: var(--euc); text-decoration: underline; }
+
+.thread { padding: 16px; display: flex; flex-direction: column; gap: 14px; min-height: 330px; max-height: 50vh; overflow-y: auto; }
+
+.msg { max-width: 92%; }
+.msg--user { align-self: flex-end; background: var(--euc); color: var(--on-euc); border-radius: 14px 14px 4px 14px; padding: 9px 14px; }
+.msg--bot { align-self: flex-start; }
+.msg--bot .bubble {
+  background: var(--panel-sunk); border: 1px solid var(--line);
+  border-radius: 14px 14px 14px 4px; padding: 12px 14px;
+}
+.msg p:last-child { margin-bottom: 0; }
+
+.receipt {
+  margin-top: 8px; border-top: 1px dashed var(--line-strong); padding-top: 8px;
+  font-size: .78rem; color: var(--brass); display: flex; flex-wrap: wrap; gap: 4px 10px;
+}
+.receipt strong { color: var(--brass); font-weight: 600; }
+.meter { display: flex; align-items: center; gap: 7px; margin-top: 8px; font-size: .74rem; color: var(--ink-faint); }
+.meter__track { width: 74px; height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.meter__fill { display: block; height: 100%; background: var(--euc); }
+
+.choices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.choice {
+  background: var(--panel); border: 1px solid var(--line-strong); color: var(--ink);
+  border-radius: 999px; padding: 6px 13px; font: inherit; font-size: .86rem; cursor: pointer;
+}
+.choice:hover { border-color: var(--euc); color: var(--euc); }
+
+.msg--bot.is-unknown .bubble { background: var(--signal-wash); border-color: var(--signal); }
+.msg--bot.is-unknown .bubble p { color: var(--ink); }
+.unknown-word { color: var(--signal); font-weight: 600; }
+
+.typing { display: inline-flex; gap: 4px; padding: 4px 2px; }
+.typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-faint); animation: blink 1.2s infinite; }
+.typing span:nth-child(2) { animation-delay: .18s; }
+.typing span:nth-child(3) { animation-delay: .36s; }
+@keyframes blink { 0%, 60%, 100% { opacity: .25; } 30% { opacity: 1; } }
+
+.suggestions { display: flex; flex-wrap: wrap; gap: 7px; padding: 0 16px 12px; }
+.suggestion {
+  background: var(--euc-wash); border: 1px solid transparent; color: var(--euc-strong);
+  border-radius: 999px; padding: 6px 12px; font: inherit; font-size: .85rem; cursor: pointer;
+}
+.suggestion:hover { border-color: var(--euc); }
+
+.composer { display: flex; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--line); background: var(--panel-sunk); }
+.composer input {
+  flex: 1; min-width: 0; background: var(--panel); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: 10px; padding: 11px 13px; font: inherit;
+}
+.composer input::placeholder { color: var(--ink-faint); }
+.composer button, .primary {
+  background: var(--euc); color: #fff; border: 0; border-radius: 10px;
+  padding: 11px 20px; font: inherit; font-weight: 600; cursor: pointer;
+}
+.composer button:hover, .primary:hover { background: var(--euc-strong); }
+html[data-theme="dark"] .composer button, html[data-theme="dark"] .primary { color: var(--on-euc); }
+
+/* ---------- sections ---------- */
+
+.band { padding: 46px 0; border-top: 1px solid var(--line); }
+.section-lede { color: var(--ink-soft); max-width: 62ch; margin-top: 12px; }
+
+.states { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 26px; margin-top: 28px; }
+.state p:first-child { margin-bottom: 8px; }
+.state__name { font-family: var(--display); font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.dot--answer { background: var(--euc); }
+.dot--clarify { background: var(--brass); }
+.dot--unknown { background: var(--signal); }
+.state p { color: var(--ink-soft); }
+.try {
+  background: none; border: 0; border-bottom: 1px solid var(--line-strong); color: var(--ink);
+  font: inherit; font-size: .9rem; text-align: left; padding: 4px 0; cursor: pointer;
+}
+.try:hover { color: var(--euc); border-color: var(--euc); }
+
+.eval__head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.eval { margin-top: 24px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px; }
+.eval__idle { color: var(--ink-faint); margin: 0; }
+.eval table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.eval th { text-align: left; font-weight: 600; color: var(--ink-faint); font-size: .84rem; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.eval td { padding: 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.eval tr:last-child td { border-bottom: 0; }
+.eval__score { font-family: var(--display); font-size: 1.5rem; font-weight: 700; }
+.eval__ok { color: var(--euc); }
+.eval__bad { color: var(--signal); }
+.eval__summary { display: flex; flex-wrap: wrap; gap: 26px; margin-bottom: 14px; }
+.eval__summary div { min-width: 140px; }
+.eval__summary span { display: block; font-size: .82rem; color: var(--ink-faint); }
+
+.kb { margin-top: 26px; display: grid; gap: 10px; }
+.kb__doc { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.kb__doc > summary {
+  cursor: pointer; padding: 13px 16px; font-family: var(--display); font-weight: 700;
+  display: flex; justify-content: space-between; gap: 12px; align-items: center;
+}
+.kb__doc > summary::-webkit-details-marker { display: none; }
+.kb__count { font-family: var(--body); font-weight: 400; font-size: .82rem; color: var(--ink-faint); }
+.kb__list { list-style: none; margin: 0; padding: 0 16px 8px; }
+.kb__list li { border-top: 1px solid var(--line); }
+.kb__ask {
+  width: 100%; text-align: left; background: none; border: 0; font: inherit;
+  padding: 10px 0; cursor: pointer; color: var(--ink); display: grid; gap: 2px;
+}
+.kb__ask:hover .kb__title { color: var(--euc); }
+.kb__title { font-weight: 600; font-size: .95rem; }
+.kb__q { font-size: .86rem; color: var(--ink-faint); }
+
+.delivery { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 28px; margin-top: 26px; }
+.delivery p { color: var(--ink-soft); margin-top: 8px; }
+
+.foot { border-top: 1px solid var(--line); background: var(--panel); padding: 26px 0; margin-top: 10px; }
+.foot__inner { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; font-size: .87rem; color: var(--ink-faint); }
+.foot p { margin: 0; }
+.path { color: var(--ink-soft); border-bottom: 1px dotted var(--line-strong); }
+
+/* ---------- narrow screens ---------- */
+
+@media (max-width: 920px) {
+  .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 34px; }
+  .assistant { position: static; order: -1; }
+  .thread { max-height: none; min-height: 0; }
+  .rota { max-width: none; }
+}
+
+@media (max-width: 400px) {
+  .brand__name { font-size: 1.05rem; }
+  .tag { font-size: .66rem; padding: 2px 6px; }
+  .theme-toggle { padding: 5px 11px 5px 8px; font-size: .82rem; }
+}
+
+@media (max-width: 460px) {
+  .shift { grid-template-columns: 1fr auto; row-gap: 2px; }
+  .shift__role { grid-column: 1; }
+  .shift__time { grid-row: 1 / span 2; align-self: center; }
+  .composer { flex-wrap: wrap; }
+  .composer button { width: 100%; }
+  .eval__head { align-items: stretch; }
+  .primary { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
+
+</style>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2324685A'/><path d='M8 11h16M8 16h16M8 21h9' stroke='white' stroke-width='2.6' stroke-linecap='round'/></svg>">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar__inner">
+    <div class="brand">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="28" height="28"><rect width="32" height="32" rx="7" fill="currentColor"/><path d="M8 11h16M8 16h16M8 21h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
+      </span>
+      <span class="brand__name">Shiftbloom</span>
+      <span class="tag">Portfolio demo</span>
+    </div>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
+      <span class="theme-toggle__dot" aria-hidden="true"></span>
+      <span id="themeLabel">Dark</span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div class="hero__copy">
+      <h1>The rota your team<br>actually reads.</h1>
+      <p class="lede">Shiftbloom plans shifts for cafés and restaurants. Its support assistant answers from the company help centre — and only from there.</p>
+
+      <div class="rota" role="img" aria-label="Example schedule for Tuesday: Nadia bar 07:00 to 15:00, Petar kitchen 08:00 to 16:00, Lena floor 11:00 to 19:00, Sam bar 15:00 to 23:00">
+        <div class="rota__head">
+          <span class="rota__day">Tue 22 Sep</span>
+          <span class="rota__meta">4 on shift · labour 26.4%</span>
+        </div>
+        <ul class="rota__list">
+          <li class="shift shift--bar"><span class="shift__who">Nadia</span><span class="shift__role">Bar</span><span class="shift__time">07:00–15:00</span></li>
+          <li class="shift shift--kitchen"><span class="shift__who">Petar</span><span class="shift__role">Kitchen</span><span class="shift__time">08:00–16:00</span></li>
+          <li class="shift shift--floor"><span class="shift__who">Lena</span><span class="shift__role">Floor</span><span class="shift__time">11:00–19:00</span></li>
+          <li class="shift shift--bar"><span class="shift__who">Sam</span><span class="shift__role">Bar</span><span class="shift__time">15:00–23:00</span></li>
+        </ul>
+      </div>
+
+      <p class="disclaimer">Shiftbloom is an invented company, written for this demonstration. Every fact the assistant states comes from the 33 help-centre sections published on this page.</p>
+    </div>
+
+    <div class="assistant" id="assistant">
+      <div class="assistant__head">
+        <div>
+          <p class="assistant__title">Shiftbloom support</p>
+          <p class="assistant__status"><span class="pulse" aria-hidden="true"></span>Answers from the help centre, updated 18 Sep 2026</p>
+        </div>
+        <button type="button" class="linkish" id="resetChat">Start over</button>
+      </div>
+
+      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Conversation with the Shiftbloom support assistant"></div>
+
+      <div class="suggestions" id="suggestions" aria-label="Example questions"></div>
+
+      <form class="composer" id="composer" autocomplete="off">
+        <label class="visually-hidden" for="question">Ask the assistant a question</label>
+        <input id="question" name="question" type="text" placeholder="Ask about pricing, shifts, payroll, data…" maxlength="200">
+        <button type="submit" id="send">Ask</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="band wrap" id="grounding">
+    <h2>Three answers, three honest outcomes</h2>
+    <p class="section-lede">Most complaints about support bots come from one habit: inventing an answer rather than admitting a gap. This assistant has no generative step, so it can only do one of three things.</p>
+
+    <div class="states">
+      <article class="state">
+        <p class="state__name"><span class="dot dot--answer" aria-hidden="true"></span>It answers</p>
+        <p>The question matches a help-centre section closely enough. The reply is that section's text, with the source printed underneath.</p>
+        <button class="try" type="button" data-ask="How much does Shiftbloom cost per month?">Try “How much does Shiftbloom cost per month?”</button>
+      </article>
+      <article class="state">
+        <p class="state__name"><span class="dot dot--clarify" aria-hidden="true"></span>It asks which topic you mean</p>
+        <p>The topic is in the help centre but the exact question is not — there is nothing about commission. Rather than pass off a nearby page as the answer, it offers the closest topics and lets you choose.</p>
+        <button class="try" type="button" data-ask="what commission do you take on card payments">Try “what commission do you take on card payments”</button>
+      </article>
+      <article class="state">
+        <p class="state__name"><span class="dot dot--unknown" aria-hidden="true"></span>It says it does not know</p>
+        <p>Nothing in the help centre covers the question. It says so, names the word it did not recognise, and offers a human.</p>
+        <button class="try" type="button" data-ask="do you have a loyalty program for customers">Try “do you have a loyalty program for customers”</button>
+      </article>
+    </div>
+  </section>
+
+  <section class="band wrap" id="evaluation">
+    <div class="eval__head">
+      <div>
+        <h2>Checked, not promised</h2>
+        <p class="section-lede">A fixed set of questions runs against the assistant on every change: real phrasings for things the help centre covers, plus questions it must not answer. Run it here, in your browser.</p>
+      </div>
+      <button class="primary" type="button" id="runEval">Run the test set</button>
+    </div>
+    <div class="eval" id="evalResult" aria-live="polite">
+      <p class="eval__idle">Not run yet.</p>
+    </div>
+  </section>
+
+  <section class="band wrap" id="knowledge">
+    <h2>What the assistant was given</h2>
+    <p class="section-lede">Nothing else. Pick any line to ask it.</p>
+    <div class="kb" id="kb"></div>
+  </section>
+
+  <section class="band wrap" id="delivery">
+    <h2>What this looks like as a project</h2>
+    <div class="delivery">
+      <div>
+        <h3>Build</h3>
+        <p>Your help centre, PDFs, policies and past support replies become the knowledge base. The assistant is embedded on your site and in your help centre, in your own colours.</p>
+      </div>
+      <div>
+        <h3>Proof</h3>
+        <p>You get the question set as a file you can read: what it must answer, what it must refuse. It runs on every content change, so a new price never leaves an old answer behind.</p>
+      </div>
+      <div>
+        <h3>Every month after</h3>
+        <p>A short report of the questions it could not answer — the gaps in your own documentation — plus the content updates and a re-run of the test set.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__inner">
+    <p>Portfolio demonstration. Shiftbloom, its staff, prices and policies are invented for this page.</p>
+    <p>Runs entirely in your browser: no server, no keys, no accounts.</p>
+  </div>
+</footer>
+
+<script>
+/*
+ * Shiftbloom Support Assistant - retrieval engine
+ * ------------------------------------------------
+ * Grounded answering: the assistant may only reply with text that exists in the
+ * knowledge base. If retrieval confidence is too low it says "I don't know" and
+ * hands the conversation to a human. There is no generative step, so a fabricated
+ * answer is structurally impossible.
+ *
+ * Runs unchanged in the browser (<script src>) and in Node (require) so the
+ * automated evaluation tests the exact code the widget uses.
+ */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.ChatEngine = api;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  var STOP_WORDS = {
+    a: 1, about: 1, all: 1, an: 1, and: 1, any: 1, are: 1, as: 1, at: 1, be: 1, been: 1,
+    but: 1, by: 1, can: 1, could: 1, did: 1, do: 1, does: 1, doing: 1, for: 1,
+    from: 1, get: 1, got: 1, had: 1, has: 1, have: 1, he: 1, her: 1, hey: 1, hi: 1,
+    him: 1, his: 1, how: 1, i: 1, if: 1, in: 1, into: 1, is: 1, it: 1, its: 1,
+    just: 1, like: 1, may: 1, me: 1, might: 1, must: 1, my: 1, no: 1,
+    take: 1, takes: 1, taking: 1, taken: 1, need: 1, needs: 1, needed: 1,
+    make: 1, makes: 1, made: 1, way: 1, ways: 1, thing: 1, things: 1,
+    able: 1, going: 1, really: 1, also: 1, lets: 1, let: 1, give: 1, gives: 1,
+    each: 1, other: 1, others: 1, another: 1, every: 1, everything: 1,
+    help: 1, many: 1, please: 1, hello: 1, hi: 1, thanks: 1,
+    use: 1, used: 1, uses: 1, using: 1, work: 1, works: 1,
+    // contractions typed without an apostrophe
+    im: 1, ive: 1, id: 1, youre: 1, youve: 1, theyre: 1, theyve: 1, weve: 1,
+    dont: 1, doesnt: 1, didnt: 1, isnt: 1, arent: 1, wasnt: 1, cant: 1,
+    wont: 1, wouldnt: 1, couldnt: 1, shouldnt: 1, thats: 1, whats: 1,
+    hes: 1, shes: 1, theres: 1, heres: 1, lemme: 1, gonna: 1,
+    someone: 1, something: 1, anyone: 1, anything: 1, everyone: 1,
+    not: 1, of: 1, on: 1, or: 1, our: 1, please: 1, she: 1, should: 1, so: 1,
+    some: 1, such: 1, tell: 1, than: 1, that: 1, the: 1, their: 1, them: 1,
+    then: 1, there: 1, these: 1, they: 1, this: 1, those: 1, to: 1, us: 1,
+    want: 1, was: 1, we: 1, well: 1, were: 1, what: 1, when: 1, where: 1, whole: 1, during: 1,
+    which: 1, who: 1, why: 1, will: 1, with: 1, would: 1, you: 1, your: 1, yours: 1
+  };
+
+  /* Words that a customer might use instead of the wording in the knowledge base.
+     Each group is interchangeable; query terms are expanded to the whole group
+     at a reduced weight so paraphrases still find the right document. */
+  var SYNONYM_GROUPS = [
+    ['price', 'pricing', 'cost', 'costs', 'fee', 'fees', 'charge', 'charges', 'rate', 'rates', 'expensive', 'cheap', 'cheaper', 'cheapest', 'discount', 'discounts', 'save', 'savings', 'plan', 'plans', 'tier', 'tiers', 'package'],
+    ['cancel', 'cancellation', 'cancelling', 'unsubscribe', 'terminate', 'quit', 'leave', 'downgrade', 'stop'],
+    ['refund', 'refunds', 'reimburse', 'money-back', 'chargeback'],
+    ['trial', 'free', 'demo', 'evaluation', 'try'],
+    ['integration', 'integrations', 'integrate', 'connect', 'connects', 'connection', 'sync', 'syncs', 'syncing'],
+    ['pos', 'till', 'register', 'checkout'],
+    ['mobile', 'app', 'apps', 'phone', 'ios', 'iphone', 'android', 'smartphone'],
+    ['export', 'exports', 'download', 'downloads', 'csv', 'spreadsheet', 'excel'],
+    ['support', 'contact', 'assistance', 'reach', 'email'],
+    ['call', 'calling', 'phone', 'telephone', 'ring', 'hotline'],
+    ['onboarding', 'setup', 'set-up', 'migrate', 'migration', 'import', 'importing', 'start', 'started', 'launch'],
+    ['gdpr', 'privacy', 'data-protection', 'personal-data', 'compliance', 'compliant'],
+    ['security', 'secure', 'encryption', 'encrypted', 'breach', 'protection'],
+    ['payroll', 'wages', 'salary', 'payslip'],
+    ['timesheet', 'timesheets', 'hours', 'hour', 'worked'],
+    ['approve', 'approval', 'approved', 'confirm', 'sign-off', 'authorise', 'authorize'],
+    ['schedule', 'scheduling', 'schedules', 'rota', 'roster', 'shift', 'shifts', 'timetable'],
+    ['swap', 'swaps', 'swapping', 'trade', 'cover', 'exchange'],
+    ['notification', 'notifications', 'alert', 'alerts', 'reminder', 'reminders', 'push', 'sms', 'text'],
+    ['staff', 'employee', 'employees', 'team', 'worker', 'workers', 'crew', 'people', 'headcount'],
+    ['location', 'locations', 'venue', 'venues', 'site', 'sites', 'branch', 'branches', 'cafe', 'cafes', 'restaurant', 'restaurants'],
+    ['store', 'stored', 'storage', 'keep', 'kept', 'host', 'hosted', 'hosting', 'held', 'reside', 'server', 'servers', 'datacentre', 'datacenter', 'located'],
+    ['eu', 'europe', 'european', 'frankfurt', 'dublin', 'germany', 'ireland'],
+    ['overtime', 'labour', 'labor', 'law', 'laws', 'legal', 'rules', 'regulation', 'regulations'],
+    ['invoice', 'invoices', 'billing', 'bill', 'receipt', 'receipts', 'vat', 'tax'],
+    ['card', 'visa', 'mastercard', 'amex', 'americanexpress', 'paypal', 'payment', 'payments', 'sepa', 'direct-debit', 'pay', 'paying', 'paid'],
+    ['seen', 'read', 'opened', 'viewed', 'acknowledged'],
+    ['sick', 'ill', 'illness', 'unwell', 'absence', 'absent', 'holiday', 'vacation', 'unavailable', 'unavailability', 'off'],
+    ['minor', 'minors', 'teenager', 'young', 'underage'],
+    ['train', 'training', 'ai', 'model', 'algorithm'],
+    ['password', 'reset', 'forgot', 'forgotten', 'signin', 'login', 'locked'],
+    ['language', 'languages', 'translate', 'translation', 'localisation', 'localization'],
+    ['forecast', 'forecasting', 'predict', 'prediction', 'demand', 'budget', 'budgeting'],
+    ['account', 'login', 'log-in', 'signin', 'sign-in', 'password', 'access'],
+    ['delete', 'deletion', 'remove', 'erase', 'wipe'],
+    ['annual', 'yearly', 'year', 'monthly', 'month'],
+    ['offline', 'internet', 'wifi', 'connection', 'outage', 'down', 'drop', 'drops', 'disconnect', 'network'],
+    ['clock', 'clocking', 'punch', 'attendance', 'check-in']
+  ];
+
+  var STEM_EXCEPTIONS = {
+    pricing: 'price', prices: 'price', billing: 'bill', invoicing: 'invoice',
+    data: 'data', business: 'business', analysis: 'analysis', staff: 'staff',
+    payroll: 'payroll', sms: 'sms', ios: 'ios', pos: 'pos', gdpr: 'gdpr',
+    hours: 'hour', minutes: 'minute', people: 'person', does: 'do',
+    paid: 'pay', paying: 'pay', paying_: 'pay', cancelled: 'cancel', canceled: 'cancel'
+  };
+
+  function stem(word) {
+    if (STEM_EXCEPTIONS[word]) return STEM_EXCEPTIONS[word];
+    var w = word;
+    if (w.length <= 3) return w;
+    if (/ies$/.test(w) && w.length > 4) return w.slice(0, -3) + 'y';
+    if (/(sses|shes|ches|xes)$/.test(w)) return w.slice(0, -2);
+    if (/[^s]s$/.test(w) && !/(us|is|ss)$/.test(w)) w = w.slice(0, -1);
+    /* Suffix stripping never produces a stump: "used" must not become "us". */
+    var stripped = w;
+    if (/ing$/.test(w) && w.length > 5) {
+      stripped = w.slice(0, -3);
+      if (/([bdfglmnprt])\1$/.test(stripped)) stripped = stripped.slice(0, -1);
+    } else if (/ed$/.test(w) && w.length > 4) {
+      stripped = w.slice(0, -2);
+      if (/([bdfglmnprt])\1$/.test(stripped)) stripped = stripped.slice(0, -1);
+    } else if (/ly$/.test(w) && w.length > 4) {
+      stripped = w.slice(0, -2);
+    }
+    if (stripped.length >= 3) w = stripped;
+    if (/e$/.test(w) && w.length > 4) w = w.slice(0, -1);
+    return w;
+  }
+
+  /* Built after stem() exists: every synonym is stored under its stem so that
+     "cancelling" and "cancellation" land in the same group. */
+  var SYNONYM_INDEX = (function () {
+    var index = {};
+    SYNONYM_GROUPS.forEach(function (group, groupId) {
+      group.forEach(function (word) {
+        var key = stem(word);
+        if (!index[key]) index[key] = [];
+        if (index[key].indexOf(groupId) === -1) index[key].push(groupId);
+      });
+    });
+    return index;
+  })();
+
+  /* Keeps the customer's own spelling next to each stem so the assistant can say
+     exactly which word it did not recognise. */
+  function tokenizeWithOriginals(text) {
+    var pairs = [];
+    if (!text) return pairs;
+    String(text)
+      .toLowerCase()
+      .replace(/[\u2018\u2019]/g, "'")
+      .replace(/[^a-z0-9\s'-]/g, ' ')
+      .split(/[\s'-]+/)
+      .forEach(function (word) {
+        if (!word || word.length < 2 || STOP_WORDS[word]) return;
+        pairs.push({ term: stem(word), word: word });
+      });
+    return pairs;
+  }
+
+  function tokenize(text) {
+    if (!text) return [];
+    return String(text)
+      .toLowerCase()
+      .replace(/[‘’]/g, "'")
+      .replace(/[^a-z0-9\s'-]/g, ' ')
+      .split(/[\s'-]+/)
+      .filter(function (word) { return word && word.length > 1 && !STOP_WORDS[word]; })
+      .map(stem);
+  }
+
+  function synonymGroupsOf(term) {
+    return SYNONYM_INDEX[term] || [];
+  }
+
+  /* ---------- index building ---------- */
+
+  var FIELD_WEIGHTS = { title: 2.2, questions: 1.8, tags: 1.5, body: 1 };
+
+  function buildIndex(documents) {
+    var chunks = [];
+    documents.forEach(function (doc) {
+      (doc.sections || []).forEach(function (section) {
+        chunks.push({
+          id: doc.id + '#' + section.id,
+          docId: doc.id,
+          docTitle: doc.title,
+          docType: doc.type,
+          updated: doc.updated,
+          title: section.title,
+          body: section.body,
+          questions: section.questions || [],
+          tags: section.tags || [],
+          category: section.category || doc.category
+        });
+      });
+    });
+
+    var docFreq = {};
+    var totalLength = 0;
+
+    chunks.forEach(function (chunk) {
+      var weighted = {};
+      var plain = {};
+      var length = 0;
+
+      function feed(text, weight) {
+        tokenize(text).forEach(function (term) {
+          weighted[term] = (weighted[term] || 0) + weight;
+          plain[term] = true;
+          length += weight;
+        });
+      }
+
+      feed(chunk.title, FIELD_WEIGHTS.title);
+      chunk.questions.forEach(function (q) { feed(q, FIELD_WEIGHTS.questions); });
+      chunk.tags.forEach(function (t) { feed(t, FIELD_WEIGHTS.tags); });
+      feed(chunk.body, FIELD_WEIGHTS.body);
+
+      chunk.terms = weighted;
+      chunk.length = length;
+      chunk.groups = {};
+      Object.keys(plain).forEach(function (term) {
+        synonymGroupsOf(term).forEach(function (groupId) { chunk.groups[groupId] = true; });
+      });
+      chunk.bigrams = bigramsOf(chunk);
+      chunk.questionSets = chunk.questions.map(function (q) {
+        var set = {};
+        tokenize(q).forEach(function (term) { set[term] = true; });
+        return set;
+      });
+
+      totalLength += length;
+      Object.keys(plain).forEach(function (term) {
+        docFreq[term] = (docFreq[term] || 0) + 1;
+      });
+    });
+
+    return {
+      chunks: chunks,
+      docFreq: docFreq,
+      vocabulary: Object.keys(docFreq),
+      avgLength: chunks.length ? totalLength / chunks.length : 1,
+      count: chunks.length
+    };
+  }
+
+  function bigramsOf(chunk) {
+    var set = {};
+    var sources = [chunk.title].concat(chunk.questions, [chunk.body]);
+    sources.forEach(function (text) {
+      var terms = tokenize(text);
+      for (var i = 0; i < terms.length - 1; i++) set[terms[i] + ' ' + terms[i + 1]] = true;
+    });
+    return set;
+  }
+
+  /* ---------- typo tolerance ---------- */
+
+  /* Damerau-Levenshtein: counts a swap of two neighbouring letters as one edit,
+     because "mcuh" and "teh" are swaps, not two separate mistakes. */
+  function editDistance(a, b, limit) {
+    if (Math.abs(a.length - b.length) > limit) return limit + 1;
+    var rows = [];
+    var i, j;
+    for (i = 0; i <= a.length; i++) {
+      rows[i] = [];
+      rows[i][0] = i;
+    }
+    for (j = 0; j <= b.length; j++) rows[0][j] = j;
+
+    for (i = 1; i <= a.length; i++) {
+      var rowBest = rows[i][0];
+      for (j = 1; j <= b.length; j++) {
+        var cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+        var value = Math.min(rows[i][j - 1] + 1, rows[i - 1][j] + 1, rows[i - 1][j - 1] + cost);
+        if (i > 1 && j > 1 && a.charAt(i - 1) === b.charAt(j - 2) && a.charAt(i - 2) === b.charAt(j - 1)) {
+          value = Math.min(value, rows[i - 2][j - 2] + 1);
+        }
+        rows[i][j] = value;
+        if (value < rowBest) rowBest = value;
+      }
+      if (rowBest > limit) return limit + 1;
+    }
+    return rows[a.length][b.length];
+  }
+
+  /* "cancle", "mcuh", "teh" - customers type these constantly. A word the base has
+     never seen is matched to the closest word it does know, within one edit for
+     short words and two for long ones. Nothing is corrected silently: the caller
+     receives the substitution and can show it. */
+  function isTransposition(a, b) {
+    if (a.length !== b.length) return false;
+    var diff = [];
+    for (var i = 0; i < a.length; i++) {
+      if (a.charAt(i) !== b.charAt(i)) diff.push(i);
+      if (diff.length > 2) return false;
+    }
+    return diff.length === 2 && diff[1] === diff[0] + 1 &&
+      a.charAt(diff[0]) === b.charAt(diff[1]) && a.charAt(diff[1]) === b.charAt(diff[0]);
+  }
+
+  function correctTerm(term, index) {
+    if (index.docFreq[term]) return null;
+    if (term.length < 4) return null;
+    /* A word we already understand through a synonym group is a real word, not a
+       typo: "sick" must never be "corrected" into "pick". */
+    if (synonymGroupsOf(term).length) return null;
+    var limit = term.length >= 8 ? 2 : 1;
+    var best = null;
+    var bestDistance = limit + 1;
+    var bestFrequency = -1;
+    for (var i = 0; i < index.vocabulary.length; i++) {
+      var candidate = index.vocabulary[i];
+      if (Math.abs(candidate.length - term.length) > limit) continue;
+      if (candidate.length < 4 || candidate.length < term.length - 1) continue;
+      var distance = editDistance(term, candidate, limit);
+      if (distance > limit) continue;
+      var swapped = isTransposition(term, candidate);
+      var frequency = (index.docFreq[candidate] || 0) + (swapped ? 1000 : 0);
+      /* Same distance, two candidates ("trail" is one edit from both "trial" and
+         "train"): prefer a swap of neighbouring letters, then the word the
+         knowledge base uses more often. */
+      if (distance < bestDistance || (distance === bestDistance && frequency > bestFrequency)) {
+        bestDistance = distance;
+        bestFrequency = frequency;
+        best = candidate;
+      }
+    }
+    return best;
+  }
+
+  /* ---------- querying ---------- */
+
+  var K1 = 1.0;   // saturates repeated words quickly: a section that repeats one word does not win on that alone
+  var B = 0.72;
+  var SYNONYM_WEIGHT = 0.55;    // weight of a synonym when ranking
+  var SYNONYM_COVERAGE = 0.85;  // weight of a synonym when measuring coverage
+
+  /* One "concept" per word the customer typed, carrying that word plus its
+     synonyms. Scoring takes the best variant inside a concept instead of adding
+     them up - otherwise a chunk that happens to contain six words of the same
+     synonym group ("payment", "card", "visa"...) beats the chunk that actually
+     answers the question. */
+  function expandQuery(queryTerms) {
+    return queryTerms.map(function (term) {
+      var variants = {};
+      variants[term] = 1;
+      synonymGroupsOf(term).forEach(function (groupId) {
+        SYNONYM_GROUPS[groupId].forEach(function (word) {
+          var alt = stem(word);
+          if (alt !== term) variants[alt] = Math.max(variants[alt] || 0, SYNONYM_WEIGHT);
+        });
+      });
+      return { term: term, variants: variants };
+    });
+  }
+
+  function scoreChunk(chunk, concepts, index, queryBigrams, questionTerms) {
+    var score = 0;
+    concepts.forEach(function (concept) {
+      var best = 0;
+      Object.keys(concept.variants).forEach(function (term) {
+        var tf = chunk.terms[term];
+        if (!tf) return;
+        var df = index.docFreq[term] || 0;
+        var idf = Math.log(1 + (index.count - df + 0.5) / (df + 0.5));
+        var norm = tf * (K1 + 1) / (tf + K1 * (1 - B + B * chunk.length / index.avgLength));
+        var value = concept.variants[term] * idf * norm;
+        if (value > best) best = value;
+      });
+      score += best;
+    });
+    var phraseHits = 0;
+    queryBigrams.forEach(function (bigram) { if (chunk.bigrams[bigram]) phraseHits++; });
+    if (phraseHits) score *= 1 + Math.min(0.35, phraseHits * 0.12);
+
+    /* A short question like "how much does it cost?" has one content word, and
+       plain keyword weight sends it to whichever section repeats that word most
+       ("labour cost"). Comparing the whole phrasing against the example questions
+       of each section fixes that: near-identical wording wins. */
+    if (questionTerms.length) score *= 1 + 1.3 * questionOverlap(chunk, questionTerms);
+    return score;
+  }
+
+  /* How close the customer's phrasing is to one of the section's own example
+     questions, compared both ways (Jaccard), so a one-word question does not
+     count as a perfect match for every long question containing that word. */
+  function questionOverlap(chunk, questionTerms) {
+    var best = 0;
+    chunk.questionSets.forEach(function (set) {
+      var setSize = 0;
+      var hit = 0;
+      Object.keys(set).forEach(function () { setSize++; });
+      questionTerms.forEach(function (term) { if (set[term]) hit++; });
+      var union = setSize + questionTerms.length - hit;
+      var overlap = union > 0 ? hit / union : 0;
+      if (overlap > best) best = overlap;
+    });
+    return best;
+  }
+
+  /* How much of what the customer asked is actually covered by this chunk.
+     Coverage is the main guard against confident nonsense: a chunk that matches
+     one incidental word out of five cannot pass the threshold. */
+  function termWeight(term, index) {
+    var df = index.docFreq[term] || 0;
+    if (df === 0) {
+      /* A word the knowledge base has never seen ("amex", "bakery") is exactly
+         the word that decides whether we really know the answer, so it weighs
+         heavily - but not so much that one unknown noun blocks every reply. */
+      return 0.85 * Math.log(1 + (index.count + 0.5) / 0.5);
+    }
+    return Math.log(1 + (index.count - df + 0.5) / (df + 0.5));
+  }
+
+  /* Coverage = how much of the *meaning* of the question this chunk accounts for,
+     weighted by how rare each word is. Common words that appear in nearly every
+     chunk (the product name, "shift") count for almost nothing, so
+     "does Shiftbloom do tax returns?" cannot look half answered. */
+  function coverageOf(chunk, queryTerms, index) {
+    /* Short words the base has never seen ("wat", "teh") are noise, not meaning. */
+    var meaningful = queryTerms.filter(function (term) {
+      return (index.docFreq[term] || 0) > 0 || term.length >= 4;
+    });
+    if (!meaningful.length) meaningful = queryTerms;
+    if (!meaningful.length) return 0;
+    var total = 0;
+    var matched = 0;
+    meaningful.forEach(function (term) {
+      var weight = termWeight(term, index);
+      total += weight;
+      if (chunk.terms[term]) { matched += weight; return; }
+      var groups = synonymGroupsOf(term);
+      for (var i = 0; i < groups.length; i++) {
+        if (chunk.groups[groups[i]]) { matched += SYNONYM_COVERAGE * weight; return; }
+      }
+    });
+    return total > 0 ? Math.min(1, matched / total) : 0;
+  }
+
+  var THRESHOLDS = {
+    answer: 0.52,      // below this the assistant never states a fact
+    clarify: 0.3,      // between clarify and answer it offers the closest topics
+    coverageFloor: 0.62, // most of the meaning of the question must be covered
+    specificity: 1.5     // at least one matched word must be rare enough to pin down a section
+  };
+
+  function ask(query, index, options) {
+    var opts = options || {};
+    var thresholds = opts.thresholds || THRESHOLDS;
+    var queryTerms = tokenize(query);
+    var uniqueTerms = queryTerms.filter(function (t, i) { return queryTerms.indexOf(t) === i; });
+
+    if (!uniqueTerms.length) {
+      return {
+        status: 'unknown',
+        confidence: 0,
+        query: query,
+        reason: 'no-content-words',
+        matches: []
+      };
+    }
+
+    var corrections = [];
+    uniqueTerms = uniqueTerms.map(function (term) {
+      var fixed = correctTerm(term, index);
+      if (!fixed) return term;
+      corrections.push({ from: term, to: fixed });
+      return fixed;
+    });
+
+    var expanded = expandQuery(uniqueTerms);
+    var queryBigrams = [];
+    for (var i = 0; i < queryTerms.length - 1; i++) queryBigrams.push(queryTerms[i] + ' ' + queryTerms[i + 1]);
+
+    /* Ranking multiplies keyword strength by how much of the question a chunk
+       covers. Without this, a chunk crammed with one matching word ("payment")
+       outranks the chunk that actually answers the whole question. */
+    var scored = index.chunks.map(function (chunk) {
+      var keyword = scoreChunk(chunk, expanded, index, queryBigrams, uniqueTerms);
+      var coverage = coverageOf(chunk, uniqueTerms, index);
+      return { chunk: chunk, keyword: keyword, raw: keyword * (0.45 + 0.55 * coverage), coverage: coverage };
+    }).sort(function (a, b) { return b.raw - a.raw; });
+
+    var best = scored[0];
+    var runnerUp = scored[1];
+    if (!best || best.raw <= 0) {
+      return { status: 'unknown', confidence: 0, query: query, reason: 'no-match', matches: [] };
+    }
+
+    /* Confidence blends three independent signals so one lucky keyword is not enough:
+       how much of the question is covered, how strong the match is in absolute terms,
+       and how clearly the best chunk beats the second best. */
+    var strength = Math.min(1, best.raw / (2.6 * Math.max(2, uniqueTerms.length)));
+    var margin = runnerUp && runnerUp.raw > 0
+      ? Math.min(1, (best.raw - runnerUp.raw) / best.raw + 0.45)
+      : 1;
+    var confidence = 0.55 * best.coverage + 0.3 * strength + 0.15 * margin;
+    confidence = Math.round(confidence * 100) / 100;
+
+    var matches = scored.slice(0, 3).filter(function (item) { return item.raw > 0; }).map(function (item) {
+      return {
+        id: item.chunk.id,
+        title: item.chunk.title,
+        docTitle: item.chunk.docTitle,
+        category: item.chunk.category,
+        coverage: Math.round(item.coverage * 100) / 100,
+        score: Math.round(item.raw * 100) / 100,
+        keywordScore: Math.round(item.keyword * 100) / 100
+      };
+    });
+
+    /* Words the knowledge base has never seen are reported so the interface can
+       say which word was not understood; they also weigh heavily inside coverage,
+       which is what actually decides whether we may state a fact. */
+    var originals = tokenizeWithOriginals(query);
+    var corrected = {};
+    corrections.forEach(function (fix) { corrected[fix.from] = true; });
+    var unknownWords = [];
+    originals.forEach(function (pair) {
+      if ((index.docFreq[pair.term] || 0) > 0 || corrected[pair.term]) return;
+      var groups = synonymGroupsOf(pair.term);
+      var covered = groups.some(function (groupId) { return best.chunk.groups[groupId]; });
+      if (!covered && unknownWords.indexOf(pair.word) === -1) unknownWords.push(pair.word);
+    });
+
+    /* A question built only from words that appear all over the knowledge base
+       ("how many locations do you have") matches something everywhere and nothing
+       in particular. Before stating a fact we require at least one reasonably
+       specific word of the question to be present in the chosen section. */
+    var specificity = 0;
+    uniqueTerms.forEach(function (term) {
+      var present = !!best.chunk.terms[term];
+      if (!present) {
+        present = synonymGroupsOf(term).some(function (groupId) { return best.chunk.groups[groupId]; });
+      }
+      if (!present) return;
+      var weight = termWeight(term, index);
+      if (weight > specificity) specificity = weight;
+    });
+
+    /* Wording that nearly repeats one of the section's own example questions is
+       specific by itself, even when every single word is common. */
+    var phrasingMatch = questionOverlap(best.chunk, uniqueTerms);
+    var specificEnough = specificity >= thresholds.specificity || phrasingMatch >= 0.6;
+
+    if (confidence >= thresholds.answer && best.coverage >= thresholds.coverageFloor && specificEnough) {
+      return {
+        status: 'answer',
+        confidence: confidence,
+        query: query,
+        unknownWords: unknownWords,
+        corrections: corrections,
+        answer: best.chunk.body,
+        source: {
+          id: best.chunk.id,
+          section: best.chunk.title,
+          document: best.chunk.docTitle,
+          type: best.chunk.docType,
+          updated: best.chunk.updated
+        },
+        related: matches.slice(1),
+        matches: matches
+      };
+    }
+
+    var plausible = scored.slice(0, 3).filter(function (item) {
+      return item.raw > 0 && item.coverage >= 0.35;
+    });
+
+    if (confidence >= thresholds.clarify && plausible.length) {
+      return {
+        status: 'clarify',
+        confidence: confidence,
+        query: query,
+        unknownWords: unknownWords,
+        corrections: corrections,
+        suggestions: plausible
+          .map(function (item) {
+            return {
+              id: item.chunk.id,
+              title: item.chunk.title,
+              question: (item.chunk.questions && item.chunk.questions[0]) || item.chunk.title,
+              document: item.chunk.docTitle
+            };
+          }),
+        matches: matches
+      };
+    }
+
+    return {
+      status: 'unknown',
+      confidence: confidence,
+      query: query,
+      reason: 'below-threshold',
+      unknownWords: unknownWords,
+      corrections: corrections,
+      matches: matches
+    };
+  }
+
+  return {
+    buildIndex: buildIndex,
+    ask: ask,
+    tokenize: tokenize,
+    stem: stem,
+    THRESHOLDS: THRESHOLDS
+  };
+});
+
+</script>
+<script>
+/*
+ * Knowledge base for the demo: the public help centre of Shiftbloom, a fictional
+ * shift-scheduling product for cafés and restaurants. Every fact here is invented
+ * for this portfolio piece, so the demo contains no third-party content.
+ *
+ * In a real project this file is generated from the client's own material:
+ * help centre, PDFs, policy documents, past support replies.
+ *
+ * Product names of the POS, payroll and chat tools are invented too (Tilltap,
+ * Payloom, Pulsechat...), so nothing here states anything about a real company.
+ */
+(function (root, factory) {
+  var kb = factory();
+  if (typeof module === 'object' && module.exports) module.exports = kb;
+  else root.KNOWLEDGE_BASE = kb;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  return {
+    company: {
+      name: 'Shiftbloom',
+      tagline: 'Shift scheduling for cafés and restaurants',
+      supportEmail: 'hello@shiftbloom.example',
+      updated: '2026-09-18'
+    },
+    documents: [
+      {
+        id: 'pricing',
+        title: 'Pricing & Billing',
+        type: 'Help centre article',
+        category: 'Pricing',
+        updated: '2026-09-12',
+        sections: [
+          {
+            id: 'plans',
+            title: 'Plans and monthly price',
+            category: 'Pricing',
+            tags: ['pricing', 'plans', 'starter', 'growth', 'multi-site', 'per location'],
+            questions: [
+              'How much does Shiftbloom cost?',
+              'What are your plans and prices?',
+              'How much per month for one café?',
+              'What does it cost for a small café or bakery?',
+              'What is the price for two or three locations?'
+            ],
+            body: 'Shiftbloom is priced per location, per month. Starter is $29 and covers up to 15 staff at one location. Growth is $59 and covers unlimited staff, shift swaps and sales forecasting at one location. Multi-site is for three locations or more: $49 per location per month for every location, including the first two, and it adds central reporting. Every plan includes the mobile apps and email support at no extra cost.'
+          },
+          {
+            id: 'annual-discount',
+            title: 'Annual billing discount',
+            category: 'Pricing',
+            tags: ['annual', 'yearly', 'discount', 'invoice'],
+            questions: [
+              'Is there a discount if I pay yearly?',
+              'Do you offer annual billing?',
+              'Can I pay for a year upfront?'
+            ],
+            body: 'Yes. Paying annually gives you two months free, so Starter is $290 a year, Growth is $590 a year per location, and Multi-site is $490 a year per location. You can switch from monthly to annual at any time from Billing → Plan, and we credit the unused part of the month you already paid for.'
+          },
+          {
+            id: 'trial',
+            title: 'Free trial',
+            category: 'Pricing',
+            tags: ['trial', 'free', 'card', 'evaluation'],
+            questions: [
+              'Do you have a free trial?',
+              'Can I try Shiftbloom before paying?',
+              'Do I need a credit card to start the trial?'
+            ],
+            body: 'Every account starts with a 21-day free trial of the Growth plan. No card is needed to start, and we do not charge anything automatically: when the trial ends the account switches to read-only until you choose a plan. Your schedules and staff data stay intact for 90 days after that.'
+          },
+          {
+            id: 'payment-methods',
+            title: 'Accepted payment methods',
+            category: 'Pricing',
+            tags: ['payment', 'card', 'sepa', 'paypal', 'invoice', 'vat'],
+            questions: [
+              'How can I pay?',
+              'Which payment methods do you accept?',
+              'Can I pay by bank transfer?'
+            ],
+            body: 'We accept Visa, Mastercard and American Express, SEPA direct debit for EU accounts, and bank transfer for annual plans over $1,000. Every payment produces a PDF invoice with your VAT number, available under Billing → Invoices. We do not accept cash or prepaid vouchers.'
+          },
+          {
+            id: 'cancellation',
+            title: 'Cancelling a subscription',
+            category: 'Pricing',
+            tags: ['cancel', 'unsubscribe', 'downgrade', 'notice period'],
+            questions: [
+              'How do I cancel my subscription?',
+              'Can I cancel any time?',
+              'Is there a notice period or contract?'
+            ],
+            body: 'You can cancel yourself at any time from Billing → Plan → Cancel subscription. There is no contract and no notice period. The account stays fully usable until the end of the period you have already paid for, then becomes read-only. Nothing is deleted automatically: you can export or reactivate within 90 days.'
+          },
+          {
+            id: 'refunds',
+            title: 'Refund policy',
+            category: 'Pricing',
+            tags: ['refund', 'money back', 'annual'],
+            questions: [
+              'Do you give refunds?',
+              'Can I get my money back?',
+              'What is your refund policy?'
+            ],
+            body: 'Monthly plans are not refunded for the current month, but you are never charged again after you cancel. Annual plans are refunded pro rata for the full months remaining if you cancel within the first six months. Write to hello@shiftbloom.example and we process the refund within five working days.'
+          }
+        ]
+      },
+      {
+        id: 'getting-started',
+        title: 'Getting Started',
+        type: 'Onboarding guide',
+        category: 'Setup',
+        updated: '2026-08-30',
+        sections: [
+          {
+            id: 'setup-time',
+            title: 'How long setup takes',
+            category: 'Setup',
+            tags: ['setup', 'onboarding', 'launch', 'first schedule'],
+            questions: [
+              'How long does it take to set up?',
+              'How quickly can we start using it?',
+              'Is setup complicated?'
+            ],
+            body: 'A single café is usually live in about 40 minutes: add your location and opening hours, import staff, then build the first week from a template. Most teams publish their first real schedule the same day. Multi-site accounts take longer because each location needs its own opening hours and roles.'
+          },
+          {
+            id: 'import-staff',
+            title: 'Importing staff and past schedules',
+            category: 'Setup',
+            tags: ['import', 'csv', 'migration', 'excel', 'spreadsheet'],
+            questions: [
+              'Can I import my staff from a spreadsheet?',
+              'How do I migrate from Excel or another app?',
+              'Can you import our existing rota?'
+            ],
+            body: 'Yes. Settings → Staff → Import accepts a CSV or Excel file with name, email, role, contracted hours and pay rate; the importer previews every row before anything is saved. Past schedules can be imported the same way, which is what our forecasting uses to suggest staffing levels in the first weeks.'
+          },
+          {
+            id: 'onboarding-help',
+            title: 'Onboarding help from our team',
+            category: 'Setup',
+            tags: ['onboarding call', 'training', 'help', 'setup service'],
+            questions: [
+              'Do you help with setup?',
+              'Is there an onboarding call?',
+              'Do you train my managers?'
+            ],
+            body: 'Every new account can book a free 30-minute onboarding call, and Multi-site accounts get a second call for manager training. Both are booked from the banner on your dashboard. We also set up your first location for you at no charge if you send your current rota to hello@shiftbloom.example.'
+          },
+          {
+            id: 'languages',
+            title: 'Languages supported',
+            category: 'Setup',
+            tags: ['language', 'translation', 'localisation'],
+            questions: [
+              'What languages does Shiftbloom support?',
+              'Is the app available in Spanish?',
+              'Can staff use it in their own language?'
+            ],
+            body: 'The web app and both mobile apps are available in English, Spanish, French, German, Italian and Portuguese. Each person picks their own language in their profile, so a manager can work in English while the team reads shift notifications in Spanish. Dates and currency follow the location, not the person.'
+          }
+        ]
+      },
+      {
+        id: 'scheduling',
+        title: 'Scheduling & Shifts',
+        type: 'Help centre article',
+        category: 'Scheduling',
+        updated: '2026-09-05',
+        sections: [
+          {
+            id: 'publish',
+            title: 'Publishing a schedule',
+            category: 'Scheduling',
+            tags: ['publish', 'notify', 'notifications', 'draft'],
+            questions: [
+              'How do staff find out about their shifts?',
+              'What happens when I publish the schedule?',
+              'Do people get notified about changes?'
+            ],
+            body: 'A schedule stays a private draft until you press Publish. On publishing, everyone with a shift gets a push notification and an email, and later edits send a separate "shift changed" alert only to the people affected. You can see who has opened the schedule under the Seen column.'
+          },
+          {
+            id: 'swaps',
+            title: 'Shift swaps and cover requests',
+            category: 'Scheduling',
+            tags: ['swap', 'cover', 'trade shifts', 'approval'],
+            questions: [
+              'Can staff swap shifts?',
+              'How do cover requests work?',
+              'Do I have to approve a swap?'
+            ],
+            body: 'Staff on the Growth and Multi-site plans can offer a shift to colleagues who have the right role and no clashing shift. A swap only becomes real when a manager approves it, unless you turn on auto-approve for swaps inside the same role. Every swap is kept in the shift history with both names and the time of approval.'
+          },
+          {
+            id: 'availability',
+            title: 'Availability and time-off requests',
+            category: 'Scheduling',
+            tags: ['availability', 'holiday', 'time off', 'unavailable'],
+            questions: [
+              'Can staff set when they are available?',
+              'How do holiday requests work?',
+              'Does it stop me scheduling someone on holiday?'
+            ],
+            body: 'Staff set weekly availability and request time off from their app. Approved time off and declared unavailability block the calendar: if you drag a shift onto that person anyway, Shiftbloom warns you before saving. Pending requests appear as a striped marker so you can see them while planning.'
+          },
+          {
+            id: 'forecasting',
+            title: 'Sales forecasting and labour cost',
+            category: 'Scheduling',
+            tags: ['forecast', 'labour cost', 'budget', 'sales'],
+            questions: [
+              'Can it tell me how many people I need?',
+              'Does it show labour cost as I plan?',
+              'How does the sales forecast work?'
+            ],
+            body: 'On the Growth and Multi-site plans, Shiftbloom forecasts hourly sales from the last 8 weeks of your POS data and weekday patterns, then suggests how many people each hour needs. The planner shows live labour cost and labour-cost percentage against that forecast, so you see a problem while you are building the week rather than at month end.'
+          },
+          {
+            id: 'templates',
+            title: 'Schedule templates and repeating weeks',
+            category: 'Scheduling',
+            tags: ['template', 'repeat', 'copy week'],
+            questions: [
+              'Can I reuse last week\'s schedule?',
+              'Are there schedule templates?',
+              'How do I copy a week?'
+            ],
+            body: 'Yes. Any week can be saved as a template, and Copy week duplicates a previous week into the one you are planning, keeping roles and times while skipping people who are now unavailable. Many venues keep separate templates for quiet season, high season and holiday weeks.'
+          }
+        ]
+      },
+      {
+        id: 'time-payroll',
+        title: 'Time Clock & Payroll',
+        type: 'Help centre article',
+        category: 'Time & pay',
+        updated: '2026-09-10',
+        sections: [
+          {
+            id: 'clock-in',
+            title: 'Clocking in and out',
+            category: 'Time & pay',
+            tags: ['clock in', 'attendance', 'tablet', 'pin', 'gps'],
+            questions: [
+              'How do staff clock in?',
+              'Is there a time clock?',
+              'Can people clock in from their phone?'
+            ],
+            body: 'Staff clock in with a four-digit PIN on a shared tablet at the venue, or from their own phone when you allow it. Phone clock-ins can require the person to be inside a radius you set around the location, from 50 to 500 metres. Early or late clock-ins outside a 5-minute window are flagged for the manager to confirm.'
+          },
+          {
+            id: 'missed-clock-out',
+            title: 'Missed clock-ins and forgotten clock-outs',
+            category: 'Time & pay',
+            tags: ['forgot to clock out', 'missed clock in', 'auto clock out', 'correction'],
+            questions: [
+              'What happens if someone forgets to clock out?',
+              'Can a manager fix a missed clock-in?',
+              'Does it close open shifts automatically?'
+            ],
+            body: 'If someone never clocks out, Shiftbloom closes the entry at the scheduled end time after 3 hours and marks it "needs review" instead of guessing paid hours. The manager sets the real time from Time → Timesheets, and the person gets a note saying their entry was corrected. Repeat offenders show up in the weekly Time issues digest.'
+          },
+          {
+            id: 'timesheets',
+            title: 'Timesheet approval',
+            category: 'Time & pay',
+            tags: ['timesheet', 'approve', 'hours', 'edit'],
+            questions: [
+              'How do I approve hours?',
+              'Can I edit a timesheet?',
+              'Where do I check worked hours?'
+            ],
+            body: 'Timesheets sit under Time → Timesheets, grouped by pay period. Each line shows scheduled versus actual time and the difference. A manager can edit any line, and every edit keeps the original value with the name of the person who changed it, which is what auditors normally ask for.'
+          },
+          {
+            id: 'payroll-export',
+            title: 'Payroll export',
+            category: 'Time & pay',
+            tags: ['payroll', 'export', 'csv', 'payloom', 'ledgerly'],
+            questions: [
+              'Can I export hours to payroll?',
+              'Does it work with my payroll provider?',
+              'How do I get hours into Ledgerly?'
+            ],
+            body: 'Approved timesheets export as CSV, or go directly to Payloom, Ledgerly or Wagebox through the built-in connection. The export contains regular hours, overtime hours, unpaid breaks and pay rate per person. Shiftbloom itself does not pay wages and does not calculate tax.'
+          },
+          {
+            id: 'overtime',
+            title: 'Overtime and break rules',
+            category: 'Time & pay',
+            tags: ['overtime', 'breaks', 'labour law', 'compliance', 'minors'],
+            questions: [
+              'Does it handle overtime rules?',
+              'Can it enforce breaks?',
+              'Will it warn me about labour law?'
+            ],
+            body: 'You set the rules per location: weekly hours before overtime, overtime multiplier, minimum rest between shifts, and required break length per shift length. The planner warns you while you build the schedule when a rule would be broken, and timesheets mark overtime separately. Rules for staff under 18 can be set to stricter limits.'
+          }
+        ]
+      },
+      {
+        id: 'integrations',
+        title: 'Integrations & Apps',
+        type: 'Help centre article',
+        category: 'Integrations',
+        updated: '2026-09-18',
+        sections: [
+          {
+            id: 'pos-integrations',
+            title: 'POS integrations',
+            category: 'Integrations',
+            tags: ['pos', 'tilltap', 'brewline', 'panfare', 'coinlane', 'sales data'],
+            questions: [
+              'Which POS systems do you support?',
+              'Does it connect to Tilltap?',
+              'Can you pull sales data from my till?'
+            ],
+            body: 'Shiftbloom connects to Tilltap, Brewline Restaurant, Panfare and Coinlane. The connection pulls hourly sales every 15 minutes and feeds the forecast and the labour-cost percentage. You connect it yourself under Settings → Integrations; it takes about two minutes and needs only a manager login to the POS.'
+          },
+          {
+            id: 'other-integrations',
+            title: 'Payroll, accounting and calendar connections',
+            category: 'Integrations',
+            tags: ['payloom', 'ledgerly', 'wagebox', 'calendar', 'ical', 'team chat'],
+            questions: [
+              'What else does Shiftbloom integrate with?',
+              'Can shifts appear in my calendar app?',
+              'Can it post to our team chat?'
+            ],
+            body: 'Besides POS, we connect to Payloom, Ledgerly and Wagebox for payroll, publish a personal iCal shift feed that works in any calendar app, and post schedule-published announcements to Pulsechat in a channel of your choice.'
+          },
+          {
+            id: 'unsupported-integrations',
+            title: 'Systems we do not support yet',
+            category: 'Integrations',
+            tags: ['kettle', 'paywell', 'bookline', 'orbit', 'roadmap', 'not supported'],
+            questions: [
+              'Do you integrate with Kettle POS?',
+              'Is Paywell supported?',
+              'What if my system is not on the list?'
+            ],
+            body: 'Kettle POS, Paywell, Bookline Accounts and Orbit POS are not supported today. For anything that is not on our list you can still use the CSV export, or build your own connection with the REST API. Tell us what you use at hello@shiftbloom.example — requested integrations are prioritised by how many venues ask for them.'
+          },
+          {
+            id: 'api',
+            title: 'API access',
+            category: 'Integrations',
+            tags: ['api', 'rest', 'webhook', 'developer', 'token'],
+            questions: [
+              'Do you have an API?',
+              'Can developers build on Shiftbloom?',
+              'Are there webhooks?'
+            ],
+            body: 'Yes. Growth and Multi-site accounts can create REST API tokens under Settings → Developer, with read and write access to staff, shifts and timesheets, plus webhooks for shift published, swap approved and timesheet approved. The limit is 120 requests per minute and the reference lives at docs.shiftbloom.example.'
+          },
+          {
+            id: 'mobile-apps',
+            title: 'Mobile apps and offline use',
+            category: 'Integrations',
+            tags: ['mobile', 'ios', 'android', 'offline', 'app store'],
+            questions: [
+              'Is there a mobile app?',
+              'Does it work on iPhone and Android?',
+              'Can staff see their schedule on their phone?',
+              'Can my team check the rota on Android?',
+              'What happens if the internet goes down?'
+            ],
+            body: 'There are free apps for iOS 16+ and Android 10+, included in every plan, for both managers and staff. The apps keep the current and next week readable offline, and clock-ins made without a connection are stored on the device and sync as soon as it is back. The web planner needs a connection.'
+          }
+        ]
+      },
+      {
+        id: 'company',
+        title: 'About Shiftbloom',
+        type: 'Company page',
+        category: 'Company',
+        updated: '2026-09-02',
+        sections: [
+          {
+            id: 'who-we-are',
+            title: 'Who we are',
+            category: 'Company',
+            tags: ['about', 'company', 'team size', 'founded', 'office', 'headquarters'],
+            questions: [
+              'Who is behind Shiftbloom?',
+              'How many employees does Shiftbloom have?',
+              'Where is your office?',
+              'When was the company founded?'
+            ],
+            body: 'Shiftbloom was founded in 2021 by two former café managers and is a team of 24 people. The company is registered in Berlin, where the only office is; everyone else works remotely across Europe. We are independently owned, with no outside investors.'
+          },
+          {
+            id: 'customers',
+            title: 'Who uses Shiftbloom',
+            category: 'Company',
+            tags: ['customers', 'venues', 'how many locations', 'case study'],
+            questions: [
+              'How many venues use Shiftbloom?',
+              'How many locations do you have?',
+              'What kind of businesses use it?'
+            ],
+            body: 'About 1,200 venues in 14 countries use Shiftbloom: independent cafés, bakeries, small restaurant groups and two university canteens. The typical account is a single location with 9 to 20 staff. The largest runs 38 locations from one dashboard.'
+          }
+        ]
+      },
+      {
+        id: 'trust-support',
+        title: 'Security, Privacy & Support',
+        type: 'Policy page',
+        category: 'Trust',
+        updated: '2026-09-15',
+        sections: [
+          {
+            id: 'gdpr',
+            title: 'GDPR and where data is stored',
+            category: 'Trust',
+            tags: ['gdpr', 'privacy', 'data location', 'dpa', 'eu'],
+            questions: [
+              'Are you GDPR compliant?',
+              'Where is my data stored?',
+              'Can I sign a data processing agreement?'
+            ],
+            body: 'Shiftbloom is GDPR compliant and stores all customer data in the EU, in Frankfurt, with backups in Dublin. We sign a data processing agreement with any account that asks: request it from Settings → Legal and it is countersigned within two working days. We never sell data and never use your staff data to train anything.'
+          },
+          {
+            id: 'security',
+            title: 'Security measures',
+            category: 'Trust',
+            tags: ['security', 'encryption', 'two-factor', 'backup', 'audit'],
+            questions: [
+              'How secure is my data?',
+              'Do you support two-factor authentication?',
+              'How often do you back up?'
+            ],
+            body: 'Data is encrypted in transit with TLS 1.3 and at rest with AES-256. Two-factor authentication is available on every plan and can be made compulsory for managers. Backups run hourly and are kept for 35 days, and an external penetration test is carried out once a year with the summary available on request.'
+          },
+          {
+            id: 'data-deletion',
+            title: 'Deleting your data',
+            category: 'Trust',
+            tags: ['delete', 'erase', 'right to be forgotten', 'account closure'],
+            questions: [
+              'How do I delete my data?',
+              'What happens to data after I leave?',
+              'Can an employee ask to be erased?'
+            ],
+            body: 'Closing the account from Settings → Account → Delete removes everything within 35 days, backups included — that is the length of one backup cycle. An individual employee can also be erased on request: their personal details are removed while worked hours stay as anonymous entries, because payroll records must be kept for six years.'
+          },
+          {
+            id: 'account-access',
+            title: 'Signing in, passwords and locked accounts',
+            category: 'Trust',
+            tags: ['password', 'reset password', 'login', 'locked out', 'sso'],
+            questions: [
+              'How do I reset my password?',
+              'I am locked out of my account, what do I do?',
+              'Can we sign in with Google?'
+            ],
+            body: 'Use "Forgot password" on the sign-in page and the reset link arrives within a minute, valid for 2 hours. Accounts lock for 15 minutes after 10 failed attempts. Managers can also send a reset link to any team member from Settings → Staff. Google and Microsoft single sign-on are available on the Multi-site plan.'
+          },
+          {
+            id: 'support-hours',
+            title: 'Support channels and response time',
+            category: 'Trust',
+            tags: ['support', 'contact', 'response time', 'chat', 'phone'],
+            questions: [
+              'How do I contact support?',
+              'What are your support hours?',
+              'Can I call you?',
+              'Do you have a phone number?',
+              'How fast do you answer?'
+            ],
+            body: 'Email hello@shiftbloom.example or use the in-app chat, Monday to Friday 08:00–18:00 CET. First reply is within 4 working hours on Starter and Growth, and within 1 hour on Multi-site, which also includes weekend cover for anything that stops a schedule being published. There is no phone line.'
+          },
+          {
+            id: 'uptime',
+            title: 'Uptime and status',
+            category: 'Trust',
+            tags: ['uptime', 'downtime', 'status page', 'sla', 'incident'],
+            questions: [
+              'How reliable is the service?',
+              'Do you have a status page?',
+              'What is your uptime guarantee?'
+            ],
+            body: 'Uptime over the last 12 months was 99.96%, and Multi-site accounts have a 99.9% contractual guarantee with service credits if we miss it. Live status and incident history are at status.shiftbloom.example, and planned maintenance is announced there at least 48 hours in advance.'
+          }
+        ]
+      }
+    ]
+  };
+});
+
+</script>
+<script>
+/*
+ * Evaluation set for the Shiftbloom assistant.
+ *
+ * "answer"  - the assistant must answer, and from the expected section.
+ * "refuse"  - the assistant must NOT state a fact: it either says it does not
+ *             know, or asks which topic was meant. Anything else is a made-up answer.
+ * "clarify" - stricter: the assistant must ask which topic was meant. Used for the
+ *             examples shown on the demo page, which have to behave as advertised.
+ *
+ * Questions are written the way a café owner would actually type them, including
+ * paraphrases and typos, not the way the knowledge base is worded.
+ */
+(function (root, factory) {
+  var set = factory();
+  if (typeof module === 'object' && module.exports) module.exports = set;
+  else root.EVAL_QUESTIONS = set;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+  return [
+    // --- straightforward questions -------------------------------------------
+    { q: 'How much does Shiftbloom cost per month?', expect: 'answer', section: 'pricing#plans' },
+    { q: 'What do your plans include?', expect: 'answer', section: 'pricing#plans' },
+    { q: 'Is it cheaper if I pay for a whole year?', expect: 'answer', section: 'pricing#annual-discount' },
+    { q: 'Do you have a free trial?', expect: 'answer', section: 'pricing#trial' },
+    { q: 'Do I need to enter a credit card to try it?', expect: 'answer', section: 'pricing#trial' },
+    { q: 'Which payment methods do you accept?', expect: 'answer', section: 'pricing#payment-methods' },
+    { q: 'How do I cancel my subscription?', expect: 'answer', section: 'pricing#cancellation' },
+    { q: 'What is your refund policy?', expect: 'answer', section: 'pricing#refunds' },
+    { q: 'How long does setup take?', expect: 'answer', section: 'getting-started#setup-time' },
+    { q: 'Can I import my staff from a spreadsheet?', expect: 'answer', section: 'getting-started#import-staff' },
+    { q: 'Do you help us with onboarding?', expect: 'answer', section: 'getting-started#onboarding-help' },
+    { q: 'Which languages are supported?', expect: 'answer', section: 'getting-started#languages' },
+    { q: 'How do staff find out about their shifts?', expect: 'answer', section: 'scheduling#publish' },
+    { q: 'Can staff swap shifts with each other?', expect: 'answer', section: 'scheduling#swaps' },
+    { q: 'How do holiday requests work?', expect: 'answer', section: 'scheduling#availability' },
+    { q: 'Does it show labour cost while I plan?', expect: 'answer', section: 'scheduling#forecasting' },
+    { q: "Can I copy last week's schedule?", expect: 'answer', section: 'scheduling#templates' },
+    { q: 'How do staff clock in?', expect: 'answer', section: 'time-payroll#clock-in' },
+    { q: 'Where do I approve worked hours?', expect: 'answer', section: 'time-payroll#timesheets' },
+    { q: 'Can I export hours to payroll?', expect: 'answer', section: 'time-payroll#payroll-export' },
+    { q: 'Does it warn me about overtime rules?', expect: 'answer', section: 'time-payroll#overtime' },
+    { q: 'Which POS systems do you support?', expect: 'answer', section: 'integrations#pos-integrations' },
+    { q: 'Do you have an API?', expect: 'answer', section: 'integrations#api' },
+    { q: 'Is there a mobile app for iPhone?', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'Are you GDPR compliant?', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'Do you support two-factor authentication?', expect: 'answer', section: 'trust-support#security' },
+    { q: 'How do I delete all our data?', expect: 'answer', section: 'trust-support#data-deletion' },
+    { q: 'What are your support hours?', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'What is your uptime guarantee?', expect: 'answer', section: 'trust-support#uptime' },
+
+    // --- paraphrases, sloppy typing, no product vocabulary --------------------
+    { q: 'price for 2 cafes', expect: 'answer', section: 'pricing#plans' },
+    { q: 'i want to stop paying, how', expect: 'answer', section: 'pricing#cancellation' },
+    { q: 'can my team trade shifts between them', expect: 'answer', section: 'scheduling#swaps' },
+    { q: 'does it connect to Tilltap till', expect: 'answer', section: 'integrations#pos-integrations' },
+    { q: 'where do you keep our data, is it in europe', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'what if the wifi drops during service', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'do you integrate with Kettle POS', expect: 'answer', section: 'integrations#unsupported-integrations' },
+
+    // --- the four starter questions offered on the demo page ------------------
+    { q: 'How much does it cost?', expect: 'answer', section: 'pricing#plans' },
+    { q: 'labour cost while planning', expect: 'answer', section: 'scheduling#forecasting' },
+
+    // --- wording taken from real support inboxes ------------------------------
+    { q: 'can i get an invoice with vat', expect: 'answer', section: 'pricing#payment-methods' },
+    { q: 'do you take amex', expect: 'answer', section: 'pricing#payment-methods' },
+    { q: 'how many days is the trial', expect: 'answer', section: 'pricing#trial' },
+    { q: 'is there a way to see who has read the schedule', expect: 'answer', section: 'scheduling#publish' },
+    { q: 'what happens to hours if someone forgets to clock out', expect: 'answer', section: 'time-payroll#missed-clock-out' },
+    { q: 'how do i reset my password', expect: 'answer', section: 'trust-support#account-access' },
+    { q: 'is my data used for ai training', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'send shifts to our team chat', expect: 'answer', section: 'integrations#other-integrations' },
+    { q: 'can i block someone from being scheduled when theyre off sick', expect: 'answer', section: 'scheduling#availability' },
+    { q: 'how fast do you reply to emails', expect: 'answer', section: 'trust-support#support-hours' },
+
+    // --- cases the reviewer found answered wrongly ---------------------------
+    { q: 'can I call you', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'do you have a phone number', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'how many locations do you have', expect: 'answer', section: 'company#customers' },
+    { q: 'how many employees does Shiftbloom have', expect: 'answer', section: 'company#who-we-are' },
+    { q: 'where are your servers located', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'can staff see the schedule on their phone', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'can staff see the rota on android', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'whats the price for a small bakery with 8 staff', expect: 'answer', section: 'pricing#plans' },
+
+    // --- typed badly, the way people actually type ---------------------------
+    { q: 'cancle my account', expect: 'answer', section: 'pricing#cancellation' },
+    { q: 'how mcuh does it cost', expect: 'answer', section: 'pricing#plans' },
+    { q: 'gdpr complient?', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'pyroll export', expect: 'answer', section: 'time-payroll#payroll-export' },
+    { q: 'integartion with tiltap', expect: 'answer', section: 'integrations#pos-integrations' },
+
+    // --- must refuse: nothing in the knowledge base covers this ---------------
+    { q: 'Can Shiftbloom file my restaurant tax return?', expect: 'refuse' },
+    { q: 'Do you sell coffee beans wholesale?', expect: 'refuse' },
+    { q: 'What is the weather in Lisbon tomorrow?', expect: 'refuse' },
+    { q: 'Do you offer franchise financing or business loans?', expect: 'refuse' },
+    { q: 'Can you write my employment contracts for me?', expect: 'refuse' },
+    { q: 'Who is the CEO of Shiftbloom?', expect: 'refuse' },
+    { q: 'Do you have an office in Tokyo?', expect: 'refuse' },
+    { q: 'can i get a demo of the product with a salesperson', expect: 'refuse' },
+    { q: 'what commission do you take on card payments', expect: 'clarify' },
+    { q: 'help', expect: 'refuse' },
+    { q: 'can you recommend a good coffee supplier', expect: 'refuse' },
+
+    // --- examples printed on the demo page: they must behave as promised -----
+    { q: 'do you have a loyalty program for customers', expect: 'unknown' },
+    { q: 'How much does Shiftbloom cost per month?', expect: 'answer', section: 'pricing#plans' }
+  ];
+});
+
+</script>
+<script>
+/* Shiftbloom demo — interface layer.
+   All text from the knowledge base is inserted as text, never as HTML. */
+(function () {
+  'use strict';
+
+  var engine = window.ChatEngine;
+  var kb = window.KNOWLEDGE_BASE;
+  var evalSet = window.EVAL_QUESTIONS || [];
+  var index = engine.buildIndex(kb.documents);
+
+  var sectionsById = {};
+  kb.documents.forEach(function (doc) {
+    doc.sections.forEach(function (section) {
+      sectionsById[doc.id + '#' + section.id] = section;
+    });
+  });
+
+  function questionFor(id, fallback) {
+    var section = sectionsById[id];
+    return section && section.questions && section.questions[0] ? section.questions[0] : fallback;
+  }
+
+  var thread = document.getElementById('thread');
+  var composer = document.getElementById('composer');
+  var input = document.getElementById('question');
+  var suggestionsBox = document.getElementById('suggestions');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var STARTERS = [
+    'How much does it cost?',
+    'Do you have a free trial?',
+    'Which POS systems do you support?',
+    'Are you GDPR compliant?'
+  ];
+
+  /* ---------- small DOM helpers ---------- */
+
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function scrollThread() {
+    thread.scrollTop = thread.scrollHeight;
+  }
+
+  /* ---------- messages ---------- */
+
+  function addUser(text) {
+    var msg = el('div', 'msg msg--user');
+    msg.appendChild(el('p', null, text));
+    thread.appendChild(msg);
+    scrollThread();
+  }
+
+  function addTyping() {
+    var msg = el('div', 'msg msg--bot');
+    var bubble = el('div', 'bubble');
+    var dots = el('span', 'typing');
+    dots.appendChild(el('span'));
+    dots.appendChild(el('span'));
+    dots.appendChild(el('span'));
+    bubble.appendChild(dots);
+    bubble.appendChild(el('span', 'visually-hidden', 'Looking through the help centre'));
+    msg.setAttribute('role', 'status');
+    msg.appendChild(bubble);
+    thread.appendChild(msg);
+    scrollThread();
+    return msg;
+  }
+
+  function confidenceMeter(value) {
+    var wrap = el('div', 'meter');
+    var track = el('span', 'meter__track');
+    var fill = el('span', 'meter__fill');
+    fill.style.width = Math.round(Math.min(1, value) * 100) + '%';
+    track.appendChild(fill);
+    wrap.appendChild(el('span', null, 'Match'));
+    wrap.appendChild(track);
+    wrap.appendChild(el('span', null, Math.round(value * 100) + '%'));
+    return wrap;
+  }
+
+  function choiceRow(items) {
+    var row = el('div', 'choices');
+    items.forEach(function (item) {
+      var button = el('button', 'choice', item.label);
+      button.type = 'button';
+      button.addEventListener('click', function () { ask(item.question); });
+      row.appendChild(button);
+    });
+    return row;
+  }
+
+  function addAnswer(result) {
+    var msg = el('div', 'msg msg--bot');
+    var bubble = el('div', 'bubble');
+    bubble.appendChild(el('p', null, result.answer));
+
+    var receipt = el('div', 'receipt');
+    receipt.appendChild(el('span', null, 'Source:'));
+    var strong = el('strong', null, result.source.document + ' › ' + result.source.section);
+    receipt.appendChild(strong);
+    receipt.appendChild(el('span', null, 'updated ' + result.source.updated));
+    bubble.appendChild(receipt);
+    bubble.appendChild(confidenceMeter(result.confidence));
+    msg.appendChild(bubble);
+
+    if (result.related && result.related.length) {
+      msg.appendChild(choiceRow(result.related.slice(0, 2).map(function (item) {
+        return { label: item.title, question: questionFor(item.id, item.title) };
+      })));
+    }
+
+    thread.appendChild(msg);
+    scrollThread();
+  }
+
+  function addClarify(result) {
+    var msg = el('div', 'msg msg--bot');
+    var bubble = el('div', 'bubble');
+    bubble.appendChild(el('p', null, 'I can see a few sections that could be what you mean, and I would rather not guess. Which one is it?'));
+    bubble.appendChild(confidenceMeter(result.confidence));
+    msg.appendChild(bubble);
+    msg.appendChild(choiceRow(result.suggestions.map(function (item) {
+      return { label: item.title, question: questionFor(item.id, item.question) };
+    })));
+    thread.appendChild(msg);
+    scrollThread();
+  }
+
+  function addUnknown(result) {
+    var msg = el('div', 'msg msg--bot is-unknown');
+    var bubble = el('div', 'bubble');
+    var line = el('p');
+    var unknown = (result.unknownWords || []).filter(function (word) { return word.length > 2; });
+
+    if (unknown.length) {
+      line.appendChild(document.createTextNode('There is nothing in the Shiftbloom help centre about '));
+      unknown.slice(0, 2).forEach(function (word, i) {
+        if (i) line.appendChild(document.createTextNode(' or '));
+        line.appendChild(el('span', 'unknown-word', '“' + word + '”'));
+      });
+      line.appendChild(document.createTextNode(', so I will not guess at it.'));
+    } else {
+      line.textContent = 'I cannot find that in the Shiftbloom help centre, so I will not guess at it.';
+    }
+    bubble.appendChild(line);
+
+    var hand = el('p');
+    hand.appendChild(document.createTextNode('Write to '));
+    var mail = el('a', null, kb.company.supportEmail);
+    mail.href = 'mailto:' + kb.company.supportEmail;
+    hand.appendChild(mail);
+    hand.appendChild(document.createTextNode(' and a person will reply during support hours.'));
+    bubble.appendChild(hand);
+    msg.appendChild(bubble);
+
+    msg.appendChild(choiceRow([
+      { label: 'Pricing and billing', question: 'How much does Shiftbloom cost per month?' },
+      { label: 'What it does', question: 'How do staff find out about their shifts?' }
+    ]));
+
+    thread.appendChild(msg);
+    scrollThread();
+  }
+
+  /* ---------- asking ---------- */
+
+  var busy = false;
+  var pendingTimer = null;
+
+  function cancelPending() {
+    if (pendingTimer !== null) {
+      window.clearTimeout(pendingTimer);
+      pendingTimer = null;
+    }
+    busy = false;
+  }
+
+  function ask(question) {
+    var text = String(question || '').trim();
+    if (!text || busy) return;
+    busy = true;
+    input.value = '';
+    addUser(text);
+
+    var typing = addTyping();
+    var result;
+    try {
+      result = engine.ask(text, index);
+    } catch (error) {
+      typing.remove();
+      busy = false;
+      var failure = el('div', 'msg msg--bot is-unknown');
+      var bubble = el('div', 'bubble');
+      bubble.appendChild(el('p', null, 'Something went wrong while searching the help centre. Ask again, or write to ' + kb.company.supportEmail + '.'));
+      failure.appendChild(bubble);
+      thread.appendChild(failure);
+      scrollThread();
+      return;
+    }
+
+    pendingTimer = window.setTimeout(function () {
+      pendingTimer = null;
+      typing.remove();
+      if (result.status === 'answer') addAnswer(result);
+      else if (result.status === 'clarify') addClarify(result);
+      else addUnknown(result);
+      busy = false;
+    }, reduceMotion ? 0 : 420);
+  }
+
+  composer.addEventListener('submit', function (event) {
+    event.preventDefault();
+    ask(input.value);
+  });
+
+  /* ---------- greeting and starters ---------- */
+
+  function greet() {
+    cancelPending();
+    thread.textContent = '';
+    var msg = el('div', 'msg msg--bot');
+    var bubble = el('div', 'bubble');
+    bubble.appendChild(el('p', null, 'Hello. I answer questions about Shiftbloom from our help centre — pricing, scheduling, time clock, integrations, data and support.'));
+    bubble.appendChild(el('p', null, 'If something is not written there, I will tell you instead of inventing it.'));
+    msg.appendChild(bubble);
+    thread.appendChild(msg);
+  }
+
+  STARTERS.forEach(function (question) {
+    var button = el('button', 'suggestion', question);
+    button.type = 'button';
+    button.addEventListener('click', function () { ask(question); });
+    suggestionsBox.appendChild(button);
+  });
+
+  document.getElementById('resetChat').addEventListener('click', function () {
+    greet();
+    input.focus();
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ask]'), function (button) {
+    button.addEventListener('click', function () {
+      ask(button.getAttribute('data-ask'));
+      document.getElementById('assistant').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+    });
+  });
+
+  /* ---------- knowledge base browser ---------- */
+
+  var kbBox = document.getElementById('kb');
+  kb.documents.forEach(function (doc, docIndex) {
+    var details = el('details', 'kb__doc');
+    if (docIndex === 0) details.open = true;
+    var summary = el('summary');
+    summary.appendChild(el('span', null, doc.title));
+    summary.appendChild(el('span', 'kb__count', doc.sections.length + ' sections · updated ' + doc.updated));
+    details.appendChild(summary);
+
+    var list = el('ul', 'kb__list');
+    doc.sections.forEach(function (section) {
+      var li = el('li');
+      var button = el('button', 'kb__ask');
+      button.type = 'button';
+      button.appendChild(el('span', 'kb__title', section.title));
+      button.appendChild(el('span', 'kb__q', section.questions[0]));
+      button.addEventListener('click', function () {
+        ask(section.questions[0]);
+        document.getElementById('assistant').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      });
+      li.appendChild(button);
+      list.appendChild(li);
+    });
+    details.appendChild(list);
+    kbBox.appendChild(details);
+  });
+
+  /* ---------- in-page evaluation ---------- */
+
+  function runEvaluation() {
+    var answerable = 0, answerableOk = 0, outOfScope = 0, noFactStated = 0;
+    var saidUnknown = 0, askedToClarify = 0;
+    var failures = [];
+
+    evalSet.forEach(function (test) {
+      var result = engine.ask(test.q, index);
+      if (test.expect === 'answer') {
+        answerable++;
+        if (result.status === 'answer' && result.source.id === test.section) answerableOk++;
+        else failures.push({ q: test.q, want: test.section, got: result.status === 'answer' ? result.source.id : result.status });
+        return;
+      }
+
+      outOfScope++;
+      var wanted = test.expect === 'clarify' ? 'a clarifying question'
+        : test.expect === 'unknown' ? 'an "I do not know"'
+        : 'no stated fact';
+      var ok = test.expect === 'refuse' ? result.status !== 'answer' : result.status === test.expect;
+
+      if (ok) {
+        noFactStated++;
+        if (result.status === 'unknown') saidUnknown++; else askedToClarify++;
+      } else {
+        failures.push({ q: test.q, want: wanted, got: result.status === 'answer' ? 'answered from ' + result.source.id : result.status });
+      }
+    });
+
+    var box = document.getElementById('evalResult');
+    box.textContent = '';
+
+    var passed = answerableOk + noFactStated;
+    var summary = el('div', 'eval__summary');
+
+    function stat(label, value, good) {
+      var cell = el('div');
+      var number = el('p', 'eval__score ' + (good ? 'eval__ok' : 'eval__bad'), value);
+      number.style.margin = '0';
+      cell.appendChild(number);
+      cell.appendChild(el('span', null, label));
+      return cell;
+    }
+
+    summary.appendChild(stat('questions answered from the right section', answerableOk + '/' + answerable, answerableOk === answerable));
+    summary.appendChild(stat('out-of-scope questions where no fact was stated — ' + saidUnknown + ' said “I don’t know”, ' + askedToClarify + ' asked which topic was meant',
+      noFactStated + '/' + outOfScope, noFactStated === outOfScope));
+    summary.appendChild(stat('total passed', passed + '/' + evalSet.length, passed === evalSet.length));
+    box.appendChild(summary);
+
+    if (failures.length) {
+      var table = el('table');
+      var head = el('tr');
+      head.appendChild(el('th', null, 'Question'));
+      head.appendChild(el('th', null, 'Expected'));
+      head.appendChild(el('th', null, 'Got'));
+      table.appendChild(head);
+      failures.forEach(function (failure) {
+        var row = el('tr');
+        row.appendChild(el('td', null, failure.q));
+        row.appendChild(el('td', null, failure.want));
+        row.appendChild(el('td', null, failure.got));
+        table.appendChild(row);
+      });
+      box.appendChild(table);
+    } else {
+      box.appendChild(el('p', null, 'Every question behaved as the set requires: no invented answers, no missed answers. The same set runs from the command line with node demo/tests/run-eval.js.'));
+    }
+  }
+
+  document.getElementById('runEval').addEventListener('click', runEvaluation);
+
+  /* ---------- theme ---------- */
+
+  var root = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  var themeLabel = document.getElementById('themeLabel');
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    var next = theme === 'dark' ? 'light' : 'dark';
+    themeLabel.textContent = next === 'dark' ? 'Dark' : 'Light';
+    toggle.setAttribute('aria-label', 'Switch to ' + next + ' theme');
+  }
+
+  var stored = null;
+  try { stored = window.localStorage.getItem('shiftbloom-theme'); } catch (error) { stored = null; }
+  applyTheme(stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
+  toggle.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { window.localStorage.setItem('shiftbloom-theme', next); } catch (error) { /* private mode: theme just resets */ }
+  });
+
+  greet();
+})();
+
+</script>
+</body>
+</html>
