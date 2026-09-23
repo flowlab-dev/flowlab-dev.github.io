@@ -1,0 +1,3185 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>Broken n8n Order Intake — Repair Report</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23a6432a'/><circle cx='9' cy='16' r='3.2' fill='white'/><circle cx='23' cy='10' r='3.2' fill='white'/><circle cx='23' cy='22' r='3.2' fill='white'/><path d='M12 15l8-4M12 17l8 4' stroke='white' stroke-width='2.2' stroke-linecap='round'/></svg>">
+<meta name="description" content="A broken n8n order-intake automation, the root cause of each failure, and the repaired workflow — both versions replayed over the same shift so the difference can be counted.">
+<style>
+/* Palewood repair report — light and dark, phone first. */
+
+:root {
+  --bg: #f6f3ee;
+  --bg-raised: #ffffff;
+  --bg-sunken: #efeae2;
+  --ink: #1f1c18;
+  --ink-soft: #57514a;
+  --ink-faint: #8a8279;
+  --line: #ded7cc;
+  --line-strong: #c9c0b2;
+  --accent: #a6432a;
+  --accent-soft: #f4e2dc;
+  --good: #2f6b4f;
+  --good-soft: #dfeee6;
+  --bad: #a6432a;
+  --warn: #8a5a12;
+  --warn-soft: #f7ecd6;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: ui-sans-serif, -apple-system, "Segoe UI", Inter, system-ui, sans-serif;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(31, 28, 24, .06), 0 8px 24px rgba(31, 28, 24, .05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17161a;
+    --bg-raised: #201e23;
+    --bg-sunken: #121114;
+    --ink: #f2eee8;
+    --ink-soft: #b7b0a7;
+    --ink-faint: #837c74;
+    --line: #322f36;
+    --line-strong: #454049;
+    --accent: #e0896a;
+    --accent-soft: #35231d;
+    --good: #7cc7a0;
+    --good-soft: #1b2b23;
+    --bad: #e0896a;
+    --warn: #d9ab5e;
+    --warn-soft: #2d2519;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #17161a;
+  --bg-raised: #201e23;
+  --bg-sunken: #121114;
+  --ink: #f2eee8;
+  --ink-soft: #b7b0a7;
+  --ink-faint: #837c74;
+  --line: #322f36;
+  --line-strong: #454049;
+  --accent: #e0896a;
+  --accent-soft: #35231d;
+  --good: #7cc7a0;
+  --good-soft: #1b2b23;
+  --bad: #e0896a;
+  --warn: #d9ab5e;
+  --warn-soft: #2d2519;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 940px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ---------------------------------------------------------------- header */
+
+header.top {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-raised);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.top-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+
+.brand .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.theme-toggle {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.theme-toggle:hover { color: var(--ink); border-color: var(--ink-faint); }
+
+/* ------------------------------------------------------------------ hero */
+
+.hero { padding: 40px 0 8px; }
+
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 650;
+  margin: 0 0 12px;
+}
+
+h1 {
+  font-size: clamp(28px, 6vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -.025em;
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.lede {
+  font-size: clamp(17px, 2.4vw, 19px);
+  color: var(--ink-soft);
+  margin: 0 0 20px;
+  max-width: 62ch;
+}
+
+.note {
+  border-left: 3px solid var(--line-strong);
+  padding: 2px 0 2px 14px;
+  color: var(--ink-faint);
+  font-size: 14.5px;
+  margin: 0 0 8px;
+  max-width: 68ch;
+}
+
+/* --------------------------------------------------------------- section */
+
+section { padding: 36px 0; border-top: 1px solid var(--line); margin-top: 36px; scroll-margin-top: 64px; }
+
+h2 {
+  font-size: clamp(21px, 3.4vw, 27px);
+  letter-spacing: -.02em;
+  margin: 0 0 8px;
+  font-weight: 680;
+}
+
+h3 { font-size: 17px; margin: 0 0 6px; font-weight: 650; letter-spacing: -.01em; }
+
+.sub { color: var(--ink-soft); margin: 0 0 22px; max-width: 68ch; }
+
+/* -------------------------------------------------------------- complaint */
+
+.complaints { display: grid; gap: 12px; grid-template-columns: 1fr; }
+
+@media (min-width: 720px) { .complaints { grid-template-columns: 1fr 1fr; } }
+
+.complaint {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+
+.complaint p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+.complaint .quote { color: var(--ink); font-weight: 560; margin-bottom: 6px; font-size: 15.5px; }
+
+/* ------------------------------------------------------------------- run */
+
+.run-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.btn {
+  font: inherit;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 22px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+:root[data-theme="dark"] .btn, :root:not([data-theme="light"]) .btn { color: #1a1013; }
+
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .btn { color: #fff; } }
+
+.btn:hover { filter: brightness(1.06); }
+.btn:disabled { opacity: .55; cursor: default; filter: none; }
+
+.run-status { color: var(--ink-faint); font-size: 14.5px; }
+
+.compare { display: grid; gap: 16px; grid-template-columns: 1fr; }
+
+@media (min-width: 760px) { .compare { grid-template-columns: 1fr 1fr; } }
+
+.panel {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.panel.bad-panel { border-top: 3px solid var(--bad); }
+.panel.good-panel { border-top: 3px solid var(--good); }
+
+.panel-title { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.panel-title h3 { margin: 0; }
+.panel-file { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+
+.metric-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px dashed var(--line);
+}
+
+.metric-row:last-child { border-bottom: none; }
+.metric-label { color: var(--ink-soft); font-size: 14.5px; }
+.metric-value { font-family: var(--mono); font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.metric-value.is-bad { color: var(--bad); }
+.metric-value.is-good { color: var(--good); }
+.metric-value.is-idle { color: var(--ink-faint); font-weight: 500; }
+
+.headline-figure {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: var(--radius);
+  background: var(--bg-sunken);
+  border: 1px solid var(--line);
+}
+
+.headline-figure div { flex: 1 1 180px; }
+.headline-figure .big { font-family: var(--mono); font-size: 26px; font-weight: 650; letter-spacing: -.02em; }
+.headline-figure .cap { color: var(--ink-soft); font-size: 14px; }
+
+/* ----------------------------------------------------------------- defects */
+
+.defect { scroll-margin-top: 72px; }
+
+.defect {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+
+.defect-head { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+
+.tag {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  flex: none;
+  margin-top: 2px;
+}
+
+.defect dl { margin: 0; display: grid; gap: 8px; }
+.defect dt { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-faint); font-weight: 650; }
+.defect dd { margin: 0 0 6px; color: var(--ink-soft); font-size: 15px; }
+.defect dd strong { color: var(--ink); font-weight: 600; }
+
+.code-pair { display: grid; gap: 10px; margin-top: 12px; grid-template-columns: 1fr; }
+
+@media (min-width: 760px) { .code-pair { grid-template-columns: 1fr 1fr; } }
+
+.code-block { background: var(--bg-sunken); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.code-block header {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 7px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-faint);
+}
+.code-block.before header { color: var(--bad); }
+.code-block.after header { color: var(--good); }
+.code-block pre {
+  margin: 0;
+  padding: 12px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* -------------------------------------------------------------------- log */
+
+.log-controls { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+
+.pill {
+  font: inherit;
+  font-size: 14px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 6px 15px;
+  cursor: pointer;
+}
+
+.pill[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised); }
+
+table { border-collapse: collapse; width: 100%; font-size: 14px; min-width: 560px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); font-weight: 650; background: var(--bg-sunken); position: sticky; top: 0; }
+tbody tr:last-child td { border-bottom: none; }
+td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+tr.row-error td { background: var(--accent-soft); }
+tr.row-alert td { background: var(--warn-soft); }
+td .why { color: var(--ink-soft); white-space: normal; font-size: 13px; }
+
+.status-chip { font-family: var(--mono); font-size: 12px; padding: 2px 8px; border-radius: 5px; }
+.status-chip.ok { background: var(--good-soft); color: var(--good); }
+.status-chip.err { background: var(--accent-soft); color: var(--bad); }
+
+.empty-log { padding: 22px; color: var(--ink-faint); font-size: 14.5px; }
+
+/* ------------------------------------------------------------------ lists */
+
+ul.plain { margin: 0; padding-left: 20px; color: var(--ink-soft); }
+ul.plain li { margin-bottom: 7px; }
+ul.plain li strong { color: var(--ink); font-weight: 600; }
+
+.support {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  margin-top: 40px;
+  padding: 28px 0 48px;
+  color: var(--ink-faint);
+  font-size: 14px;
+}
+
+footer p { margin: 0 0 8px; max-width: 70ch; }
+
+a { color: var(--accent); }
+
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand"><span class="dot"></span> Automation repair report</div>
+    <button class="theme-toggle" id="theme-toggle" type="button">Dark</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="hero">
+    <p class="eyebrow">n8n · Zapier · Make — repair work</p>
+    <h1>An order-intake automation that lost one order in eight — and said nothing</h1>
+    <p class="lede">
+      A small ceramics studio ran orders from their shop into Google Sheets, a confirmation email and
+      a Slack channel. It worked for months, then started dropping orders and sending some customers
+      two confirmations. Nobody noticed until a customer asked where their mug was.
+    </p>
+    <p class="lede">
+      This page is the repair: what was broken, why, and what the fix changed — with both versions of
+      the workflow replayed over the same shift so the difference is counted, not claimed.
+    </p>
+    <p class="note">
+      <strong>Self-initiated demo.</strong> Palewood Ceramics is an invented company; the orders,
+      customers and outages are generated by a scenario file that ships with the project. The workflow JSON,
+      the defects and the repairs are the kind of defects and repairs this service covers.
+    </p>
+  </div>
+
+  <section>
+    <h2>What the owner reported</h2>
+    <p class="sub">Four complaints, in her words. Every one of them turned out to have a different cause.</p>
+    <div class="complaints">
+      <div class="complaint">
+        <p class="quote">“Some orders just never show up in the sheet.”</p>
+        <p>No pattern she could see — a few every day, always discovered from the customer’s side.</p>
+      </div>
+      <div class="complaint">
+        <p class="quote">“A few customers got the same confirmation twice.”</p>
+        <p>Embarrassing, and two of them thought they had been charged twice.</p>
+      </div>
+      <div class="complaint">
+        <p class="quote">“Sometimes the Slack channel goes quiet for an hour.”</p>
+        <p>The automation had stopped mid-run. n8n knew; nobody else did.</p>
+      </div>
+      <div class="complaint">
+        <p class="quote">“I don’t trust it any more, so I check every order by hand.”</p>
+        <p>Which is the real cost: the automation was still running, but it had stopped saving time.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="compare">
+    <h2>Replay the same shift through both versions</h2>
+    <p class="sub">
+      One five-hour shift: 120 orders, 60 scheduled runs, and the same interruptions in both runs —
+      a seven-minute shop-host restart, one rate limit and one bad gateway from the shop API, two
+      Gmail quota blocks, three orders the shop published seven to nine minutes late, four customers
+      who corrected their order a few minutes after placing it, one order without a surname, one
+      without a phone number, one with an empty email field, and one address that bounces
+      permanently. The two workflow files are the only difference.
+    </p>
+
+    <div class="run-bar">
+      <button class="btn" id="run-button" type="button">Run both versions</button>
+      <span class="run-status" id="run-status">Nothing has run yet — the numbers below are filled in by the run.</span>
+    </div>
+
+    <div class="compare">
+      <div class="panel bad-panel">
+        <div class="panel-title">
+          <h3>Before — “Order intake v3”</h3>
+          <span class="panel-file">order-intake-BROKEN.json</span>
+        </div>
+        <div id="metrics-broken"></div>
+      </div>
+      <div class="panel good-panel">
+        <div class="panel-title">
+          <h3>After — “Order intake v4”</h3>
+          <span class="panel-file">order-intake-FIXED.json</span>
+        </div>
+        <div id="metrics-fixed"></div>
+      </div>
+    </div>
+
+    <div class="headline-figure" id="headline"></div>
+  </section>
+
+  <section id="defects">
+    <h2>What was broken, and why</h2>
+    <p class="sub">
+      Six defects. The “before” and “after” snippets are read out of the two workflow files on this
+      page — not retyped — so they cannot drift from what actually runs.
+    </p>
+    <div id="defects"></div>
+  </section>
+
+  <section id="log">
+    <h2>Run log</h2>
+    <p class="sub">
+      Every scheduled run of the shift, as n8n would list its executions. In the broken version the
+      failures are the rows in red — and none of them produced a message to anyone.
+    </p>
+    <div class="log-controls">
+      <button class="pill" id="log-broken" type="button" aria-pressed="true">Before (v3)</button>
+      <button class="pill" id="log-fixed" type="button" aria-pressed="false">After (v4)</button>
+      <button class="pill" id="log-filter" type="button" aria-pressed="false">Only runs with a problem</button>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Run</th><th>Time (UTC)</th><th>Status</th><th>Saved</th><th>Parked</th>
+            <th>Emails</th><th>Alerts</th><th>What happened</th>
+          </tr>
+        </thead>
+        <tbody id="log-body"><tr><td colspan="8" class="empty-log">Run the comparison above to fill the log.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>How this page runs the workflows</h2>
+    <p class="sub">So that nothing here has to be taken on trust.</p>
+    <ul class="plain">
+      <li><strong>The two JSON files are written in n8n’s export format</strong> — node types,
+        typeVersions, resource locators, retry settings and error outputs — and are meant to be loaded
+        with <em>Workflows → Import from file</em>. To be exact about it: they were written for this
+        demo and have not been opened inside a running n8n instance, so treat the canvas as untested
+        and the logic as tested. The nodes, the expressions and the JavaScript inside the Code nodes
+        are what you see in the snippets above.</li>
+      <li><strong>The page executes those files.</strong> A small runner in <code>engine/runner.js</code>
+        walks the same nodes and connections, evaluates the same <code>{{ … }}</code> expressions and
+        actually runs the JavaScript stored in the Code nodes. The shop API, Google Sheets, Gmail and
+        Slack are local mocks with scripted outages.</li>
+      <li><strong>Both versions get the identical shift.</strong> Same orders, same timestamps, same
+        outages, same virtual clock — so retrying two seconds apart cannot escape a seven-minute outage.</li>
+      <li><strong>It is not n8n itself.</strong> The runner covers the nine node types these workflows
+        use — Schedule Trigger, Error Trigger, HTTP Request, Code, Split Out, IF, Google Sheets, Gmail
+        and Slack — and does not reproduce n8n’s queue mode, concurrency or its UI.</li>
+      <li><strong>One n8n quirk to know before testing it there:</strong> the cursor and the memory of
+        handled orders live in the workflow’s static data, which n8n keeps for production executions of
+        an active workflow, not for manual runs from the editor. Pressing “Execute workflow” by hand
+        will therefore look as if the cursor never moves.</li>
+      <li><strong>One difference worth naming:</strong> the runner retries the item that failed. n8n
+        retries the whole node, which can repeat items that already succeeded. For a node with a side
+        effect — sending email — the production build therefore loops over orders one at a time, so a
+        retry cannot email anyone twice. That loop is the next step recommended in the written repair report (available on request),
+        not something this replay pretends to prove.</li>
+      <li><strong>The numbers in the panels come from the run you just triggered</strong>, not from
+        text written into the page. In the project, <code>node tests/run-tests.js</code> checks the same figures from
+        the command line: 38 assertions over the files and both runs.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What the monthly part covers</h2>
+    <div class="support">
+      <ul class="plain">
+        <li><strong>Watching the runs.</strong> Failed executions and error alerts land in a channel I
+          read, so a broken automation is found by me and not by a customer.</li>
+        <li><strong>Keeping up with the services.</strong> Shop, Google and Slack change their APIs and
+          their limits; an automation nobody maintains fails quietly in the middle of a busy week.</li>
+        <li><strong>Small changes as the business changes.</strong> A new product type, a second
+          sheet, an extra notification — included, within the agreed monthly hours.</li>
+        <li><strong>A short monthly note:</strong> how many orders went through, what failed and what I
+          changed. One page, no jargon.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      Palewood Ceramics, its customers and its orders are invented for this demo. No real shop, no real
+      keys, no network calls: the API key in the broken file is literally
+      <code>pk_live_EXAMPLE_NOT_A_REAL_KEY_7f3c2a</code>, and the repaired version keeps its key in an
+      n8n credential where it belongs.
+    </p>
+    <p>
+      The full project behind this page is available on request: the two workflows plus the error-handler workflow in
+      <code>workflows/</code>, the runner and the scenario in <code>engine/</code>, the test suite in
+      <code>tests/</code>, and the written repair report in <code>REPAIR-REPORT.md</code>.
+    </p>
+  </footer>
+
+</main>
+
+<script>
+/*
+ * Palewood Ceramics — one 5-hour shift of real-looking shop traffic.
+ *
+ * Everything here is deterministic: the same seed always produces the same
+ * orders, the same timestamps and the same outages. Both versions of the
+ * workflow are run against this identical scenario, so any difference in the
+ * results comes from the workflows themselves.
+ *
+ * The company, the customers and the orders are invented for this demo.
+ */
+(function (root) {
+  'use strict';
+
+  var SHIFT_START = Date.parse('2026-09-15T08:00:00.000Z'); // Monday, start of shift
+  var RUN_INTERVAL_MS = 5 * 60 * 1000;                      // schedule trigger: every 5 minutes
+  var RUN_COUNT = 60;                                       // 5 hours
+  var ORDER_COUNT = 120;
+
+  // Deterministic pseudo-random generator (mulberry32).
+  function rng(seed) {
+    return function () {
+      seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  var FIRST_NAMES = ['Mara', 'Tobias', 'Ines', 'Noor', 'Jonas', 'Alba', 'Henrik', 'Sofia',
+    'Emil', 'Clara', 'Ruben', 'Lena', 'Otto', 'Nadia', 'Kasper', 'Elif', 'Pia', 'Milan'];
+  var LAST_NAMES = ['Vester', 'Holm', 'Barros', 'Kaya', 'Lindqvist', 'Moreau', 'Dahl', 'Rossi',
+    'Berger', 'Novak', 'Okafor', 'Sandberg', "O'Neill", 'Werner', 'Falk', 'Duarte'];
+  var PRODUCTS = [
+    { sku: 'PW-MUG-STONE', name: 'Stoneware mug', price: 28 },
+    { sku: 'PW-BOWL-ASH', name: 'Ash-glazed bowl', price: 46 },
+    { sku: 'PW-PLATE-SAND', name: 'Sand dinner plate', price: 39 },
+    { sku: 'PW-VASE-SMOKE', name: 'Smoke-fired vase', price: 124 },
+    { sku: 'PW-JUG-MILK', name: 'Milk jug', price: 52 },
+    { sku: 'PW-SET-TEA4', name: 'Tea set for four', price: 168 }
+  ];
+
+  /*
+   * Orders that reproduce the four complaints the owner reported.
+   * Index = position in the generated order list (0-based).
+   */
+  var EDITED_BY_CUSTOMER = [11, 38, 62, 97];   // customer changed the delivery address a few minutes later
+  var PUBLISHED_LATE = [27, 54, 88];           // the shop's queue exposed them to the API 7-9 minutes late
+  var MISSING_LAST_NAME = 46;                  // single-name customer
+  var MISSING_PHONE = 63;                      // phone is an optional field in the checkout
+  var MISSING_EMAIL = 101;                     // typo swallowed the address
+  var HARD_BOUNCE_EMAIL = 74;                  // address exists in the order but bounces permanently
+
+  function buildOrders() {
+    var rand = rng(20260915);
+    var orders = [];
+
+    for (var i = 0; i < ORDER_COUNT; i++) {
+      // Orders arrive unevenly across the shift, as real shop traffic does.
+      var offset = Math.floor((i + rand()) * ((RUN_COUNT * RUN_INTERVAL_MS) / (ORDER_COUNT + 6)));
+      var createdAt = SHIFT_START + offset + Math.floor(rand() * 45000);
+
+      var itemCount = 1 + Math.floor(rand() * 3);
+      var lineItems = [];
+      var total = 0;
+      for (var k = 0; k < itemCount; k++) {
+        var product = PRODUCTS[Math.floor(rand() * PRODUCTS.length)];
+        var qty = 1 + Math.floor(rand() * 2);
+        lineItems.push({ sku: product.sku, name: product.name, qty: qty, price_eur: product.price });
+        total += product.price * qty;
+      }
+
+      var first = FIRST_NAMES[Math.floor(rand() * FIRST_NAMES.length)];
+      var last = LAST_NAMES[Math.floor(rand() * LAST_NAMES.length)];
+      var id = 'PC-' + (10001 + i);
+
+      // The shop's queue publishes an order to the API a few seconds after it is
+      // written — how long varies with load. This ordinary jitter is what makes a
+      // fixed "last N minutes" window unsafe in both directions.
+      var availableAt = createdAt + Math.floor((5 + rand() * 50) * 1000);
+      var publishedLate = PUBLISHED_LATE.indexOf(i) !== -1;
+      if (publishedLate) {
+        availableAt = createdAt + (7 + Math.floor(rand() * 3)) * 60 * 1000; // 7-9 minutes late
+      }
+
+      // Some customers change their delivery address minutes after ordering. The
+      // shop then exposes the same order id again with a newer updated_at — which
+      // is where duplicate rows and duplicate emails come from.
+      var edit = null;
+      if (EDITED_BY_CUSTOMER.indexOf(i) !== -1) {
+        var editedAt = createdAt + (2 + Math.floor(rand() * 3)) * 60 * 1000;
+        edit = {
+          updated_at: new Date(editedAt).toISOString(),
+          available_at: editedAt + Math.floor((5 + rand() * 50) * 1000)
+        };
+      }
+
+      var email = (first + '.' + last).toLowerCase().replace(/[^a-z.]/g, '') + i + '@example.com';
+      var phone = '+49 30 ' + (1000000 + Math.floor(rand() * 8999999));
+
+      var customer = {
+        first_name: first,
+        last_name: last,
+        email: email,
+        phone: phone
+      };
+
+      if (i === MISSING_LAST_NAME) { delete customer.last_name; }
+      if (i === MISSING_PHONE) { delete customer.phone; }
+      if (i === MISSING_EMAIL) { customer.email = ''; }
+      if (i === HARD_BOUNCE_EMAIL) { customer.email = 'bounce.' + customer.email.replace('@example.com', '@invalid-domain.test'); }
+
+      orders.push({
+        id: id,
+        customer: customer,
+        line_items: lineItems,
+        total_eur: total,
+        currency: 'EUR',
+        created_at: new Date(createdAt).toISOString(),
+        updated_at: new Date(createdAt).toISOString(),
+        // Not part of the API payload — the mock shop uses these to decide when the
+        // order becomes visible and which version it serves. Stripped before the
+        // order is handed to a workflow.
+        _available_at: availableAt,
+        _edit: edit,
+        _published_late: publishedLate
+      });
+    }
+
+    return orders;
+  }
+
+  /*
+   * Outages injected into the mock services. Windows are absolute virtual time,
+   * so a retry that waits two seconds does not escape a seven-minute outage.
+   */
+  function buildFaults() {
+    return {
+      shopApi: [
+        {
+          from: Date.parse('2026-09-15T08:50:00.000Z'),
+          to: Date.parse('2026-09-15T08:57:00.000Z'),
+          status: 503,
+          message: 'Service Unavailable — shop host restarting',
+          label: 'Shop hosting restarted (7 minutes)'
+        },
+        {
+          from: Date.parse('2026-09-15T09:35:00.000Z'),
+          to: Date.parse('2026-09-15T09:35:04.000Z'),
+          status: 429,
+          message: 'Too Many Requests — shop API rate limit',
+          label: 'Shop API rate limit (4 seconds)'
+        },
+        {
+          from: Date.parse('2026-09-15T11:20:00.000Z'),
+          to: Date.parse('2026-09-15T11:20:03.000Z'),
+          status: 502,
+          message: 'Bad Gateway — shop API hiccup',
+          label: 'Shop API hiccup (3 seconds)'
+        }
+      ],
+      gmail: [
+        {
+          from: Date.parse('2026-09-15T08:25:00.000Z'),
+          to: Date.parse('2026-09-15T08:25:03.000Z'),
+          status: 429,
+          message: 'Gmail API quota exceeded, retry later',
+          label: 'Gmail quota (3 seconds)'
+        },
+        {
+          from: Date.parse('2026-09-15T10:40:00.000Z'),
+          to: Date.parse('2026-09-15T10:40:06.000Z'),
+          status: 429,
+          message: 'Gmail API quota exceeded, retry later',
+          label: 'Gmail quota (6 seconds)'
+        }
+      ]
+    };
+  }
+
+  function buildRuns() {
+    var runs = [];
+    for (var i = 0; i < RUN_COUNT; i++) {
+      runs.push(SHIFT_START + i * RUN_INTERVAL_MS);
+    }
+    return runs;
+  }
+
+  root.PalewoodScenario = {
+    SHIFT_START: SHIFT_START,
+    RUN_INTERVAL_MS: RUN_INTERVAL_MS,
+    RUN_COUNT: RUN_COUNT,
+    ORDER_COUNT: ORDER_COUNT,
+    buildOrders: buildOrders,
+    buildFaults: buildFaults,
+    buildRuns: buildRuns,
+    marked: {
+      editedByCustomer: EDITED_BY_CUSTOMER,
+      publishedLate: PUBLISHED_LATE,
+      missingLastName: MISSING_LAST_NAME,
+      missingPhone: MISSING_PHONE,
+      missingEmail: MISSING_EMAIL,
+      hardBounceEmail: HARD_BOUNCE_EMAIL
+    }
+  };
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = root.PalewoodScenario;
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script>
+/*
+ * Mock versions of the four services the workflow talks to:
+ * the shop API, Google Sheets, Gmail and Slack.
+ *
+ * They behave like the real ones in the ways that matter for this repair:
+ * paging, a filter by timestamp, publishing lag, rate limits, outages and
+ * permanent email bounces. Nothing leaves this file — no network calls, no
+ * keys, no accounts.
+ */
+(function (root) {
+  'use strict';
+
+  var PAGE_SIZE = 25;
+
+  function ServiceError(status, message) {
+    var err = new Error(message);
+    err.status = status;
+    err.isServiceError = true;
+    return err;
+  }
+
+  function activeFault(faults, nowMs) {
+    for (var i = 0; i < faults.length; i++) {
+      if (nowMs >= faults[i].from && nowMs < faults[i].to) return faults[i];
+    }
+    return null;
+  }
+
+  /*
+   * A virtual clock. Retries and waits move it forward, so "retry 3 times,
+   * 2 seconds apart" cannot survive a seven-minute outage — exactly as in
+   * production.
+   */
+  function Clock(startMs) {
+    this.ms = startMs;
+  }
+  Clock.prototype.now = function () { return this.ms; };
+  Clock.prototype.advance = function (ms) { this.ms += ms; };
+  Clock.prototype.set = function (ms) { this.ms = ms; };
+  Clock.prototype.iso = function () { return new Date(this.ms).toISOString(); };
+
+  function createEnvironment(options) {
+    var orders = options.orders;
+    var faults = options.faults;
+    var clock = options.clock;
+
+    var calls = { shopApi: 0, sheets: 0, gmail: 0, slack: 0 };
+    var sheets = {};         // sheet name -> array of rows
+    var emails = [];         // every accepted email
+    var emailAttempts = [];  // every attempt, including failures
+    var slackMessages = [];
+
+    function shopApiGet(query) {
+      calls.shopApi++;
+      var now = clock.now();
+
+      var fault = activeFault(faults.shopApi, now);
+      if (fault) {
+        throw ServiceError(fault.status, 'Shop API ' + fault.status + ': ' + fault.message);
+      }
+
+      if (!query.api_key && !query.__hasAuthHeader) {
+        throw ServiceError(401, 'Shop API 401: missing API key');
+      }
+
+      var since = query.updated_since ? Date.parse(query.updated_since) : 0;
+      var page = query.page ? parseInt(query.page, 10) : 1;
+      if (!page || page < 1) page = 1;
+
+      var visible = [];
+      for (var i = 0; i < orders.length; i++) {
+        var order = orders[i];
+        if (order._available_at > now) continue;                  // not published by the shop yet
+        var version = currentVersion(order, now);
+        if (Date.parse(version.updated_at) < since) continue;     // outside the requested window
+        visible.push(version);
+      }
+
+      visible.sort(function (a, b) {
+        var diff = Date.parse(a.updated_at) - Date.parse(b.updated_at);
+        return diff !== 0 ? diff : (a.id < b.id ? -1 : 1);
+      });
+
+      var start = (page - 1) * PAGE_SIZE;
+      var slice = visible.slice(start, start + PAGE_SIZE);
+
+      return {
+        orders: slice,
+        page: page,
+        page_size: PAGE_SIZE,
+        has_more: start + PAGE_SIZE < visible.length
+      };
+    }
+
+    // The order as the shop would serve it right now: if the customer edited it
+    // and the edit has been published, the same id comes back with a newer
+    // updated_at — the shape of a real shop API, and the source of the duplicates.
+    function currentVersion(order, now) {
+      var payload = publicOrder(order);
+      if (order._edit && order._edit.available_at <= now) {
+        payload.updated_at = order._edit.updated_at;
+        payload.revision = 2;
+      } else {
+        payload.revision = 1;
+      }
+      return payload;
+    }
+
+    // The API never exposes the internal bookkeeping fields.
+    function publicOrder(order) {
+      var copy = {};
+      for (var key in order) {
+        if (Object.prototype.hasOwnProperty.call(order, key) && key.charAt(0) !== '_') {
+          copy[key] = order[key];
+        }
+      }
+      return copy;
+    }
+
+    function sheetsAppend(sheetName, row) {
+      calls.sheets++;
+      if (!sheets[sheetName]) sheets[sheetName] = [];
+      sheets[sheetName].push({ at: clock.iso(), row: row });
+      return { updated: true, sheet: sheetName };
+    }
+
+    // Google Sheets "Append or Update": rewrite the row whose matching column
+    // holds the same value, otherwise add one.
+    function sheetsAppendOrUpdate(sheetName, row, matchColumn) {
+      calls.sheets++;
+      if (!sheets[sheetName]) sheets[sheetName] = [];
+      var key = row ? row[matchColumn] : undefined;
+
+      if (key !== undefined) {
+        for (var i = 0; i < sheets[sheetName].length; i++) {
+          if (sheets[sheetName][i].row && sheets[sheetName][i].row[matchColumn] === key) {
+            sheets[sheetName][i] = { at: clock.iso(), row: row, replaced: true };
+            return { updated: true, sheet: sheetName, matched: true };
+          }
+        }
+      }
+
+      sheets[sheetName].push({ at: clock.iso(), row: row });
+      return { updated: true, sheet: sheetName, matched: false };
+    }
+
+    function gmailSend(message) {
+      calls.gmail++;
+      var now = clock.now();
+      var to = String(message.to || '').trim();
+
+      var attempt = { at: clock.iso(), to: to, subject: message.subject, order_id: message.order_id };
+
+      if (!to || to.indexOf('@') === -1) {
+        attempt.result = 'rejected';
+        attempt.reason = 'Gmail 400: invalid To header "' + to + '"';
+        emailAttempts.push(attempt);
+        throw ServiceError(400, attempt.reason);
+      }
+
+      if (/@invalid-domain\.test$/.test(to)) {
+        attempt.result = 'bounced';
+        attempt.reason = 'Gmail 550: recipient address rejected (domain does not exist)';
+        emailAttempts.push(attempt);
+        throw ServiceError(550, attempt.reason);
+      }
+
+      var fault = activeFault(faults.gmail, now);
+      if (fault) {
+        attempt.result = 'rate-limited';
+        attempt.reason = 'Gmail ' + fault.status + ': ' + fault.message;
+        emailAttempts.push(attempt);
+        throw ServiceError(fault.status, attempt.reason);
+      }
+
+      attempt.result = 'sent';
+      emailAttempts.push(attempt);
+      emails.push({ at: clock.iso(), to: to, subject: message.subject, body: message.body, order_id: message.order_id });
+      return { id: 'gmail-' + emails.length };
+    }
+
+    function slackPost(channel, text) {
+      calls.slack++;
+      slackMessages.push({ at: clock.iso(), channel: channel, text: text });
+      return { ok: true };
+    }
+
+    return {
+      clock: clock,
+      calls: calls,
+      shopApiGet: shopApiGet,
+      sheetsAppend: sheetsAppend,
+      sheetsAppendOrUpdate: sheetsAppendOrUpdate,
+      gmailSend: gmailSend,
+      slackPost: slackPost,
+      state: {
+        sheets: sheets,
+        emails: emails,
+        emailAttempts: emailAttempts,
+        slackMessages: slackMessages
+      }
+    };
+  }
+
+  root.PalewoodServices = {
+    Clock: Clock,
+    ServiceError: ServiceError,
+    createEnvironment: createEnvironment,
+    PAGE_SIZE: PAGE_SIZE
+  };
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = root.PalewoodServices;
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script>
+/*
+ * A small n8n runner.
+ *
+ * It reads the two workflow JSON files exactly as they are exported from n8n
+ * and executes them: schedule trigger, HTTP request with paging and retries,
+ * Code nodes (the JavaScript inside the file really runs), Split Out,
+ * Remove Duplicates, IF, Google Sheets, Gmail and Slack.
+ *
+ * The point is that the difference between the broken and the repaired run
+ * cannot be faked: both go through this same runner, the same mock services
+ * and the same outages. Only the JSON differs.
+ *
+ * It is not n8n itself — see "What this runner does not model" in README.md.
+ */
+(function (root) {
+  'use strict';
+
+  var NODE_STEP_MS = 200; // virtual time one node call takes
+
+  // ---------------------------------------------------------------- helpers
+
+  function clone(value) {
+    return value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+  }
+
+  function nowHelper(clock) {
+    function make(ms) {
+      return {
+        minus: function (spec) {
+          var delta = 0;
+          if (spec) {
+            if (spec.minutes) delta += spec.minutes * 60000;
+            if (spec.hours) delta += spec.hours * 3600000;
+            if (spec.days) delta += spec.days * 86400000;
+            if (spec.seconds) delta += spec.seconds * 1000;
+          }
+          return make(ms - delta);
+        },
+        toISO: function () { return new Date(ms).toISOString(); }
+      };
+    }
+    return make(clock.now());
+  }
+
+  // Several n8n fields are "resource locators": {__rl, mode, value} instead of
+  // a plain string. Both forms are accepted here, as in n8n itself.
+  function locatorValue(field) {
+    if (field && typeof field === 'object' && field.__rl) return field.value;
+    return field;
+  }
+
+  // n8n expressions: a value starting with "=" may contain {{ ... }} blocks.
+  function resolveValue(raw, ctx) {
+    if (typeof raw !== 'string') return raw;
+    if (raw.charAt(0) !== '=') return raw;
+
+    var body = raw.slice(1);
+    var whole = body.match(/^\{\{([\s\S]*)\}\}$/);
+    if (whole) return evaluateExpression(whole[1], ctx);
+
+    return body.replace(/\{\{([\s\S]*?)\}\}/g, function (_, expr) {
+      var value = evaluateExpression(expr, ctx);
+      if (value === undefined || value === null) return '';
+      return typeof value === 'object' ? JSON.stringify(value) : String(value);
+    });
+  }
+
+  function evaluateExpression(expr, ctx) {
+    /* eslint-disable no-new-func */
+    var fn = new Function('$json', '$now', '$pageCount', '$response',
+      '"use strict"; return (' + expr + ');');
+    return fn(ctx.$json, ctx.$now, ctx.$pageCount, ctx.$response);
+  }
+
+  function toItems(result) {
+    if (result === undefined || result === null) return [];
+    var list = Array.isArray(result) ? result : [result];
+    return list.map(function (entry) {
+      if (entry && typeof entry === 'object' && Object.prototype.hasOwnProperty.call(entry, 'json')) {
+        return { json: entry.json };
+      }
+      return { json: entry };
+    });
+  }
+
+  function NodeFailure(node, error) {
+    this.node = node;
+    this.error = error;
+    this.message = error && error.message ? error.message : String(error);
+  }
+
+  // --------------------------------------------------------------- the runner
+
+  function Runner(workflow, env, options) {
+    this.workflow = workflow;
+    this.env = env;
+    this.options = options || {};
+    this.staticData = this.options.staticData || {};
+    this.nodesByName = {};
+    for (var i = 0; i < workflow.nodes.length; i++) {
+      this.nodesByName[workflow.nodes[i].name] = workflow.nodes[i];
+    }
+  }
+
+  Runner.prototype.getStaticData = function () {
+    return this.staticData;
+  };
+
+  Runner.prototype.findTrigger = function () {
+    for (var i = 0; i < this.workflow.nodes.length; i++) {
+      var type = this.workflow.nodes[i].type;
+      if (type === 'n8n-nodes-base.scheduleTrigger' || type === 'n8n-nodes-base.errorTrigger') {
+        return this.workflow.nodes[i];
+      }
+    }
+    return null;
+  };
+
+  /* Runs one execution of the workflow. Returns a report of what happened. */
+  Runner.prototype.execute = function (input) {
+    var self = this;
+    var trigger = this.findTrigger();
+    var report = {
+      status: 'success',
+      error: null,
+      lastNodeExecuted: null,
+      nodes: []
+    };
+
+    if (!trigger) {
+      report.status = 'error';
+      report.error = 'workflow has no trigger node';
+      return report;
+    }
+
+    try {
+      this.walk(trigger.name, input || [{ json: {} }], report);
+    } catch (failure) {
+      if (failure instanceof NodeFailure) {
+        report.status = 'error';
+        report.error = failure.message;
+        report.lastNodeExecuted = failure.node.name;
+      } else {
+        throw failure;
+      }
+    }
+
+    return report;
+  };
+
+  Runner.prototype.walk = function (nodeName, items, report) {
+    var node = this.nodesByName[nodeName];
+    if (!node) return;
+
+    var outputs = this.runNode(node, items, report);
+    report.lastNodeExecuted = node.name;
+
+    var connections = (this.workflow.connections[node.name] || {}).main || [];
+    for (var outputIndex = 0; outputIndex < connections.length; outputIndex++) {
+      var targets = connections[outputIndex] || [];
+      var produced = outputs[outputIndex] || [];
+      if (produced.length === 0) continue;
+      for (var t = 0; t < targets.length; t++) {
+        this.walk(targets[t].node, produced, report);
+      }
+    }
+  };
+
+  /* Executes a single node, applying its retry and error policy. */
+  Runner.prototype.runNode = function (node, items, report) {
+    var self = this;
+    var clock = this.env.clock;
+    var maxTries = node.retryOnFail ? (node.maxTries || 3) : 1;
+    var waitBetweenTries = node.waitBetweenTries === undefined ? 1000 : node.waitBetweenTries;
+    var onError = node.onError || 'stopWorkflow';
+
+    var record = { node: node.name, type: node.type, attempts: 0, errors: [] };
+    report.nodes.push(record);
+
+    // Nodes that act on every item separately: one bad item must not decide
+    // the fate of the others unless the workflow says so.
+    var perItem = ['n8n-nodes-base.googleSheets', 'n8n-nodes-base.gmail', 'n8n-nodes-base.slack']
+      .indexOf(node.type) !== -1;
+
+    function attempt(runOnce) {
+      var lastError = null;
+      for (var tryIndex = 0; tryIndex < maxTries; tryIndex++) {
+        record.attempts++;
+        try {
+          clock.advance(NODE_STEP_MS);
+          return { ok: true, value: runOnce() };
+        } catch (error) {
+          lastError = error;
+          record.errors.push(error.message);
+          if (tryIndex < maxTries - 1) clock.advance(waitBetweenTries);
+        }
+      }
+      return { ok: false, error: lastError };
+    }
+
+    if (perItem) {
+      var okItems = [];
+      var errorItems = [];
+      for (var i = 0; i < items.length; i++) {
+        (function (item) {
+          var outcome = attempt(function () { return self.executeNode(node, [item])[0]; });
+          if (outcome.ok) {
+            okItems = okItems.concat(outcome.value);
+          } else if (onError === 'continueErrorOutput') {
+            var failed = clone(item.json) || {};
+            failed.error = outcome.error.message;
+            errorItems.push({ json: failed });
+          } else if (onError === 'continueRegularOutput') {
+            okItems.push(item);
+          } else {
+            throw new NodeFailure(node, outcome.error);
+          }
+        })(items[i]);
+      }
+      return [okItems, errorItems];
+    }
+
+    var result = attempt(function () { return self.executeNode(node, items); });
+    if (result.ok) return result.value;
+
+    if (onError === 'continueErrorOutput') {
+      return [[], [{ json: { error: result.error.message } }]];
+    }
+    if (onError === 'continueRegularOutput') {
+      return [[{ json: { error: result.error.message } }], []];
+    }
+    throw new NodeFailure(node, result.error);
+  };
+
+  /* The node implementations. Each returns an array of outputs. */
+  Runner.prototype.executeNode = function (node, items) {
+    var self = this;
+    var env = this.env;
+    var params = node.parameters || {};
+
+    switch (node.type) {
+      case 'n8n-nodes-base.scheduleTrigger':
+      case 'n8n-nodes-base.errorTrigger':
+        return [items];
+
+      case 'n8n-nodes-base.httpRequest':
+        return [this.executeHttpRequest(node, items)];
+
+      case 'n8n-nodes-base.code':
+        return [this.executeCode(node, items)];
+
+      case 'n8n-nodes-base.splitOut': {
+        var field = params.fieldToSplitOut;
+        var out = [];
+        items.forEach(function (item) {
+          var value = item.json ? item.json[field] : undefined;
+          if (Array.isArray(value)) {
+            value.forEach(function (entry) { out.push({ json: entry }); });
+          } else if (value !== undefined && value !== null) {
+            out.push({ json: value });
+          } else {
+            // n8n fails the node when the field is missing; so does this runner.
+            throw new Error("Split Out: the field '" + field + "' is not present in the input");
+          }
+        });
+        return [out];
+      }
+
+      case 'n8n-nodes-base.if': {
+        var trueItems = [];
+        var falseItems = [];
+        items.forEach(function (item) {
+          (self.evaluateIf(params, item) ? trueItems : falseItems).push(item);
+        });
+        return [trueItems, falseItems];
+      }
+
+      case 'n8n-nodes-base.googleSheets': {
+        var sheetName = locatorValue(params.sheetName);
+        if (params.operation === 'append') {
+          items.forEach(function (item) {
+            env.sheetsAppend(sheetName, clone(item.json));
+          });
+          return [items];
+        }
+        if (params.operation === 'appendOrUpdate') {
+          var matching = (params.columns && params.columns.matchingColumns) || [];
+          if (matching.length !== 1) {
+            throw new Error('Append or Update needs exactly one matching column');
+          }
+          items.forEach(function (item) {
+            env.sheetsAppendOrUpdate(sheetName, clone(item.json), matching[0]);
+          });
+          return [items];
+        }
+        throw new Error('unsupported Google Sheets operation: ' + params.operation);
+      }
+
+      case 'n8n-nodes-base.gmail': {
+        items.forEach(function (item) {
+          var ctx = { $json: item.json, $now: nowHelper(env.clock) };
+          env.gmailSend({
+            to: resolveValue(params.sendTo, ctx),
+            subject: resolveValue(params.subject, ctx),
+            body: resolveValue(params.message, ctx),
+            order_id: item.json ? item.json.order_id : undefined
+          });
+        });
+        return [items];
+      }
+
+      case 'n8n-nodes-base.slack': {
+        items.forEach(function (item) {
+          var ctx = { $json: item.json, $now: nowHelper(env.clock) };
+          env.slackPost(locatorValue(params.channelId), resolveValue(params.text, ctx));
+        });
+        return [items];
+      }
+
+      default:
+        throw new Error('unsupported node type: ' + node.type);
+    }
+  };
+
+  Runner.prototype.evaluateIf = function (params, item) {
+    var conditions = (params.conditions && params.conditions.conditions) || [];
+    var combinator = (params.conditions && params.conditions.combinator) || 'and';
+    var env = this.env;
+    var results = conditions.map(function (condition) {
+      var ctx = { $json: item.json, $now: nowHelper(env.clock) };
+      var left = resolveValue(condition.leftValue, ctx);
+      var right = resolveValue(condition.rightValue, ctx);
+      var operation = condition.operator ? condition.operator.operation : 'equals';
+
+      switch (operation) {
+        case 'true': return left === true;
+        case 'false': return left === false;
+        case 'equals': return left === right;
+        case 'notEquals': return left !== right;
+        case 'exists': return left !== undefined && left !== null && left !== '';
+        case 'notExists': return left === undefined || left === null || left === '';
+        case 'contains': return String(left).indexOf(String(right)) !== -1;
+        case 'gt': return left > right;
+        case 'lt': return left < right;
+        default: throw new Error('unsupported IF operation: ' + operation);
+      }
+    });
+    return combinator === 'or'
+      ? results.some(Boolean)
+      : results.every(Boolean);
+  };
+
+  Runner.prototype.executeHttpRequest = function (node, items) {
+    var env = this.env;
+    var params = node.parameters || {};
+    var inputItem = items[0] || { json: {} };
+    var options = params.options || {};
+
+    function buildQuery(pageCount, lastResponse) {
+      var query = {};
+      var list = (params.queryParameters && params.queryParameters.parameters) || [];
+      list.forEach(function (entry) {
+        query[entry.name] = resolveValue(entry.value, {
+          $json: inputItem.json,
+          $now: nowHelper(env.clock),
+          $pageCount: pageCount,
+          $response: lastResponse
+        });
+      });
+      if (params.authentication === 'genericCredentialType' && params.genericAuthType === 'httpHeaderAuth') {
+        // The key lives in an n8n credential, not in the workflow: the runner
+        // only sees that an auth header was attached.
+        query.__hasAuthHeader = true;
+      }
+      return query;
+    }
+
+    var pagination = options.pagination && options.pagination.pagination;
+    if (!pagination) {
+      return [{ json: env.shopApiGet(buildQuery(0, undefined)) }];
+    }
+
+    var maxRequests = pagination.limitPagesFetched ? (pagination.maxRequests || 100) : 100;
+    var collected = [];
+    var pageCount = 0;
+    var lastResponse;
+
+    while (pageCount < maxRequests) {
+      var extra = ((pagination.parameters && pagination.parameters.parameters) || []);
+      var query = buildQuery(pageCount, lastResponse);
+      extra.forEach(function (entry) {
+        query[entry.name] = resolveValue(entry.value, {
+          $json: inputItem.json,
+          $now: nowHelper(env.clock),
+          $pageCount: pageCount,
+          $response: lastResponse
+        });
+      });
+
+      var body = env.shopApiGet(query);
+      collected.push({ json: body });
+      lastResponse = { body: body };
+      pageCount++;
+
+      var complete = false;
+      if (pagination.paginationCompleteWhen === 'other' && pagination.completeExpression) {
+        complete = resolveValue(pagination.completeExpression, {
+          $json: inputItem.json,
+          $now: nowHelper(env.clock),
+          $pageCount: pageCount,
+          $response: lastResponse
+        }) === true;
+      }
+      if (complete) break;
+    }
+
+    return collected;
+  };
+
+  Runner.prototype.executeCode = function (node, items) {
+    var env = this.env;
+    var self = this;
+    var params = node.parameters || {};
+    var mode = params.mode || 'runOnceForAllItems';
+    var getStaticData = function () { return self.getStaticData(); };
+
+    /* eslint-disable no-new-func */
+    if (mode === 'runOnceForEachItem') {
+      var out = [];
+      items.forEach(function (item) {
+        var fn = new Function('$json', '$getWorkflowStaticData', '$now', '$input',
+          '"use strict";\n' + params.jsCode);
+        var result = fn(item.json, getStaticData, nowHelper(env.clock), {
+          item: item,
+          all: function () { return items; }
+        });
+        out = out.concat(toItems(result));
+      });
+      return out;
+    }
+
+    var fnAll = new Function('$input', '$getWorkflowStaticData', '$now', '$json',
+      '"use strict";\n' + params.jsCode);
+    var resultAll = fnAll({
+      all: function () { return items; },
+      first: function () { return items[0]; },
+      last: function () { return items[items.length - 1]; }
+    }, getStaticData, nowHelper(env.clock), items[0] ? items[0].json : {});
+    return toItems(resultAll);
+  };
+
+  root.PalewoodRunner = {
+    Runner: Runner,
+    resolveValue: resolveValue,
+    NodeFailure: NodeFailure
+  };
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = root.PalewoodRunner;
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script>
+/*
+ * Runs one workflow through the whole 5-hour shift and counts what the owner
+ * of the shop actually cares about: orders that reached the sheet, duplicate
+ * rows, confirmation emails, and failures nobody was told about.
+ */
+(function (root) {
+  'use strict';
+
+  var Scenario = root.PalewoodScenario || (typeof require === 'function' ? require('./scenario.js') : null);
+  var Services = root.PalewoodServices || (typeof require === 'function' ? require('./services.js') : null);
+  var RunnerLib = root.PalewoodRunner || (typeof require === 'function' ? require('./runner.js') : null);
+
+  var ALERT_CHANNEL = '#ops-alerts';
+
+  function uniqueOrderIds(rows) {
+    var set = {};
+    rows.forEach(function (entry) {
+      var id = entry.row && entry.row.order_id;
+      if (id) set[id] = true;
+    });
+    return set;
+  }
+
+  function countKeys(object) {
+    return Object.keys(object).length;
+  }
+
+  function run(config) {
+    var workflow = config.workflow;
+    var errorWorkflow = config.errorWorkflow || null;
+
+    var orders = Scenario.buildOrders();
+    var faults = Scenario.buildFaults();
+    var runTimes = Scenario.buildRuns();
+
+    var clock = new Services.Clock(runTimes[0]);
+    var env = Services.createEnvironment({ orders: orders, faults: faults, clock: clock });
+    var staticData = {};
+
+    var runLog = [];
+    var failedRuns = 0;
+    var silentFailures = 0;
+
+    runTimes.forEach(function (startMs, index) {
+      clock.set(startMs);
+
+      var before = {
+        orderRows: (env.state.sheets['Orders'] || []).length,
+        reviewRows: (env.state.sheets['Needs review'] || []).length,
+        emails: env.state.emails.length,
+        slack: env.state.slackMessages.length,
+        alerts: env.state.slackMessages.filter(function (m) { return m.channel === ALERT_CHANNEL; }).length
+      };
+
+      var runner = new RunnerLib.Runner(workflow, env, { staticData: staticData });
+      var report = runner.execute();
+
+      var after = {
+        orderRows: (env.state.sheets['Orders'] || []).length,
+        reviewRows: (env.state.sheets['Needs review'] || []).length,
+        emails: env.state.emails.length,
+        slack: env.state.slackMessages.length,
+        alerts: env.state.slackMessages.filter(function (m) { return m.channel === ALERT_CHANNEL; }).length
+      };
+
+      var alertedByWorkflow = after.alerts > before.alerts;
+
+      if (report.status === 'error') {
+        failedRuns++;
+        if (errorWorkflow && workflow.settings && workflow.settings.errorWorkflow) {
+          var handler = new RunnerLib.Runner(errorWorkflow, env, { staticData: {} });
+          handler.execute([{
+            json: {
+              workflow: { name: workflow.name },
+              execution: {
+                id: 'exec-' + (index + 1),
+                lastNodeExecuted: report.lastNodeExecuted,
+                error: { message: report.error }
+              }
+            }
+          }]);
+          alertedByWorkflow = true;
+        }
+        if (!alertedByWorkflow) silentFailures++;
+      }
+
+      runLog.push({
+        index: index + 1,
+        at: new Date(startMs).toISOString(),
+        status: report.status,
+        error: report.error,
+        lastNode: report.lastNodeExecuted,
+        ordersSaved: after.orderRows - before.orderRows,
+        ordersParked: after.reviewRows - before.reviewRows,
+        emailsSent: after.emails - before.emails,
+        alerts: after.alerts - before.alerts,
+        silent: report.status === 'error' && !alertedByWorkflow
+      });
+    });
+
+    var orderRows = env.state.sheets['Orders'] || [];
+    var reviewRows = env.state.sheets['Needs review'] || [];
+    var savedIds = uniqueOrderIds(orderRows);
+    var parkedIds = uniqueOrderIds(reviewRows);
+
+    var handled = {};
+    Object.keys(savedIds).forEach(function (id) { handled[id] = true; });
+    Object.keys(parkedIds).forEach(function (id) { handled[id] = true; });
+
+    var lostOrders = orders.filter(function (order) { return !handled[order.id]; });
+
+    var emailsByOrder = {};
+    env.state.emails.forEach(function (mail) {
+      if (!mail.order_id) return;
+      emailsByOrder[mail.order_id] = (emailsByOrder[mail.order_id] || 0) + 1;
+    });
+    var duplicateEmails = 0;
+    Object.keys(emailsByOrder).forEach(function (id) {
+      if (emailsByOrder[id] > 1) duplicateEmails += emailsByOrder[id] - 1;
+    });
+
+    var alerts = env.state.slackMessages.filter(function (m) { return m.channel === ALERT_CHANNEL; });
+
+    var lostRevenue = lostOrders.reduce(function (sum, order) { return sum + order.total_eur; }, 0);
+    var totalRevenue = orders.reduce(function (sum, order) { return sum + order.total_eur; }, 0);
+
+    return {
+      workflowName: workflow.name,
+      metrics: {
+        ordersPlaced: orders.length,
+        ordersSaved: countKeys(savedIds),
+        ordersParkedForReview: countKeys(parkedIds),
+        ordersLost: lostOrders.length,
+        duplicateRows: orderRows.length - countKeys(savedIds),
+        confirmationEmails: env.state.emails.length,
+        duplicateEmails: duplicateEmails,
+        customersWithoutConfirmation: countKeys(savedIds) - countKeys(emailsByOrder),
+        runsTotal: runTimes.length,
+        runsFailed: failedRuns,
+        silentFailures: silentFailures,
+        alertsRaised: alerts.length,
+        lostRevenueEur: lostRevenue,
+        totalRevenueEur: totalRevenue
+      },
+      lostOrders: lostOrders.map(function (order) {
+        return {
+          id: order.id,
+          total: order.total_eur,
+          created_at: order.created_at,
+          cause: order._published_late ? 'publishing lag' : 'failed run',
+          reason: order._published_late
+            ? 'published late by the shop queue, the fixed window had already moved on'
+            : 'the run that should have picked it up stopped with an error'
+        };
+      }),
+      lostByCause: lostOrders.reduce(function (tally, order) {
+        var cause = order._published_late ? 'publishing lag' : 'failed run';
+        tally[cause] = (tally[cause] || 0) + 1;
+        return tally;
+      }, {}),
+      updatedOrders: orderRows.filter(function (row) { return row.replaced; }).length,
+      duplicates: Object.keys(emailsByOrder).filter(function (id) { return emailsByOrder[id] > 1; }),
+      runLog: runLog,
+      slackMessages: env.state.slackMessages,
+      emails: env.state.emails,
+      emailAttempts: env.state.emailAttempts,
+      sheets: env.state.sheets,
+      calls: env.calls
+    };
+  }
+
+  root.PalewoodSimulation = { run: run, ALERT_CHANNEL: ALERT_CHANNEL };
+
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = root.PalewoodSimulation;
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script>
+/*
+ * Generated by build-embedded.js — do not edit by hand.
+ * Verbatim copy of demo/workflows/*.json so the page can run from file://.
+ */
+(function (root) {
+  'use strict';
+  root.PalewoodWorkflows = {
+  "order-intake-BROKEN.json": {
+    "name": "Palewood — Order intake v3 (live)",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 5
+              }
+            ]
+          }
+        },
+        "id": "b1a00000-0000-4000-8000-000000000001",
+        "name": "Every 5 minutes",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -180,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "url": "https://api.palewood-shop.test/v1/orders",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "updated_since",
+                "value": "={{ $now.minus({ minutes: 5, seconds: 40 }).toISO() }}"
+              },
+              {
+                "name": "api_key",
+                "value": "pk_live_EXAMPLE_NOT_A_REAL_KEY_7f3c2a"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "b1a00000-0000-4000-8000-000000000002",
+        "name": "Fetch new orders",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          40,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "orders",
+          "options": {}
+        },
+        "id": "b1a00000-0000-4000-8000-000000000003",
+        "name": "Split orders",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          260,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "const items = $input.all();\nconst out = [];\n\nfor (const item of items) {\n  const o = item.json;\n  const name = o.customer.first_name + ' ' + o.customer.last_name.trim();\n  const phone = o.customer.phone.replace(/[^0-9+]/g, '');\n\n  out.push({\n    json: {\n      order_id: o.id,\n      customer_name: name,\n      email: o.customer.email,\n      phone: phone,\n      total: o.total_eur,\n      items: o.line_items.map(li => li.sku + ' x' + li.qty).join(', '),\n      placed_at: o.created_at\n    }\n  });\n}\n\nreturn out;"
+        },
+        "id": "b1a00000-0000-4000-8000-000000000004",
+        "name": "Format order",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1PalewoodOrdersSheetExampleId",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "Orders",
+            "mode": "name",
+            "cachedResultName": "Orders"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": {}
+          },
+          "options": {}
+        },
+        "id": "b1a00000-0000-4000-8000-000000000005",
+        "name": "Save to Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          700,
+          300
+        ],
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "GS_PALEWOOD",
+            "name": "Palewood Google Sheets"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ $json.email }}",
+          "subject": "=Your Palewood order {{ $json.order_id }}",
+          "emailType": "text",
+          "message": "=Hi {{ $json.customer_name }},\n\nthanks for your order {{ $json.order_id }}.\n\nItems: {{ $json.items }}\nTotal: EUR {{ $json.total }}\n\nWe fire the kiln twice a week and will email you again when your pieces ship.\n\nPalewood Ceramics",
+          "options": {}
+        },
+        "id": "b1a00000-0000-4000-8000-000000000006",
+        "name": "Email customer",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          920,
+          300
+        ],
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "GMAIL_PALEWOOD",
+            "name": "orders@palewood.example"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#orders",
+            "mode": "name",
+            "cachedResultName": "orders"
+          },
+          "text": "=New order {{ $json.order_id }} — {{ $json.customer_name }} — EUR {{ $json.total }}",
+          "otherOptions": {}
+        },
+        "id": "b1a00000-0000-4000-8000-000000000007",
+        "name": "Notify team in Slack",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          1140,
+          300
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Every 5 minutes": {
+        "main": [
+          [
+            {
+              "node": "Fetch new orders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch new orders": {
+        "main": [
+          [
+            {
+              "node": "Split orders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split orders": {
+        "main": [
+          [
+            {
+              "node": "Format order",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format order": {
+        "main": [
+          [
+            {
+              "node": "Save to Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save to Google Sheets": {
+        "main": [
+          [
+            {
+              "node": "Email customer",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Email customer": {
+        "main": [
+          [
+            {
+              "node": "Notify team in Slack",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "pinData": {}
+  },
+  "order-intake-FIXED.json": {
+    "name": "Palewood — Order intake v4 (repaired)",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 5
+              }
+            ]
+          }
+        },
+        "id": "f1a00000-0000-4000-8000-000000000001",
+        "name": "Every 5 minutes",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -620,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// The cursor is the only thing that decides what we ask the shop for.\n// It is written at the very end of a run, after the orders are safely stored.\nconst store = $getWorkflowStaticData('global');\n\nif (!store.cursor) {\n  store.cursor = $now.minus({ minutes: 15 }).toISO();\n}\n\n// Deliberate overlap. The shop's queue publishes an order some time after its\n// updated_at timestamp, so a window starting exactly at the cursor skips those\n// orders for ever. The overlap must be larger than the worst publishing delay\n// the shop shows in practice — measure it before trusting this number.\n// Everything the overlap re-reads is dropped again by \"Skip orders already handled\".\nconst overlapMinutes = 10;\nconst from = new Date(new Date(store.cursor).getTime() - overlapMinutes * 60 * 1000).toISOString();\n\nreturn [{ json: { cursor: from } }];"
+        },
+        "id": "f1a00000-0000-4000-8000-000000000002",
+        "name": "Load cursor",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -400,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "url": "https://api.palewood-shop.test/v1/orders",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "updated_since",
+                "value": "={{ $json.cursor }}"
+              }
+            ]
+          },
+          "options": {
+            "pagination": {
+              "pagination": {
+                "paginationMode": "updateAParameterInEachRequest",
+                "parameters": {
+                  "parameters": [
+                    {
+                      "type": "qs",
+                      "name": "page",
+                      "value": "={{ $pageCount + 1 }}"
+                    }
+                  ]
+                },
+                "paginationCompleteWhen": "other",
+                "completeExpression": "={{ $response.body.has_more === false }}",
+                "limitPagesFetched": true,
+                "maxRequests": 50
+              }
+            },
+            "timeout": 20000
+          }
+        },
+        "id": "f1a00000-0000-4000-8000-000000000003",
+        "name": "Fetch new orders",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          -180,
+          300
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "PALEWOOD_SHOP_API",
+            "name": "Palewood Shop API key"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#ops-alerts",
+            "mode": "name",
+            "cachedResultName": "ops-alerts"
+          },
+          "text": "=:rotating_light: Order intake could not reach the shop API (3 attempts). Nothing is lost — the cursor has not moved, so the next run reads the same window again. Error: {{ $json.error }}",
+          "otherOptions": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000004",
+        "name": "Alert: shop API unreachable",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          40,
+          520
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "orders",
+          "options": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000005",
+        "name": "Split orders",
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          40,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Drops what we have already stored, and tells a genuine update apart from a\n// repeat. An order is remembered only after its row is written (see \"Remember\n// what was stored\"), so a crash before the write cannot lose it.\nconst store = $getWorkflowStaticData('global');\nif (!store.handled) store.handled = {};\n\nconst out = [];\n\nfor (const item of $input.all()) {\n  const order = item.json;\n  const storedAt = store.handled[order.id];\n\n  // Exactly what we stored last time: nothing to do.\n  if (storedAt && storedAt === order.updated_at) continue;\n\n  // Same order, newer timestamp: the customer changed something.\n  order.is_update = Boolean(storedAt);\n  out.push({ json: order });\n}\n\nreturn out;"
+        },
+        "id": "f1a00000-0000-4000-8000-000000000006",
+        "name": "Skip orders already handled",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          260,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "// Runs per item: one malformed order can no longer take the whole batch down.\n// Missing optional fields get a safe default; anything we cannot act on is\n// flagged for a human instead of being dropped.\nconst o = $json;\nconst customer = o.customer || {};\n\nconst first = String(customer.first_name || '').trim();\nconst last = String(customer.last_name || '').trim();\nconst email = String(customer.email || '').trim();\nconst phone = String(customer.phone || '').replace(/[^0-9+]/g, '');\nconst lineItems = Array.isArray(o.line_items) ? o.line_items : [];\n\nconst problems = [];\nif (!email.includes('@')) problems.push('no usable email address');\nif (lineItems.length === 0) problems.push('order has no line items');\n\nreturn {\n  json: {\n    order_id: o.id,\n    customer_name: [first, last].filter(Boolean).join(' ') || 'Customer',\n    email: email,\n    phone: phone,\n    total: o.total_eur,\n    items: lineItems.map(li => li.sku + ' x' + li.qty).join(', '),\n    placed_at: o.created_at,\n    updated_at: o.updated_at,\n    is_update: Boolean(o.is_update),\n    needs_review: problems.length > 0,\n    review_reason: problems.join('; ')\n  }\n};"
+        },
+        "id": "f1a00000-0000-4000-8000-000000000007",
+        "name": "Validate and normalise",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          480,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "needs-review-check",
+                "leftValue": "={{ $json.needs_review }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000008",
+        "name": "Needs a human?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          700,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1PalewoodOrdersSheetExampleId",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "Needs review",
+            "mode": "name",
+            "cachedResultName": "Needs review"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "value": {}
+          },
+          "options": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000009",
+        "name": "Park order for review",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          920,
+          120
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "GS_PALEWOOD",
+            "name": "Palewood Google Sheets"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#ops-alerts",
+            "mode": "name",
+            "cachedResultName": "ops-alerts"
+          },
+          "text": "=:eyes: Order {{ $json.order_id }} needs a human: {{ $json.review_reason }}. It is saved in the \"Needs review\" tab and nothing was emailed to the customer.",
+          "otherOptions": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000010",
+        "name": "Alert: order needs review",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          1140,
+          120
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1PalewoodOrdersSheetExampleId",
+            "mode": "id"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "Orders",
+            "mode": "name",
+            "cachedResultName": "Orders"
+          },
+          "columns": {
+            "mappingMode": "autoMapInputData",
+            "matchingColumns": [
+              "order_id"
+            ],
+            "value": {}
+          },
+          "options": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000011",
+        "name": "Save to Google Sheets",
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.5,
+        "position": [
+          920,
+          380
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 2000,
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "GS_PALEWOOD",
+            "name": "Palewood Google Sheets"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#ops-alerts",
+            "mode": "name",
+            "cachedResultName": "ops-alerts"
+          },
+          "text": "=:rotating_light: Order {{ $json.order_id }} could not be written to the orders sheet after 3 attempts. The cursor has not moved past it, so the next run tries again — add it by hand if the alert repeats.",
+          "otherOptions": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000012",
+        "name": "Alert: order not saved",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          1140,
+          600
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Runs only after the row exists in the sheet. Both the memory of handled\n// orders and the cursor move here — never earlier — so anything that fails\n// on the way is simply read again by the next run.\nconst store = $getWorkflowStaticData('global');\nif (!store.handled) store.handled = {};\n\nconst items = $input.all();\nlet newest = store.cursor;\n\nfor (const item of items) {\n  const id = item.json.order_id;\n  const stamp = item.json.updated_at || item.json.placed_at;\n  if (id) store.handled[id] = stamp;\n  if (stamp && (!newest || stamp > newest)) newest = stamp;\n}\n\nstore.cursor = newest;\n\n// Forget orders older than three days, otherwise the store grows for ever.\nconst cutoff = new Date(new Date(newest).getTime() - 3 * 24 * 60 * 60 * 1000).toISOString();\nfor (const id of Object.keys(store.handled)) {\n  if (store.handled[id] < cutoff) delete store.handled[id];\n}\n\nreturn items;"
+        },
+        "id": "f1a00000-0000-4000-8000-000000000013",
+        "name": "Remember what was stored",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1140,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "is-update-check",
+                "leftValue": "={{ $json.is_update }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000014",
+        "name": "Is this an update?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          1360,
+          380
+        ]
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#orders",
+            "mode": "name",
+            "cachedResultName": "orders"
+          },
+          "text": "=:pencil2: Order {{ $json.order_id }} was updated by the customer — the row now shows the new details. No second confirmation was sent.",
+          "otherOptions": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000015",
+        "name": "Tell the team it changed",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          1580,
+          240
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ $json.email }}",
+          "subject": "=Your Palewood order {{ $json.order_id }}",
+          "emailType": "text",
+          "message": "=Hi {{ $json.customer_name }},\n\nthanks for your order {{ $json.order_id }}.\n\nItems: {{ $json.items }}\nTotal: EUR {{ $json.total }}\n\nWe fire the kiln twice a week and will email you again when your pieces ship.\n\nPalewood Ceramics",
+          "options": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000016",
+        "name": "Email customer",
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1580,
+          440
+        ],
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 5000,
+        "onError": "continueErrorOutput",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "GMAIL_PALEWOOD",
+            "name": "orders@palewood.example"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#orders",
+            "mode": "name",
+            "cachedResultName": "orders"
+          },
+          "text": "=New order {{ $json.order_id }} — {{ $json.customer_name }} — EUR {{ $json.total }}",
+          "otherOptions": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000017",
+        "name": "Notify team in Slack",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          1800,
+          440
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#ops-alerts",
+            "mode": "name",
+            "cachedResultName": "ops-alerts"
+          },
+          "text": "=:warning: Confirmation email for order {{ $json.order_id }} was not delivered to {{ $json.email }} after 3 attempts. The order itself is stored — reply to the customer by hand.",
+          "otherOptions": {}
+        },
+        "id": "f1a00000-0000-4000-8000-000000000018",
+        "name": "Alert: email not delivered",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          1800,
+          620
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForAllItems",
+          "jsCode": "// Same bookkeeping for the review branch: the order is stored in the\n// \"Needs review\" tab, so the cursor may pass it — but no email is sent.\n// Runs only after the row exists in the sheet. Both the memory of handled\n// orders and the cursor move here — never earlier — so anything that fails\n// on the way is simply read again by the next run.\nconst store = $getWorkflowStaticData('global');\nif (!store.handled) store.handled = {};\n\nconst items = $input.all();\nlet newest = store.cursor;\n\nfor (const item of items) {\n  const id = item.json.order_id;\n  const stamp = item.json.updated_at || item.json.placed_at;\n  if (id) store.handled[id] = stamp;\n  if (stamp && (!newest || stamp > newest)) newest = stamp;\n}\n\nstore.cursor = newest;\n\n// Forget orders older than three days, otherwise the store grows for ever.\nconst cutoff = new Date(new Date(newest).getTime() - 3 * 24 * 60 * 60 * 1000).toISOString();\nfor (const id of Object.keys(store.handled)) {\n  if (store.handled[id] < cutoff) delete store.handled[id];\n}\n\nreturn items;"
+        },
+        "id": "f1a00000-0000-4000-8000-000000000019",
+        "name": "Remember the parked order",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1360,
+          120
+        ]
+      }
+    ],
+    "connections": {
+      "Every 5 minutes": {
+        "main": [
+          [
+            {
+              "node": "Load cursor",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Load cursor": {
+        "main": [
+          [
+            {
+              "node": "Fetch new orders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch new orders": {
+        "main": [
+          [
+            {
+              "node": "Split orders",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Alert: shop API unreachable",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split orders": {
+        "main": [
+          [
+            {
+              "node": "Skip orders already handled",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Skip orders already handled": {
+        "main": [
+          [
+            {
+              "node": "Validate and normalise",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate and normalise": {
+        "main": [
+          [
+            {
+              "node": "Needs a human?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Needs a human?": {
+        "main": [
+          [
+            {
+              "node": "Park order for review",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Save to Google Sheets",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Park order for review": {
+        "main": [
+          [
+            {
+              "node": "Alert: order needs review",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Save to Google Sheets": {
+        "main": [
+          [
+            {
+              "node": "Remember what was stored",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Alert: order not saved",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Remember what was stored": {
+        "main": [
+          [
+            {
+              "node": "Is this an update?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Is this an update?": {
+        "main": [
+          [
+            {
+              "node": "Tell the team it changed",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Email customer",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Email customer": {
+        "main": [
+          [
+            {
+              "node": "Notify team in Slack",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Alert: email not delivered",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Alert: order needs review": {
+        "main": [
+          [
+            {
+              "node": "Remember the parked order",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1",
+      "errorWorkflow": "qN4pT2vK8sRb1LdW",
+      "saveDataErrorExecution": "all",
+      "saveDataSuccessExecution": "all",
+      "executionTimeout": 300
+    },
+    "pinData": {}
+  },
+  "error-handler.json": {
+    "name": "Palewood — Error handler",
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "e1a00000-0000-4000-8000-000000000001",
+        "name": "On workflow error",
+        "type": "n8n-nodes-base.errorTrigger",
+        "typeVersion": 1,
+        "position": [
+          0,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "select": "channel",
+          "channelId": {
+            "__rl": true,
+            "value": "#ops-alerts",
+            "mode": "name",
+            "cachedResultName": "ops-alerts"
+          },
+          "text": "=:rotating_light: Workflow \"{{ $json.workflow.name }}\" stopped with an error.\nNode: {{ $json.execution.lastNodeExecuted }}\nMessage: {{ $json.execution.error.message }}\nExecution: {{ $json.execution.id }}\n\nNothing from this run reached the customer. Check the execution before the next kiln run.",
+          "otherOptions": {}
+        },
+        "id": "e1a00000-0000-4000-8000-000000000002",
+        "name": "Tell the team",
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.2,
+        "position": [
+          220,
+          300
+        ],
+        "credentials": {
+          "slackApi": {
+            "id": "SLACK_PALEWOOD",
+            "name": "Palewood Slack"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "On workflow error": {
+        "main": [
+          [
+            {
+              "node": "Tell the team",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "pinData": {}
+  }
+};
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = root.PalewoodWorkflows;
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this);
+
+</script>
+<script>
+/*
+ * Page logic: runs both workflows on demand, fills the comparison panels,
+ * builds the defect list out of the workflow files themselves, and renders
+ * the run log.
+ */
+(function () {
+  'use strict';
+
+  var WF = window.PalewoodWorkflows;
+  var BROKEN = WF['order-intake-BROKEN.json'];
+  var FIXED = WF['order-intake-FIXED.json'];
+  var ERROR_HANDLER = WF['error-handler.json'];
+
+  var results = { broken: null, fixed: null };
+  var logView = 'broken';
+  var logOnlyProblems = false;
+
+  // ------------------------------------------------------------------ theme
+
+  var root = document.documentElement;
+  var toggle = document.getElementById('theme-toggle');
+
+  function prefersDark() {
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+
+  function storedTheme() {
+    try { return localStorage.getItem('palewood-theme'); } catch (error) { return null; }
+  }
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    toggle.textContent = theme === 'dark' ? 'Light' : 'Dark';
+  }
+
+  applyTheme(storedTheme() || (prefersDark() ? 'dark' : 'light'));
+
+  toggle.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('palewood-theme', next); } catch (error) { /* private window: ignore */ }
+  });
+
+  // ---------------------------------------------------------------- metrics
+
+  var METRIC_ROWS = [
+    { key: 'ordersPlaced', label: 'Orders placed in the shop', tone: 'neutral' },
+    { key: 'ordersSaved', label: 'Orders saved to the sheet', tone: 'neutral' },
+    { key: 'ordersParkedForReview', label: 'Parked for a human to check', tone: 'neutral' },
+    { key: 'ordersLost', label: 'Orders lost for good', tone: 'lowerIsBetter' },
+    { key: 'lostRevenueEur', label: 'Revenue in the lost orders', tone: 'lowerIsBetter', money: true },
+    { key: 'duplicateEmails', label: 'Customers emailed twice', tone: 'lowerIsBetter' },
+    { key: 'customersWithoutConfirmation', label: 'Saved orders with no confirmation sent', tone: 'lowerIsBetter' },
+    { key: 'runsFailed', label: 'Runs that stopped with an error', tone: 'lowerIsBetter' },
+    { key: 'silentFailures', label: 'Failures nobody was told about', tone: 'lowerIsBetter' },
+    { key: 'alertsRaised', label: 'Alerts raised in Slack', tone: 'neutral' }
+  ];
+
+  function formatValue(row, metrics) {
+    var value = metrics[row.key];
+    if (row.money) return 'EUR ' + value.toLocaleString('en-GB');
+    return String(value);
+  }
+
+  function renderMetrics(containerId, metrics) {
+    var container = document.getElementById(containerId);
+    container.innerHTML = '';
+    METRIC_ROWS.forEach(function (row) {
+      var line = document.createElement('div');
+      line.className = 'metric-row';
+
+      var label = document.createElement('span');
+      label.className = 'metric-label';
+      label.textContent = row.label;
+
+      var value = document.createElement('span');
+      value.className = 'metric-value';
+
+      if (!metrics) {
+        value.className += ' is-idle';
+        value.textContent = '—';
+      } else {
+        value.textContent = formatValue(row, metrics);
+        if (row.tone === 'lowerIsBetter') {
+          value.className += metrics[row.key] > 0 ? ' is-bad' : ' is-good';
+        }
+      }
+
+      line.appendChild(label);
+      line.appendChild(value);
+      container.appendChild(line);
+    });
+  }
+
+  function renderHeadline() {
+    var box = document.getElementById('headline');
+    if (!results.broken || !results.fixed) {
+      box.innerHTML = '<div><div class="big">—</div><div class="cap">Run the comparison to see the difference over one shift.</div></div>';
+      return;
+    }
+
+    var b = results.broken.metrics;
+    var f = results.fixed.metrics;
+    var share = Math.round((b.ordersLost / b.ordersPlaced) * 1000) / 10;
+
+    box.innerHTML = '';
+    [
+      { big: b.ordersLost + ' → ' + f.ordersLost, cap: 'orders lost per shift (' + share + '% of all orders before the repair)' },
+      { big: 'EUR ' + b.lostRevenueEur.toLocaleString('en-GB') + ' → 0', cap: 'revenue sitting in orders that never reached the sheet' },
+      { big: b.silentFailures + ' → ' + f.silentFailures, cap: 'failures nobody was told about' }
+    ].forEach(function (entry) {
+      var cell = document.createElement('div');
+      var big = document.createElement('div');
+      big.className = 'big';
+      big.textContent = entry.big;
+      var cap = document.createElement('div');
+      cap.className = 'cap';
+      cap.textContent = entry.cap;
+      cell.appendChild(big);
+      cell.appendChild(cap);
+      box.appendChild(cell);
+    });
+  }
+
+  // ---------------------------------------------------------------- defects
+
+  function node(workflow, name) {
+    for (var i = 0; i < workflow.nodes.length; i++) {
+      if (workflow.nodes[i].name === name) return workflow.nodes[i];
+    }
+    return null;
+  }
+
+  function queryParam(workflow, nodeName, paramName) {
+    var target = node(workflow, nodeName);
+    var list = (target.parameters.queryParameters && target.parameters.queryParameters.parameters) || [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].name === paramName) return list[i].value;
+    }
+    return null;
+  }
+
+  function field(workflow, nodeName, key, fallbackComment) {
+    var target = node(workflow, nodeName);
+    if (target[key] === undefined) return '// "' + key + '" is not set' + (fallbackComment ? ' — ' + fallbackComment : '');
+    return '"' + key + '": ' + JSON.stringify(target[key]);
+  }
+
+  function codeLinesMatching(workflow, nodeName, patterns) {
+    var target = node(workflow, nodeName);
+    var lines = target.parameters.jsCode.split('\n');
+    var picked = [];
+    lines.forEach(function (line) {
+      patterns.forEach(function (pattern) {
+        if (line.indexOf(pattern) !== -1 && picked.indexOf(line) === -1) picked.push(line.trim());
+      });
+    });
+    return picked.join('\n');
+  }
+
+  var DEFECTS = [
+    {
+      tag: 'D1',
+      title: 'A short outage threw away a whole run',
+      symptom: 'Orders vanished in small groups, always around the time the shop’s host had a hiccup.',
+      cause: 'The HTTP node had no retry and no error branch, so any non-200 from the shop stopped the '
+        + 'execution. The next run asked only for the last five minutes — the orders from the failed '
+        + 'window were never requested again. Eleven of the fourteen lost orders went this way.',
+      fix: 'Three attempts two seconds apart, and an error output that alerts the team instead of killing the run.',
+      before: function () {
+        return [
+          '"name": "Fetch new orders",',
+          field(BROKEN, 'Fetch new orders', 'retryOnFail', 'one bad response is fatal') + ',',
+          field(BROKEN, 'Fetch new orders', 'onError', 'defaults to stopping the workflow')
+        ].join('\n');
+      },
+      after: function () {
+        return [
+          '"name": "Fetch new orders",',
+          field(FIXED, 'Fetch new orders', 'retryOnFail') + ',',
+          field(FIXED, 'Fetch new orders', 'maxTries') + ',',
+          field(FIXED, 'Fetch new orders', 'waitBetweenTries') + ',',
+          field(FIXED, 'Fetch new orders', 'onError')
+        ].join('\n');
+      }
+    },
+    {
+      tag: 'D2',
+      title: '“The last five minutes” is not a safe way to ask for new orders',
+      symptom: 'A handful of orders never appeared, with no failed run to explain them. Others were '
+        + 'processed twice after someone widened the window to stop the losses.',
+      cause: 'The shop publishes an order to its API a few seconds to a few minutes after it is written. '
+        + 'A fixed window that starts at “now minus five minutes” misses anything published late; widening '
+        + 'the window by 40 seconds re-reads whatever falls into the overlap and duplicates it.',
+      fix: 'A cursor stored in the workflow’s own data, deliberately overlapped by ten minutes — more '
+        + 'than the worst publishing delay this shop shows — so late publications are read again. What '
+        + 'the overlap repeats is dropped by D5. The cursor moves only after an order has been stored, '
+        + 'so a crash cannot skip past it.',
+      before: function () {
+        return '"name": "updated_since",\n"value": ' + JSON.stringify(queryParam(BROKEN, 'Fetch new orders', 'updated_since'));
+      },
+      after: function () {
+        return '"name": "updated_since",\n"value": ' + JSON.stringify(queryParam(FIXED, 'Fetch new orders', 'updated_since'))
+          + '\n\n// Load cursor:\n' + codeLinesMatching(FIXED, 'Load cursor', ['overlapMinutes =', 'const from'])
+          + '\n\n// Remember what was stored (runs after the row exists):\n'
+          + codeLinesMatching(FIXED, 'Remember what was stored', ['store.cursor = newest', 'delete store.handled']);
+      }
+    },
+    {
+      tag: 'D3',
+      title: 'The shop API key was sitting in the workflow',
+      symptom: 'Not a failure the owner could see — but the key travelled in every export, every backup '
+        + 'and every screenshot of the workflow.',
+      cause: 'The key was a plain query parameter on the HTTP node instead of an n8n credential.',
+      fix: 'Header auth through a credential. The workflow no longer contains the key, so it can be '
+        + 'exported and shared safely. (The key in this demo is a fake string, not a real one.)',
+      before: function () {
+        return '"queryParameters": ' + JSON.stringify(node(BROKEN, 'Fetch new orders').parameters.queryParameters.parameters, null, 2);
+      },
+      after: function () {
+        var target = node(FIXED, 'Fetch new orders');
+        return '"authentication": ' + JSON.stringify(target.parameters.authentication) + ',\n'
+          + '"genericAuthType": ' + JSON.stringify(target.parameters.genericAuthType) + ',\n'
+          + '"credentials": ' + JSON.stringify(target.credentials, null, 2);
+      }
+    },
+    {
+      tag: 'D4',
+      title: 'One customer without a surname took the whole batch down',
+      symptom: 'Every few days an entire run failed, taking all the orders in that window with it.',
+      cause: 'The Code node ran once over the whole batch and read fields that are optional at checkout '
+        + '(<code>last_name</code>, <code>phone</code>). One missing value threw a TypeError and the '
+        + 'batch — good orders included — never reached the sheet.',
+      fix: 'The node runs per item with safe defaults, and anything genuinely unusable is flagged for a '
+        + 'human instead of being dropped: it goes to a “Needs review” tab with a Slack message, and no '
+        + 'email is sent to a broken address.',
+      before: function () {
+        return '"mode": ' + JSON.stringify(node(BROKEN, 'Format order').parameters.mode) + '\n\n'
+          + codeLinesMatching(BROKEN, 'Format order', ['last_name', 'phone.replace']);
+      },
+      after: function () {
+        return '"mode": ' + JSON.stringify(node(FIXED, 'Validate and normalise').parameters.mode) + '\n\n'
+          + codeLinesMatching(FIXED, 'Validate and normalise', ['const last', 'const phone', 'problems.push', 'needs_review:']);
+      }
+    },
+    {
+      tag: 'D5',
+      title: 'Nothing checked whether an order had already been handled',
+      symptom: 'Duplicate rows in the sheet and duplicate confirmation emails — six customers in a '
+        + 'single shift, several of them people who had simply corrected their delivery address.',
+      cause: 'The workflow trusted the time window to deliver every order exactly once and appended '
+        + 'blindly. Any overlap, any manual re-run and any edit by the customer produced a second row '
+        + 'and a second email.',
+      fix: 'The workflow now remembers which orders it has stored, together with the timestamp it '
+        + 'stored. An identical repeat is dropped; the same order with a newer timestamp is treated as '
+        + 'an update — the existing row is rewritten (Append or Update, matched on the order id), the '
+        + 'team is told what changed, and the customer is not emailed twice. The memory is written only '
+        + 'after the row exists, and entries older than three days are forgotten so it cannot grow for ever.',
+      before: function () {
+        return '"operation": ' + JSON.stringify(node(BROKEN, 'Save to Google Sheets').parameters.operation) + '\n'
+          + '// No memory of previous runs anywhere in the workflow:\n'
+          + '// nodes: ' + BROKEN.nodes.map(function (n) { return n.name; }).join(', ');
+      },
+      after: function () {
+        var save = node(FIXED, 'Save to Google Sheets');
+        return '"operation": ' + JSON.stringify(save.parameters.operation) + ',\n'
+          + '"matchingColumns": ' + JSON.stringify(save.parameters.columns.matchingColumns) + '\n\n'
+          + '// Skip orders already handled:\n'
+          + codeLinesMatching(FIXED, 'Skip orders already handled',
+              ['const storedAt', 'if (storedAt &&', 'order.is_update']);
+      }
+    },
+    {
+      tag: 'D6',
+      title: 'When it broke, nobody was told',
+      symptom: '“Sometimes Slack goes quiet for an hour.” The automation had stopped and waited for '
+        + 'someone to open n8n and look.',
+      cause: 'A failing Gmail call stopped the run, so the Slack notification after it never happened — '
+        + 'the one place the team would have noticed. No error workflow was configured either.',
+      fix: 'Email failures retry, then leave through an error output that alerts the team; the order '
+        + 'itself is already stored. Everything that needs a person — an unreachable shop, an order '
+        + 'with no usable email, a row that could not be written, a bounced confirmation — goes to one '
+        + '#ops-alerts channel. On top of that, an error workflow turns any remaining crash into a '
+        + 'Slack message naming the node and the execution.',
+      before: function () {
+        return '"name": "Email customer",\n'
+          + field(BROKEN, 'Email customer', 'retryOnFail', 'a quota block is fatal') + ',\n'
+          + field(BROKEN, 'Email customer', 'onError', 'the Slack step after it never runs') + '\n\n'
+          + '"settings": ' + JSON.stringify(BROKEN.settings, null, 2) + '  // no errorWorkflow';
+      },
+      after: function () {
+        return '"name": "Email customer",\n'
+          + field(FIXED, 'Email customer', 'retryOnFail') + ',\n'
+          + field(FIXED, 'Email customer', 'maxTries') + ',\n'
+          + field(FIXED, 'Email customer', 'onError') + '\n\n'
+          + '"settings": ' + JSON.stringify({ errorWorkflow: FIXED.settings.errorWorkflow }, null, 2) + '\n'
+          + '// error-handler.json: ' + ERROR_HANDLER.nodes.map(function (n) { return n.name; }).join(' → ');
+      }
+    }
+  ];
+
+  function renderDefects() {
+    var container = document.getElementById('defects');
+    container.innerHTML = '';
+
+    DEFECTS.forEach(function (defect) {
+      var card = document.createElement('article');
+      card.className = 'defect';
+      card.id = 'defect-' + defect.tag.toLowerCase();
+
+      var head = document.createElement('div');
+      head.className = 'defect-head';
+      var tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = defect.tag;
+      var title = document.createElement('h3');
+      title.textContent = defect.title;
+      head.appendChild(tag);
+      head.appendChild(title);
+      card.appendChild(head);
+
+      var list = document.createElement('dl');
+      [
+        ['Symptom', defect.symptom],
+        ['Root cause', defect.cause],
+        ['What I changed', defect.fix]
+      ].forEach(function (pair) {
+        var dt = document.createElement('dt');
+        dt.textContent = pair[0];
+        var dd = document.createElement('dd');
+        dd.innerHTML = pair[1];
+        list.appendChild(dt);
+        list.appendChild(dd);
+      });
+      card.appendChild(list);
+
+      var pair = document.createElement('div');
+      pair.className = 'code-pair';
+      pair.appendChild(codeBlock('before', 'Before — v3', defect.before()));
+      pair.appendChild(codeBlock('after', 'After — v4', defect.after()));
+      card.appendChild(pair);
+
+      container.appendChild(card);
+    });
+  }
+
+  function codeBlock(kind, label, text) {
+    var block = document.createElement('div');
+    block.className = 'code-block ' + kind;
+    var header = document.createElement('header');
+    header.textContent = label;
+    var pre = document.createElement('pre');
+    pre.textContent = text;
+    block.appendChild(header);
+    block.appendChild(pre);
+    return block;
+  }
+
+  // -------------------------------------------------------------------- log
+
+  function describeRun(entry, which) {
+    if (entry.status === 'error') {
+      var text = 'Run stopped at “' + entry.lastNode + '”: ' + entry.error;
+      if (entry.silent) text += ' — no message to anyone.';
+      return text;
+    }
+    if (entry.alerts > 0) {
+      return entry.ordersSaved + ' saved, ' + entry.alerts + ' alert' + (entry.alerts > 1 ? 's' : '')
+        + ' raised — the problem was handled and reported.';
+    }
+    if (entry.ordersSaved === 0 && entry.ordersParked === 0) {
+      return which === 'broken' ? 'No new orders in this window.' : 'No new orders in this window.';
+    }
+    return entry.ordersSaved + ' order' + (entry.ordersSaved === 1 ? '' : 's') + ' saved'
+      + (entry.ordersParked ? ', ' + entry.ordersParked + ' parked for review' : '')
+      + (entry.emailsSent ? ', ' + entry.emailsSent + ' emailed' : '') + '.';
+  }
+
+  function renderLog() {
+    var body = document.getElementById('log-body');
+    var result = results[logView];
+
+    if (!result) {
+      body.innerHTML = '<tr><td colspan="8" class="empty-log">Run the comparison above to fill the log.</td></tr>';
+      return;
+    }
+
+    var rows = result.runLog.filter(function (entry) {
+      if (!logOnlyProblems) return true;
+      return entry.status === 'error' || entry.alerts > 0;
+    });
+
+    body.innerHTML = '';
+
+    if (rows.length === 0) {
+      body.innerHTML = '<tr><td colspan="8" class="empty-log">No run had a problem in this version.</td></tr>';
+      return;
+    }
+
+    rows.forEach(function (entry) {
+      var tr = document.createElement('tr');
+      if (entry.status === 'error') tr.className = 'row-error';
+      else if (entry.alerts > 0) tr.className = 'row-alert';
+
+      var status = entry.status === 'error'
+        ? '<span class="status-chip err">error</span>'
+        : '<span class="status-chip ok">success</span>';
+
+      tr.innerHTML = '<td class="num">' + entry.index + '</td>'
+        + '<td class="num">' + entry.at.slice(11, 16) + '</td>'
+        + '<td>' + status + '</td>'
+        + '<td class="num">' + entry.ordersSaved + '</td>'
+        + '<td class="num">' + entry.ordersParked + '</td>'
+        + '<td class="num">' + entry.emailsSent + '</td>'
+        + '<td class="num">' + entry.alerts + '</td>'
+        + '<td><span class="why"></span></td>';
+      tr.querySelector('.why').textContent = describeRun(entry, logView);
+      body.appendChild(tr);
+    });
+  }
+
+  function wireLogControls() {
+    var brokenButton = document.getElementById('log-broken');
+    var fixedButton = document.getElementById('log-fixed');
+    var filterButton = document.getElementById('log-filter');
+
+    function sync() {
+      brokenButton.setAttribute('aria-pressed', String(logView === 'broken'));
+      fixedButton.setAttribute('aria-pressed', String(logView === 'fixed'));
+      filterButton.setAttribute('aria-pressed', String(logOnlyProblems));
+      renderLog();
+    }
+
+    brokenButton.addEventListener('click', function () { logView = 'broken'; sync(); });
+    fixedButton.addEventListener('click', function () { logView = 'fixed'; sync(); });
+    filterButton.addEventListener('click', function () { logOnlyProblems = !logOnlyProblems; sync(); });
+  }
+
+  // -------------------------------------------------------------------- run
+
+  function runBoth(afterRun) {
+    var button = document.getElementById('run-button');
+    var status = document.getElementById('run-status');
+
+    button.disabled = true;
+    status.textContent = 'Replaying 60 scheduled runs through both workflows…';
+
+    // Let the browser paint the disabled state before the (synchronous) run.
+    window.setTimeout(function () {
+      var started = performance.now();
+      results.broken = window.PalewoodSimulation.run({ workflow: BROKEN });
+      results.fixed = window.PalewoodSimulation.run({ workflow: FIXED, errorWorkflow: ERROR_HANDLER });
+      var took = Math.max(1, Math.round(performance.now() - started));
+
+      renderMetrics('metrics-broken', results.broken.metrics);
+      renderMetrics('metrics-fixed', results.fixed.metrics);
+      renderHeadline();
+      renderLog();
+
+      status.textContent = 'Done in ' + took + ' ms — 120 orders, 60 runs, both versions, same shift.';
+      button.disabled = false;
+      button.textContent = 'Run again';
+
+      if (typeof afterRun === 'function') afterRun();
+    }, 30);
+  }
+
+  // ------------------------------------------------------------------ start
+
+  renderMetrics('metrics-broken', null);
+  renderMetrics('metrics-fixed', null);
+  renderHeadline();
+  renderDefects();
+  wireLogControls();
+  document.getElementById('run-button').addEventListener('click', runBoth);
+
+  // The address can ask for a particular view, so a link can point straight at
+  // the comparison, at the failed runs, or at the report in dark mode:
+  //   index.html?run=1&log=fixed#log
+  applyAddressOptions();
+
+  function applyAddressOptions() {
+    var query = String(window.location.search || '');
+    function asked(name, value) {
+      return new RegExp('[?&]' + name + '=' + value + '(&|$)').test(query);
+    }
+
+    if (asked('theme', 'dark') || asked('theme', 'light')) {
+      applyTheme(asked('theme', 'dark') ? 'dark' : 'light');
+    }
+    if (asked('log', 'fixed')) { document.getElementById('log-fixed').click(); }
+    if (asked('problems', '1')) { document.getElementById('log-filter').click(); }
+    if (asked('run', '1')) { runBoth(scrollToAnchor); } else { scrollToAnchor(); }
+  }
+
+  function scrollToAnchor() {
+    if (!window.location.hash) return;
+    var target = document.querySelector(window.location.hash);
+    if (target) target.scrollIntoView({ block: 'start' });
+  }
+})();
+
+</script>
+</body>
+</html>
