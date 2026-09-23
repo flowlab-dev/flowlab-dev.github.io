@@ -1,0 +1,2041 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northgate job board - internal tool demo</title>
+<meta name="description" content="Portfolio demo: the job board of an invented sheet-metal shop. Quotes, released work, laser, brake, finishing and inspection on one screen, with office and shop-floor roles, filters, weekly totals and CSV export.">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<style>
+/* Northgate job board. Tokens are the Northgate website's, so the public site
+   and the tool behind it read as one company. */
+
+:root {
+  color-scheme: light;
+  --sheet: #eff1ee;
+  --panel: #f7f8f6;
+  --panel-sunk: #e6e9e4;
+  --ink: #1a1e1c;
+  --graphite: #5a625e;
+  --rule: #c9cec8;
+  --rule-strong: #7f8881;
+  --layout-blue: #17418f;
+  --layout-blue-soft: #e3e9f6;
+  --zinc: #e4b200;
+  --zinc-soft: #f6ecc4;
+  --zinc-ink: #2a2100;
+  --flag: #a8341c;
+  --flag-soft: #f7e5e1;
+  --good: #1f6b4a;
+  --mat-crs: #4d5551;
+  --mat-ss304: #6f8594;
+  --mat-al5052: #a9b6be;
+
+  --sans: "Helvetica Neue", Helvetica, "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --step--1: 0.84rem;
+  --step-0: 1rem;
+  --step-1: 1.2rem;
+  --step-3: clamp(1.9rem, 1.3rem + 2.4vw, 2.9rem);
+  --gutter: clamp(1rem, 0.5rem + 2.2vw, 2.5rem);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --sheet: #15181a; --panel: #1d2124; --panel-sunk: #23282b; --ink: #e7e9e5; --graphite: #a0a8a3;
+    --rule: #333a3d; --rule-strong: #6a7478; --layout-blue: #8faeea; --layout-blue-soft: #1c2740;
+    --zinc: #d9a916; --zinc-soft: #3a3113; --zinc-ink: #201900; --flag: #ef9a86; --flag-soft: #3a211c; --good: #6bc39a;
+    --mat-crs: #8c9691; --mat-ss304: #7f9bb0; --mat-al5052: #c3ced5;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --sheet: #15181a; --panel: #1d2124; --panel-sunk: #23282b; --ink: #e7e9e5; --graphite: #a0a8a3;
+  --rule: #333a3d; --rule-strong: #6a7478; --layout-blue: #8faeea; --layout-blue-soft: #1c2740;
+  --zinc: #d9a916; --zinc-soft: #3a3113; --zinc-ink: #201900; --flag: #ef9a86; --flag-soft: #3a211c; --good: #6bc39a;
+  --mat-crs: #8c9691; --mat-ss304: #7f9bb0; --mat-al5052: #c3ced5;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--sheet);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--step-0);
+  line-height: 1.5;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+.wrap { max-width: 1480px; margin-inline: auto; padding-inline: var(--gutter); }
+p { margin: 0; }
+a { color: var(--layout-blue); text-underline-offset: 0.18em; }
+:focus-visible { outline: 3px solid var(--layout-blue); outline-offset: 2px; }
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.skip-link { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--sheet); padding: 0.6rem 1rem; z-index: 10; }
+.skip-link:focus { left: 0.5rem; }
+.muted { color: var(--graphite); }
+.num, .job-no { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------- demo notice */
+
+/* The notice strip stays dark in both themes, so its yellow link always reads. */
+.demo-bar { background: #1a1e1c; color: #eff1ee; font-size: var(--step--1); line-height: 1.45; padding-block: 0.55rem; }
+.demo-bar .wrap { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; align-items: baseline; justify-content: space-between; }
+.demo-bar a { color: #e4b200; font-weight: 600; }
+
+/* ---------------------------------------------------------------- appbar */
+
+.appbar { border-bottom: 1px solid var(--rule); background: var(--panel); }
+.appbar-row { display: flex; align-items: center; gap: 0.75rem 1.25rem; flex-wrap: wrap; padding-block: 0.7rem; }
+.wordmark { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 700; font-size: 1.05rem; line-height: 1.1; margin-right: auto; }
+.wordmark small { display: block; font-weight: 400; font-size: var(--step--1); color: var(--graphite); }
+.wordmark svg { flex: none; }
+
+/* Segmented radio groups: role, flags and view share one look. */
+.roles, .flags, .views { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0; min-width: 0; }
+.roles legend, .flags legend { float: left; font-size: var(--step--1); color: var(--graphite); margin-right: 0.6rem; padding: 0; }
+.roles label, .flags label, .views label { position: relative; }
+.roles input, .flags input, .views input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.roles span, .flags span, .views span {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 0.85rem;
+  border: 1px solid var(--rule-strong); margin-left: -1px; font-size: 0.92rem; background: var(--panel); white-space: nowrap;
+}
+.roles label:first-of-type span, .flags label:first-of-type span, .views label:first-of-type span { margin-left: 0; }
+.roles input:checked + span, .flags input:checked + span, .views input:checked + span { background: var(--ink); color: var(--sheet); border-color: var(--ink); font-weight: 600; }
+.roles input:focus-visible + span, .flags input:focus-visible + span, .views input:focus-visible + span { outline: 3px solid var(--layout-blue); outline-offset: 1px; position: relative; z-index: 1; }
+
+.theme-toggle, .btn {
+  appearance: none; font: inherit; font-size: 0.92rem; min-height: 40px; padding: 0 0.85rem; cursor: pointer;
+  border: 1px solid var(--rule-strong); border-radius: 2px; background: var(--panel); color: var(--ink);
+  display: inline-flex; align-items: center; gap: 0.45rem;
+}
+.theme-toggle:hover, .btn:hover { border-color: var(--ink); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--zinc); color: var(--zinc-ink); border-color: var(--zinc); font-weight: 700; }
+.btn-primary:hover { border-color: var(--ink); }
+.btn-quiet { background: transparent; }
+.linkish { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: var(--layout-blue); text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; }
+
+/* ------------------------------------------------------------------ week */
+
+.week { padding-block: 1.6rem 1.1rem; display: grid; gap: 0.5rem; }
+.week-title { font-size: var(--step-3); line-height: 1.05; letter-spacing: -0.025em; margin: 0; font-weight: 700; }
+.week-line { font-size: var(--step-1); line-height: 1.45; max-width: 68ch; }
+.inline-filter {
+  appearance: none; font: inherit; color: var(--flag); font-weight: 700; background: var(--flag-soft);
+  border: 0; border-bottom: 2px solid var(--flag); padding: 0 0.2em; cursor: pointer;
+}
+.inline-filter:hover { background: var(--flag); color: var(--panel); }
+.role-note { color: var(--graphite); max-width: 70ch; }
+.notice { background: var(--zinc-soft); border-left: 4px solid var(--zinc); padding: 0.6rem 0.8rem; max-width: 70ch; }
+
+/* -------------------------------------------------------------- controls */
+
+.controls { display: flex; flex-wrap: wrap; gap: 0.8rem 1rem; align-items: end; padding-block: 0.4rem 0.9rem; }
+.search, .field { display: grid; gap: 0.25rem; }
+.search { flex: 1 1 260px; }
+.search label, .field label { font-size: var(--step--1); color: var(--graphite); }
+.controls input[type="search"], .controls select, .t-inline select {
+  font: inherit; font-size: 0.95rem; min-height: 40px; padding: 0 0.6rem; color: var(--ink);
+  background: var(--panel); border: 1px solid var(--rule-strong); border-radius: 2px; width: 100%;
+}
+.field { flex: 0 1 190px; }
+.flags { flex: 1 1 100%; row-gap: 0.4rem; }
+
+.resultbar { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; align-items: center; justify-content: space-between; padding-block: 0.6rem; border-top: 1px solid var(--rule); }
+.resultbar-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+#result-count { color: var(--graphite); }
+.resultbar p { margin: 0; }
+
+/* ----------------------------------------------------------------- board */
+
+.board-area { padding-bottom: 2.5rem; }
+.board-area:focus { outline: none; }
+.columns {
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(212px, 1fr); gap: 0.9rem;
+  overflow-x: auto; padding: 0.2rem var(--gutter) 1rem; scroll-padding-inline: var(--gutter);
+  overscroll-behavior-x: contain; scrollbar-color: var(--rule-strong) transparent;
+}
+/* Mac hides scrollbars; a visible bar and a fading edge say there is more to the right. */
+.columns::-webkit-scrollbar { height: 10px; }
+.columns::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 5px; }
+.columns::-webkit-scrollbar-track { background: var(--panel-sunk); }
+.columns.more-right { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent); }
+.scroll-hint { color: var(--ink); font-size: var(--step--1); margin-left: 0.4rem; }
+.column { min-width: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.column-head {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; margin: 0;
+  font-size: 0.95rem; font-weight: 700; padding-bottom: 0.45rem; border-bottom: 2px solid var(--ink);
+}
+.column-head .count { font-family: var(--mono); font-weight: 400; color: var(--graphite); }
+.column-empty { color: var(--graphite); font-size: var(--step--1); padding: 0.8rem 0; border-bottom: 1px dashed var(--rule); }
+.stack { display: flex; flex-direction: column; gap: 0.6rem; }
+
+/* A card is the traveller clipped to the rack: job number stamped at the top,
+   a material stripe down the edge, the route punched along the bottom. */
+.card {
+  appearance: none; font: inherit; color: inherit; text-align: left; cursor: pointer; width: 100%;
+  display: grid; gap: 0.15rem; padding: 0.7rem 0.8rem 0.75rem 0.95rem;
+  background: var(--panel); border: 1px solid var(--rule); border-left: 6px solid var(--mat-crs); border-radius: 2px;
+}
+.card:hover { border-top-color: var(--rule-strong); border-right-color: var(--rule-strong); border-bottom-color: var(--rule-strong); }
+.card.mat-crs { border-left-color: var(--mat-crs); }
+.card.mat-ss304 { border-left-color: var(--mat-ss304); }
+.card.mat-al5052 { border-left-color: var(--mat-al5052); }
+.card-top { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
+.card .job-no { font-size: 0.8rem; letter-spacing: 0.01em; color: var(--graphite); }
+.card .price { font-family: var(--mono); font-size: 0.85rem; font-weight: 600; }
+.card .customer { font-weight: 700; line-height: 1.25; margin-top: 0.1rem; }
+.card .part { line-height: 1.3; }
+.card .spec { color: var(--graphite); font-size: var(--step--1); }
+.route { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.35rem; }
+.track { display: inline-flex; gap: 4px; }
+.dot { width: 9px; height: 9px; border: 1.5px solid var(--rule-strong); border-radius: 50%; }
+.dot.done { background: var(--ink); border-color: var(--ink); }
+.dot.now { background: var(--zinc); border-color: var(--ink); }
+.track-label { font-size: 0.78rem; color: var(--graphite); }
+.card-foot { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; margin-top: 0.35rem; font-size: var(--step--1); }
+.card .owner { color: var(--graphite); white-space: nowrap; }
+.due.late, .due.waiting { color: var(--flag); font-weight: 700; }
+.due.passed { color: var(--flag); }
+.due.soon { font-weight: 700; }
+.due.done { color: var(--graphite); }
+.tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.35rem; }
+.tag { font-size: 0.76rem; font-weight: 700; padding: 0.05rem 0.4rem; border-radius: 2px; line-height: 1.5; }
+.tag-rush { background: var(--zinc); color: var(--zinc-ink); }
+.tag-hold { background: var(--flag-soft); color: var(--flag); border: 1px solid var(--flag); }
+
+/* The one bit of motion: the job you just moved shows where it landed. */
+@keyframes landed { from { background: var(--zinc-soft); } to { background: var(--panel); } }
+.card.just-moved { animation: landed 1.6s ease-out; }
+
+/* ------------------------------------------------------------------ list */
+
+.table-wrap { overflow-x: auto; margin-inline: auto; max-width: 1480px; padding-inline: var(--gutter); }
+.jobs { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.jobs th, .jobs td { text-align: left; padding: 0.6rem 0.75rem 0.6rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.jobs thead th { font-size: var(--step--1); color: var(--graphite); font-weight: 600; border-bottom: 2px solid var(--ink); }
+.jobs .num { text-align: right; font-family: var(--mono); }
+.jobs .sub { display: block; color: var(--graphite); font-size: var(--step--1); }
+.jobs .hold-text { color: var(--flag); font-weight: 700; }
+.jobs .job-no { font-size: 0.88rem; white-space: nowrap; }
+
+.empty { padding-block: 2rem; display: grid; gap: 0.8rem; justify-items: start; }
+
+/* -------------------------------------------------------------- footer */
+
+.foot { padding-block: 1.5rem 3rem; border-top: 1px solid var(--rule); display: grid; gap: 0.6rem; color: var(--graphite); font-size: 0.92rem; }
+.foot p { max-width: 75ch; }
+
+/* ------------------------------------------------------------ traveller */
+
+dialog#traveller {
+  margin: 0 0 0 auto; height: 100%; max-height: 100%; width: min(560px, 100%); max-width: 100%;
+  border: 0; border-left: 1px solid var(--rule-strong); padding: 0; background: var(--panel); color: var(--ink);
+}
+dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
+.t-close-row { position: sticky; top: 0; display: flex; justify-content: flex-end; padding: 0.6rem 0.8rem; background: var(--panel); border-bottom: 1px solid var(--rule); z-index: 1; }
+.t-close { appearance: none; font: inherit; font-size: 0.92rem; min-height: 40px; padding: 0 0.85rem; background: transparent; color: var(--ink); border: 1px solid var(--rule-strong); border-radius: 2px; cursor: pointer; }
+#traveller-body { padding: 1.1rem 1.4rem 2.5rem; display: grid; gap: 1.5rem; }
+.t-kicker { color: var(--graphite); font-size: var(--step--1); }
+.t-no { font-size: 1.7rem; margin: 0.1rem 0 0.2rem; letter-spacing: -0.01em; }
+.t-customer { font-weight: 600; }
+.t-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem 1rem; margin: 0; }
+.t-facts div { min-width: 0; }
+.t-facts dt { font-size: var(--step--1); color: var(--graphite); }
+.t-facts dd { margin: 0; overflow-wrap: anywhere; }
+.t-route h3, .t-history h3 { font-size: 1rem; margin: 0 0 0.6rem; }
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.step { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr auto; gap: 0.6rem; align-items: baseline; padding: 0.5rem 0; border-bottom: 1px solid var(--rule); }
+.step::before { content: counter(step); font-family: var(--mono); color: var(--graphite); }
+.step.done::before { content: "✓"; color: var(--good); font-weight: 700; }
+.step.now { font-weight: 700; }
+.step.now::before { color: var(--ink); }
+.step-state { font-size: var(--step--1); color: var(--graphite); text-align: right; }
+.step.now .step-state { color: var(--ink); }
+.t-actions { display: grid; gap: 0.7rem; justify-items: start; padding: 1rem; background: var(--panel-sunk); border: 1px solid var(--rule); }
+.t-actions .btn { min-height: 44px; }
+.t-hint { color: var(--graphite); }
+.t-inline { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; width: 100%; }
+.t-inline label { font-size: var(--step--1); color: var(--graphite); flex: 0 0 100%; }
+.t-inline select { flex: 1 1 200px; width: auto; }
+.history { list-style: none; margin: 0; padding: 0; font-size: 0.9rem; }
+.history li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 0.1rem 0.8rem; padding: 0.4rem 0; border-bottom: 1px solid var(--rule); }
+.h-when { font-family: var(--mono); font-size: 0.82rem; color: var(--graphite); grid-row: span 2; }
+.h-who { color: var(--graphite); font-size: var(--step--1); }
+
+/* ---------------------------------------------------------------- phone */
+
+@media (max-width: 760px) {
+  .roles legend { display: none; }
+  .roles { order: 3; flex: 1 1 100%; }
+  .roles label { flex: 1 1 0; }
+  .roles span { width: 100%; justify-content: center; }
+  .field { flex: 1 1 calc(50% - 0.5rem); }
+  .flags { row-gap: 0.5rem; }
+  .week-line { font-size: 1.05rem; }
+  .week { padding-block: 1.1rem 0.8rem; }
+  .role-note { font-size: var(--step--1); }
+  .flags legend { display: none; }
+  /* On a phone the rack becomes one tall column: stage headings stay, sideways scrolling goes. */
+  .columns { grid-auto-flow: row; grid-auto-columns: auto; overflow-x: visible; }
+  .column-empty { display: none; }
+  .column:has(.column-empty) .column-head { color: var(--graphite); border-bottom-width: 1px; }
+  .jobs thead { display: none; }
+  .jobs, .jobs tbody, .jobs tr { display: block; }
+  .jobs tr { display: grid; grid-template-columns: 1fr auto; gap: 0.1rem 0.8rem; padding: 0.7rem 0; border-bottom: 1px solid var(--rule); }
+  .jobs th, .jobs td { border: 0; padding: 0; }
+  .jobs td:nth-child(2) { grid-column: 1 / -1; }
+  .h-when { grid-row: auto; }
+  .history li { grid-template-columns: 1fr; }
+  .t-facts { grid-template-columns: 1fr 1fr; }
+  #traveller-body { padding-inline: 1rem; }
+}
+
+</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1e1c'/%3E%3Cpath d='M7 24V8l18 16V8' fill='none' stroke='%23e4b200' stroke-width='3'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip-link" href="#board">Skip to the jobs</a>
+
+<div class="demo-bar">
+  <div class="wrap">
+    <p><b>Portfolio demo.</b> Northgate Metalworks is an invented company. The jobs are generated in your browser and saved only there.</p>
+    <p><a href="../business-site/">The public website these quotes come from</a></p>
+  </div>
+</div>
+
+<header class="appbar">
+  <div class="wrap appbar-row">
+    <span class="wordmark">
+      <svg width="28" height="28" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect width="32" height="32" fill="var(--ink)"></rect>
+        <path d="M7 24V8l18 16V8" fill="none" stroke="var(--zinc)" stroke-width="3"></path>
+      </svg>
+      <span>Job board<small>Northgate Metalworks</small></span>
+    </span>
+
+    <fieldset class="roles">
+      <legend>Working as</legend>
+      <label><input type="radio" name="role" value="office" checked> <span>Office</span></label>
+      <label><input type="radio" name="role" value="floor"> <span>Shop floor</span></label>
+    </fieldset>
+
+    <button class="theme-toggle" type="button" id="theme-toggle">
+      <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <circle cx="8" cy="8" r="3.4" fill="currentColor"></circle>
+        <path d="M8 .8v2.4M8 12.8v2.4M.8 8h2.4M12.8 8h2.4M2.9 2.9l1.7 1.7M11.4 11.4l1.7 1.7M13.1 2.9l-1.7 1.7M4.6 11.4l-1.7 1.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+      </svg>
+      <span id="theme-label">Night shift</span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="week wrap" aria-labelledby="week-title">
+    <h1 id="week-title" class="week-title">Week of <span id="week-start">-</span></h1>
+    <p class="week-line" id="week-line">Counting the week…</p>
+    <p class="role-note" id="role-note"></p>
+    <p class="notice" id="notice" hidden></p>
+  </section>
+
+  <section class="controls wrap" aria-label="Find jobs">
+    <div class="search">
+      <label for="q">Search</label>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Job number, customer or part">
+    </div>
+    <div class="field">
+      <label for="group">Show</label>
+      <select id="group">
+        <option value="open">Open work</option>
+        <option value="quotes">Quotes only</option>
+        <option value="floor">On the floor</option>
+        <option value="done">Shipped and not accepted</option>
+        <option value="all">Everything</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="material">Material</label>
+      <select id="material"><option value="all">Any material</option></select>
+    </div>
+    <div class="field">
+      <label for="owner">Owner</label>
+      <select id="owner"><option value="all">Anyone</option></select>
+    </div>
+    <fieldset class="flags">
+      <legend>Only</legend>
+      <label><input type="radio" name="flag" value="" checked> <span>All</span></label>
+      <label><input type="radio" name="flag" value="late"> <span>Late</span></label>
+      <label><input type="radio" name="flag" value="soon"> <span>Due in 2 working days</span></label>
+      <label><input type="radio" name="flag" value="hold"> <span>On hold</span></label>
+      <label><input type="radio" name="flag" value="rush"> <span>Rush</span></label>
+    </fieldset>
+  </section>
+
+  <div class="resultbar wrap">
+    <p><span id="result-count" aria-live="polite"></span> <span class="scroll-hint" id="scroll-hint" hidden>More stages to the right: scroll the board sideways.</span></p>
+    <div class="resultbar-actions">
+      <fieldset class="views">
+        <legend class="visually-hidden">View</legend>
+        <label><input type="radio" name="view" value="board" checked> <span>Board</span></label>
+        <label><input type="radio" name="view" value="list"> <span>List</span></label>
+      </fieldset>
+      <button type="button" class="btn" id="export">Download CSV</button>
+    </div>
+  </div>
+
+  <section id="board" class="board-area" tabindex="-1" aria-label="Jobs"></section>
+
+  <footer class="foot wrap">
+    <p>Everything on this page runs in your browser: no server, no account. Prices come from the same estimate engine as the <a href="../business-site/">Northgate website</a>, so a quote on the board is the quote the customer saw.</p>
+    <p><button type="button" class="linkish" id="reset">Start the demo board again</button> <span class="muted">(clears what you changed here)</span></p>
+  </footer>
+</main>
+
+<dialog id="traveller" aria-labelledby="t-title">
+  <form method="dialog" class="t-close-row">
+    <button class="t-close" value="close" aria-label="Close the traveller">Close</button>
+  </form>
+  <div id="traveller-body"></div>
+</dialog>
+
+<p class="visually-hidden" id="announce" aria-live="polite"></p>
+
+<script>
+/*
+ * Northgate Metalworks - budgetary estimate engine.
+ *
+ * One file, two homes: the browser loads it with <script src>, Node tests
+ * require() it. No build step, so the page and the tests can never drift.
+ *
+ * Every number below is a shop-floor assumption written down in the open:
+ * a buyer can check it, and a shop can change it without touching the page.
+ */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.NGQuote = api;
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
+
+  /* ---------------------------------------------------------------- data */
+
+  var MATERIALS = {
+    crs: {
+      id: 'crs',
+      label: 'Mild steel (CRS 1008)',
+      density: 7.85e-6,        // kg per mm^3
+      pricePerKg: 1.45,        // USD, shop cost incl. current surcharges
+      thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
+      cutFactor: 1.0,
+      bendFactor: 1.0
+    },
+    ss304: {
+      id: 'ss304',
+      label: 'Stainless 304 (2B)',
+      density: 8.0e-6,
+      pricePerKg: 4.30,
+      thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0],
+      cutFactor: 1.45,         // slower cut, nitrogen assist
+      bendFactor: 1.2          // springback, more first-article fiddling
+    },
+    al5052: {
+      id: 'al5052',
+      label: 'Aluminium 5052-H32',
+      density: 2.68e-6,
+      pricePerKg: 5.60,
+      thickness: [1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
+      cutFactor: 1.15,
+      bendFactor: 1.15
+    }
+  };
+
+  var FINISHES = {
+    mill: { id: 'mill', label: 'Mill finish, deburred', perPart: 0.00, lotMinimum: 0, leadDays: 0 },
+    powder: { id: 'powder', label: 'Powder coat, one colour', perPart: 4.20, lotMinimum: 85, leadDays: 2 },
+    zinc: { id: 'zinc', label: 'Clear zinc plate', perPart: 3.10, lotMinimum: 110, leadDays: 2 }
+  };
+
+  var TOLERANCES = {
+    standard: { id: 'standard', label: 'Standard, +/-0.25 mm', formingFactor: 1.0, inspectMinPerPart: 0.15 },
+    tight: { id: 'tight', label: 'Tight, +/-0.10 mm', formingFactor: 1.18, inspectMinPerPart: 0.55 }
+  };
+
+  var SHOP = {
+    sheetMax: { length: 3000, width: 1500 },   // mm, the bed of the laser
+    partMin: 20,                                // mm, smallest side we will nest
+    quantityMax: 2000,
+    bendsMax: 20,
+    holesMax: 400,
+    laserRate: 95,        // USD per machine hour
+    brakeRate: 78,
+    inspectRate: 62,
+    programMinutes: 25,   // one-off laser programming per part number
+    brakeSetupMinutes: 12,// per bend, once per job
+    firstArticleMinutes: 30,
+    loadMinutesPerPart: 0.35,
+    pierceSeconds: 1.4,
+    bendSecondsPerHit: 18,
+    deburrMinutesPerPart: 0.6,
+    scrapFactor: 1.25,    // skeleton and offcut we pay for but do not ship
+    margin: 0.32,
+    spread: 0.12,         // half-width of the published range
+    minimumJob: 150,      // USD, below this it is not worth opening the file
+    baseLeadDays: 6,
+    rushSurcharge: 0.25,
+    areaPerFeature: 900,   // mm^2 of blank per hole or cutout before it is crowded
+    mmPerBend: 25,         // the brake needs a flange it can hold
+    quoteByHandOver: 50000 // above this a person quotes it, not a web page
+  };
+
+  // Laser feed in mm/min at a given thickness for mild steel; other materials
+  // scale by cutFactor. Interpolated between the points we actually run.
+  var FEED_POINTS = [
+    [0.8, 9200], [1.5, 7400], [2.0, 6100], [3.0, 4200], [4.0, 3000], [5.0, 2200], [6.0, 1600]
+  ];
+
+  function feedRate(material, thickness) {
+    var pts = FEED_POINTS;
+    var mmPerMin;
+    if (thickness <= pts[0][0]) mmPerMin = pts[0][1];
+    else if (thickness >= pts[pts.length - 1][0]) mmPerMin = pts[pts.length - 1][1];
+    else {
+      mmPerMin = pts[pts.length - 1][1];
+      for (var i = 1; i < pts.length; i++) {
+        if (thickness <= pts[i][0]) {
+          var t0 = pts[i - 1][0], t1 = pts[i][0], f0 = pts[i - 1][1], f1 = pts[i][1];
+          mmPerMin = f0 + (f1 - f0) * ((thickness - t0) / (t1 - t0));
+          break;
+        }
+      }
+    }
+    return mmPerMin / material.cutFactor;
+  }
+
+  /* ---------------------------------------------------------- validation */
+
+  var FIELD_ORDER = [
+    'partName', 'material', 'thickness', 'length', 'width', 'quantity',
+    'bends', 'holes', 'finish', 'tolerance', 'neededBy', 'contactName', 'email'
+  ];
+
+  function isBlank(value) {
+    return value === undefined || value === null || String(value).trim() === '';
+  }
+
+  function toNumber(value) {
+    if (typeof value === 'number') return Number.isFinite(value) ? value : NaN;
+    var text = String(value).trim().replace(',', '.');
+    if (!/^-?\d+(\.\d+)?$/.test(text)) return NaN;
+    return parseFloat(text);
+  }
+
+  function toInteger(value) {
+    if (typeof value === 'number') return Number.isInteger(value) ? value : NaN;
+    var text = String(value).trim();
+    if (!/^-?\d+$/.test(text)) return NaN;
+    return parseInt(text, 10);
+  }
+
+  function validateEmail(value) {
+    var text = String(value).trim();
+    if (text.length > 254) return false;
+    return /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(text);
+  }
+
+  function parseDateOnly(value) {
+    var text = String(value).trim();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(text)) return null;
+    var parts = text.split('-').map(Number);
+    var stamp = Date.UTC(parts[0], parts[1] - 1, parts[2]);
+    var back = new Date(stamp);
+    if (back.getUTCFullYear() !== parts[0] || back.getUTCMonth() !== parts[1] - 1 || back.getUTCDate() !== parts[2]) return null;
+    return stamp;
+  }
+
+  /*
+   * Dates in this file are calendar days, not moments. A date input hands us
+   * "2026-10-15" with no timezone, so we key every day by UTC midnight and map
+   * "now" through the visitor's own calendar first. Without that step a buyer
+   * west of UTC gets told that today has already passed.
+   */
+  function dayKey(stamp) {
+    var d = new Date(stamp);
+    return Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  /**
+   * Checks one RFQ. Returns { ok, values, errors } where errors is keyed by
+   * field name and every message tells the person what to do next.
+   */
+  function validate(input, now) {
+    input = input || {};
+    var errors = {};
+    var values = {};
+    var today = dayKey(now === undefined ? Date.now() : now);
+
+    var partName = String(input.partName === undefined ? '' : input.partName).trim().replace(/\s+/g, ' ');
+    if (isBlank(partName)) errors.partName = 'Name the part so we can label the quote.';
+    else if (partName.length < 2) errors.partName = 'Use at least 2 characters.';
+    else if (partName.length > 60) errors.partName = 'Keep it under 60 characters.';
+    else values.partName = partName;
+
+    var material = MATERIALS[String(input.material === undefined ? '' : input.material).trim()];
+    if (!material) errors.material = 'Pick a material we stock.';
+    else values.material = material;
+
+    var thickness = toNumber(input.thickness);
+    if (isBlank(input.thickness)) errors.thickness = 'Pick a thickness.';
+    else if (Number.isNaN(thickness)) errors.thickness = 'Thickness has to be a number in millimetres.';
+    else if (!material) errors.thickness = 'Pick a material first.';
+    else if (material.thickness.indexOf(thickness) === -1) {
+      errors.thickness = 'We stock ' + material.label + ' in ' + material.thickness.map(function (mm) { return mm.toFixed(1); }).join(', ') + ' mm.';
+    } else values.thickness = thickness;
+
+    ['length', 'width'].forEach(function (key) {
+      var mm = toNumber(input[key]);
+      var limit = key === 'length' ? SHOP.sheetMax.length : SHOP.sheetMax.width;
+      if (isBlank(input[key])) errors[key] = 'Flat size is needed to nest the part.';
+      else if (Number.isNaN(mm) || mm <= 0) errors[key] = 'Enter the flat ' + key + ' in millimetres.';
+      else if (mm < SHOP.partMin) errors[key] = 'Smallest side we nest is ' + SHOP.partMin + ' mm.';
+      else if (mm > limit) errors[key] = 'Our bed is ' + SHOP.sheetMax.length + ' x ' + SHOP.sheetMax.width + ' mm - this side is over ' + limit + ' mm.';
+      else values[key] = mm;
+    });
+
+    var quantity = toInteger(input.quantity);
+    if (isBlank(input.quantity)) errors.quantity = 'How many parts?';
+    else if (Number.isNaN(quantity)) errors.quantity = 'Quantity has to be a whole number.';
+    else if (quantity < 1) errors.quantity = 'One part is our minimum - and it is welcome.';
+    else if (quantity > SHOP.quantityMax) errors.quantity = 'Over ' + SHOP.quantityMax + ' parts we quote by hand. Send the drawing and we will come back the same day.';
+    else values.quantity = quantity;
+
+    var bends = isBlank(input.bends) ? 0 : toInteger(input.bends);
+    if (Number.isNaN(bends)) errors.bends = 'Bend count has to be a whole number, 0 if the part stays flat.';
+    else if (bends < 0) errors.bends = 'Bends cannot be negative.';
+    else if (bends > SHOP.bendsMax) errors.bends = 'Over ' + SHOP.bendsMax + ' hits we quote by hand.';
+    else values.bends = bends;
+
+    var holes = isBlank(input.holes) ? 0 : toInteger(input.holes);
+    if (Number.isNaN(holes)) errors.holes = 'Holes and cutouts have to be a whole number.';
+    else if (holes < 0) errors.holes = 'Holes cannot be negative.';
+    else if (holes > SHOP.holesMax) errors.holes = 'Over ' + SHOP.holesMax + ' features we quote from the DXF instead.';
+    else values.holes = holes;
+
+    // A part only has room for so much. Past that the arithmetic is fiction,
+    // so we ask for the file instead of inventing a price.
+    if (values.length && values.width) {
+      var roomForHoles = Math.max(4, Math.floor((values.length * values.width) / SHOP.areaPerFeature));
+      if (values.holes > roomForHoles) {
+        errors.holes = 'A ' + values.length + ' x ' + values.width + ' mm part has room for about ' +
+          roomForHoles + ' features. Send the DXF and we will quote from the file.';
+        delete values.holes;
+      }
+      var roomForBends = Math.max(1, Math.floor(Math.max(values.length, values.width) / SHOP.mmPerBend));
+      if (values.bends > roomForBends) {
+        errors.bends = 'The brake needs about ' + SHOP.mmPerBend + ' mm between hits, so this part takes around ' +
+          roomForBends + '. Send the drawing and we will work it out.';
+        delete values.bends;
+      }
+    }
+
+    var finish = FINISHES[String(input.finish === undefined ? 'mill' : input.finish).trim()];
+    if (!finish) errors.finish = 'Pick a finish.';
+    else values.finish = finish;
+
+    var tolerance = TOLERANCES[String(input.tolerance === undefined ? 'standard' : input.tolerance).trim()];
+    if (!tolerance) errors.tolerance = 'Pick a tolerance.';
+    else values.tolerance = tolerance;
+
+    if (isBlank(input.neededBy)) {
+      values.neededBy = null;
+    } else {
+      var due = parseDateOnly(input.neededBy);
+      if (due === null) errors.neededBy = 'Use the date picker, or leave it empty.';
+      else if (due < today) errors.neededBy = 'That date has passed. Pick a day from today on.';
+      else values.neededBy = due;
+    }
+
+    var contactName = String(input.contactName === undefined ? '' : input.contactName).trim().replace(/\s+/g, ' ');
+    if (isBlank(contactName)) errors.contactName = 'Who should we reply to?';
+    else if (contactName.length < 2) errors.contactName = 'Use at least 2 characters.';
+    else if (contactName.length > 60) errors.contactName = 'Keep it under 60 characters.';
+    else values.contactName = contactName;
+
+    var email = String(input.email === undefined ? '' : input.email).trim();
+    if (isBlank(email)) errors.email = 'We send the quote by email.';
+    else if (!validateEmail(email)) errors.email = 'Check the address - it needs an @ and a domain.';
+    else values.email = email;
+
+    var company = String(input.company === undefined ? '' : input.company).trim().replace(/\s+/g, ' ');
+    if (company.length > 80) errors.company = 'Keep it under 80 characters.';
+    else values.company = company;
+
+    var notes = String(input.notes === undefined ? '' : input.notes).trim();
+    if (notes.length > 600) errors.notes = 'Keep notes under 600 characters - the drawing can carry the rest.';
+    else values.notes = notes;
+
+    return { ok: Object.keys(errors).length === 0, values: values, errors: errors };
+  }
+
+  function firstErrorField(errors) {
+    for (var i = 0; i < FIELD_ORDER.length; i++) {
+      if (errors[FIELD_ORDER[i]]) return FIELD_ORDER[i];
+    }
+    var keys = Object.keys(errors);
+    return keys.length ? keys[0] : null;
+  }
+
+  /* ------------------------------------------------------------ estimate */
+
+  function round2(n) { return Math.round(n * 100) / 100; }
+
+  function addBusinessDays(stamp, days) {
+    var d = new Date(stamp);
+    var added = 0;
+    while (added < days) {
+      d = new Date(d.getTime() + 86400000);
+      var day = d.getUTCDay();
+      if (day !== 0 && day !== 6) added++;
+    }
+    return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+  }
+
+  function businessDaysBetween(from, to) {
+    if (to <= from) return 0;
+    var d = new Date(from);
+    var count = 0;
+    while (d.getTime() < to) {
+      d = new Date(d.getTime() + 86400000);
+      var day = d.getUTCDay();
+      if (day !== 0 && day !== 6) count++;
+    }
+    return count;
+  }
+
+  /**
+   * Turns validated values into money and days. Pure arithmetic: same input,
+   * same output, which is why the tests can pin every line of it.
+   */
+  function estimate(values, now) {
+    var today = dayKey(now === undefined ? Date.now() : now);
+    var m = values.material;
+    var qty = values.quantity;
+    var areaMm2 = values.length * values.width;
+    var massKg = areaMm2 * values.thickness * m.density;
+    var materialCost = massKg * m.pricePerKg * SHOP.scrapFactor;
+
+    var perimeter = 2 * (values.length + values.width);
+    var featureCut = values.holes * 28;          // a typical 9 mm hole plus small cutouts
+    var cutLength = perimeter + featureCut;
+    var cutMinutes = cutLength / feedRate(m, values.thickness);
+    var pierceMinutes = (values.holes + 1) * (SHOP.pierceSeconds / 60);
+    var laserMinutesPerPart = cutMinutes + pierceMinutes + SHOP.loadMinutesPerPart;
+
+    var bendMinutesPerPart = values.bends * (SHOP.bendSecondsPerHit / 60) * m.bendFactor * values.tolerance.formingFactor;
+    var deburrMinutes = SHOP.deburrMinutesPerPart;
+    var inspectMinutesPerPart = values.tolerance.inspectMinPerPart;
+
+    var setupMinutesLaser = SHOP.programMinutes;
+    var setupMinutesBrake = values.bends * SHOP.brakeSetupMinutes;
+    var setupMinutesInspect = SHOP.firstArticleMinutes;
+
+    var laserCost = (laserMinutesPerPart * qty + setupMinutesLaser) / 60 * SHOP.laserRate;
+    var brakeCost = (bendMinutesPerPart * qty + setupMinutesBrake) / 60 * SHOP.brakeRate;
+    var handCost = (deburrMinutes * qty) / 60 * SHOP.brakeRate;
+    var inspectCost = (inspectMinutesPerPart * qty + setupMinutesInspect) / 60 * SHOP.inspectRate;
+
+    var finishCost = values.finish.perPart * qty;
+    if (values.finish.lotMinimum > 0) finishCost = Math.max(finishCost, values.finish.lotMinimum);
+
+    var materialTotal = materialCost * qty;
+    var cost = materialTotal + laserCost + brakeCost + handCost + inspectCost + finishCost;
+
+    var leadDays = SHOP.baseLeadDays + values.finish.leadDays;
+    if (values.tolerance.id === 'tight') leadDays += 1;
+    if (qty > 250) leadDays += 2;
+    if (qty > 1000) leadDays += 2;
+
+    var readyBy = addBusinessDays(today, leadDays);
+    var rush = false;
+    var rushDaysShort = 0;
+    if (values.neededBy !== null && values.neededBy !== undefined && values.neededBy < readyBy) {
+      rush = true;
+      rushDaysShort = businessDaysBetween(values.neededBy, readyBy);
+    }
+
+    var price = cost * (1 + SHOP.margin);
+    if (rush) price *= (1 + SHOP.rushSurcharge);
+
+    var belowMinimum = price < SHOP.minimumJob;
+    if (belowMinimum) price = SHOP.minimumJob;
+
+    // The job minimum is a floor, not a midpoint: a range that starts below it
+    // would quote a price we have just said we do not take.
+    var low = belowMinimum ? SHOP.minimumJob : round2(price * (1 - SHOP.spread));
+    var high = belowMinimum ? SHOP.minimumJob : round2(price * (1 + SHOP.spread));
+    var overCeiling = price > SHOP.quoteByHandOver;
+
+    return {
+      quantity: qty,
+      massKgPerPart: round2(massKg),
+      cutLengthMm: Math.round(cutLength),
+      laserMinutesPerPart: round2(laserMinutesPerPart),
+      bendMinutesPerPart: round2(bendMinutesPerPart),
+      setupMinutes: Math.round(setupMinutesLaser + setupMinutesBrake + setupMinutesInspect),
+      breakdown: {
+        material: round2(materialTotal),
+        laser: round2(laserCost),
+        forming: round2(brakeCost),
+        hand: round2(handCost),
+        inspection: round2(inspectCost),
+        finishing: round2(finishCost)
+      },
+      cost: round2(cost),
+      total: round2(price),
+      low: low,
+      high: high,
+      perPart: round2(price / qty),
+      belowMinimum: belowMinimum,
+      overCeiling: overCeiling,
+      rush: rush,
+      rushDaysShort: rushDaysShort,
+      leadDays: leadDays,
+      readyBy: readyBy
+    };
+  }
+
+  /* ----------------------------------------------------------- reference */
+
+  function reference(values, stamp) {
+    var d = new Date(dayKey(stamp === undefined ? Date.now() : stamp));
+    var yy = String(d.getUTCFullYear()).slice(2);
+    var mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+    var dd = String(d.getUTCDate()).padStart(2, '0');
+    var seed = [values.partName, values.material.id, values.thickness, values.length,
+      values.width, values.quantity, values.bends, values.holes, values.email].join('|');
+    var hash = 5381;
+    for (var i = 0; i < seed.length; i++) {
+      hash = ((hash * 33) ^ seed.charCodeAt(i)) >>> 0;
+    }
+    var letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    var code = '';
+    for (var j = 0; j < 2; j++) {
+      code += letters[hash % letters.length];
+      hash = Math.floor(hash / letters.length);
+    }
+    code += String(hash % 100).padStart(2, '0');
+    return 'NG-' + yy + mm + dd + '-' + code;
+  }
+
+  /* ------------------------------------------------------------- summary */
+
+  function formatDate(stamp) {
+    if (stamp === null || stamp === undefined) return 'not set';
+    var d = new Date(stamp);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
+  }
+
+  function money(n) {
+    return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  /** One figure when the price is pinned to the minimum, a range otherwise. */
+  function priceRange(result) {
+    return result.low === result.high ? money(result.low) : money(result.low) + ' - ' + money(result.high);
+  }
+
+  /** The plain-text RFQ a buyer can paste into email or a purchase system. */
+  function summaryText(values, result, ref) {
+    var lines = [];
+    lines.push('REQUEST FOR QUOTE ' + ref);
+    lines.push('Northgate Metalworks - laser cutting, forming, welded assemblies');
+    lines.push('');
+    lines.push('Part:        ' + values.partName);
+    lines.push('Material:    ' + values.material.label + ', ' + values.thickness + ' mm');
+    lines.push('Flat size:   ' + values.length + ' x ' + values.width + ' mm');
+    lines.push('Quantity:    ' + values.quantity);
+    lines.push('Bends:       ' + values.bends);
+    lines.push('Holes/cuts:  ' + values.holes);
+    lines.push('Finish:      ' + values.finish.label);
+    lines.push('Tolerance:   ' + values.tolerance.label);
+    lines.push('Needed by:   ' + formatDate(values.neededBy));
+    lines.push('');
+    lines.push('Budgetary estimate: ' + priceRange(result) +
+      ' for ' + result.quantity + ' (about ' + money(result.perPart) + ' each)');
+    lines.push('Estimated ready:    ' + result.leadDays + ' business days, around ' + formatDate(result.readyBy));
+    if (result.rush) lines.push('Rush:               needed ' + result.rushDaysShort + ' business day(s) sooner - rush surcharge included');
+    if (result.belowMinimum) lines.push('Note:               below our ' + money(SHOP.minimumJob) + ' job minimum, quoted at the minimum');
+    if (result.overCeiling) lines.push('Note:               a job this size is quoted by a person, not by the page');
+    lines.push('');
+    lines.push('Contact:     ' + values.contactName + (values.company ? ', ' + values.company : ''));
+    lines.push('Email:       ' + values.email);
+    if (values.notes) {
+      lines.push('');
+      lines.push('Notes:');
+      lines.push(values.notes);
+    }
+    lines.push('');
+    lines.push('This estimate comes from the numbers above, not from a drawing.');
+    lines.push('Send the DXF or STEP file in reply and we confirm within one business day.');
+    return lines.join('\n');
+  }
+
+  return {
+    MATERIALS: MATERIALS,
+    FINISHES: FINISHES,
+    TOLERANCES: TOLERANCES,
+    SHOP: SHOP,
+    FIELD_ORDER: FIELD_ORDER,
+    feedRate: feedRate,
+    validate: validate,
+    validateEmail: validateEmail,
+    parseDateOnly: parseDateOnly,
+    firstErrorField: firstErrorField,
+    estimate: estimate,
+    reference: reference,
+    summaryText: summaryText,
+    dayKey: dayKey,
+    addBusinessDays: addBusinessDays,
+    businessDaysBetween: businessDaysBetween,
+    formatDate: formatDate,
+    money: money,
+    priceRange: priceRange
+  };
+});
+
+</script>
+<script>
+/*
+ * Northgate Metalworks - job board engine.
+ *
+ * The office and the shop floor share one list of jobs. Every rule about who may
+ * move a job, what counts as late and what goes into an export lives here, as
+ * plain functions: the page calls them, and the Node tests call the same ones.
+ *
+ * Prices come from the estimate engine of the Northgate website (quote.js), not
+ * from a copy, so the board and the public calculator can never disagree.
+ */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) {
+    module.exports = factory(require('../../../ДЕМО-бизнес-сайт/demo/assets/quote.js'));
+  } else {
+    root.NGBoard = factory(root.NGQuote);
+  }
+})(typeof self !== 'undefined' ? self : this, function (Q) {
+  'use strict';
+
+  var DAY = 86400000;
+
+  /* -------------------------------------------------------------- stages */
+
+  // The order is the order a job travels in. `by` is the role that moves a job
+  // INTO this stage; the floor never touches quotes, the office never signs off
+  // an operation it did not watch.
+  var STAGES = [
+    { id: 'rfq', label: 'Quote requested', short: 'Requested', group: 'quotes', by: null },
+    { id: 'quoted', label: 'Quote sent', short: 'Quoted', group: 'quotes', by: 'office' },
+    { id: 'released', label: 'Released to the floor', short: 'Released', group: 'floor', by: 'office' },
+    { id: 'cutting', label: 'Laser cutting', short: 'Cutting', group: 'floor', by: 'floor' },
+    { id: 'forming', label: 'Press brake', short: 'Forming', group: 'floor', by: 'floor' },
+    { id: 'finishing', label: 'Finishing', short: 'Finishing', group: 'floor', by: 'floor' },
+    { id: 'inspection', label: 'Inspection', short: 'Inspection', group: 'floor', by: 'floor' },
+    { id: 'shipped', label: 'Shipped', short: 'Shipped', group: 'done', by: 'floor' },
+    { id: 'lost', label: 'Quote not accepted', short: 'Not accepted', group: 'done', by: 'office' }
+  ];
+  var STAGE = {};
+  STAGES.forEach(function (s, i) { s.index = i; STAGE[s.id] = s; });
+
+  var ROLES = {
+    office: { id: 'office', label: 'Office', seesMoney: true },
+    floor: { id: 'floor', label: 'Shop floor', seesMoney: false }
+  };
+
+  var PEOPLE = [
+    { id: 'dana', name: 'Dana', desk: 'estimating' },
+    { id: 'marco', name: 'Marco', desk: 'estimating' },
+    { id: 'priya', name: 'Priya', desk: 'laser' },
+    { id: 'tom', name: 'Tom', desk: 'press brake' }
+  ];
+
+  var HOLD_REASONS = ['Waiting on material', 'Waiting on customer drawing', 'Machine down', 'Quality check failed'];
+
+  /**
+   * A job's own route through the shop. A flat part skips the brake and a
+   * mill-finish part skips finishing, the way a paper traveller would.
+   */
+  function route(job) {
+    var steps = ['cutting'];
+    if (job.bends > 0) steps.push('forming');
+    if (job.finish !== 'mill') steps.push('finishing');
+    steps.push('inspection', 'shipped');
+    return steps;
+  }
+
+  /** Stages this role may move the job into right now, in the order to offer them. */
+  function nextStages(job, role) {
+    if (job.hold) return [];
+    var s = job.stage;
+    if (role === 'office') {
+      if (s === 'rfq') return ['quoted'];
+      if (s === 'quoted') return ['released', 'lost'];
+      return [];
+    }
+    if (role === 'floor') {
+      var r = route(job);
+      if (s === 'released') return [r[0]];
+      var at = r.indexOf(s);
+      if (at !== -1 && at < r.length - 1) return [r[at + 1]];
+    }
+    return [];
+  }
+
+  function canMove(job, to, role) {
+    return nextStages(job, role).indexOf(to) !== -1;
+  }
+
+  function isOpen(job) { return job.stage !== 'shipped' && job.stage !== 'lost'; }
+
+  /* ------------------------------------------------------------- calendar */
+
+  function today(now) { return Q.dayKey(now === undefined ? Date.now() : now); }
+
+  function subtractBusinessDays(day, n) {
+    var d = day;
+    var taken = 0;
+    while (taken < n) {
+      d -= DAY;
+      var w = new Date(d).getUTCDay();
+      if (w !== 0 && w !== 6) taken++;
+    }
+    return d;
+  }
+
+  /**
+   * A real moment on a calendar day, at the given local hour. Days are keyed by
+   * UTC midnight (quote.js) but history stores moments, so a job moved at noon
+   * in Auckland and one moved at noon in Honolulu both land on the right day.
+   */
+  function momentOn(day, hour) {
+    var d = new Date(day);
+    return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), Math.floor(hour), Math.round((hour % 1) * 60)).getTime();
+  }
+
+  /** Monday to Sunday of the week that contains `day`. */
+  function weekOf(day) {
+    var w = new Date(day).getUTCDay();
+    var start = day - ((w + 6) % 7) * DAY;
+    return { start: start, end: start + 7 * DAY };
+  }
+
+  /* ------------------------------------------------------------ changing */
+
+  function clone(job) { return JSON.parse(JSON.stringify(job)); }
+
+  /**
+   * Moves a job and writes the line into its history. Returns a new job; the
+   * caller's copy is left alone, so a refused move can never half-happen.
+   */
+  function move(job, to, role, now) {
+    if (!STAGE[to]) throw new Error('Unknown stage: ' + to);
+    if (!canMove(job, to, role)) {
+      throw new Error(ROLES[role] ? ROLES[role].label + ' cannot move ' + job.id + ' from ' + STAGE[job.stage].short + ' to ' + STAGE[to].short : 'Unknown role: ' + role);
+    }
+    var next = clone(job);
+    var day = today(now);
+    next.stage = to;
+    if (to === 'quoted') next.quotedOn = day;
+    if (to === 'released') {
+      // The customer's date is the promise when they gave one we can still make
+      // (a rush was priced in for it); otherwise the lead time starts at release.
+      next.releasedOn = day;
+      next.due = job.neededBy !== null && job.neededBy >= day ? job.neededBy : Q.addBusinessDays(day, job.leadDays);
+    }
+    if (to === 'shipped') next.shippedOn = day;
+    if (to === 'lost') next.closedOn = day;
+    next.history.push({ at: now, stage: to, role: role });
+    return next;
+  }
+
+  function setHold(job, reason, role, now) {
+    if (!ROLES[role]) throw new Error('Unknown role: ' + role);
+    if (!isOpen(job)) throw new Error(job.id + ' is closed - nothing to hold.');
+    if (role === 'floor' && STAGE[job.stage].group !== 'floor') throw new Error('The shop floor holds only work that is on the floor.');
+    var next = clone(job);
+    if (reason) {
+      if (HOLD_REASONS.indexOf(reason) === -1) throw new Error('Pick a reason from the list.');
+      next.hold = { reason: reason, since: today(now) };
+      next.history.push({ at: now, hold: reason, role: role });
+    } else {
+      if (!job.hold) return next;
+      next.hold = null;
+      next.history.push({ at: now, hold: null, role: role });
+    }
+    return next;
+  }
+
+  /** Only the office hands work to people; a name outside the list is refused. */
+  function assign(job, personId, role, now) {
+    if (role !== 'office') throw new Error('Only the office assigns jobs.');
+    if (personId !== null && !PEOPLE.some(function (p) { return p.id === personId; })) throw new Error('Unknown person: ' + personId);
+    var next = clone(job);
+    next.owner = personId;
+    next.history.push({ at: now, owner: personId, role: role });
+    return next;
+  }
+
+  /* ------------------------------------------------------------- reading */
+
+  /**
+   * Late means a promise has been missed, and a promise exists only once the
+   * work is released. Before that the customer's date is a wish: when it has
+   * passed the card says so, but the job does not count as late.
+   */
+  function lateness(job, now) {
+    var t = today(now);
+    if (!isOpen(job)) return null;
+    var onFloor = STAGE[job.stage].group === 'floor';
+    if (onFloor && job.due !== null && job.due < t) {
+      var days = Q.businessDaysBetween(job.due, t);
+      return { kind: 'late', days: days, text: days === 1 ? 'Late by 1 working day' : 'Late by ' + days + ' working days' };
+    }
+    if (job.stage === 'rfq') {
+      var waiting = Q.businessDaysBetween(job.requestedOn, t);
+      if (waiting >= 2) return { kind: 'waiting', days: waiting, text: 'Quote owed for ' + waiting + ' working days' };
+    }
+    if (!onFloor && job.neededBy !== null && job.neededBy < t) {
+      return { kind: 'passed', days: Q.businessDaysBetween(job.neededBy, t), text: "Customer's date has passed" };
+    }
+    return null;
+  }
+
+  /** A promise falling due within two working days (released work only). */
+  function dueSoon(job, now) {
+    if (!isOpen(job) || job.due === null || STAGE[job.stage].group !== 'floor') return false;
+    var t = today(now);
+    return job.due >= t && Q.businessDaysBetween(t, job.due) <= 2;
+  }
+
+  function personName(id) {
+    for (var i = 0; i < PEOPLE.length; i++) if (PEOPLE[i].id === id) return PEOPLE[i].name;
+    return 'Unassigned';
+  }
+
+  function matches(job, filters, now) {
+    var f = filters || {};
+    if (f.group && f.group !== 'all') {
+      if (f.group === 'open' ? !isOpen(job) : STAGE[job.stage].group !== f.group) return false;
+    }
+    if (f.material && f.material !== 'all' && job.material !== f.material) return false;
+    if (f.owner && f.owner !== 'all') {
+      if (f.owner === 'none' ? job.owner !== null : job.owner !== f.owner) return false;
+    }
+    if (f.flag === 'late' && !(lateness(job, now) && lateness(job, now).kind === 'late')) return false;
+    if (f.flag === 'hold' && !job.hold) return false;
+    if (f.flag === 'rush' && !job.rush) return false;
+    if (f.flag === 'soon' && !dueSoon(job, now)) return false;
+    var q = String(f.q || '').trim().toLowerCase();
+    if (q) {
+      var hay = [job.id, job.customer, job.part, job.contact, Q.MATERIALS[job.material].label].join(' ').toLowerCase();
+      var words = q.split(/\s+/);
+      for (var i = 0; i < words.length; i++) if (hay.indexOf(words[i]) === -1) return false;
+    }
+    return true;
+  }
+
+  /** Open work first by promise date, then the rest newest first. */
+  function sortJobs(jobs) {
+    return jobs.slice().sort(function (a, b) {
+      var ao = isOpen(a) ? 0 : 1;
+      var bo = isOpen(b) ? 0 : 1;
+      if (ao !== bo) return ao - bo;
+      if (ao === 0) {
+        var ad = a.due === null ? Infinity : a.due;
+        var bd = b.due === null ? Infinity : b.due;
+        if (ad !== bd) return ad - bd;
+        if (a.requestedOn !== b.requestedOn) return a.requestedOn - b.requestedOn;
+      } else {
+        var ac = a.shippedOn || a.closedOn || 0;
+        var bc = b.shippedOn || b.closedOn || 0;
+        if (ac !== bc) return bc - ac;
+      }
+      return a.id < b.id ? -1 : 1;
+    });
+  }
+
+  function filterJobs(jobs, filters, now) {
+    return sortJobs(jobs.filter(function (j) { return matches(j, filters, now); }));
+  }
+
+  /**
+   * This week's numbers, counted from the jobs themselves every time they are
+   * asked for - nothing is stored, so nothing can drift out of date.
+   */
+  function weekTotals(jobs, now) {
+    var w = weekOf(today(now));
+    var inWeek = function (day) { return day !== null && day !== undefined && day >= w.start && day < w.end; };
+    var t = { weekStart: w.start, requested: 0, quoted: 0, quotedValue: 0, released: 0, releasedValue: 0, shipped: 0, shippedValue: 0, late: 0, onHold: 0, open: 0 };
+    jobs.forEach(function (j) {
+      if (inWeek(j.requestedOn)) t.requested++;
+      if (inWeek(j.quotedOn)) { t.quoted++; t.quotedValue += j.price; }
+      if (inWeek(j.releasedOn)) { t.released++; t.releasedValue += j.price; }
+      if (inWeek(j.shippedOn)) { t.shipped++; t.shippedValue += j.price; }
+      var l = lateness(j, now);
+      if (l && l.kind === 'late') t.late++;
+      if (j.hold && isOpen(j)) t.onHold++;
+      if (isOpen(j)) t.open++;
+    });
+    ['quotedValue', 'releasedValue', 'shippedValue'].forEach(function (k) { t[k] = Math.round(t[k] * 100) / 100; });
+    return t;
+  }
+
+  function countByStage(jobs) {
+    var c = {};
+    STAGES.forEach(function (s) { c[s.id] = 0; });
+    jobs.forEach(function (j) { c[j.stage]++; });
+    return c;
+  }
+
+  /* -------------------------------------------------------------- export */
+
+  function isoDay(day) {
+    if (day === null || day === undefined) return '';
+    return new Date(day).toISOString().slice(0, 10);
+  }
+
+  // A cell that starts with = + - @ (or a tab/return) is read as a formula by
+  // Excel and Sheets. Customer names come from a public web form, so text cells
+  // are defused with a leading apostrophe. Numbers are written as numbers.
+  function csvCell(value, isText) {
+    var s = value === null || value === undefined ? '' : String(value);
+    if (isText && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
+    if (/[",\r\n]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+
+  /** The export the role is allowed to see: the floor copy carries no money. */
+  function toCSV(jobs, role, now) {
+    if (!ROLES[role]) throw new Error('Unknown role: ' + role);
+    var money = ROLES[role].seesMoney;
+    var head = ['Job', 'Customer', 'Part', 'Material', 'Thickness mm', 'Quantity', 'Stage', 'Owner', 'Requested', 'Due', 'Late working days', 'On hold'];
+    if (money) head.push('Price USD');
+    var lines = [head.join(',')];
+    jobs.forEach(function (j) {
+      var l = lateness(j, now);
+      var row = [
+        csvCell(j.id, true), csvCell(j.customer, true), csvCell(j.part, true),
+        csvCell(Q.MATERIALS[j.material].label, true), csvCell(j.thickness.toFixed(1)), csvCell(j.quantity),
+        csvCell(STAGE[j.stage].label, true), csvCell(personName(j.owner), true),
+        csvCell(isoDay(j.requestedOn)), csvCell(isoDay(j.due)),
+        csvCell(l && l.kind === 'late' ? l.days : 0), csvCell(j.hold ? j.hold.reason : '', true)
+      ];
+      if (money) row.push(csvCell(j.price.toFixed(2)));
+      lines.push(row.join(','));
+    });
+    return lines.join('\r\n') + '\r\n';
+  }
+
+  /* ---------------------------------------------------------- seed data */
+
+  // Invented customers on reserved .example addresses. Deterministic: the same
+  // seed and the same day always give the same board.
+  var CUSTOMERS = [
+    ['Harbourline Marine Fit-out', 'Grace Ellery'], ['Kestrel Conveyor Co.', 'Owen Pratt'],
+    ['Brackenfold HVAC', 'Leah Moran'], ['Bramble & Finch Joinery', 'Sam Okafor'],
+    ['Coldwater Food Equipment', 'Ines Varga'], ['Tallis Robotics Lab', 'Ravi Menon'],
+    ['Oakmere Signworks', 'Hollie Dunn'], ['Pierpoint Solar Racking', 'Jonah Reyes'],
+    ['Linden Street Bikes', 'Mia Kowalski'], ['Ashfield Community Theatre', 'Tess Harlow']
+  ];
+  var PARTS = [
+    ['Motor mounting bracket', 2, 4], ['Electrical enclosure lid', 4, 6], ['Conveyor side guard', 2, 12],
+    ['Cable tray section', 3, 18], ['Shelf support plate', 1, 4], ['Sign backing panel', 0, 8],
+    ['Pump base plate', 0, 6], ['Handrail post flange', 0, 4], ['Vent louvre panel', 2, 40],
+    ['Battery tray', 4, 8], ['Hinge reinforcement', 1, 2], ['Robot gripper finger', 2, 3]
+  ];
+  var SIZES = [[180, 90], [320, 240], [640, 180], [1200, 150], [260, 260], [900, 600], [420, 300], [150, 150]];
+  var QTYS = [10, 25, 40, 60, 120, 250, 400, 15, 80, 200];
+
+  function prng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function pick(rand, list) { return list[Math.floor(rand() * list.length)]; }
+
+  /** Builds one RFQ exactly the way the website form would, then prices it. */
+  function newJob(input, requestedOn) {
+    // quote.js maps a moment through the visitor's calendar; hand it a moment
+    // on that day, never a bare day key, or west of UTC it prices yesterday.
+    var at = momentOn(requestedOn, 9);
+    var checked = Q.validate(input, at);
+    if (!checked.ok) throw new Error('Seed RFQ does not pass the website form: ' + JSON.stringify(checked.errors));
+    var v = checked.values;
+    var est = Q.estimate(v, at);
+    return {
+      id: Q.reference(v, at),
+      customer: v.company,
+      contact: v.contactName,
+      part: v.partName,
+      material: v.material.id,
+      thickness: v.thickness,
+      length: v.length,
+      width: v.width,
+      quantity: v.quantity,
+      bends: v.bends,
+      holes: v.holes,
+      finish: v.finish.id,
+      tolerance: v.tolerance.id,
+      neededBy: v.neededBy,
+      requestedOn: requestedOn,
+      leadDays: est.leadDays,
+      rush: est.rush,
+      price: est.total,
+      low: est.low,
+      high: est.high,
+      stage: 'rfq',
+      owner: null,
+      due: v.neededBy,
+      hold: null,
+      quotedOn: null,
+      releasedOn: null,
+      shippedOn: null,
+      closedOn: null,
+      history: [{ at: at, stage: 'rfq', role: 'web' }]
+    };
+  }
+
+  /**
+   * 36 jobs spread over the last five working weeks, walked forward with the
+   * same move() the buttons use, so every seeded job obeys the same rules.
+   */
+  function seed(now, count) {
+    var t = today(now);
+    var limit = (now === undefined ? Date.now() : now) - 60000;
+    var rand = prng(20090415);
+    var n = count || 36;
+    var jobs = [];
+    var ids = {};
+    for (var i = 0; i < n; i++) {
+      var age = Math.round(Math.pow(i / n, 1.15) * 17);           // many recent, fewer old
+      var requestedOn = subtractBusinessDays(t, age);
+      var cust = CUSTOMERS[i % CUSTOMERS.length];
+      var part = pick(rand, PARTS);
+      var size = pick(rand, SIZES);
+      var matId = pick(rand, ['crs', 'crs', 'ss304', 'al5052']);
+      var mat = Q.MATERIALS[matId];
+      var thickness = mat.thickness[1 + Math.floor(rand() * 4)];
+      var finish = part[1] === 0 && rand() < 0.5 ? 'mill' : pick(rand, ['mill', 'powder', 'zinc']);
+      var wantsDate = rand() < 0.45;
+      var neededBy = wantsDate ? Q.addBusinessDays(requestedOn, 5 + Math.floor(rand() * 12)) : null;
+      var input = {
+        partName: part[0], material: matId, thickness: String(thickness),
+        length: String(size[0]), width: String(size[1]), quantity: String(pick(rand, QTYS)),
+        bends: String(part[1]), holes: String(part[2]), finish: finish,
+        tolerance: rand() < 0.2 ? 'tight' : 'standard',
+        neededBy: neededBy === null ? '' : isoDay(neededBy),
+        contactName: cust[1], email: cust[1].split(' ')[0].toLowerCase() + '@' + cust[0].toLowerCase().replace(/[^a-z]+/g, '') + '.example',
+        company: cust[0], notes: ''
+      };
+      var job = newJob(input, requestedOn);
+      if (ids[job.id]) continue;
+      ids[job.id] = true;
+      job.owner = PEOPLE[i % 2].id;
+      job.history[0].at = Math.min(job.history[0].at, limit);
+
+      // How far this job has got: quote the next working day, release two days
+      // later, then each operation takes its share of the quoted lead time.
+      // Nothing is dated after the moment the board is opened.
+      var at = function (d, hour) { return Math.min(momentOn(d, hour), limit); };
+      var quotedOn = Q.addBusinessDays(requestedOn, 1);
+      var owesQuote = i === 6 || i === 19;                         // two quotes are overdue
+      if (quotedOn <= t && !owesQuote) {
+        job = move(job, 'quoted', 'office', at(quotedOn, 10));
+        var decidedOn = Q.addBusinessDays(quotedOn, 2);
+        if (decidedOn <= t) {
+          if (i % 7 === 3) {
+            job = move(job, 'lost', 'office', at(decidedOn, 15));
+            jobs.push(job);
+            continue;
+          }
+          job = move(job, 'released', 'office', at(decidedOn, 9));
+          var r = route(job);
+          // Tom runs the brake, so he only leads work that goes to the brake.
+          job = assign(job, r.indexOf('forming') !== -1 && i % 2 ? 'tom' : 'priya', 'office', at(decidedOn, 9.5));
+          var per = Math.max(1, Math.floor(job.leadDays / r.length));
+          var stalls = i === 28;                                     // one job stuck at the laser
+          for (var k = 0; k < r.length; k++) {
+            var opDay = Q.addBusinessDays(decidedOn, (k + 1) * per);
+            if (opDay > t || (stalls && k === 0)) break;
+            job = move(job, r[k], 'floor', at(opDay, 14));
+          }
+        }
+      }
+      if (i % 11 === 5 && isOpen(job)) {
+        var last = job.history[job.history.length - 1].at;
+        var holdAt = Math.max(last, Math.min(limit, Math.max(last + 60000, momentOn(t, 8))));
+        var holder = STAGE[job.stage].group === 'floor' ? 'floor' : 'office';
+        job = setHold(job, HOLD_REASONS[(holder === 'floor' ? i : 1) % HOLD_REASONS.length], holder, holdAt);
+      }
+      jobs.push(job);
+    }
+    return jobs;
+  }
+
+  /* ------------------------------------------------------------- storage */
+
+  var STORE_KEY = 'ng-board-v2';
+  var DAY_FIELDS = ['requestedOn', 'neededBy', 'due', 'quotedOn', 'releasedOn', 'shippedOn', 'closedOn'];
+
+  function isDay(v) { return v === null || (typeof v === 'number' && isFinite(v)); }
+
+  /** Every field the page reads is checked, so a half-broken record cannot blank the board. */
+  function validJob(j) {
+    if (!j || typeof j !== 'object' || typeof j.id !== 'string' || !STAGE[j.stage] || !Q.MATERIALS[j.material]) return false;
+    if (!Q.FINISHES[j.finish] || !Q.TOLERANCES[j.tolerance]) return false;
+    if (typeof j.customer !== 'string' || typeof j.contact !== 'string' || typeof j.part !== 'string') return false;
+    var nums = ['thickness', 'length', 'width', 'quantity', 'bends', 'holes', 'price', 'leadDays'];
+    for (var i = 0; i < nums.length; i++) if (typeof j[nums[i]] !== 'number' || !isFinite(j[nums[i]])) return false;
+    if (typeof j.requestedOn !== 'number' || !DAY_FIELDS.every(function (k) { return isDay(j[k]); })) return false;
+    if (j.owner !== null && !PEOPLE.some(function (p) { return p.id === j.owner; })) return false;
+    if (j.hold !== null && !(j.hold && HOLD_REASONS.indexOf(j.hold.reason) !== -1 && typeof j.hold.since === 'number')) return false;
+    if (!Array.isArray(j.history) || !j.history.length) return false;
+    return j.history.every(function (h) {
+      return h && typeof h.at === 'number' && isFinite(h.at) && (h.role === 'web' || ROLES[h.role]) &&
+        (('stage' in h && STAGE[h.stage]) || ('hold' in h && (h.hold === null || HOLD_REASONS.indexOf(h.hold) !== -1)) ||
+         ('owner' in h && (h.owner === null || PEOPLE.some(function (p) { return p.id === h.owner; }))));
+    });
+  }
+
+  /** Moves every date on by whole weeks, so weekdays and working days stay true. */
+  function shiftWeeks(jobs, weeks) {
+    var ms = weeks * 7 * DAY;
+    return jobs.map(function (job) {
+      var j = clone(job);
+      DAY_FIELDS.forEach(function (k) { if (j[k] !== null) j[k] += ms; });
+      if (j.hold) j.hold.since += ms;
+      j.history.forEach(function (h) { h.at += ms; });
+      return j;
+    });
+  }
+
+  /**
+   * Reads saved work. Anything unreadable is reported, not guessed at. A board
+   * nobody has touched is simply dealt again for today; a board someone has
+   * worked on keeps their changes and moves forward by whole weeks, so it does
+   * not quietly fill up with late jobs while the visitor is away.
+   */
+  function load(storage, now) {
+    var raw;
+    try { raw = storage.getItem(STORE_KEY); } catch (e) { return { jobs: null, problem: 'unavailable' }; }
+    if (raw === null || raw === undefined) return { jobs: null, problem: null };
+    var data;
+    try { data = JSON.parse(raw); } catch (e) { return { jobs: null, problem: 'damaged' }; }
+    if (!data || data.version !== 2 || typeof data.seededOn !== 'number' || !Array.isArray(data.jobs) || !data.jobs.every(validJob)) {
+      return { jobs: null, problem: 'damaged' };
+    }
+    var ids = {};
+    for (var i = 0; i < data.jobs.length; i++) {
+      if (ids[data.jobs[i].id]) return { jobs: null, problem: 'damaged' };
+      ids[data.jobs[i].id] = true;
+    }
+    var t = today(now);
+    if (!data.touched) {
+      return data.seededOn === t ? { jobs: data.jobs, problem: null, seededOn: data.seededOn, touched: false } : { jobs: null, problem: null };
+    }
+    var weeks = Math.floor((t - data.seededOn) / (7 * DAY));
+    if (weeks > 0) {
+      return { jobs: shiftWeeks(data.jobs, weeks), problem: null, seededOn: data.seededOn + weeks * 7 * DAY, touched: true, shiftedWeeks: weeks };
+    }
+    return { jobs: data.jobs, problem: null, seededOn: data.seededOn, touched: true };
+  }
+
+  function save(storage, jobs, meta) {
+    try {
+      storage.setItem(STORE_KEY, JSON.stringify({ version: 2, seededOn: meta.seededOn, touched: Boolean(meta.touched), jobs: jobs }));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  return {
+    STAGES: STAGES, STAGE: STAGE, ROLES: ROLES, PEOPLE: PEOPLE, HOLD_REASONS: HOLD_REASONS, STORE_KEY: STORE_KEY,
+    route: route, nextStages: nextStages, canMove: canMove, isOpen: isOpen,
+    today: today, momentOn: momentOn, weekOf: weekOf, subtractBusinessDays: subtractBusinessDays,
+    move: move, setHold: setHold, assign: assign,
+    lateness: lateness, dueSoon: dueSoon, personName: personName,
+    matches: matches, filterJobs: filterJobs, sortJobs: sortJobs,
+    weekTotals: weekTotals, countByStage: countByStage,
+    csvCell: csvCell, toCSV: toCSV, isoDay: isoDay,
+    newJob: newJob, seed: seed, load: load, save: save, validJob: validJob, shiftWeeks: shiftWeeks
+  };
+});
+
+</script>
+<script>
+/*
+ * Northgate job board - the page.
+ * All rules live in board.js; this file only reads them and draws the result.
+ */
+(function () {
+  'use strict';
+
+  var Q = window.NGQuote;
+  var B = window.NGBoard;
+  var $ = function (id) { return document.getElementById(id); };
+  var params = new URLSearchParams(location.search);
+
+  /* ---------------------------------------------------------------- clock */
+
+  // ?today=2026-09-23 pins the calendar (screenshots and tests); otherwise it is now.
+  var NOW = (function () {
+    var p = /^(\d{4})-(\d{2})-(\d{2})$/.exec(params.get('today') || '');
+    return p ? new Date(+p[1], +p[2] - 1, +p[3], 12).getTime() : Date.now();
+  })();
+  var TODAY = B.today(NOW);
+  var LOADED = Date.now();
+  // Moves happen "now" on the pinned calendar too, so a pinned board stays consistent.
+  function clock() { return params.get('today') ? NOW + (Date.now() - LOADED) : Date.now(); }
+  function dayOf(moment) { return Q.dayKey(moment); }
+
+  /* -------------------------------------------------------------- storage */
+
+  var store = (function () {
+    try { return window.localStorage; } catch (e) { return null; }
+  })();
+  var noStore = { getItem: function () { throw new Error('none'); }, setItem: function () { throw new Error('none'); } };
+
+  var state = {
+    role: params.get('role') === 'floor' ? 'floor' : 'office',
+    view: params.get('view') === 'list' ? 'list' : 'board',
+    filters: {
+      q: params.get('q') || '',
+      group: ['open', 'quotes', 'floor', 'done', 'all'].indexOf(params.get('group')) !== -1 ? params.get('group') : 'open',
+      material: params.get('material') || 'all',
+      owner: params.get('owner') || 'all',
+      flag: ['late', 'soon', 'hold', 'rush'].indexOf(params.get('flag')) !== -1 ? params.get('flag') : ''
+    },
+    jobs: [],
+    meta: { seededOn: TODAY, touched: false },
+    openId: null,
+    lastMoved: null
+  };
+
+  function startBoard(reason) {
+    state.jobs = B.seed(NOW);
+    state.meta = { seededOn: TODAY, touched: false };
+    B.save(store || noStore, state.jobs, state.meta);
+    showNotice(reason);
+  }
+
+  function showNotice(text) {
+    var n = $('notice');
+    n.hidden = !text;
+    n.textContent = text || '';
+  }
+
+  (function loadJobs() {
+    var got = B.load(store || noStore, NOW);
+    if (got.jobs) {
+      state.jobs = got.jobs;
+      state.meta = { seededOn: got.seededOn, touched: got.touched };
+      if (got.shiftedWeeks) {
+        B.save(store || noStore, state.jobs, state.meta);
+        showNotice('The dates on your board moved forward ' + (got.shiftedWeeks === 1 ? 'one week' : got.shiftedWeeks + ' weeks') + ' so the demo stays current. Your changes are kept.');
+      }
+      return;
+    }
+    if (got.problem === 'damaged') startBoard('The saved board could not be read, so a fresh demo board was loaded.');
+    else if (got.problem === 'unavailable') startBoard('This browser is not saving site data, so changes last until you close the page.');
+    else startBoard('');
+  })();
+
+  function persist() {
+    state.meta.touched = true;
+    if (!B.save(store || noStore, state.jobs, state.meta) && store) showNotice('Your last change could not be saved in this browser. It stays on screen until you close the page.');
+  }
+
+  /* ---------------------------------------------------------------- words */
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  function shortDay(day) {
+    var d = new Date(day);
+    return WEEKDAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()];
+  }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+  function wholeMoney(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+  var MOVE_LABEL = {
+    quoted: 'Mark the quote as sent',
+    released: 'Customer accepted: release to the floor',
+    lost: 'Customer declined',
+    cutting: 'Start laser cutting',
+    forming: 'Cutting done: send to the press brake',
+    finishing: 'Send to finishing',
+    inspection: 'Send to inspection',
+    shipped: 'Passed inspection: ship it'
+  };
+
+  var MATERIAL_SHORT = { crs: 'Mild steel', ss304: 'Stainless 304', al5052: 'Aluminium 5052' };
+
+  function spec(j) {
+    return j.quantity + ' × ' + MATERIAL_SHORT[j.material] + ' ' + j.thickness.toFixed(1) + ' mm';
+  }
+
+  function dueWords(j) {
+    var l = B.lateness(j, NOW);
+    if (l) return { text: l.text, kind: l.kind };
+    if (j.stage === 'shipped') return { text: 'Shipped ' + shortDay(j.shippedOn), kind: 'done' };
+    if (j.stage === 'lost') return { text: 'Declined ' + shortDay(j.closedOn), kind: 'done' };
+    if (j.due === null) return { text: 'No date asked for', kind: '' };
+    if (j.due === TODAY) return { text: 'Due today', kind: 'soon' };
+    return { text: (j.stage === 'rfq' || j.stage === 'quoted' ? 'Wanted by ' : 'Due ') + shortDay(j.due), kind: B.dueSoon(j, NOW) ? 'soon' : '' };
+  }
+
+  /* ----------------------------------------------------------------- theme */
+
+  var root = document.documentElement;
+  function setTheme(name, remember) {
+    root.setAttribute('data-theme', name);
+    $('theme-label').textContent = name === 'dark' ? 'Day shift' : 'Night shift';
+    $('theme-toggle').setAttribute('aria-label', name === 'dark' ? 'Switch to the light theme' : 'Switch to the dark theme');
+    if (remember) { try { localStorage.setItem('ng-theme', name); } catch (e) { /* not saved: fine */ } }
+  }
+  (function () {
+    var wanted = params.get('theme');
+    var saved = null;
+    try { saved = localStorage.getItem('ng-theme'); } catch (e) { saved = null; }
+    var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(wanted === 'dark' || wanted === 'light' ? wanted : saved === 'dark' || saved === 'light' ? saved : dark ? 'dark' : 'light', false);
+  })();
+  $('theme-toggle').addEventListener('click', function () {
+    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', true);
+  });
+
+  /* -------------------------------------------------------------- the week */
+
+  function renderWeek() {
+    var t = B.weekTotals(state.jobs, NOW);
+    var money = B.ROLES[state.role].seesMoney;
+    $('week-start').textContent = shortDay(t.weekStart).replace(/^\w+ /, '');
+    var parts = [];
+    parts.push(plural(t.requested, 'request came in', 'requests came in'));
+    parts.push(plural(t.quoted, 'quote went out', 'quotes went out') + (money && t.quoted ? ' worth ' + wholeMoney(t.quotedValue) : ''));
+    parts.push(plural(t.released, 'job was released', 'jobs were released') + (money && t.released ? ' (' + wholeMoney(t.releasedValue) + ')' : ''));
+    parts.push(plural(t.shipped, 'job shipped', 'jobs shipped'));
+    var html = 'This week ' + esc(parts.slice(0, -1).join(', ')) + ' and ' + esc(parts[parts.length - 1]) + '.';
+    var trouble = [];
+    if (t.late) trouble.push('<button type="button" class="inline-filter" data-flag="late">' + esc(plural(t.late, 'job is late', 'jobs are late')) + '</button>');
+    if (t.onHold) trouble.push('<button type="button" class="inline-filter" data-flag="hold">' + esc(plural(t.onHold, 'job is on hold', 'jobs are on hold')) + '</button>');
+    html += trouble.length ? ' Right now ' + trouble.join(' and ') + '.' : ' Nothing is late and nothing is on hold.';
+    $('week-line').innerHTML = html;
+    $('role-note').textContent = state.role === 'office'
+      ? 'Office view: you send quotes, release accepted work and assign people. The floor moves jobs through the shop.'
+      : 'Shop floor view: you move jobs through your stations and can put one on hold. Prices stay in the office.';
+  }
+
+  $('week-line').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-flag]');
+    if (!b) return;
+    // The sentence counts the whole shop, so the click shows the whole shop.
+    state.filters = { q: '', group: 'open', material: 'all', owner: 'all', flag: b.getAttribute('data-flag') };
+    syncControls();
+    render();
+    $('board').focus();
+  });
+
+  /* ------------------------------------------------------------- controls */
+
+  (function fillSelects() {
+    Object.keys(Q.MATERIALS).forEach(function (id) {
+      var o = document.createElement('option');
+      o.value = id;
+      o.textContent = MATERIAL_SHORT[id];
+      $('material').appendChild(o);
+    });
+    B.PEOPLE.forEach(function (p) {
+      var o = document.createElement('option');
+      o.value = p.id;
+      o.textContent = p.name + ' (' + p.desk + ')';
+      $('owner').appendChild(o);
+    });
+    var none = document.createElement('option');
+    none.value = 'none';
+    none.textContent = 'Nobody yet';
+    $('owner').appendChild(none);
+  })();
+
+  function syncControls() {
+    $('q').value = state.filters.q;
+    $('group').value = state.filters.group;
+    $('material').value = state.filters.material;
+    $('owner').value = state.filters.owner;
+    document.querySelectorAll('input[name="flag"]').forEach(function (r) { r.checked = r.value === state.filters.flag; });
+    document.querySelectorAll('input[name="role"]').forEach(function (r) { r.checked = r.value === state.role; });
+    document.querySelectorAll('input[name="view"]').forEach(function (r) { r.checked = r.value === state.view; });
+  }
+
+  function syncAddress() {
+    var p = new URLSearchParams();
+    if (state.role !== 'office') p.set('role', state.role);
+    if (state.view !== 'board') p.set('view', state.view);
+    if (state.filters.group !== 'open') p.set('group', state.filters.group);
+    if (state.filters.flag) p.set('flag', state.filters.flag);
+    if (state.filters.material !== 'all') p.set('material', state.filters.material);
+    if (state.filters.owner !== 'all') p.set('owner', state.filters.owner);
+    if (state.filters.q) p.set('q', state.filters.q);
+    if (params.get('today')) p.set('today', params.get('today'));
+    if (params.get('theme')) p.set('theme', params.get('theme'));
+    var qs = p.toString();
+    try { history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '')); } catch (e) { /* file:// in some browsers */ }
+  }
+
+  var typing = null;
+  $('q').addEventListener('input', function () {
+    clearTimeout(typing);
+    typing = setTimeout(function () { state.filters.q = $('q').value; render(); }, 120);
+  });
+  ['group', 'material', 'owner'].forEach(function (id) {
+    $(id).addEventListener('change', function () { state.filters[id] = $(id).value; render(); });
+  });
+  document.querySelectorAll('input[name="flag"]').forEach(function (r) {
+    r.addEventListener('change', function () { state.filters.flag = r.value; render(); });
+  });
+  document.querySelectorAll('input[name="role"]').forEach(function (r) {
+    r.addEventListener('change', function () { state.role = r.value; render(); if (state.openId) renderTraveller(); });
+  });
+  document.querySelectorAll('input[name="view"]').forEach(function (r) {
+    r.addEventListener('change', function () { state.view = r.value; render(); });
+  });
+
+  /* ---------------------------------------------------------------- board */
+
+  var COLUMNS = {
+    open: ['rfq', 'quoted', 'released', 'cutting', 'forming', 'finishing', 'inspection'],
+    quotes: ['rfq', 'quoted'],
+    floor: ['released', 'cutting', 'forming', 'finishing', 'inspection'],
+    done: ['shipped', 'lost'],
+    all: B.STAGES.map(function (s) { return s.id; })
+  };
+
+  function routeTrack(j) {
+    var r = B.route(j);
+    var at = r.indexOf(j.stage);
+    var cells = r.map(function (step, i) {
+      var cls = at === -1 ? '' : i < at ? 'done' : i === at ? (j.stage === 'shipped' ? 'done' : 'now') : '';
+      return '<span class="dot ' + cls + '" title="' + esc(B.STAGE[step].label) + '"></span>';
+    });
+    var label = at === -1 ? (j.stage === 'released' ? 'Waiting for the laser' : '') : 'Step ' + (at + 1) + ' of ' + r.length;
+    return '<span class="track" aria-hidden="true">' + cells.join('') + '</span>' + (label ? '<span class="track-label">' + esc(label) + '</span>' : '');
+  }
+
+  function card(j) {
+    var money = B.ROLES[state.role].seesMoney;
+    var due = dueWords(j);
+    var tags = '';
+    if (j.rush && B.isOpen(j)) tags += '<span class="tag tag-rush">Rush</span>';
+    if (j.hold) tags += '<span class="tag tag-hold">On hold: ' + esc(j.hold.reason.toLowerCase()) + '</span>';
+    var floorStage = B.STAGE[j.stage].group === 'floor' || j.stage === 'shipped';
+    return '<button type="button" class="card mat-' + j.material + (j.id === state.lastMoved ? ' just-moved' : '') + '" data-job="' + esc(j.id) + '">' +
+      '<span class="card-top"><span class="job-no">' + esc(j.id) + '</span>' + (money ? '<span class="price">' + esc(wholeMoney(j.price)) + '</span>' : '') + '</span>' +
+      '<span class="customer">' + esc(j.customer) + '</span>' +
+      '<span class="part">' + esc(j.part) + '</span>' +
+      '<span class="spec">' + esc(spec(j)) + '</span>' +
+      (floorStage ? '<span class="route">' + routeTrack(j) + '</span>' : '') +
+      '<span class="card-foot"><span class="due ' + due.kind + '">' + esc(due.text) + '</span><span class="owner">' + esc(B.personName(j.owner)) + '</span></span>' +
+      (tags ? '<span class="tags">' + tags + '</span>' : '') +
+      '</button>';
+  }
+
+  function renderBoard(jobs) {
+    var cols = COLUMNS[state.filters.group];
+    var html = '<div class="columns" style="--cols:' + cols.length + '">';
+    cols.forEach(function (stage) {
+      var inCol = jobs.filter(function (j) { return j.stage === stage; });
+      html += '<section class="column" aria-labelledby="col-' + stage + '">' +
+        '<h2 class="column-head" id="col-' + stage + '"><span>' + esc(B.STAGE[stage].label) + '</span><span class="count">' + inCol.length + '</span></h2>' +
+        (inCol.length ? '<div class="stack">' + inCol.map(card).join('') + '</div>' : '<p class="column-empty">No jobs here</p>') +
+        '</section>';
+    });
+    return html + '</div>';
+  }
+
+  function renderList(jobs) {
+    var money = B.ROLES[state.role].seesMoney;
+    var rows = jobs.map(function (j) {
+      var due = dueWords(j);
+      return '<tr>' +
+        '<th scope="row"><button type="button" class="linkish job-no" data-job="' + esc(j.id) + '">' + esc(j.id) + '</button></th>' +
+        '<td>' + esc(j.customer) + '<span class="sub">' + esc(j.part) + '</span></td>' +
+        '<td>' + esc(B.STAGE[j.stage].short) + (j.hold ? '<span class="sub hold-text">On hold</span>' : '') + '</td>' +
+        '<td class="due ' + due.kind + '">' + esc(due.text) + '</td>' +
+        '<td>' + esc(B.personName(j.owner)) + '</td>' +
+        (money ? '<td class="num">' + esc(wholeMoney(j.price)) + '</td>' : '') +
+        '</tr>';
+    }).join('');
+    return '<div class="table-wrap"><table class="jobs">' +
+      '<caption class="visually-hidden">Jobs, open work first by promise date</caption>' +
+      '<thead><tr><th scope="col">Job</th><th scope="col">Customer and part</th><th scope="col">Stage</th><th scope="col">Promise</th><th scope="col">Owner</th>' + (money ? '<th scope="col" class="num">Price</th>' : '') + '</tr></thead>' +
+      '<tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function render() {
+    renderWeek();
+    var jobs = B.filterJobs(state.jobs, state.filters, NOW);
+    var total = state.jobs.length;
+    var filtered = state.filters.q || state.filters.material !== 'all' || state.filters.owner !== 'all' || state.filters.flag;
+    $('result-count').textContent = plural(jobs.length, 'job', 'jobs') + ' shown' + (filtered ? ' (filters on)' : '') + ' of ' + total;
+    var area = $('board');
+    if (!jobs.length) {
+      area.innerHTML = '<div class="empty wrap"><p>No jobs match these filters.</p><button type="button" class="btn" id="clear">Show all open work</button></div>';
+      $('clear').addEventListener('click', function () {
+        state.filters = { q: '', group: 'open', material: 'all', owner: 'all', flag: '' };
+        syncControls();
+        render();
+      });
+    } else {
+      area.innerHTML = state.view === 'board' ? renderBoard(jobs) : renderList(jobs);
+    }
+    area.classList.toggle('is-list', state.view === 'list');
+    watchOverflow();
+    $('export').disabled = !jobs.length;
+    syncAddress();
+    state.lastMoved = null;
+  }
+
+  // Say so when stages are hidden off to the right, and fade that edge.
+  function watchOverflow() {
+    var cols = document.querySelector('.columns');
+    var more = !!cols && cols.scrollLeft + cols.clientWidth < cols.scrollWidth - 4;
+    if (cols) cols.classList.toggle('more-right', more);
+    $('scroll-hint').hidden = !(cols && cols.scrollWidth > cols.clientWidth + 4);
+  }
+  $('board').addEventListener('scroll', watchOverflow, true);
+  window.addEventListener('resize', watchOverflow);
+
+  $('board').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-job]');
+    if (b) openTraveller(b.getAttribute('data-job'), b);
+  });
+
+  /* ------------------------------------------------------------ traveller */
+
+  var dialog = $('traveller');
+  var opener = null;
+
+  function findJob(id) {
+    for (var i = 0; i < state.jobs.length; i++) if (state.jobs[i].id === id) return state.jobs[i];
+    return null;
+  }
+
+  function openTraveller(id, from) {
+    if (!findJob(id)) return;
+    state.openId = id;
+    opener = from || null;
+    renderTraveller();
+    if (!dialog.open) dialog.showModal();
+    var first = dialog.querySelector('.t-actions button, .t-actions select');
+    (first || dialog.querySelector('.t-close')).focus();
+  }
+
+  dialog.addEventListener('close', function () {
+    state.openId = null;
+    var back = opener && document.body.contains(opener) ? opener : document.querySelector('[data-job="' + (opener && opener.getAttribute('data-job')) + '"]');
+    // The job may have left the current filter; then focus goes back to the board.
+    (back || $('board')).focus();
+  });
+  dialog.addEventListener('click', function (e) {
+    if (e.target !== dialog) return;
+    var r = dialog.getBoundingClientRect();
+    var inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+    if (!inside) dialog.close();
+  });
+
+  function historyLine(h) {
+    var who = h.role === 'web' ? 'Website form' : B.ROLES[h.role].label;
+    var what;
+    if ('stage' in h) what = h.stage === 'rfq' ? 'Quote requested on the website' : 'Moved to ' + B.STAGE[h.stage].label.toLowerCase();
+    else if ('hold' in h) what = h.hold ? 'Put on hold: ' + h.hold.toLowerCase() : 'Taken off hold';
+    else what = h.owner ? 'Assigned to ' + B.personName(h.owner) : 'Unassigned';
+    var d = new Date(h.at);
+    var time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    return '<li><span class="h-when">' + esc(shortDay(dayOf(h.at))) + ', ' + time + '</span> <span class="h-what">' + esc(what) + '</span> <span class="h-who">' + esc(who) + '</span></li>';
+  }
+
+  function renderTraveller() {
+    var j = findJob(state.openId);
+    if (!j) return;
+    var money = B.ROLES[state.role].seesMoney;
+    var due = dueWords(j);
+    var r = B.route(j);
+    var at = r.indexOf(j.stage);
+    var doneOn = {};
+    j.history.forEach(function (h) { if (h.stage) doneOn[h.stage] = h.at; });
+
+    var steps = r.map(function (step, i) {
+      var status = at === -1 ? (B.STAGE[j.stage].group === 'quotes' || j.stage === 'lost' ? 'later' : 'next') : i < at ? 'done' : i === at ? (step === 'shipped' ? 'done' : 'now') : 'later';
+      if (at === -1 && j.stage === 'released' && i > 0) status = 'later';
+      var when = doneOn[step] ? shortDay(dayOf(doneOn[step])) : '';
+      var word = { done: 'Done', now: 'Here now', next: 'Next', later: '' }[status];
+      return '<li class="step ' + status + '"><span class="step-name">' + esc(B.STAGE[step].label) + '</span><span class="step-state">' + esc([word, when].filter(Boolean).join(', ')) + '</span></li>';
+    }).join('');
+
+    var actions = '';
+    if (B.isOpen(j)) {
+      var moves = B.nextStages(j, state.role);
+      actions += moves.map(function (to) {
+        return '<button type="button" class="btn ' + (to === 'lost' ? 'btn-quiet' : 'btn-primary') + '" data-move="' + to + '">' + esc(MOVE_LABEL[to]) + '</button>';
+      }).join('');
+      if (!moves.length && !j.hold) {
+        var whoMoves = B.nextStages(j, state.role === 'office' ? 'floor' : 'office').length ? (state.role === 'office' ? 'The shop floor moves this job next.' : 'The office moves this job next.') : '';
+        if (whoMoves) actions += '<p class="t-hint">' + esc(whoMoves) + '</p>';
+      }
+      var mayHold = state.role === 'office' || B.STAGE[j.stage].group === 'floor';
+      if (!mayHold) {
+        if (j.hold) actions += '<p class="t-hint">On hold since ' + esc(shortDay(j.hold.since)) + ': ' + esc(j.hold.reason.toLowerCase()) + '. The office lifts this hold.</p>';
+      } else if (j.hold) {
+        actions += '<p class="t-hint">On hold since ' + esc(shortDay(j.hold.since)) + ': ' + esc(j.hold.reason.toLowerCase()) + '. Take it off hold to move it.</p>' +
+          '<button type="button" class="btn" data-unhold>Take off hold</button>';
+      } else {
+        actions += '<div class="t-inline"><label for="hold-reason">Hold reason</label><select id="hold-reason">' +
+          B.HOLD_REASONS.map(function (h) { return '<option>' + esc(h) + '</option>'; }).join('') +
+          '</select><button type="button" class="btn" data-hold>Put on hold</button></div>';
+      }
+      if (state.role === 'office') {
+        actions += '<div class="t-inline"><label for="assign">Owner</label><select id="assign"><option value="">Nobody yet</option>' +
+          B.PEOPLE.map(function (p) { return '<option value="' + p.id + '"' + (p.id === j.owner ? ' selected' : '') + '>' + esc(p.name + ' (' + p.desk + ')') + '</option>'; }).join('') +
+          '</select></div>';
+      }
+    } else {
+      actions = '<p class="t-hint">This job is closed. Nothing more to do here.</p>';
+    }
+
+    $('traveller-body').innerHTML =
+      '<header class="t-head">' +
+        '<p class="t-kicker">Traveller</p>' +
+        '<h2 id="t-title" class="job-no t-no">' + esc(j.id) + '</h2>' +
+        '<p class="t-customer">' + esc(j.customer) + ', ' + esc(j.contact) + '</p>' +
+      '</header>' +
+      '<dl class="t-facts">' +
+        '<div><dt>Part</dt><dd>' + esc(j.part) + '</dd></div>' +
+        '<div><dt>Material</dt><dd>' + esc(Q.MATERIALS[j.material].label + ', ' + j.thickness.toFixed(1) + ' mm') + '</dd></div>' +
+        '<div><dt>Flat size</dt><dd class="num">' + esc(j.length + ' × ' + j.width + ' mm') + '</dd></div>' +
+        '<div><dt>Quantity</dt><dd class="num">' + esc(j.quantity) + '</dd></div>' +
+        '<div><dt>Bends and holes</dt><dd>' + esc((j.bends ? plural(j.bends, 'bend', 'bends') : 'Flat, no bends') + ', ' + plural(j.holes, 'hole', 'holes')) + '</dd></div>' +
+        '<div><dt>Finish</dt><dd>' + esc(Q.FINISHES[j.finish].label) + (j.tolerance === 'tight' ? ', tight tolerance' : '') + '</dd></div>' +
+        '<div><dt>Stage</dt><dd>' + esc(B.STAGE[j.stage].label) + '</dd></div>' +
+        '<div><dt>Promise</dt><dd class="due ' + due.kind + '">' + esc(due.text) + '</dd></div>' +
+        '<div><dt>Owner</dt><dd>' + esc(B.personName(j.owner)) + '</dd></div>' +
+        (money ? '<div><dt>' + (j.stage === 'rfq' ? 'Website estimate' : 'Quoted price') + '</dt><dd class="num">' + esc(Q.money(j.price)) + (j.rush ? ' <span class="tag tag-rush">Rush</span>' : '') + '</dd></div>' : '') +
+      '</dl>' +
+      '<section class="t-route" aria-labelledby="t-route-title"><h3 id="t-route-title">Route through the shop</h3><ol class="steps">' + steps + '</ol></section>' +
+      '<section class="t-actions" aria-label="What you can do">' + actions + '</section>' +
+      '<section class="t-history" aria-labelledby="t-history-title"><h3 id="t-history-title">History</h3><ol class="history">' + j.history.slice().reverse().map(historyLine).join('') + '</ol></section>';
+  }
+
+  function replaceJob(next, message) {
+    state.jobs = state.jobs.map(function (j) { return j.id === next.id ? next : j; });
+    state.lastMoved = next.id;
+    persist();
+    render();
+    renderTraveller();
+    $('announce').textContent = message;
+  }
+
+  // A move redraws the buttons under the pointer; a double click must not
+  // quietly push the job two stations on.
+  var lastAction = { move: 0, hold: 0 };
+
+  $('traveller-body').addEventListener('click', function (e) {
+    var j = findJob(state.openId);
+    if (!j) return;
+    var acting = e.target.closest('[data-move], [data-hold], [data-unhold]');
+    if (!acting) return;
+    var kind = acting.hasAttribute('data-move') ? 'move' : 'hold';
+    if (Date.now() - lastAction[kind] < 600) return;
+    lastAction[kind] = Date.now();
+    var moveBtn = e.target.closest('[data-move]');
+    try {
+      if (moveBtn) {
+        var to = moveBtn.getAttribute('data-move');
+        replaceJob(B.move(j, to, state.role, clock()), j.id + ' moved to ' + B.STAGE[to].label.toLowerCase() + '.');
+        var nextBtn = dialog.querySelector('.t-actions .btn-primary') || dialog.querySelector('.t-close');
+        nextBtn.focus();
+      } else if (e.target.closest('[data-hold]')) {
+        var reason = $('hold-reason').value;
+        replaceJob(B.setHold(j, reason, state.role, clock()), j.id + ' is on hold: ' + reason.toLowerCase() + '.');
+        dialog.querySelector('[data-unhold]').focus();
+      } else if (e.target.closest('[data-unhold]')) {
+        replaceJob(B.setHold(j, null, state.role, clock()), j.id + ' is off hold.');
+        (dialog.querySelector('.t-actions .btn-primary') || dialog.querySelector('[data-hold]')).focus();
+      }
+    } catch (err) {
+      $('announce').textContent = err.message;
+      showNotice(err.message);
+    }
+  });
+
+  $('traveller-body').addEventListener('change', function (e) {
+    if (e.target.id !== 'assign') return;
+    var j = findJob(state.openId);
+    var who = e.target.value || null;
+    replaceJob(B.assign(j, who, state.role, clock()), j.id + (who ? ' assigned to ' + B.personName(who) : ' unassigned') + '.');
+    $('assign').focus();
+  });
+
+  /* ---------------------------------------------------------- export, reset */
+
+  $('export').addEventListener('click', function () {
+    var jobs = B.filterJobs(state.jobs, state.filters, NOW);
+    var csv = '﻿' + B.toCSV(jobs, state.role, NOW);
+    var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'northgate-jobs-' + B.isoDay(TODAY) + '-' + state.role + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    $('announce').textContent = 'Downloaded ' + plural(jobs.length, 'job', 'jobs') + ' as CSV' + (B.ROLES[state.role].seesMoney ? '.' : ', without prices.');
+  });
+
+  $('reset').addEventListener('click', function () {
+    if (!window.confirm('Start the demo board again? Changes you made here will be replaced by the original ' + B.seed(NOW).length + ' jobs.')) return;
+    startBoard('');
+    render();
+    $('announce').textContent = 'The demo board is back to its starting jobs.';
+  });
+
+  /* ------------------------------------------------------------------ go */
+
+  syncControls();
+  render();
+  var wantedJob = params.get('job');
+  if (wantedJob && findJob(wantedJob)) openTraveller(wantedJob, null);
+})();
+
+</script>
+</body>
+</html>
