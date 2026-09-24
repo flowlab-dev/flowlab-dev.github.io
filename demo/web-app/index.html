@@ -88,9 +88,6 @@ a { color: var(--layout-blue); text-underline-offset: 0.18em; }
 /* ---------------------------------------------------------- demo notice */
 
 /* The notice strip stays dark in both themes, so its yellow link always reads. */
-.demo-bar { background: #1a1e1c; color: #eff1ee; font-size: var(--step--1); line-height: 1.45; padding-block: 0.55rem; }
-.demo-bar .wrap { display: flex; flex-wrap: wrap; gap: 0.35rem 1rem; align-items: baseline; justify-content: space-between; }
-.demo-bar a { color: #e4b200; font-weight: 600; }
 
 /* ---------------------------------------------------------------- appbar */
 
@@ -306,13 +303,15 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 </head>
 <body>
 <a class="skip-link" href="#board">Skip to the jobs</a>
+<!-- flowlab-band -->
+<style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
+.fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
+.fl-band__more{white-space:nowrap}</style>
+<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/shop-floor-board/">Flow Lab</a>. Northgate Metalworks is invented; jobs are saved only in your browser. <span class="fl-band__more"><a href="../business-site/">The public website these quotes come from</a></span></p>
+<!-- /flowlab-band -->
 
-<div class="demo-bar">
-  <div class="wrap">
-    <p><b>Portfolio demo.</b> Northgate Metalworks is an invented company. The jobs are generated in your browser and saved only there.</p>
-    <p><a href="../business-site/">The public website these quotes come from</a></p>
-  </div>
-</div>
+
 
 <header class="appbar">
   <div class="wrap appbar-row">
