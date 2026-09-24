@@ -171,26 +171,6 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .skip-link:focus { left: 0; }
 
-/* ---------------------------------------------------------- demo notice */
-
-.demo-bar {
-  /* Stays dark in both themes, so the yellow link on it always reads. */
-  background: #1a1e1c;
-  color: #eff1ee;
-  font-size: var(--step--1);
-  line-height: 1.45;
-  padding-block: 0.55rem;
-}
-.demo-bar .wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 1rem;
-  align-items: baseline;
-  justify-content: space-between;
-}
-.demo-bar a { color: #e4b200; font-weight: 600; }
-.demo-bar b { font-weight: 700; }
-
 /* ----------------------------------------------------------- site head */
 
 .masthead {
@@ -900,13 +880,15 @@ legend {
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to the content</a>
+<!-- flowlab-band -->
+<style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
+.fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
+.fl-band__more{white-space:nowrap}</style>
+<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/price-website/">Flow Lab</a>. This page is for whoever buys the website; Northgate Metalworks is invented. <span class="fl-band__more"><a href="index.html">Back to the demo site</a></span></p>
+<!-- /flowlab-band -->
 
-<div class="demo-bar">
-  <div class="wrap">
-    <p><b>Portfolio demo.</b> This page is written for whoever is buying the website, not for the invented company on the front page.</p>
-    <p><a href="index.html">Back to the demo site</a></p>
-  </div>
-</div>
+
 
 <header class="masthead">
   <div class="wrap">
@@ -936,7 +918,7 @@ legend {
 <section class="plain-head">
   <div class="wrap">
     <h1>A site is finished on the day it launches. It stops being finished the next morning.</h1>
-    <p>Prices change, a phone number changes, a browser ships an update, someone finds a form that no longer sends. The monthly plan is what keeps a working site working, and it is part of every website I offer.</p>
+    <p>Prices change, a phone number changes, a browser ships an update, someone finds a form that no longer sends. The monthly plan is what keeps a working site working. It is optional with every website.</p>
   </div>
 </section>
 
@@ -993,7 +975,7 @@ legend {
 
     <div class="price-line">
       <p class="figure">$120 per month</p>
-      <p>Billed monthly, cancel with 30 days notice, no tie-in. Anything beyond the included hour is quoted first at $50 an hour, and never starts without a written yes.</p>
+      <p>Billed monthly, cancel at the end of any month, no tie-in. Anything beyond the included hour is quoted first at $50 an hour, and never starts without a written yes.</p>
       <p>Stopping the plan does not switch anything off: the site, the domain and the hosting are yours and stay yours.</p>
     </div>
   </div>
