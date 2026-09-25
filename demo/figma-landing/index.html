@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EdenTravel — Welcome to the World of Extraordinary Travel</title>
+<meta name="description" content="Tours, destinations and travel deals. Demo: a Figma landing page built in HTML/CSS by Flow Lab.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Playfair+Display:wght@600;700&family=Public+Sans&family=Roboto:wght@300;400;500;600;700;900&family=Ultra&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" id="top">
+  <div class="wrap top__row">
+    <a class="logo" href="#top" aria-label="EdenTravel home"><img src="img/logo-mark.svg" alt="" width="33" height="39"><span><b>Eden</b>Travel</span></a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#top">Home</a><a href="#tours">Tour</a><a href="#blog">Blog</a><a href="#deals">Pages</a><a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <img class="hero__img" src="img/hero.jpg" alt="" width="1600" height="997" fetchpriority="high">
+    <div class="wrap hero__text">
+      <h1>Welcome <br class="m">to the World <br>of Extraordinary <br class="m">Travel</h1>
+      <p>If you're in search of exciting adventures, unforgettable experiences, and breathtaking places to explore, you've come to the right place!</p>
+    </div>
+    <form class="plan" id="plan" novalidate>
+      <h2>Plan your travel now</h2>
+      <div class="wrap plan__row">
+        <label class="field"><span>Search Destination*</span><input name="destination" required placeholder="Enter Destination" autocomplete="off"></label>
+        <label class="field"><span>Pax Number*</span><input name="pax" required inputmode="numeric" pattern="[1-9][0-9]?" placeholder="No.of People"></label>
+        <label class="field field--date"><span>Checkin Date*</span><input name="checkin" required placeholder="MM / DD / YYYY" pattern="\d{2} / \d{2} / \d{4}" inputmode="numeric"><button type="button" class="cal" aria-label="Pick check-in date"><img src="img/calendar.svg" alt="" width="19" height="24"></button><input type="date" class="picker" tabindex="-1" aria-hidden="true"></label>
+        <label class="field field--date"><span>Checkout Date*</span><input name="checkout" required placeholder="MM / DD / YYYY" pattern="\d{2} / \d{2} / \d{4}" inputmode="numeric"><button type="button" class="cal" aria-label="Pick check-out date"><img src="img/calendar.svg" alt="" width="19" height="24"></button><input type="date" class="picker" tabindex="-1" aria-hidden="true"></label>
+        <button class="btn" type="submit">SEARCH</button>
+      </div>
+      <p class="plan__msg wrap" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <section class="features" id="tours">
+    <div class="wrap">
+      <p class="eyebrow">Tour Types</p>
+      <h2 class="h2 h2--feat">Adventure &amp; Activity</h2>
+      <p class="lead">Explore thrilling destinations that will get your heart racing. From rugged mountains to dense jungles, embark on unforgettable journeys that will test your limits and create lasting memories. Dive into the unknown, conquer nature's challenges, and write your own epic tale of adventure.</p>
+      <ul class="tours">
+        <li><img src="img/camping.svg" alt="" width="98" height="105"><h3>Camping</h3><p>13 nature escapes, tents, <br>RVs, cabins, outdoor experiences</p></li>
+        <li><img src="img/trekking.svg" alt="" width="85" height="91"><h3>Trekking</h3><p>Breathtaking landscapes, hidden trails, remote villages, natural beauty</p></li>
+        <li><img src="img/campfire.svg" alt="" width="79" height="89"><h3>Camp Fire</h3><p>7 unique destinations, marshmallow roasting, nature connection</p></li>
+        <li><img src="img/map.svg" alt="" width="85" height="85"><h3>Exploring</h3><p>25 diverse destinations, historical cities, hidden gems, unique charm</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="dest" id="destinations">
+    <div class="wrap">
+      <p class="eyebrow">Where to go</p>
+      <h2 class="h2">Popular destinations</h2>
+      <p class="lead">Explore our curated selection of the world's most sought-after travel spots in this diverse list of must-visit places. <br class="d">From iconic cities to pristine natural wonders, we've gathered the best destinations to ignite your wanderlust.</p>
+      <div class="slider" data-slider>
+        <button class="arrow arrow--prev" type="button" aria-label="Previous destination"></button>
+        <ul class="track dest__track">
+          <li class="city"><img src="img/dest-cairo.jpg" alt="Pyramids of Giza, Cairo" loading="lazy"><div class="city__info"><h3>Cairo</h3><p class="country"><img src="img/flag-eg.svg" alt="" width="32" height="21">EGYPT</p><p class="price">Price starts at <b>€105.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+          <li class="city"><img src="img/dest-paris.jpg" alt="Arc de Triomphe, Paris" loading="lazy"><div class="city__info"><h3>Paris</h3><p class="country"><img src="img/flag-fr.svg" alt="" width="32" height="21">FRANCE</p><p class="price">Price starts at <b>€95.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+          <li class="city"><img src="img/dest-rome.jpg" alt="St. Peter's Basilica, Rome" loading="lazy"><div class="city__info"><h3>Rome</h3><p class="country"><img src="img/flag-it.svg" alt="" width="32" height="21">ITALY</p><p class="price">Price starts at <b>€75.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+          <li class="city"><img src="img/dest-madrid.jpg" alt="Clock tower, Madrid" loading="lazy"><div class="city__info"><h3>Madrid</h3><p class="country"><img src="img/flag-es.svg" alt="" width="32" height="25">ESPAIN</p><p class="price">Price starts at <b>€87.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+        </ul>
+        <button class="arrow arrow--next" type="button" aria-label="Next destination"></button>
+        <div class="dots" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blog" id="blog">
+    <div class="wrap">
+      <p class="eyebrow">Exploring</p>
+      <h2 class="h2">News and Blog</h2>
+      <div class="blog__grid">
+        <article class="post">
+          <img src="img/blog-kyoto.jpg" alt="Pagoda in Kyoto in autumn" loading="lazy">
+          <p class="post__tag">Asia</p>
+          <h3>Unveiling the Enchanting Beauty of Kyoto</h3>
+          <p class="post__text">Join us on a virtual journey to one of Japan's most captivating cities – <b>Kyoto</b>. In our latest blog post, we'll immerse you in the mesmerizing world of ancient temples, tranquil gardens, and the timeless traditions that define this cultural gem.</p>
+          <a class="more" href="#blog">Read full article</a>
+        </article>
+        <div class="posts">
+          <article class="mini"><img src="img/blog-asia.jpg" alt="" loading="lazy"><div><h3>Exploring the Enigmatic Wonders of Southeast Asia: A Journey of Discovery Through Ancient Temples and Lush Jungles</h3><time datetime="2023-09-19">19 SET 2023</time></div></article>
+          <article class="mini"><img src="img/blog-machu-picchu.jpg" alt="" loading="lazy"><div><h3>Epic Adventures: From Machu Picchu to the Amazon Rainforest - Exploring the Heart of South America's Natural Beauty and Cultural Riches</h3><time datetime="2023-05-10">10 MAY 2023</time></div></article>
+          <article class="mini"><img src="img/blog-europe.jpg" alt="" loading="lazy"><div><h3>Chasing Sunsets: A Journey through Europe's Most Romantic Cities - Unveiling the Allure of Historic Charm and Modern Elegance</h3><time datetime="2023-07-20">20 JUL 2023</time></div></article>
+          <article class="mini"><img src="img/blog-south-america.jpg" alt="" loading="lazy"><div><h3>Off the Beaten Path: Uncovering Hidden Gems in South America - From Remote Villages to Pristine Wilderness, the Ultimate Exploration</h3><time datetime="2023-06-15">15 JUN 2023</time></div></article>
+          <a class="more" href="#blog">See all articles</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="deals" id="deals">
+    <div class="wrap">
+      <p class="eyebrow">Best Offers</p>
+      <h2 class="h2">Top Deals and Discounts</h2>
+      <ul class="deals__grid">
+        <li class="deal deal--wide"><img src="img/deal-navona.jpg" alt="Piazza Navona, Rome" loading="lazy"><div><h3>Holidays Suites Navona - ITALY</h3><p><b>€149,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-kantua.jpg" alt="Hotel courtyard with palm trees" loading="lazy"><div><h3>Kantua hotel - THAILAND</h3><p><b>€99,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-madrid.jpg" alt="Modern hotel building" loading="lazy"><div><h3>NH Madrid Zurbano - MADRID</h3><p><b>€89,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-hongkong.jpg" alt="Big Buddha statue, Hong Kong" loading="lazy"><div><h3>Royal Plaza Hotel - HONG KONG</h3><p><b>€89,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-abudhabi.jpg" alt="Grand Mosque at dusk, Abu Dhabi" loading="lazy"><div><h3>Le Meridien - ABU DHABI</h3><p><b>€109,00</b> <span>Price stars from</span></p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="stories" id="stories">
+    <div class="wrap">
+      <h2 class="h2">Happy Client Stories</h2>
+      <div class="slider" data-slider>
+        <button class="arrow arrow--prev" type="button" aria-label="Previous story"></button>
+        <ul class="track stories__track">
+          <li class="story"><img src="img/avatar-isabel.jpg" alt="" width="124" height="120" loading="lazy"><blockquote>“Sarah, a local resident, possesses a profound connection to this region. Having once served as a host, she intimately comprehends the significance of having someone dedicated to managing every intricate detail, ensuring a seamless experience for all.”</blockquote><p class="stars stars--big" aria-label="Rated 5 out of 5"><i></i><i></i><i></i><i></i><i></i><b>5/5</b></p><p class="who"><b>Isabel Rose</b>Manager</p></li>
+          <li class="story"><img src="img/avatar-oliver.jpg" alt="" width="124" height="120" loading="lazy"><blockquote>“Liam, born and raised in this locale, has an innate connection to the area. With a background as a host himself, he fully appreciates the necessity of having someone who can attend to all the small but essential aspects, making every moment memorable.”</blockquote><p class="stars stars--big" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i><b>4/5</b></p><p class="who"><b>Oliver Mitchell</b>Landscape Architect</p></li>
+        </ul>
+        <button class="arrow arrow--next" type="button" aria-label="Next story"></button>
+        <div class="dots" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot" id="contact">
+  <div class="wrap foot__grid">
+    <div class="help">
+      <h2>Need any help?</h2>
+      <p>Call 24/7 for any help<br><a class="big" href="tel:+00123456789">+00 123 456 789</a></p>
+      <p>Mail to our support team<br><a class="big" href="mailto:support@domain.com">support@domain.com</a></p>
+      <p>Follow us on</p>
+      <p class="social" aria-hidden="true"><img src="img/facebook.svg" alt="" width="24" height="24"><img src="img/instagram.svg" alt="" width="24" height="24"><img src="img/x.svg" alt="" width="22" height="22"><img src="img/youtube.svg" alt="" width="24" height="24"></p>
+    </div>
+    <div class="col c1"><h2>Company</h2><ul><li>About Us</li><li>Testimonials</li><li>Rewards</li><li>Work with Us</li><li>Meet the Team</li><li>Blog</li></ul></div>
+    <div class="col c2"><h2>Support</h2><ul><li>Account</li><li>Faq</li><li>Legal</li><li>Contact</li><li>Affiliate Program</li><li>Privacy Policy</li></ul></div>
+    <div class="col c3"><h2>Services</h2><ul><li>Coomunity Program</li><li>Investor Relations</li><li>Rewards Program</li><li>Points Plus</li><li>Partners</li><li>List My Hotel</li></ul></div>
+    <div class="col c4"><h2>Top Cities</h2><ul><li>Rome</li><li>Madrid</li><li>New York</li><li>Hong Kong</li><li>Paris</li><li>Tokyo</li></ul></div>
+  </div>
+  <div class="wrap foot__bottom">
+    <p>Copyright © 2023 Kunturi Design</p>
+    <a class="logo logo--foot" href="#top" aria-label="EdenTravel home"><img src="img/logo-mark.svg" alt="" width="33" height="34"><span><b>Eden</b>Travel</span></a>
+  </div>
+</footer>
+
+<aside class="credit">Design: <a href="https://www.figma.com/community/file/1286274973743014138">Kunturi Design</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), coded by <a href="https://flowlab-dev.github.io/">Flow Lab</a>. Demo build from the free Figma Community file “Travel Landing Page DESKTOP + MOBILE”. EdenTravel is a fictional brand; the form does not send data.</aside>
+
+<script src="main.js"></script>
+</body>
+</html>
