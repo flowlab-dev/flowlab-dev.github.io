@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>n8n Workflow Check — find silent bugs in your workflow | Flow Lab</title>
+<meta name="description" content="Paste an n8n workflow JSON and see the bugs that drop items, hide failed API calls or run the wrong model. The check runs in your browser; nothing is uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ground:#F3F6F6;--surface:#FFFFFF;--raise:#E9EFEF;--ink:#091314;--muted:#5E7679;--hair:#D6E0E0;--spot:#1B47CC;--high:#C40F30;--med:#C75200;--low:#5E7679;--ok:#00813A;--glow:rgba(27,71,204,.10);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--ground:#050B0C;--surface:#0C1618;--raise:#132224;--ink:#E9F2F2;--muted:#7C9497;--hair:#1C2E30;--spot:#5B8CFF;--high:#FF5E7A;--med:#FF9340;--low:#7C9497;--ok:#35D97C;--glow:rgba(91,140,255,.16);color-scheme:dark}}
+:root[data-theme=dark]{--ground:#050B0C;--surface:#0C1618;--raise:#132224;--ink:#E9F2F2;--muted:#7C9497;--hair:#1C2E30;--spot:#5B8CFF;--high:#FF5E7A;--med:#FF9340;--low:#7C9497;--ok:#35D97C;--glow:rgba(91,140,255,.16);color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.55 "Source Sans 3",system-ui,sans-serif}
+a{color:var(--spot)}
+.wrap{max-width:880px;margin:0 auto;padding:0 20px}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+header.top a{color:var(--ink);text-decoration:none;font:600 15px "Archivo",sans-serif}
+header.top .tag{color:var(--muted);font-size:14px}
+h1,h2,h3{font-family:"Archivo",sans-serif;letter-spacing:-.01em;margin:0}
+h1{font-size:clamp(32px,6vw,52px);line-height:1.08;font-weight:700;margin:40px 0 16px;max-width:17ch}
+.lead{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:60ch;margin:0 0 12px}
+.privacy{display:flex;gap:10px;align-items:flex-start;margin:20px 0 28px;padding:12px 14px;border:1px solid var(--hair);border-radius:10px;background:var(--surface);font-size:15px}
+.privacy b{color:var(--ok)}
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:14px;padding:20px}
+label.lbl{display:block;font:600 15px "Archivo",sans-serif;margin-bottom:8px}
+textarea{width:100%;min-height:200px;resize:vertical;padding:14px;border:1px solid var(--hair);border-radius:10px;background:var(--ground);color:var(--ink);font:13px/1.5 "JetBrains Mono",ui-monospace,monospace}
+textarea:focus-visible,button:focus-visible,a:focus-visible,.file:focus-within{outline:2px solid var(--spot);outline-offset:2px}
+.hint{color:var(--muted);font-size:14px;margin:8px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button,.btn{appearance:none;border:1px solid var(--hair);background:var(--raise);color:var(--ink);font:600 15px "Archivo",sans-serif;padding:11px 16px;border-radius:10px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:44px}
+button.primary,.btn.primary{background:var(--spot);border-color:var(--spot);color:#fff}
+button:hover,.btn:hover{filter:brightness(1.06)}
+.file{position:relative;overflow:hidden}
+.file input{position:absolute;inset:0;opacity:0;cursor:pointer}
+#error{display:none;margin-top:12px;color:var(--high);font-size:15px}
+#results{margin-top:36px}
+.sum{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;margin-bottom:16px}
+.sum h2{font-size:24px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:500 13px "JetBrains Mono",monospace;padding:3px 9px;border-radius:99px;border:1px solid var(--hair)}
+.chip.high{color:var(--high)}.chip.medium{color:var(--med)}.chip.low{color:var(--low)}
+.finding{border:1px solid var(--hair);border-left:4px solid var(--low);border-radius:12px;background:var(--surface);padding:16px 18px;margin-bottom:12px}
+.finding.high{border-left-color:var(--high)}.finding.medium{border-left-color:var(--med)}
+.finding .head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;margin-bottom:6px}
+.sev{font:600 12px "JetBrains Mono",monospace;text-transform:uppercase;letter-spacing:.06em}
+.finding.high .sev{color:var(--high)}.finding.medium .sev{color:var(--med)}.finding.low .sev{color:var(--low)}
+.finding h3{font-size:18px}
+.node{font:13px "JetBrains Mono",monospace;color:var(--muted);word-break:break-word}
+.finding p{margin:6px 0 0}
+.finding .k{font-weight:600}
+.clean{border:1px solid var(--hair);border-left:4px solid var(--ok);border-radius:12px;background:var(--surface);padding:16px 18px}
+.offer{margin:44px 0;padding:24px;border-radius:14px;background:var(--surface);border:1px solid var(--spot);box-shadow:0 0 0 6px var(--glow)}
+.offer h2{font-size:clamp(22px,3.4vw,28px);margin-bottom:8px}
+.offer ul{margin:12px 0 18px;padding-left:20px}
+.offer li{margin:4px 0}
+section.checks{margin:44px 0}
+section.checks h2{font-size:22px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.grid div{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:14px}
+.grid b{display:block;font-family:"Archivo",sans-serif;margin-bottom:4px}
+.grid span{color:var(--muted);font-size:15px}
+footer{border-top:1px solid var(--hair);padding:22px 0 40px;color:var(--muted);font-size:14px}
+.reveal{animation:rise .35s ease-out both}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.reveal{animation:none}}
+@media (max-width:600px){body{font-size:16px}.card,.offer{padding:16px}.actions button,.actions .btn{flex:1 1 auto;justify-content:center}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="https://flowlab-dev.github.io/">Flow Lab</a>
+    <span class="tag">Free n8n workflow check</span>
+  </header>
+
+  <main>
+    <h1>Find the silent bugs in your n8n workflow</h1>
+    <p class="lead">Paste a workflow and see where it drops emails, rows or files without an error, lets failed API calls through, or runs a different model than the one you picked.</p>
+
+    <div class="privacy" role="note"><span aria-hidden="true">🔒</span><span><b>Your workflow never leaves this tab.</b> The check runs in your browser with JavaScript. There is no server behind this page and nothing you paste is uploaded or stored.</span></div>
+
+    <div class="card">
+      <label class="lbl" for="src">Workflow JSON</label>
+      <textarea id="src" spellcheck="false" placeholder='{"name": "My workflow", "nodes": [ … ], "connections": { … }}'></textarea>
+      <p class="hint">In n8n: open the workflow → <b>⋯</b> (top right) → <b>Download</b>, then open the file here. Or select all nodes on the canvas, copy, and paste.</p>
+      <div class="actions">
+        <button class="primary" id="run" type="button">Check workflow</button>
+        <span class="btn file">Open .json file<input id="file" type="file" accept=".json,application/json" aria-label="Open .json file"></span>
+        <button id="sample" type="button">Try a sample</button>
+      </div>
+      <div id="error" role="alert"></div>
+    </div>
+
+    <div id="results" aria-live="polite"></div>
+
+    <section class="offer" id="fix">
+      <h2>Want these fixed and tested?</h2>
+      <p>I'm Luna from Flow Lab. Send me the workflow and I'll fix what the check found, then run it on sample data that matches yours.</p>
+      <ul>
+        <li><b>From $150</b> for the fixes on this page. You get a fixed price before I start.</li>
+        <li><b>Back within 24 hours</b>, with a short before/after note for each fix.</li>
+        <li><b>You pay after you've checked it.</b> I don't need your passwords: share a copy of the workflow.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="mailto:trading.flowlab@gmail.com?subject=n8n%20workflow%20fix">Email me the workflow</a>
+        <a class="btn" href="https://t.me/flowlabdev">Message on Telegram</a>
+        <a class="btn" href="https://contra.com/s/3EBOWWvF-broken-zapier-make-or-n8n-i-fix-it">Full repair service on Contra (from $300)</a>
+      </div>
+    </section>
+
+    <section class="checks">
+      <h2>What this page checks</h2>
+      <div class="grid">
+        <div><b>Items dropped in Code nodes</b><span>A Code node in the default mode that reads <code>$json</code> after a trigger or step that sends several items keeps only the first.</span></div>
+        <div><b>Ignored model setting</b><span>OpenAI chat model nodes (v1.2+) with an old <code>modelName</code> field run the default model instead.</span></div>
+        <div><b>Errors passed as data</b><span>HTTP Request nodes with “Never Error” turn 4xx/5xx replies into normal output.</span></div>
+        <div><b>Keys inside the workflow</b><span>API keys or tokens typed into node parameters instead of Credentials.</span></div>
+        <div><b>Dead ends</b><span>Triggers with nothing attached, nodes nothing runs, disabled nodes.</span></div>
+        <div><b>No failure alert</b><span>No Error Workflow set, and the legacy execution order.</span></div>
+      </div>
+      <p class="hint">These are pattern checks on the JSON. They don't run your workflow, call your APIs or see your data, so a clean result means “none of these patterns”, not “no bugs”.</p>
+    </section>
+  </main>
+
+  <footer>Built by Luna · <a href="https://flowlab-dev.github.io/">Flow Lab</a> · <a href="mailto:trading.flowlab@gmail.com">trading.flowlab@gmail.com</a></footer>
+</div>
+
+<script>
+/* n8n workflow check — runs entirely in the browser (or Node for tests). No network calls.
+   Rules are the same as _НАБОРЫ/n8n-аудит/audit.py; each one is backed by n8n source code. */
+(function (root) {
+  'use strict';
+
+  const MULTI_TYPES = ['gmailTrigger', 'googleSheetsTrigger', 'googleDriveTrigger', 'rssFeedReadTrigger', 'rssFeedRead',
+    'emailReadImap', 'notionTrigger', 'airtableTrigger', 'splitOut', 'itemLists', 'microsoftOutlookTrigger', 'hubspotTrigger'];
+  const MULTI_OPS = ['getAll', 'read', 'search', 'list', 'getMany', 'getRows', 'select', 'executeQuery'];
+  const DB_TYPES = ['googleSheets', 'airtable', 'notion', 'postgres', 'mySql', 'supabase', 'baserow', 'nocoDb'];
+  const PASS = ['set', 'if', 'filter', 'noOp', 'wait', 'merge'];
+  const SECRET = /(sk-[A-Za-z0-9_-]{20,}|xox[bp]-[A-Za-z0-9-]{10,}|AIza[0-9A-Za-z_-]{30,}|ghp_[A-Za-z0-9]{30,}|Bearer\s+[A-Za-z0-9._-]{20,})/;
+
+  const short = t => String(t || '').split('.').pop();
+
+  function unwrap(data) {
+    let w = data;
+    // template API wraps it twice ({workflow:{nodes:[types], workflow:{nodes, connections}}}) — go to the innermost
+    for (let i = 0; i < 3 && w && w.workflow && typeof w.workflow === 'object'; i++) w = w.workflow;
+    if (!w || !Array.isArray(w.nodes)) throw new Error('This JSON has no "nodes" list. Paste a workflow exported from n8n (⋯ → Download) or copied from the canvas.');
+    return w;
+  }
+
+  function isMulti(node) {
+    const t = short(node.type);
+    const p = node.parameters || {};
+    if (t === 'splitInBatches') {
+      const bs = p.batchSize ?? (p.options || {}).batchSize;
+      return (bs ?? (Number(node.typeVersion || 1) >= 3 ? 1 : 10)) > 1;
+    }
+    if (MULTI_TYPES.includes(t)) return true;
+    if (p.returnAll === true) return true;
+    if (DB_TYPES.includes(t) && (MULTI_OPS.includes(p.operation) || (p.operation == null && t === 'googleSheets'))) return true;
+    return false;
+  }
+
+  function readsFirstOnly(code) {
+    if (!code || !code.includes('$json')) return false;
+    if (/\$input\.all\(|\$items\(|\bitems\b|\.map\(|for\s*\(/.test(code)) return false;
+    return /return\s*\[\s*\{|return\s*\{/.test(code);
+  }
+
+  function check(data) {
+    const w = unwrap(data);
+    const nodes = {};
+    for (const n of w.nodes) if (n && n.name) nodes[n.name] = n;
+    const parents = {}, mainOut = {}, subSources = new Set();
+    for (const [src, outs] of Object.entries(w.connections || {})) {
+      for (const [kind, branches] of Object.entries(outs || {})) {
+        for (const branch of branches || []) for (const c of branch || []) {
+          if (kind === 'main') {
+            (parents[c.node] = parents[c.node] || []).push(src);
+            mainOut[src] = true;
+          } else subSources.add(src);
+        }
+      }
+    }
+    const isTrigger = n => /Trigger$/i.test(short(n.type)) || ['webhook', 'start', 'cron', 'interval'].includes(short(n.type));
+    const findings = [];
+    const add = (severity, node, title, risk, fix) => findings.push({ severity, node, title, risk, fix });
+
+    for (const [name, n] of Object.entries(nodes)) {
+      const t = short(n.type);
+      const p = n.parameters || {};
+      if (t === 'stickyNote') continue;
+
+      if (t === 'code' && (p.mode || 'runOnceForAllItems') === 'runOnceForAllItems' && readsFirstOnly(p.jsCode)) {
+        let frontier = [...(parents[name] || [])], seen = new Set(), src = null;
+        for (let step = 0; step < 3 && !src && frontier.length; step++) {
+          const next = [];
+          for (const pn of frontier) {
+            if (seen.has(pn) || !nodes[pn]) continue;
+            seen.add(pn);
+            if (isMulti(nodes[pn])) { src = pn; break; }
+            if (PASS.includes(short(nodes[pn].type))) next.push(...(parents[pn] || []));
+          }
+          frontier = next;
+        }
+        if (src) add('high', name,
+          'Only the first item is processed',
+          `"${src}" can send several items at once, but this Code node is in the default "Run Once for All Items" mode, reads $json (the first item only) and returns one item. Every other email, row or file in that run is silently dropped. A manual test usually passes one item, so it looks fine.`,
+          'Set Mode to "Run Once for Each Item" (the code already handles one item), or loop over $input.all().');
+      }
+
+      if (t === 'lmChatOpenAi' && Number(n.typeVersion || 1) >= 1.2 && 'modelName' in p && !('model' in p))
+        add('high', name,
+          'The model you picked is not the one that runs',
+          `This node version reads the model from the "model" field. "modelName: ${p.modelName}" is ignored, so the node quietly uses n8n's default model. Answers, cost and speed differ from what you tested.`,
+          'Open the node and pick the model again in the Model list, then save.');
+
+      const opts = JSON.stringify(p);
+      if (t === 'httpRequest' && opts.includes('"neverError":true') && !n.onError)
+        add('medium', name,
+          'Failed API calls pass as success',
+          '"Never Error" is on, so a 401, 404 or 500 reply goes to the next node as if it were data. The workflow keeps running on an error message and nothing alerts you.',
+          'Turn "Never Error" off, or add an IF right after the node that checks the status code.');
+
+      if (SECRET.test(opts))
+        add('high', name,
+          'A secret key is written into the workflow',
+          'An API key or token sits in the node parameters. Anyone who gets this JSON (a shared template, a backup, a support ticket) gets the key.',
+          'Move it to n8n Credentials, then rotate the key, because this copy already contains it.');
+
+      if (n.disabled) add('low', name, 'Node is disabled', 'Everything after it does not run on this path.', 'Enable it or delete it if it is no longer needed.');
+
+      if (isTrigger(n) && !mainOut[name] && !n.disabled)
+        add('medium', name, 'Trigger is not connected', 'This trigger fires but nothing is attached to it, so that whole entry point does nothing.', 'Connect it to the first step of its branch or remove it.');
+      else if (!isTrigger(n) && !parents[name] && !subSources.has(name) && !/^lm|tool|memory|embeddings|vectorStore|outputParser|textSplitter|documentLoader|retriever/i.test(t))
+        add('low', name, 'Node never runs', 'Nothing is connected to its input.', 'Connect it or delete it.');
+    }
+
+    const s = w.settings || {};
+    if (!s.errorWorkflow)
+      add('medium', 'Workflow settings', 'No alert when a run fails',
+        'No Error Workflow is set in this file, so a failed run just stops. You find out when a customer or a colleague notices.',
+        'Create a small error workflow (Error Trigger → Slack/email) and select it in Settings → Error Workflow.');
+    if (s.executionOrder !== 'v1')
+      add('low', 'Workflow settings', 'Legacy execution order',
+        'The workflow uses the old v0 order. Branches can run in a different sequence than the canvas suggests.',
+        'Settings → Execution Order → v1, then re-test the branches.');
+
+    const rank = { high: 0, medium: 1, low: 2 };
+    findings.sort((a, b) => rank[a.severity] - rank[b.severity]);
+    return { name: w.name || 'Untitled workflow', nodeCount: w.nodes.filter(n => short(n.type) !== 'stickyNote').length, findings };
+  }
+
+  const api = { check, unwrap };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.N8nCheck = api;
+})(typeof self !== 'undefined' ? self : this);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var p = new URLSearchParams(location.search).get('theme');
+  if (p === 'dark' || p === 'light') document.documentElement.setAttribute('data-theme', p);
+
+  // Invented sample (fictional "Invoice inbox" workflow), not anyone's real template.
+  var SAMPLE = {
+    name: 'Invoice inbox to accounting sheet (sample)',
+    nodes: [
+      { name: 'New invoice emails', type: 'n8n-nodes-base.gmailTrigger', typeVersion: 1.2, parameters: { filters: { q: 'subject:invoice' }, pollTimes: { item: [{ mode: 'everyMinute' }] } } },
+      { name: 'Parse invoice', type: 'n8n-nodes-base.code', typeVersion: 2, parameters: { jsCode: "const m = $json;\nreturn [{ json: { from: m.From, subject: m.Subject, amount: (m.snippet.match(/\\$([\\d,.]+)/) || [])[1] } }];" } },
+      { name: 'Look up supplier', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, parameters: { url: 'https://api.example.com/suppliers', options: { response: { response: { neverError: true } } } } },
+      { name: 'Add row to sheet', type: 'n8n-nodes-base.googleSheets', typeVersion: 4.5, parameters: { operation: 'append' } },
+      { name: 'Summarise', type: '@n8n/n8n-nodes-langchain.lmChatOpenAi', typeVersion: 1.2, parameters: { modelName: 'gpt-4.1', options: {} } }
+    ],
+    connections: {
+      'New invoice emails': { main: [[{ node: 'Parse invoice', type: 'main', index: 0 }]] },
+      'Parse invoice': { main: [[{ node: 'Look up supplier', type: 'main', index: 0 }]] },
+      'Look up supplier': { main: [[{ node: 'Add row to sheet', type: 'main', index: 0 }]] }
+    },
+    settings: { executionOrder: 'v1' }
+  };
+
+  var src = document.getElementById('src'), out = document.getElementById('results'), err = document.getElementById('error');
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  function render(r) {
+    out.textContent = '';
+    var box = el('div', 'reveal');
+    var sum = el('div', 'sum');
+    sum.appendChild(el('h2', null, r.findings.length ? r.findings.length + (r.findings.length === 1 ? ' thing to fix' : ' things to fix') : 'No known issues found'));
+    sum.appendChild(el('span', 'node', r.name + ' · ' + r.nodeCount + ' nodes'));
+    var chips = el('div', 'chips');
+    ['high', 'medium', 'low'].forEach(function (s) {
+      var n = r.findings.filter(function (f) { return f.severity === s; }).length;
+      if (n) chips.appendChild(el('span', 'chip ' + s, n + ' ' + s));
+    });
+    sum.appendChild(chips);
+    box.appendChild(sum);
+    if (!r.findings.length) {
+      box.appendChild(el('div', 'clean', 'None of the patterns below showed up. That is a good sign, but these checks only read the JSON; they can’t see your data or API replies.'));
+    }
+    r.findings.forEach(function (f) {
+      var c = el('article', 'finding ' + f.severity);
+      var h = el('div', 'head');
+      h.appendChild(el('span', 'sev', f.severity));
+      h.appendChild(el('h3', null, f.title));
+      h.appendChild(el('span', 'node', f.node));
+      c.appendChild(h);
+      var r1 = el('p'); r1.appendChild(el('span', 'k', 'What it can cost you: ')); r1.appendChild(document.createTextNode(f.risk)); c.appendChild(r1);
+      var r2 = el('p'); r2.appendChild(el('span', 'k', 'Fix: ')); r2.appendChild(document.createTextNode(f.fix)); c.appendChild(r2);
+      box.appendChild(c);
+    });
+    out.appendChild(box);
+  }
+
+  function run() {
+    err.style.display = 'none';
+    var text = src.value.trim();
+    if (!text) { showErr('Paste a workflow JSON first, or open a .json file.'); return; }
+    var data;
+    try { data = JSON.parse(text); } catch (e) { showErr('This isn’t valid JSON. Check that you copied the whole file, from the first { to the last }.'); return; }
+    try { render(N8nCheck.check(data)); out.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
+    catch (e) { showErr(e.message); }
+  }
+  function showErr(m) { out.textContent = ''; err.textContent = m; err.style.display = 'block'; }
+
+  document.getElementById('run').addEventListener('click', run);
+  document.getElementById('sample').addEventListener('click', function () { src.value = JSON.stringify(SAMPLE, null, 2); run(); });
+  document.getElementById('file').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () { src.value = String(rd.result); run(); };
+    rd.readAsText(f);
+  });
+  window.__runSample = function () { document.getElementById('sample').click(); };
+})();
+</script>
+</body>
+</html>
