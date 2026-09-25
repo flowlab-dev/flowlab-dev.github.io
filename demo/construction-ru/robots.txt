@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /leads.php
+Disallow: /data/
+Disallow: /thanks.html
+Disallow: /consents/
+Sitemap: https://olhovy-dom.example/sitemap.xml
