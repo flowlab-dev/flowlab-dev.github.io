@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>App review · Pawpath (demo)</title>
+<title>App review · Walkwren (demo)</title>
 <meta name="description" content="A review of a booking app built with an AI app builder on Supabase: ten problems, seven reproduced on a real PostgreSQL database and three found in the code, each fixed and checked again.">
 <meta name="color-scheme" content="light dark">
 <style>
@@ -92,16 +92,16 @@
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/app-rescue/">Flow Lab</a>. Pawpath and Kettleby Dog Walks are invented.</p>
+<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/app-rescue/">Flow Lab</a>. Walkwren and Kettleby Dog Walks are invented.</p>
 <!-- /flowlab-band -->
 <div class="wrap">
   <header class="top">
-    <div class="brand"><i aria-hidden="true"></i>Pawpath · app review</div>
+    <div class="brand"><i aria-hidden="true"></i>Walkwren · app review</div>
     <button class="theme" id="theme" type="button" aria-label="Switch colour theme">Dark</button>
   </header>
   <div class="hero">
     <h1>Built in a weekend with an AI app builder. Checked before it goes wrong.</h1>
-    <p>Kettleby Dog Walks booked walks through Pawpath, a React and Supabase app made with an AI app builder. It worked, and it also let anyone read every customer’s home address. This is the review: ten problems, seven reproduced on a real PostgreSQL database and three found in the code. Each one was fixed and checked again.</p>
+    <p>Kettleby Dog Walks booked walks through Walkwren, a React and Supabase app made with an AI app builder. It worked, and it also let anyone read every customer’s home address. This is the review: ten problems, seven reproduced on a real PostgreSQL database and three found in the code. Each one was fixed and checked again.</p>
     <div class="stats" id="stats"></div>
   </div>
 </div>
@@ -127,7 +127,7 @@
 <section class="block">
   <div class="wrap reveal">
     <h2>How it was checked</h2>
-    <p class="method" id="method">The database checks run on real PostgreSQL (<span id="engine">PostgreSQL</span>, in memory). Supabase’s <code>anon</code>, <code>authenticated</code> and <code>service_role</code> roles, its default grants on new tables and its <code>auth.uid()</code> and <code>auth.jwt()</code> functions are recreated, so the row level security rules apply as they would behind Supabase. The HTTP layer (PostgREST) is not recreated, and the test database has one connection, so the “one booking at a time” lock is checked as a rule, not under a real race. “Before” is the generated migration. “After” is the same database with the fix migration applied on top of existing rows, which is how it would ship. If the old data holds something the fix can’t convert safely, such as a slot typed as “tomorrow 10am”, a date that doesn’t exist, or a walker already booked for two walks at once, the migration stops, names the rows and changes nothing. The three frontend findings (F2, F8, F9) are checked by reading the code, not by running the app. Pawpath and Kettleby Dog Walks are invented, and the “before” code was written for this demo to show problems that are common in generated Supabase apps.</p>
+    <p class="method" id="method">The database checks run on real PostgreSQL (<span id="engine">PostgreSQL</span>, in memory). Supabase’s <code>anon</code>, <code>authenticated</code> and <code>service_role</code> roles, its default grants on new tables and its <code>auth.uid()</code> and <code>auth.jwt()</code> functions are recreated, so the row level security rules apply as they would behind Supabase. The HTTP layer (PostgREST) is not recreated, and the test database has one connection, so the “one booking at a time” lock is checked as a rule, not under a real race. “Before” is the generated migration. “After” is the same database with the fix migration applied on top of existing rows, which is how it would ship. If the old data holds something the fix can’t convert safely, such as a slot typed as “tomorrow 10am”, a date that doesn’t exist, or a walker already booked for two walks at once, the migration stops, names the rows and changes nothing. The three frontend findings (F2, F8, F9) are checked by reading the code, not by running the app. Walkwren and Kettleby Dog Walks are invented, and the “before” code was written for this demo to show problems that are common in generated Supabase apps.</p>
   </div>
 </section>
 
@@ -143,7 +143,7 @@
   </div>
 </section>
 
-<footer><div class="wrap">Pawpath and Kettleby Dog Walks are invented; the customers in the test data are made up and their phone numbers are from the range Ofcom keeps for fiction. The schema, fixes and tests are real and run as described.</div></footer>
+<footer><div class="wrap">Walkwren and Kettleby Dog Walks are invented; the customers in the test data are made up and their phone numbers are from the range Ofcom keeps for fiction. The schema, fixes and tests are real and run as described.</div></footer>
 
 <script>
 // Written by tests/attacks.mjs. Do not edit by hand.
@@ -466,7 +466,7 @@ window.RESULTS = {
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var root = document.documentElement;
-  try { var saved = localStorage.getItem('pawpath-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  try { var saved = localStorage.getItem('walkwren-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
   function label() {
     var dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     $('theme').textContent = dark ? 'Light' : 'Dark';
@@ -475,7 +475,7 @@ window.RESULTS = {
     var dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     var next = dark ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
-    try { localStorage.setItem('pawpath-theme', next); } catch (e) {}
+    try { localStorage.setItem('walkwren-theme', next); } catch (e) {}
     label();
   });
   label();
