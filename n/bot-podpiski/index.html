@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Набросок: бот платной подписки</title>
+<style>
+  :root {
+    --bg: #eef1f5; --ink: #14181f; --muted: #667085; --line: #d9dee7;
+    --chat: #dfe7d5; --in: #ffffff; --accent: #2a7de1; --ok: #1f9d55; --warn: #c7771b; --stop: #c9372c;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1600px; height: 1000px; background: var(--bg); color: var(--ink);
+         font: 15px/1.4 -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; padding: 40px 48px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+         color: var(--warn); border: 2px solid var(--warn); border-radius: 6px; padding: 3px 9px; margin-bottom: 10px; }
+  h1 { font-size: 34px; line-height: 1.15; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 17px; margin-top: 6px; }
+  .brand { color: var(--muted); font-size: 14px; text-align: right; }
+  .brand b { color: var(--ink); font-size: 16px; }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .col h2 { font-size: 18px; margin-bottom: 4px; }
+  .col .note { color: var(--muted); font-size: 14px; margin-bottom: 12px; min-height: 40px; }
+  .phone { background: var(--chat); border-radius: 22px; border: 1px solid var(--line); height: 600px; overflow: hidden;
+           display: flex; flex-direction: column; }
+  .bar { background: #fff; padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 10px; align-items: center; }
+  .ava { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-weight: 700; }
+  .bar b { display: block; font-size: 15px; } .bar span { font-size: 12px; color: var(--muted); }
+  .msgs { padding: 14px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .msg { background: var(--in); border-radius: 14px 14px 14px 4px; padding: 10px 12px; max-width: 92%; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+  .msg.me { align-self: flex-end; background: #effdde; border-radius: 14px 14px 4px 14px; }
+  .time { font-size: 11px; color: var(--muted); text-align: right; margin-top: 2px; }
+  .btns { display: grid; gap: 6px; margin-top: 8px; }
+  .btns.two { grid-template-columns: 1fr 1fr; }
+  .btn { background: rgba(42,125,225,.1); color: var(--accent); border-radius: 9px; padding: 8px 10px; text-align: center; font-weight: 600; font-size: 14px; }
+  .sys { align-self: center; background: rgba(0,0,0,.18); color: #fff; font-size: 12px; border-radius: 10px; padding: 3px 10px; }
+  .ok { color: var(--ok); font-weight: 700; } .warn { color: var(--warn); font-weight: 700; } .stop { color: var(--stop); font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; margin: 4px 0 2px; }
+  td { padding: 4px 0; border-bottom: 1px solid #eef0f3; } td:first-child { color: var(--muted); width: 42%; }
+  footer { margin-top: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: nowrap; }
+  .step { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px; font-size: 14px; font-weight: 600; }
+  .arrow { color: var(--muted); font-size: 18px; }
+  .foot2 { color: var(--muted); font-size: 13px; margin-top: 10px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="tag">Набросок</div>
+    <h1>Бот платной подписки на закрытый канал</h1>
+    <div class="sub">Как будет выглядеть для подписчика — по пунктам вашего задания. Названия и цены — для примера, поставим ваши.</div>
+  </div>
+  <div class="brand"><b>Flow Lab</b><br>набросок к отклику на FL.ru</div>
+</header>
+
+<div class="cols">
+  <section class="col">
+    <h2>1. Тариф и способ оплаты</h2>
+    <div class="note">Несколько тарифов, карта или Telegram Stars. Язык — русский или английский.</div>
+    <div class="phone">
+      <div class="bar"><div class="ava">К</div><div><b>Бот вашего канала</b><span>бот</span></div></div>
+      <div class="msgs">
+        <div class="msg me">/start<div class="time">19:40</div></div>
+        <div class="msg">Здравствуйте! Доступ в закрытый канал «Название канала». Выберите тариф:
+          <div class="btns">
+            <div class="btn">1 месяц — 590 ₽</div>
+            <div class="btn">3 месяца — 1 590 ₽</div>
+            <div class="btn">12 месяцев — 5 900 ₽</div>
+          </div>
+          <div class="time">19:40</div>
+        </div>
+        <div class="msg me">1 месяц<div class="time">19:41</div></div>
+        <div class="msg">Как удобнее оплатить?
+          <div class="btns two">
+            <div class="btn">💳 Картой</div>
+            <div class="btn">⭐ 300 Stars</div>
+          </div>
+          <div class="btns"><div class="btn">🇬🇧 English</div></div>
+          <div class="time">19:41</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2>2. Доступ — сам, без ручной проверки</h2>
+    <div class="note">Оплату подтверждает платёжная система, бот сам пускает в канал, напоминает и закрывает доступ в срок.</div>
+    <div class="phone">
+      <div class="bar"><div class="ava">К</div><div><b>Бот вашего канала</b><span>бот</span></div></div>
+      <div class="msgs">
+        <div class="msg"><span class="ok">✅ Оплата картой получена.</span><br>Подписка «1 месяц» активна до <b>26.10.2026</b>.
+          <div class="btns"><div class="btn">Войти в канал →</div></div>
+          <div class="time">19:42</div>
+        </div>
+        <div class="sys">23 октября</div>
+        <div class="msg"><span class="warn">🔔 Подписка заканчивается через 3 дня</span> — 26.10.2026.
+          <div class="btns"><div class="btn">Продлить</div></div>
+          <div class="time">12:00</div>
+        </div>
+        <div class="sys">26 октября</div>
+        <div class="msg"><span class="stop">⛔ Срок подписки закончился</span>, доступ к каналу закрыт. Вернуться можно в любой момент.
+          <div class="btns"><div class="btn">Вернуть доступ</div></div>
+          <div class="time">19:42</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2>3. Раздел «Моя подписка»</h2>
+    <div class="note">Срок, способ оплаты, продление и смена тарифа — в одном сообщении.</div>
+    <div class="phone">
+      <div class="bar"><div class="ava">К</div><div><b>Бот вашего канала</b><span>бот</span></div></div>
+      <div class="msgs">
+        <div class="msg me">Моя подписка<div class="time">20:15</div></div>
+        <div class="msg"><b>Моя подписка</b>
+          <table>
+            <tr><td>Тариф</td><td>1 месяц</td></tr>
+            <tr><td>Статус</td><td class="ok">активна</td></tr>
+            <tr><td>Действует до</td><td>26.10.2026</td></tr>
+            <tr><td>Оплата</td><td>⭐ Telegram Stars</td></tr>
+            <tr><td>Автопродление</td><td>включено, раз в 30 дней</td></tr>
+          </table>
+          <div class="btns">
+            <div class="btn">Продлить или сменить тариф</div>
+            <div class="btn">Отключить автопродление</div>
+          </div>
+          <div class="time">20:15</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="step">Оплата</div><div class="arrow">→</div>
+  <div class="step">платёжная система подтверждает сама</div><div class="arrow">→</div>
+  <div class="step">вход по заявке: бот пускает только оплативших</div><div class="arrow">→</div>
+  <div class="step">напоминания о продлении</div><div class="arrow">→</div>
+  <div class="step">доступ закрыт в срок</div>
+</footer>
+<div class="foot2">Вход по заявке: ссылку на канал можно переслать, но бот одобрит заявку только тому, у кого подписка активна. Админка (подписчики, платежи, ручное управление доступом) — второй этап.</div>
+</body>
+</html>
