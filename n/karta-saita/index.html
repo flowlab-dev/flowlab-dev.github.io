@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Набросок: карта и перенос сайта УК</title>
+<style>
+  :root {
+    --bg: #f2f4f7; --card: #fff; --ink: #121826; --muted: #667085; --line: #e0e5ec;
+    --navy: #1c3d6e; --soft: #eaf0f8; --ok: #1f9d55; --new: #7a4fd6; --warn: #c7771b; --stop: #c9372c;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1600px; height: 1000px; background: var(--bg); color: var(--ink);
+         font: 15px/1.4 -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; padding: 34px 42px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+         color: var(--warn); border: 2px solid var(--warn); border-radius: 6px; padding: 3px 9px; margin-bottom: 10px; }
+  h1 { font-size: 31px; line-height: 1.15; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 17px; margin-top: 6px; }
+  .brand { color: var(--muted); font-size: 14px; text-align: right; }
+  .brand b { color: var(--ink); font-size: 16px; }
+  .cols { display: grid; grid-template-columns: 400px 1fr 340px; gap: 22px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .card h2 { font-size: 17px; margin-bottom: 4px; }
+  .card .note { color: var(--muted); font-size: 13.5px; margin-bottom: 12px; }
+  /* дерево */
+  .root { background: var(--navy); color: #fff; font-weight: 700; border-radius: 10px; padding: 9px 12px; margin-bottom: 8px; }
+  .tree { display: grid; gap: 6px; border-left: 2px solid var(--line); margin-left: 12px; padding-left: 14px; }
+  .node { position: relative; background: var(--soft); border-radius: 9px; padding: 7px 11px; font-weight: 600; font-size: 14px; }
+  .node::before { content: ""; position: absolute; left: -16px; top: 50%; width: 14px; border-top: 2px solid var(--line); }
+  .node small { display: block; font-weight: 400; color: var(--muted); font-size: 12.5px; }
+  .node.new { background: #f1ebfc; }
+  .node.new b { color: var(--new); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin-left: 6px; }
+  .node.lock { background: #fff4e6; }
+  .node.lock b { color: var(--warn); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin-left: 6px; }
+  /* таблица */
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+       font-weight: 600; padding: 7px 8px; border-bottom: 1px solid var(--line); background: #fafbfc; }
+  td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td code { font: 600 12.5px -apple-system, "Helvetica Neue", Arial, sans-serif; color: var(--navy); }
+  .pill { display: inline-block; border-radius: 999px; padding: 2px 8px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  .pill.ok { background: #e3f5eb; color: var(--ok); }
+  .pill.r { background: var(--soft); color: var(--navy); }
+  .pill.bad { background: #fbe8e6; color: var(--stop); }
+  .fmt { margin-top: 8px; font-size: 12.5px; color: var(--muted); }
+  .sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+  .sum div { background: #fafbfc; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 13px; color: var(--muted); }
+  .sum b { display: block; color: var(--ink); font-size: 15px; }
+  /* согласования */
+  .steps { display: grid; gap: 10px; }
+  .st { display: grid; grid-template-columns: 30px 1fr; gap: 10px; }
+  .st .n { width: 30px; height: 30px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+  .st b { display: block; font-size: 14.5px; }
+  .st span { font-size: 13px; color: var(--muted); }
+  .st .ok { color: var(--ok); font-weight: 600; }
+  .blocks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .blocks span { font-size: 12.5px; border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; background: #fafbfc; }
+  footer { margin-top: 16px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  footer b { color: var(--ink); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="tag">Набросок к предложению</div>
+    <h1>Как уточняем объём и переносим сайт УК без потерь</h1>
+    <div class="sub">Карта нового сайта по разделам из вашего ТЗ + формат описи и сверки. Дизайна здесь нет — он в этапе 2</div>
+  </div>
+  <div class="brand"><b>Flow Lab</b><br>для тендера FL.ru 5523323</div>
+</header>
+
+<div class="cols">
+  <div class="card">
+    <h2>Карта нового сайта (черновик)</h2>
+    <div class="note">Разделы — из ТЗ, подпункты — пример. Точную карту согласуем после описи текущего сайта.</div>
+    <div class="root">Главная</div>
+    <div class="tree">
+      <div class="node">О компании<small>история, руководство, лицензии, реквизиты</small></div>
+      <div class="node">Продукты и услуги<small>страница каждого продукта по одному шаблону</small></div>
+      <div class="node">Инвесторам<small>как стать клиентом, ответы на вопросы, документы для инвестора</small></div>
+      <div class="node lock">Раскрытие информации<b>дословно</b><small>документы с датами публикации, фильтр по году и типу</small></div>
+      <div class="node lock">Архив<b>дословно</b><small>прежние документы и материалы, адреса сохраняем</small></div>
+      <div class="node new">Новости компании<b>новое</b><small>рубрики, даты, обложки, шаблон новости</small></div>
+      <div class="node new">Блог / Статьи<b>новое</b><small>рубрики, теги, шаблон статьи</small></div>
+      <div class="node">Контакты<small>форма с защитой от спама, цели Метрики</small></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Опись и сверка переноса</h2>
+    <div class="note">Опись собирает скрипт по адресу вашего сайта: все страницы, файлы, даты и ссылки. По ней фиксируем смету, по ней же принимаем перенос.</div>
+    <table>
+      <thead><tr><th>Тип</th><th>Старый адрес → новый</th><th>Дата</th><th>Что проверяем</th><th>Итог</th></tr></thead>
+      <tbody>
+        <tr><td>Страница</td><td><code>адрес не меняется</code></td><td>—</td><td>текст, ссылки внутри, SEO-заголовок и описание</td><td><span class="pill ok">совпадает</span></td></tr>
+        <tr><td>Документ PDF</td><td><code>старый путь → 301 → новый</code></td><td>дата публикации</td><td>файл открывается, размер и контрольная сумма те же</td><td><span class="pill r">301 настроен</span></td></tr>
+        <tr><td>Раскрытие</td><td><code>адрес не меняется</code></td><td>дата публикации</td><td>текст перенесён без правок, дата та же</td><td><span class="pill ok">совпадает</span></td></tr>
+        <tr><td>Внутренняя ссылка</td><td><code>ведёт на новый адрес</code></td><td>—</td><td>нет ссылок в никуда (404)</td><td><span class="pill bad">найдена → исправить</span></td></tr>
+      </tbody>
+    </table>
+    <div class="fmt">Строки — формат описи, не данные вашего сайта: адреса и цифры появятся после описи.</div>
+    <div class="sum">
+      <div><b>Объём</b>страниц и документов — точно, после описи</div>
+      <div><b>Смета</b>фиксируется до этапа 2, сверх объёма — 400 ₽/стр., 60 ₽/док.</div>
+      <div><b>Приёмка</b>таблица сверки: каждая строка «совпадает» или «301»</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Порядок согласований</h2>
+    <div class="note">Каждый этап закрывается только после вашей приёмки.</div>
+    <div class="steps">
+      <div class="st"><div class="n">1</div><div><b>Опись и карта сайта</b><span>таблица страниц и документов, карта, таблица адресов → <span class="ok">вы согласуете</span></span></div></div>
+      <div class="st"><div class="n">2</div><div><b>Макеты</b><span>главная, внутренняя, продукт, публикации, статья, новости, документы; 2 раунда правок</span></div></div>
+      <div class="st"><div class="n">3</div><div><b>Разработка на закрытой тестовой версии</b><span>сотрудники пробуют редактирование до запуска</span></div></div>
+      <div class="st"><div class="n">4</div><div><b>Перенос и запуск</b><span>сверка по таблице, 301, sitemap, robots, 404; копия старого сайта сохраняется</span></div></div>
+    </div>
+    <h2 style="margin-top:16px">Блоки для новых страниц</h2>
+    <div class="blocks"><span>Заголовок + текст</span><span>Карточки продуктов</span><span>Список документов</span><span>Таблица</span><span>Цифры</span><span>Вопрос-ответ</span><span>Контакты + форма</span><span>Лента новостей</span></div>
+  </div>
+</div>
+
+<footer>
+  <b>Что показано:</b> черновик карты нового сайта по разделам из ТЗ и формат описи, по которой уточняется объём, фиксируется смета и принимается перенос. Дизайна и данных вашего сайта здесь нет: для описи нужен только адрес текущего сайта.
+</footer>
+</body>
+</html>
