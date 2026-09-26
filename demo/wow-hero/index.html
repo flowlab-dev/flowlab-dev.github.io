@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferrowyn F1 · Open-back headphones (demo)</title>
+<meta name="description" content="Ferrowyn F1, open-back headphones made to sound like the room you record in. An invented brand: a demo of a live gradient and a liquid-metal logo that stay fast on a phone.">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preload" as="image" href="assets/hero-bg.webp" media="(min-width: 861px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/hero-bg-phone.webp" media="(max-width: 860px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/logo-still.webp" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" href="assets/manrope-latin.woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script>
+  // Before first paint: saved theme, and a flag for CSS that JS runs.
+  document.documentElement.classList.add('js');
+  try { var t = localStorage.getItem('fw-theme'); if (t) document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap row">
+    <a class="brand" href="#top" aria-label="Ferrowyn Audio, back to top"><img src="assets/logo.svg" alt="" width="28" height="28"><span>Ferrowyn</span></a>
+    <nav aria-label="Sections"><a href="#sound">Sound</a><a href="#build">Build</a><a href="#specs">Specs</a><a href="#reserve" class="nav-cta">Reserve</a></nav>
+    <button class="theme" id="theme" type="button">Light theme</button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <!-- Stills are the first paint and the whole hero on weak phones; the live layers fade in over them in the same boxes. -->
+    <div class="hero-art" aria-hidden="true">
+      <picture><source media="(max-width: 860px)" srcset="assets/hero-bg-phone.webp"><img class="hero-still" src="assets/hero-bg.webp" alt="" width="1440" height="900" fetchpriority="high"></picture>
+      <div class="hero-live"><div class="hero-bg"></div></div>
+      <div class="hero-logo"><img class="logo-still" src="assets/logo-still.webp" alt="" width="780" height="780" fetchpriority="high"></div>
+    </div>
+    <div class="wrap hero-copy">
+      <p class="eyebrow">Ferrowyn F1 · open-back <span class="demo-tag">Demo · invented brand</span></p>
+      <h1 id="hero-title">Hear the room,<br>not the headphones.</h1>
+      <p class="lead">Solid aluminium cups, a 50&nbsp;mm driver and nothing that rattles. Made for mixing late and listening long.</p>
+      <p class="actions"><a class="btn" href="#reserve">Reserve a pair</a><a class="link" href="#sound">How they sound</a></p>
+    </div>
+  </section>
+
+  <section class="block" id="sound" aria-labelledby="sound-title">
+    <div class="wrap">
+      <h2 id="sound-title">Built to disappear on your head</h2>
+      <div class="grid3">
+        <article class="card reveal"><h3>Open at the back</h3><p>Sound leaves the cup instead of bouncing inside it, so the stage feels wide and the bass stays tight.</p></article>
+        <article class="card reveal"><h3>One driver, tuned by ear</h3><p>A single 50&nbsp;mm driver, tuned by ear. Voices sit where they were recorded.</p></article>
+        <article class="card reveal"><h3>Comfortable for a whole session</h3><p>Suspension band and velour pads that breathe, so hour four feels like hour one.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="build" aria-labelledby="build-title">
+    <div class="wrap two">
+      <div class="reveal">
+        <h2 id="build-title">Machined, not moulded</h2>
+        <p class="lead">Each cup starts as a block of aluminium. Every part screws in, so pads, band and cable can be replaced instead of the pair.</p>
+      </div>
+      <ul class="facts reveal">
+        <li><b>Aluminium</b><span>cups and yokes</span></li>
+        <li><b>Replaceable</b><span>pads, band, cable</span></li>
+        <li><b>2 years</b><span>of free repairs</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="specs" aria-labelledby="specs-title">
+    <div class="wrap">
+      <h2 id="specs-title">Specifications</h2>
+      <div class="table-wrap reveal">
+        <table>
+          <tbody>
+            <tr><th scope="row">Type</th><td>Open-back, over-ear</td></tr>
+            <tr><th scope="row">Driver</th><td>50&nbsp;mm dynamic</td></tr>
+            <tr><th scope="row">Impedance</th><td>38&nbsp;Ω, easy to drive from a laptop</td></tr>
+            <tr><th scope="row">Weight</th><td>310&nbsp;g without cable</td></tr>
+            <tr><th scope="row">Cable</th><td>2&nbsp;m, detachable, 3.5&nbsp;mm with 6.35&nbsp;mm adapter</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fine">Ferrowyn and the F1 are invented for this demo; the specifications describe an imagined product.</p>
+    </div>
+  </section>
+
+  <section class="block alt" id="reserve" aria-labelledby="reserve-title">
+    <div class="wrap narrow">
+      <h2 id="reserve-title">Reserve a pair</h2>
+      <p class="lead">First batch in spring. No payment now.</p>
+      <form id="reserve-form" novalidate>
+        <label for="r-name">Name</label>
+        <input id="r-name" name="name" autocomplete="name" required>
+        <label for="r-email">Email</label>
+        <input id="r-email" name="email" type="email" autocomplete="email" required>
+        <button class="btn" type="submit">Reserve</button>
+        <p id="r-status" class="status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">Ferrowyn Audio is an invented brand. Live gradient and liquid-metal logo: <a href="https://github.com/paper-design/shaders">Paper Shaders</a> (Apache-2.0). Font: Manrope (OFL). Logo drawn for this demo.</div>
+</footer>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
