@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Sketch: bookings admin and APIs</title>
+<style>
+  :root {
+    --bg: #eef1f6; --card: #fff; --ink: #121826; --muted: #667085; --line: #e1e6ee;
+    --accent: #1f6feb; --soft: #eaf2ff; --ok: #1a9a54; --wait: #c7771b; --stop: #c9372c; --side: #101828;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1600px; height: 900px; background: var(--bg); color: var(--ink);
+         font: 14.5px/1.4 -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; padding: 32px 42px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+         color: var(--wait); border: 2px solid var(--wait); border-radius: 6px; padding: 3px 9px; margin-bottom: 10px; }
+  h1 { font-size: 31px; line-height: 1.15; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 16.5px; margin-top: 6px; }
+  .brand { color: var(--muted); font-size: 13.5px; text-align: right; }
+  .brand b { color: var(--ink); font-size: 15px; }
+  .cols { display: grid; grid-template-columns: 960px 1fr; gap: 26px; }
+  .app { display: grid; grid-template-columns: 190px 1fr; background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 640px; box-shadow: 0 14px 40px rgba(16,24,40,.08); }
+  .side { background: var(--side); color: #cfd6e4; padding: 18px 14px; font-size: 14px; }
+  .side .logo { color: #fff; font-weight: 700; margin-bottom: 18px; }
+  .side div.i { padding: 8px 10px; border-radius: 8px; margin-bottom: 4px; }
+  .side div.on { background: rgba(255,255,255,.1); color: #fff; font-weight: 600; }
+  .main { padding: 18px 20px; position: relative; }
+  .bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .bar h2 { font-size: 19px; }
+  .live { font-size: 12.5px; color: var(--ok); font-weight: 600; }
+  .live::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); margin-right: 6px; box-shadow: 0 0 0 4px rgba(26,154,84,.15); }
+  .kp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .kp div { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+  .kp b { font-size: 21px; display: block; }
+  .kp span { font-size: 12.5px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 600; padding: 7px 8px; border-bottom: 1px solid var(--line); }
+  td { padding: 9px 8px; border-bottom: 1px solid var(--line); }
+  tr.new td { background: #f2fbf5; }
+  .pill { display: inline-block; border-radius: 999px; padding: 2px 9px; font-size: 11.5px; font-weight: 600; }
+  .pill.ok { background: #e3f5eb; color: var(--ok); } .pill.w { background: #fff1e0; color: var(--wait); } .pill.x { background: #fbe8e6; color: var(--stop); }
+  .src { font-size: 11.5px; color: var(--muted); }
+  .partners { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 10px; align-items: stretch; }
+  .p { border: 1px solid var(--line); border-radius: 12px; padding: 9px 12px; font-size: 13px; }
+  .p b { display: block; font-size: 14px; }
+  .add { border: 1.5px dashed var(--accent); color: var(--accent); border-radius: 12px; padding: 0 16px; display: grid; place-items: center; font-weight: 600; }
+  .toast { position: absolute; right: 20px; top: 16px; background: var(--side); color: #fff; border-radius: 10px; padding: 8px 12px; font-size: 12.5px; box-shadow: 0 10px 24px rgba(16,24,40,.25); }
+  .sample { margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .card h2 { font-size: 17px; margin-bottom: 12px; }
+  .flow { display: grid; gap: 8px; }
+  .box { border: 1px solid var(--line); border-radius: 11px; padding: 9px 12px; font-size: 13.5px; }
+  .box b { display: block; font-size: 14.5px; }
+  .box.blue { background: var(--soft); border-color: #cfe0fb; }
+  .arrow { text-align: center; color: var(--muted); font-size: 13px; line-height: 1; }
+  .apis { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .apis .box { font-size: 12.5px; }
+  .apis .box b { font-size: 13.5px; }
+  .apis .no { background: #fff6f5; border-color: #f3d2ce; }
+  .note { margin-top: 12px; font-size: 13px; background: #fff8ec; border: 1px dashed var(--wait); border-radius: 12px; padding: 10px 12px; }
+  footer { margin-top: 14px; color: var(--muted); font-size: 13px; }
+  footer b { color: var(--ink); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="tag">Sketch for the proposal</div>
+    <h1>Your bookings admin, and how flights and stays plug into the Lovable app</h1>
+    <div class="sub">Milestone 4 screen (partners + live bookings) and the data flow behind milestones 2–3</div>
+  </div>
+  <div class="brand"><b>Flow Lab</b><br>for Freelancer project 40731702</div>
+</header>
+
+<div class="cols">
+  <div>
+    <div class="app">
+      <div class="side">
+        <div class="logo">Admin</div>
+        <div class="i on">Bookings · live</div>
+        <div class="i">Partners</div>
+        <div class="i">Search log</div>
+        <div class="i">API keys &amp; limits</div>
+        <div class="i">Team &amp; roles</div>
+      </div>
+      <div class="main">
+        <div class="toast">New booking · stay · just now</div>
+        <div class="bar"><h2>Bookings</h2><span class="live">Live via Supabase Realtime</span></div>
+        <div class="kp">
+          <div><b>12</b><span>today</span></div>
+          <div><b>3</b><span>awaiting payment</span></div>
+          <div><b>1</b><span>failed at provider</span></div>
+          <div><b>5</b><span>active partners</span></div>
+        </div>
+        <table>
+          <thead><tr><th>Ref</th><th>Type</th><th>Route / stay</th><th>Dates</th><th>Partner</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr class="new"><td>BK-1042</td><td>Stay</td><td>Hotel, Chania<div class="src">LiteAPI</div></td><td>12–15 Oct</td><td>Partner A</td><td><span class="pill ok">confirmed</span></td></tr>
+            <tr><td>BK-1041</td><td>Flight</td><td>ATH → HER<div class="src">Duffel</div></td><td>12 Oct</td><td>—</td><td><span class="pill ok">ticketed</span></td></tr>
+            <tr><td>BK-1040</td><td>Flight</td><td>ATH → JTR<div class="src">Duffel</div></td><td>18 Oct</td><td>Partner B</td><td><span class="pill w">awaiting payment</span></td></tr>
+            <tr><td>BK-1039</td><td>Stay</td><td>Apartment, Oia<div class="src">LiteAPI</div></td><td>20–23 Oct</td><td>Partner C</td><td><span class="pill x">provider error · retry</span></td></tr>
+            <tr><td>BK-1038</td><td>Stay</td><td>Airbnb link-out<div class="src">search link, no price</div></td><td>—</td><td>—</td><td><span class="pill w">clicked out</span></td></tr>
+          </tbody>
+        </table>
+        <div class="partners">
+          <div class="p"><b>Partner A</b>commission 8 % · active</div>
+          <div class="p"><b>Partner B</b>commission 10 % · active</div>
+          <div class="p"><b>Partner C</b>paused</div>
+          <div class="add">+ Add partner</div>
+        </div>
+        <div class="sample">Sample data for the sketch — your real partners, fields and statuses come from your app and the audit in milestone 1.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How it connects</h2>
+    <div class="flow">
+      <div class="box blue"><b>Your Lovable app (React)</b>search, results, booking screens</div>
+      <div class="arrow">↓ calls</div>
+      <div class="box blue"><b>Supabase Edge Functions</b>API keys stay on the server, never in the browser</div>
+      <div class="arrow">↓</div>
+      <div class="apis">
+        <div class="box"><b>Duffel</b>flights: search, prices, booking</div>
+        <div class="box"><b>LiteAPI</b>stays: availability, prices, booking</div>
+        <div class="box no"><b>Airbnb</b>no public API → link only</div>
+      </div>
+      <div class="arrow">↓ saves</div>
+      <div class="box blue"><b>Supabase database + row-level security</b>bookings, partners, roles; changes stream to the admin live</div>
+    </div>
+    <div class="note">If you already have Skyscanner partner access, it replaces Duffel in the same slot — the app and admin do not change.</div>
+  </div>
+</div>
+
+<footer><b>What this is:</b> a first sketch from your brief, not your code — we have not seen the repo yet. Milestone 1 (audit) confirms what already exists and adjusts this plan before any API work.</footer>
+</body>
+</html>
