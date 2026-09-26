@@ -1,0 +1,23 @@
+Photo credits — QuirvaleTravel demo (fictional brand), coded by Flow Lab
+Found via Openverse (openverse.org) and Wikimedia Commons. Photos are cropped and resized.
+CC0 / Public Domain Mark: no attribution required, listed for transparency. CC BY: attribution required (below).
+
+file · author · license · source
+blog-asia.jpg · Cristian Moscoso xianmos007 · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Cristian_Moscoso_2014_(Unsplash).jpg  ("Cristian Moscoso 2014 (Unsplash).jpg")
+blog-europe.jpg · Sergei Gussev · CC0 1.0 · https://stocksnap.io/photo/street-city-VD2OUBNZVD  ("Street City")
+blog-kyoto.jpg · Peter Gabas petergabas · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Orange_hallway_leading_to_Kyoto_Prefecture_(Unsplash).jpg  ("Orange hallway leading to Kyoto Prefecture (Unsplash).jpg")
+blog-machu-picchu.jpg · Amanda Kerr amandakerr · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Ruins_of_Machu_Picchu_(Unsplash_jpMyAqHat7g).jpg  ("Ruins of Machu Picchu (Unsplash jpMyAqHat7g).jpg")
+blog-south-america.jpg · Travel Coffee Book · CC0 1.0 · https://stocksnap.io/photo/torresdelpaine-patagonia-526FB8AD27  ("Torresdelpaine Patagonia")
+deal-abudhabi.jpg · Prof. Mortel · CC BY 2.0 (https://creativecommons.org/licenses/by/2.0/) · https://www.flickr.com/photos/43714545@N06/51974094397  ("Sheikh Zayed Grand Mosque, Abu Dhabi, UAE (33)", cropped and resized)
+deal-hongkong.jpg · Bernard Spragg · Public Domain Mark 1.0 · https://www.flickr.com/photos/88123769@N02/55135392300  ("Hong Kong Habour.")
+deal-kelvara.jpg · Recal Media recalmedia · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Negombo_Beach_resort_pool_(Unsplash).jpg  ("Negombo Beach resort pool (Unsplash).jpg")
+deal-madrid.jpg · The Building Envelope · CC0 1.0 · https://stocksnap.io/photo/building-balconies-XTYCKCHGJB  ("Building Balconies")
+deal-navona.jpg · Iaia quark · CC0 1.0 · https://www.flickr.com/photos/183980745@N04/51993130847  ("Piazza Navona")
+dest-cairo.jpg · Les Anderson lesanderson · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Ruins_near_south_face_of_Khafre%27s_Pyramid.jpg  ("Ruins near south face of Khafre's Pyramid.jpg")
+dest-madrid.jpg · Javier García javigabbo · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Spinning_lights_in_a_static_world_(Unsplash).jpg  ("Spinning lights in a static world (Unsplash).jpg")
+dest-paris.jpg · Felipe Dolce felipedolce · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Arc_de_Triomphe_(Unsplash).jpg  ("Arc de Triomphe (Unsplash).jpg")
+dest-rome.jpg · Chantel Lucas · CC0 1.0 · https://stocksnap.io/photo/colosseum-rome-X42222FEL1  ("Colosseum Rome")
+hero.jpg · Jacky Lo hclojacky · CC0 1.0 · https://commons.wikimedia.org/wiki/File:Sunset_on_plane_(Unsplash).jpg  ("Sunset on plane (Unsplash).jpg")
+
+Logo icon (img/logo-mark.svg): Font Awesome Free, person-walking-luggage — https://fontawesome.com — CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).
+Layout: "Travel Landing Page DESKTOP + MOBILE (FREE)" by Kunturi Design, Figma Community — CC BY 4.0.
