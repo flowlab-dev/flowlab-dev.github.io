@@ -3,19 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EdenTravel — Welcome to the World of Extraordinary Travel</title>
-<meta name="description" content="Tours, destinations and travel deals. Demo: a Figma landing page built in HTML/CSS by Flow Lab.">
+<title>QuirvaleTravel — Welcome to the World of Extraordinary Travel</title>
+<meta name="description" content="QuirvaleTravel (fictional brand): tours, destinations and travel deals. Demo: a Figma landing page built in HTML/CSS by Flow Lab.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&family=Playfair+Display:wght@600;700&family=Public+Sans&family=Roboto:wght@300;400;500;600;700;900&family=Ultra&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
 <a class="skip" href="#main">Skip to content</a>
+<!-- flowlab-band -->
+<style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
+.fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
+.fl-band__more{white-space:nowrap}</style>
+<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/figma-landing/">Flow Lab</a>. QuirvaleTravel is invented; layout from Kunturi Design (CC BY 4.0).</p>
+<!-- /flowlab-band -->
 
 <header class="top" id="top">
   <div class="wrap top__row">
-    <a class="logo" href="#top" aria-label="EdenTravel home"><img src="img/logo-mark.svg" alt="" width="33" height="39"><span><b>Eden</b>Travel</span></a>
+    <a class="logo" href="#top" aria-label="QuirvaleTravel home"><img src="img/logo-mark.svg" alt="" width="33" height="39"><span><b>Quirvale</b>Travel</span></a>
     <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Open menu"><span></span><span></span><span></span></button>
     <nav class="nav" id="nav" aria-label="Main">
       <a href="#top">Home</a><a href="#tours">Tour</a><a href="#blog">Blog</a><a href="#deals">Pages</a><a href="#contact">Contact</a>
@@ -25,7 +33,7 @@
 
 <main id="main">
   <section class="hero">
-    <img class="hero__img" src="img/hero.jpg" alt="" width="1600" height="997" fetchpriority="high">
+    <img class="hero__img" src="img/hero.jpg" alt="" width="1600" height="900" fetchpriority="high">
     <div class="wrap hero__text">
       <h1>Welcome <br class="m">to the World <br>of Extraordinary <br class="m">Travel</h1>
       <p>If you're in search of exciting adventures, unforgettable experiences, and breathtaking places to explore, you've come to the right place!</p>
@@ -65,10 +73,10 @@
       <div class="slider" data-slider>
         <button class="arrow arrow--prev" type="button" aria-label="Previous destination"></button>
         <ul class="track dest__track">
-          <li class="city"><img src="img/dest-cairo.jpg" alt="Pyramids of Giza, Cairo" loading="lazy"><div class="city__info"><h3>Cairo</h3><p class="country"><img src="img/flag-eg.svg" alt="" width="32" height="21">EGYPT</p><p class="price">Price starts at <b>€105.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+          <li class="city"><img src="img/dest-cairo.jpg" alt="Pyramid of Khafre, Giza near Cairo" loading="lazy"><div class="city__info"><h3>Cairo</h3><p class="country"><img src="img/flag-eg.svg" alt="" width="32" height="21">EGYPT</p><p class="price">Price starts at <b>€105.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
           <li class="city"><img src="img/dest-paris.jpg" alt="Arc de Triomphe, Paris" loading="lazy"><div class="city__info"><h3>Paris</h3><p class="country"><img src="img/flag-fr.svg" alt="" width="32" height="21">FRANCE</p><p class="price">Price starts at <b>€95.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
-          <li class="city"><img src="img/dest-rome.jpg" alt="St. Peter's Basilica, Rome" loading="lazy"><div class="city__info"><h3>Rome</h3><p class="country"><img src="img/flag-it.svg" alt="" width="32" height="21">ITALY</p><p class="price">Price starts at <b>€75.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
-          <li class="city"><img src="img/dest-madrid.jpg" alt="Clock tower, Madrid" loading="lazy"><div class="city__info"><h3>Madrid</h3><p class="country"><img src="img/flag-es.svg" alt="" width="32" height="25">ESPAIN</p><p class="price">Price starts at <b>€87.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+          <li class="city"><img src="img/dest-rome.jpg" alt="Colosseum, Rome" loading="lazy"><div class="city__info"><h3>Rome</h3><p class="country"><img src="img/flag-it.svg" alt="" width="32" height="21">ITALY</p><p class="price">Price starts at <b>€75.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+          <li class="city"><img src="img/dest-madrid.jpg" alt="Carousel at night by the Royal Palace, Madrid" loading="lazy"><div class="city__info"><h3>Madrid</h3><p class="country"><img src="img/flag-es.svg" alt="" width="32" height="25">ESPAIN</p><p class="price">Price starts at <b>€87.00</b></p><p class="stars" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
         </ul>
         <button class="arrow arrow--next" type="button" aria-label="Next destination"></button>
         <div class="dots" aria-hidden="true"></div>
@@ -82,7 +90,7 @@
       <h2 class="h2">News and Blog</h2>
       <div class="blog__grid">
         <article class="post">
-          <img src="img/blog-kyoto.jpg" alt="Pagoda in Kyoto in autumn" loading="lazy">
+          <img src="img/blog-kyoto.jpg" alt="Torii gate tunnel, Kyoto" loading="lazy">
           <p class="post__tag">Asia</p>
           <h3>Unveiling the Enchanting Beauty of Kyoto</h3>
           <p class="post__text">Join us on a virtual journey to one of Japan's most captivating cities – <b>Kyoto</b>. In our latest blog post, we'll immerse you in the mesmerizing world of ancient temples, tranquil gardens, and the timeless traditions that define this cultural gem.</p>
@@ -104,11 +112,11 @@
       <p class="eyebrow">Best Offers</p>
       <h2 class="h2">Top Deals and Discounts</h2>
       <ul class="deals__grid">
-        <li class="deal deal--wide"><img src="img/deal-navona.jpg" alt="Piazza Navona, Rome" loading="lazy"><div><h3>Holidays Suites Navona - ITALY</h3><p><b>€149,00</b> <span>Price stars from</span></p></div></li>
-        <li class="deal"><img src="img/deal-kantua.jpg" alt="Hotel courtyard with palm trees" loading="lazy"><div><h3>Kantua hotel - THAILAND</h3><p><b>€99,00</b> <span>Price stars from</span></p></div></li>
-        <li class="deal"><img src="img/deal-madrid.jpg" alt="Modern hotel building" loading="lazy"><div><h3>NH Madrid Zurbano - MADRID</h3><p><b>€89,00</b> <span>Price stars from</span></p></div></li>
-        <li class="deal"><img src="img/deal-hongkong.jpg" alt="Big Buddha statue, Hong Kong" loading="lazy"><div><h3>Royal Plaza Hotel - HONG KONG</h3><p><b>€89,00</b> <span>Price stars from</span></p></div></li>
-        <li class="deal"><img src="img/deal-abudhabi.jpg" alt="Grand Mosque at dusk, Abu Dhabi" loading="lazy"><div><h3>Le Meridien - ABU DHABI</h3><p><b>€109,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal deal--wide"><img src="img/deal-navona.jpg" alt="Piazza Navona after rain, Rome" loading="lazy"><div><h3>Palazzo Verbena - ITALY</h3><p><b>€149,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-kelvara.jpg" alt="Resort pool with palm trees at sunset" loading="lazy"><div><h3>Kelvara Inn - SRI LANKA</h3><p><b>€99,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-madrid.jpg" alt="Modern building with balconies" loading="lazy"><div><h3>Casa Linterna - MADRID</h3><p><b>€89,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-hongkong.jpg" alt="Star Ferry in Victoria Harbour, Hong Kong" loading="lazy"><div><h3>Harbour Lantern - HONG KONG</h3><p><b>€89,00</b> <span>Price stars from</span></p></div></li>
+        <li class="deal"><img src="img/deal-abudhabi.jpg" alt="Sheikh Zayed Grand Mosque at night, Abu Dhabi" loading="lazy"><div><h3>Dunevale Hotel - ABU DHABI</h3><p><b>€109,00</b> <span>Price stars from</span></p></div></li>
       </ul>
     </div>
   </section>
@@ -116,11 +124,12 @@
   <section class="stories" id="stories">
     <div class="wrap">
       <h2 class="h2">Happy Client Stories</h2>
+      <p class="stories__note">Sample reviews from the design mock-up: the names and quotes are invented.</p>
       <div class="slider" data-slider>
         <button class="arrow arrow--prev" type="button" aria-label="Previous story"></button>
         <ul class="track stories__track">
-          <li class="story"><img src="img/avatar-isabel.jpg" alt="" width="124" height="120" loading="lazy"><blockquote>“Sarah, a local resident, possesses a profound connection to this region. Having once served as a host, she intimately comprehends the significance of having someone dedicated to managing every intricate detail, ensuring a seamless experience for all.”</blockquote><p class="stars stars--big" aria-label="Rated 5 out of 5"><i></i><i></i><i></i><i></i><i></i><b>5/5</b></p><p class="who"><b>Isabel Rose</b>Manager</p></li>
-          <li class="story"><img src="img/avatar-oliver.jpg" alt="" width="124" height="120" loading="lazy"><blockquote>“Liam, born and raised in this locale, has an innate connection to the area. With a background as a host himself, he fully appreciates the necessity of having someone who can attend to all the small but essential aspects, making every moment memorable.”</blockquote><p class="stars stars--big" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i><b>4/5</b></p><p class="who"><b>Oliver Mitchell</b>Landscape Architect</p></li>
+          <li class="story"><span class="avatar" aria-hidden="true">IR</span><blockquote>“Sarah, a local resident, possesses a profound connection to this region. Having once served as a host, she intimately comprehends the significance of having someone dedicated to managing every intricate detail, ensuring a seamless experience for all.”</blockquote><p class="stars stars--big" aria-label="Rated 5 out of 5"><i></i><i></i><i></i><i></i><i></i><b>5/5</b></p><p class="who"><b>Isabel Rose</b>Manager</p></li>
+          <li class="story"><span class="avatar avatar--navy" aria-hidden="true">OM</span><blockquote>“Liam, born and raised in this locale, has an innate connection to the area. With a background as a host himself, he fully appreciates the necessity of having someone who can attend to all the small but essential aspects, making every moment memorable.”</blockquote><p class="stars stars--big" aria-label="Rated 4 out of 5"><i></i><i></i><i></i><i></i><i class="off"></i><b>4/5</b></p><p class="who"><b>Oliver Mitchell</b>Landscape Architect</p></li>
         </ul>
         <button class="arrow arrow--next" type="button" aria-label="Next story"></button>
         <div class="dots" aria-hidden="true"></div>
@@ -145,11 +154,11 @@
   </div>
   <div class="wrap foot__bottom">
     <p>Copyright © 2023 Kunturi Design</p>
-    <a class="logo logo--foot" href="#top" aria-label="EdenTravel home"><img src="img/logo-mark.svg" alt="" width="33" height="34"><span><b>Eden</b>Travel</span></a>
+    <a class="logo logo--foot" href="#top" aria-label="QuirvaleTravel home"><img src="img/logo-mark.svg" alt="" width="33" height="34"><span><b>Quirvale</b>Travel</span></a>
   </div>
 </footer>
 
-<aside class="credit">Design: <a href="https://www.figma.com/community/file/1286274973743014138">Kunturi Design</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), coded by <a href="https://flowlab-dev.github.io/">Flow Lab</a>. Demo build from the free Figma Community file “Travel Landing Page DESKTOP + MOBILE”. EdenTravel is a fictional brand; the form does not send data.</aside>
+<aside class="credit">Design: <a href="https://www.figma.com/community/file/1286274973743014138">Kunturi Design</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), coded by <a href="https://flowlab-dev.github.io/">Flow Lab</a>. Demo build from the free Figma Community file “Travel Landing Page DESKTOP + MOBILE”. QuirvaleTravel and the hotel names are fictional; the form does not send data.<br>Photos: Openverse / Wikimedia Commons, CC0 / public domain / CC BY — <a href="img/CREDITS.txt">see credits</a>. Icon: Font Awesome Free (person-walking-luggage), <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</aside>
 
 <script src="main.js"></script>
 </body>
