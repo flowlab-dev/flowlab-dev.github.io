@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <!-- Ferrowyn Audio mark: an open-back headphone cup as a stylised F — drawn for this demo (invented brand). -->
+  <path fill="#000" fill-rule="evenodd" d="M200 34c-92 0-166 74-166 166 0 36 11 70 31 97l38-24c-15-21-24-46-24-73 0-67 54-121 121-121s121 54 121 121c0 27-9 52-24 73l38 24c20-27 31-61 31-97 0-92-74-166-166-166Z"/>
+  <path fill="#000" d="M92 262c0-17 14-31 31-31h14c11 0 20 9 20 20v96c0 11-9 20-20 20h-14c-17 0-31-14-31-31v-74Zm216 0c0-17-14-31-31-31h-14c-11 0-20 9-20 20v96c0 11 9 20 20 20h14c17 0 31-14 31-31v-74Z"/>
+  <path fill="#000" d="M172 150h86v30h-56v26h44v28h-44v58h-30V150Z"/>
+</svg>
