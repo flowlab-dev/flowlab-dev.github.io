@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Набросок: поиск перевозчиков</title>
+<style>
+  :root {
+    --bg: #f3f4f7; --card: #fff; --ink: #141821; --muted: #667085; --line: #e1e5ec;
+    --accent: #2458d6; --ok: #1f9d55; --warn: #c7771b; --stop: #c9372c; --soft: #eef3ff;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1600px; height: 1000px; background: var(--bg); color: var(--ink);
+         font: 15px/1.4 -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; padding: 36px 44px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+         color: var(--warn); border: 2px solid var(--warn); border-radius: 6px; padding: 3px 9px; margin-bottom: 10px; }
+  h1 { font-size: 32px; line-height: 1.15; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 17px; margin-top: 6px; }
+  .brand { color: var(--muted); font-size: 14px; text-align: right; }
+  .brand b { color: var(--ink); font-size: 16px; }
+  .grid { display: grid; grid-template-columns: 330px 1fr; gap: 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .card h2 { font-size: 16px; margin-bottom: 12px; }
+  label { display: block; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin: 12px 0 4px; }
+  .field { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 15px; background: #fafbfc; }
+  .route { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .route span.c { background: var(--soft); color: var(--accent); font-weight: 600; border-radius: 8px; padding: 5px 8px; font-size: 14px; }
+  .route { gap: 4px; flex-wrap: nowrap; font-size: 14px; }
+  .run { margin-top: 16px; background: var(--accent); color: #fff; font-weight: 600; text-align: center; border-radius: 10px; padding: 12px; }
+  .steps { margin-top: 18px; display: grid; gap: 8px; }
+  .step { display: grid; grid-template-columns: 22px 1fr auto; gap: 8px; align-items: center; font-size: 14px; }
+  .dot { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 12px; font-weight: 700; }
+  .dot.ok { background: var(--ok); } .dot.wait { background: #c3c9d4; }
+  .num { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .muted { color: var(--muted); }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 16px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .kpi .v { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .l { font-size: 13px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+       font-weight: 600; padding: 8px 10px; border-bottom: 1px solid var(--line); background: #fafbfc; }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.src { color: var(--accent); }
+  .pill { display: inline-block; border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 600; }
+  .pill.ok { background: #e3f5eb; color: var(--ok); }
+  .pill.no { background: #fbe8e6; color: var(--stop); }
+  .pill.q { background: #f1f2f5; color: var(--muted); }
+  .cut { margin-top: 12px; background: #fff7ec; border: 1px dashed var(--warn); border-radius: 12px; padding: 10px 14px; font-size: 14px; }
+  footer { margin-top: 16px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  footer b { color: var(--ink); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="tag">Набросок к отклику</div>
+    <h1>Поиск перевозчиков: заявка → проверенные контакты → Excel</h1>
+    <div class="sub">Экран первой версии. Строки в таблице — настоящая проба по открытому реестру Финляндии, 26.09.2026</div>
+  </div>
+  <div class="brand"><b>Flow Lab</b><br>для проекта FL.ru 5523335</div>
+</header>
+
+<div class="grid">
+  <div class="card">
+    <h2>Заявка</h2>
+    <label>Маршрут</label>
+    <div class="route"><span class="c">Финляндия</span>→<span class="c">Эстония</span>→<span class="c">Латвия</span></div>
+    <label>Груз и транспорт</label>
+    <div class="field muted">из вашей тестовой заявки</div>
+    <label>Источники</label>
+    <div class="field">Реестр PRH (FI) · e-Business Register (EE) · сайты компаний · каталоги · открытые TG-каналы</div>
+    <div class="run">Найти перевозчиков</div>
+
+    <div class="steps">
+      <div class="step"><div class="dot ok">✓</div><div>Реестр, код 49.41 (записей)</div><div class="num">300</div></div>
+      <div class="step"><div class="dot ok">✓</div><div>Из них действующие</div><div class="num">169</div></div>
+      <div class="step"><div class="dot ok">✓</div><div>Из них с сайтом в реестре</div><div class="num">22</div></div>
+      <div class="step"><div class="dot ok">✓</div><div>Сайт открыт и прочитан</div><div class="num">6 из 8</div></div>
+      <div class="step"><div class="dot ok">✓</div><div>Контакт найден на странице</div><div class="num">6</div></div>
+      <div class="step"><div class="dot wait">4</div><div>Claude: подходит ли под маршрут</div><div class="muted">этап 1</div></div>
+      <div class="step"><div class="dot wait">5</div><div>Дубли, сортировка, Excel</div><div class="muted">этап 1</div></div>
+    </div>
+    <div class="cut">Ход работы и расход на ИИ программа показывает здесь же, по каждой заявке.</div>
+  </div>
+
+  <div>
+    <div class="kpis">
+      <div class="kpi"><div class="v">12 509</div><div class="l">компаний с кодом 49.41 в реестре Финляндии</div></div>
+      <div class="kpi"><div class="v">13 %</div><div class="l">действующих указали сайт (выборка 300 записей) — поэтому нужны ещё каталоги и каналы</div></div>
+      <div class="kpi"><div class="v">6 / 8</div><div class="l">в пробе: контакт найден на самой странице</div></div>
+      <div class="kpi"><div class="v">1</div><div class="l">ложный «телефон» отсеян кодом</div></div>
+    </div>
+
+    <div class="card" style="padding:0; overflow:hidden">
+      <table>
+        <thead><tr><th>Компания</th><th>Город</th><th>Контакт на странице</th><th>Источник</th><th>Проверено</th><th>Статус</th></tr></thead>
+        <tbody>
+          <tr><td>Ralento Oy</td><td>Espoo</td><td>тел. 040 523 •• •• · info@ralento.fi</td><td class="src">ralento.fi</td><td>26.09.2026</td><td><span class="pill ok">найден</span></td></tr>
+          <tr><td>Kuljetusliike Ikävalko Oy</td><td>Lohja</td><td>тел. +358 500 47• ••• · почта на сайте</td><td class="src">kuljetusliikeikavalko.fi</td><td>26.09.2026</td><td><span class="pill ok">найден</span></td></tr>
+          <tr><td>Oy Rajalin Ab</td><td>Raasepori</td><td>тел. 010 520 •• ••</td><td class="src">rajalin.fi</td><td>26.09.2026</td><td><span class="pill ok">найден</span></td></tr>
+          <tr><td>Mäntylä E &amp; E Oy</td><td>Tuusula</td><td>info@mantylaee.fi</td><td class="src">mantylaee.fi</td><td>26.09.2026</td><td><span class="pill ok">найден</span></td></tr>
+          <tr><td>Alihankkija Oy</td><td>Vantaa</td><td>myynti@alihankkija.fi</td><td class="src">alihankkija.fi</td><td>26.09.2026</td><td><span class="pill ok">найден</span></td></tr>
+          <tr><td>Kuljetusliike L &amp; L Oy</td><td>Helsinki</td><td>toimisto@lloy.fi</td><td class="src">lloy.fi</td><td>26.09.2026</td><td><span class="pill ok">найден</span></td></tr>
+          <tr><td>Helsingin Kuljetuskeskus Oy</td><td>Helsinki</td><td>—</td><td class="src">jormankuljetus.fi</td><td>26.09.2026</td><td><span class="pill no">сайт не ответил</span></td></tr>
+          <tr><td>Kuljetus R. Stenvall Oy</td><td>Tuusula</td><td>—</td><td class="src">r-stenvall.fi</td><td>26.09.2026</td><td><span class="pill no">сайт не ответил</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cut" style="margin-top:14px">⚠️ У Oy Rajalin Ab простой поиск принял регистрационный номер 0126783-1 за телефон. Такие совпадения отсекает код до таблицы, поэтому в Excel попадают только настоящие контакты.</div>
+  </div>
+</div>
+
+<footer>
+  <b>Что показано:</b> экран программы и проба на живых данных: 8 перевозчиков из открытого реестра Финляндии, контакты найдены на их собственных сайтах, у каждого есть источник и дата. Номера в наброске частично скрыты.
+  <b>Чего здесь ещё нет:</b> оценки «подходит ли под маршрут FI → EE → LV», Эстонии, каталогов и Telegram — это первый этап.
+</footer>
+</body>
+</html>
