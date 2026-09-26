@@ -1,0 +1,14 @@
+# Make scenario review: Quote requests -> Sheet -> Sales alerts (demo, BEFORE)
+
+7 modules, trigger: instant (webhook). Static review of the exported blueprint; nothing was run.
+
+1. HIGH - Scenario settings: "Allow storing of incomplete executions" is off and the scenario starts with a webhook. When any module fails, the run stops and that request is gone: the sender will not resend it and there is nothing to retry, only the error in History. Worse, with the default "Number of consecutive errors" setting Make deactivates a scenario with an instant trigger immediately after its first error, so every later request is missed until someone notices and switches it back on.
+2. HIGH - "ZIP -> service area" [3] (http:ActionSendData): "Evaluate all states as errors" is off: a 4xx/5xx reply counts as success, the run continues with an error body as if it were data.
+3. HIGH - "ZIP -> service area" [3] (http:ActionSendData): A key/token is typed directly into the module. Move it into a connection or keychain and rotate it: anyone who sees the blueprint has it.
+4. HIGH - "Alert on-call tech" [5] (slack:CreateMessage): Maps a field from "Email sales" [7] (google-email:ActionSendEmail), which is not on the path before this module (other route, or inside an iterator that was already aggregated). That value is always empty here.
+5. HIGH - "Email sales" [7] (google-email:ActionSendEmail): Maps a field from module 9, which no longer exists in the scenario. That value is always empty.
+6. MED - "Each requested service" [6] (builtin:BasicFeeder): Iterator with no aggregator after it, followed by "Email sales" [7] (google-email:ActionSendEmail): one message is sent per item, not one per run.
+7. MED - Error handling: 4 module(s) write to outside services with no error handler: "Log request" [2] (google-sheets:addRow), "ZIP -> service area" [3] (http:ActionSendData), "Alert on-call tech" [5] (slack:CreateMessage), "Email sales" [7] (google-email:ActionSendEmail). With incomplete executions off, a failure in any of them loses that webhook request. A Break handler (with retry) on the critical ones keeps it.
+8. LOW - "Log request" [2] (google-sheets:addRow): valueInputOption is not USER_ENTERED: dates and numbers are written as plain text, so sorting, formulas and filters on those columns misbehave.
+9. LOW - [4] builtin:BasicRouter: All 2 routes have filters and none looks like a fallback route: a bundle that matches no filter goes nowhere after the router - fine if intended. (Check in the editor: route settings > "The fallback route".)
+

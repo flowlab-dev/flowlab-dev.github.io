@@ -1,0 +1,36 @@
+{
+  "name": "Quote requests -> Sheet -> Sales alerts (demo, BEFORE)",
+  "flow": [
+    {"id": 1, "module": "gateway:CustomWebHook", "version": 1, "parameters": {}, "mapper": {},
+     "metadata": {"designer": {"x": 0, "y": 0, "name": "Quote form (website)"}}},
+    {"id": 2, "module": "google-sheets:addRow", "version": 2, "parameters": {},
+     "mapper": {"values": {"0": "{{1.name}}", "1": "{{1.email}}", "2": "{{1.phone}}", "3": "{{1.zip}}", "4": "{{1.urgency}}", "5": "{{now}}"}},
+     "metadata": {"designer": {"x": 300, "y": 0, "name": "Log request"}}},
+    {"id": 3, "module": "http:ActionSendData", "version": 3,
+     "parameters": {"handleErrors": false},
+     "mapper": {"url": "https://api.zipinfo.example/v1/lookup?zip={{1.zip}}&key=zk_live_8f2c1d9a7b3e4f60a1c2", "method": "get", "parseResponse": true},
+     "metadata": {"designer": {"x": 600, "y": 0, "name": "ZIP -> service area"}}},
+    {"id": 4, "module": "builtin:BasicRouter", "version": 1, "mapper": null,
+     "metadata": {"designer": {"x": 900, "y": 0}},
+     "routes": [
+       {"flow": [
+         {"id": 5, "module": "slack:CreateMessage", "version": 4, "parameters": {},
+          "filter": {"name": "Urgent", "conditions": [[{"a": "{{1.urgency}}", "b": "urgent", "o": "text:equal"}]]},
+          "mapper": {"channel": "C0DEMO", "text": "URGENT quote: {{1.name}} {{1.phone}} ({{3.data.city}}). Quote #{{7.quote_id}}"},
+          "metadata": {"designer": {"x": 1200, "y": -150, "name": "Alert on-call tech"}}}
+       ]},
+       {"flow": [
+         {"id": 6, "module": "builtin:BasicFeeder", "version": 1,
+          "filter": {"name": "Standard", "conditions": [[{"a": "{{1.urgency}}", "b": "standard", "o": "text:equal"}]]},
+          "mapper": {"array": "{{1.services}}"},
+          "metadata": {"designer": {"x": 1200, "y": 150, "name": "Each requested service"}}},
+         {"id": 7, "module": "google-email:ActionSendEmail", "version": 2, "parameters": {},
+          "mapper": {"to": "sales@demo-hvac.example", "subject": "New quote request: {{1.name}}", "content": "{{6.value}} for {{1.name}}, {{1.phone}}. Area: {{3.data.city}}. Ref {{9.ref}}"},
+          "metadata": {"designer": {"x": 1500, "y": 150, "name": "Email sales"}}}
+       ]}
+     ]}
+  ],
+  "metadata": {"instant": true, "version": 1,
+    "scenario": {"roundtrips": 1, "maxErrors": 3, "autoCommit": true, "autoCommitTriggerLast": true, "sequential": false, "confidential": false, "dataloss": false, "dlq": false, "freshVariables": false},
+    "designer": {"orphans": []}}
+}

@@ -1,0 +1,219 @@
+{
+  "name": "Quote requests -> Sheet -> Sales alerts (demo, AFTER)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": {
+        "designer": {
+          "x": 0,
+          "y": 0,
+          "name": "Quote form (website)"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "module": "google-sheets:addRow",
+      "version": 2,
+      "parameters": {},
+      "mapper": {
+        "valueInputOption": "USER_ENTERED",
+        "values": {
+          "0": "{{1.name}}",
+          "1": "{{1.email}}",
+          "2": "{{1.phone}}",
+          "3": "{{1.zip}}",
+          "4": "{{1.urgency}}",
+          "5": "{{now}}"
+        }
+      },
+      "metadata": {
+        "designer": {
+          "x": 300,
+          "y": 0,
+          "name": "Log request"
+        }
+      },
+      "onerror": [
+        {
+          "id": 20,
+          "module": "builtin:Break",
+          "version": 1,
+          "parameters": {},
+          "mapper": {},
+          "metadata": {
+            "designer": {
+              "x": 300,
+              "y": 200
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {
+        "handleErrors": true
+      },
+      "mapper": {
+        "url": "https://api.zipinfo.example/v1/lookup?zip={{1.zip}}",
+        "method": "get",
+        "parseResponse": true
+      },
+      "metadata": {
+        "designer": {
+          "x": 600,
+          "y": 0,
+          "name": "ZIP -> service area (API key in Make keychain)"
+        }
+      },
+      "onerror": [
+        {
+          "id": 21,
+          "module": "builtin:Resume",
+          "version": 1,
+          "parameters": {},
+          "mapper": {
+            "data": {
+              "city": "(area lookup failed - check ZIP)"
+            }
+          },
+          "metadata": {
+            "designer": {
+              "x": 600,
+              "y": 200
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "mapper": null,
+      "metadata": {
+        "designer": {
+          "x": 900,
+          "y": 0
+        }
+      },
+      "routes": [
+        {
+          "flow": [
+            {
+              "id": 5,
+              "module": "slack:CreateMessage",
+              "version": 4,
+              "parameters": {},
+              "filter": {
+                "name": "Urgent",
+                "conditions": [
+                  [
+                    {
+                      "a": "{{1.urgency}}",
+                      "b": "urgent",
+                      "o": "text:equal:ci"
+                    }
+                  ]
+                ]
+              },
+              "mapper": {
+                "channel": "C0DEMO",
+                "text": "URGENT quote: {{1.name}} {{1.phone}} ({{3.data.city}}). Row {{2.rowNumber}}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1200,
+                  "y": -150,
+                  "name": "Alert on-call tech"
+                }
+              },
+              "onerror": [
+                {
+                  "id": 22,
+                  "module": "builtin:Break",
+                  "version": 1,
+                  "parameters": {},
+                  "mapper": {},
+                  "metadata": {
+                    "designer": {
+                      "x": 1200,
+                      "y": -300
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "flow": [
+            {
+              "id": 7,
+              "module": "google-email:ActionSendEmail",
+              "version": 2,
+              "parameters": {},
+              "mapper": {
+                "to": "sales@demo-hvac.example",
+                "subject": "New quote request: {{1.name}}",
+                "content": "{{1.name}}, {{1.phone}}. Area: {{3.data.city}}. Sheet row {{2.rowNumber}}.\nServices: {{ifempty(join(1.services; \", \"); \"not specified\")}}"
+              },
+              "metadata": {
+                "designer": {
+                  "x": 1200,
+                  "y": 150,
+                  "name": "Email sales"
+                }
+              },
+              "onerror": [
+                {
+                  "id": 23,
+                  "module": "builtin:Break",
+                  "version": 1,
+                  "parameters": {},
+                  "mapper": {},
+                  "metadata": {
+                    "designer": {
+                      "x": 1800,
+                      "y": 300
+                    }
+                  }
+                }
+              ],
+              "filter": {
+                "name": "Everything that is not urgent (fallback route)",
+                "fallback": true,
+                "conditions": []
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": true,
+      "freshVariables": false
+    },
+    "designer": {
+      "orphans": []
+    }
+  }
+}
