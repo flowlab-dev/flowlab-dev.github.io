@@ -147,7 +147,20 @@ footer p{margin:0;max-width:72ch;line-height:1.6}
   .row{grid-template-columns:1fr;gap:5px}
   .steps li{grid-template-columns:30px 1fr;gap:12px}
 }
-.rail .wrap{overflow-x:auto;white-space:nowrap;scrollbar-width:none}.rail .wrap::-webkit-scrollbar{display:none}.rail a{color:inherit;text-decoration:none}.rail a:hover{color:var(--ink)}.rail .rail-cta{color:var(--ink);font-weight:600}.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}.hero-cta .btn{display:inline-block;padding:13px 22px;background:var(--ink);color:var(--ground);text-decoration:none;font-weight:600;border-radius:2px}.hero-cta .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}section[id]{scroll-margin-top:60px}header{overflow-x:clip}@supports not (overflow:clip){body{overflow-x:hidden}}@media (max-width:640px){.rail .wrap{gap:18px}.rail .rail-opt{display:none}}.case-links{display:flex;flex-direction:column;gap:8px;align-items:flex-end}@media (max-width:760px){.case-links{align-items:flex-start}}.me{display:flex;align-items:center;gap:18px;margin-top:16px}.me img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none}.me .sub{margin-top:0}</style>
+.rail .wrap{overflow-x:auto;white-space:nowrap;scrollbar-width:none}.rail .wrap::-webkit-scrollbar{display:none}.rail a{color:inherit;text-decoration:none}.rail a:hover{color:var(--ink)}.rail .rail-cta{color:var(--ink);font-weight:600}.hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}.hero-cta .btn{display:inline-block;padding:13px 22px;background:var(--ink);color:var(--ground);text-decoration:none;font-weight:600;border-radius:2px}.hero-cta .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--ink)}section[id]{scroll-margin-top:60px}header{overflow-x:clip}@supports not (overflow:clip){body{overflow-x:hidden}}@media (max-width:640px){.rail .wrap{gap:18px}.rail .rail-opt{display:none}}.case-links{display:flex;flex-direction:column;gap:8px;align-items:flex-end}@media (max-width:760px){.case-links{align-items:flex-start}}.me{display:flex;align-items:center;gap:18px;margin-top:16px}.me img{width:72px;height:72px;border-radius:50%;object-fit:cover;flex:none}.me .sub{margin-top:0}/* ── WOW first screen: still gradient at once (0 requests); live gradient + Flow Lab mark only after load, only on capable devices ── */
+header{position:relative;isolation:isolate}
+.hero-fx{position:absolute;inset:0;z-index:-2;pointer-events:none;overflow:hidden;
+  background:radial-gradient(42% 62% at 82% 18%,rgba(27,71,204,.13),transparent 70%),radial-gradient(38% 55% at 12% 88%,rgba(0,129,58,.07),transparent 72%)}
+:root[data-theme="dark"] .hero-fx{background:radial-gradient(42% 62% at 82% 18%,rgba(91,140,255,.22),transparent 70%),radial-gradient(38% 55% at 12% 88%,rgba(53,217,124,.08),transparent 72%)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hero-fx{background:radial-gradient(42% 62% at 82% 18%,rgba(91,140,255,.22),transparent 70%),radial-gradient(38% 55% at 12% 88%,rgba(53,217,124,.08),transparent 72%)}}
+.hero-fx .fx-bg{position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease}
+.hero-fx .fx-mark{position:absolute;top:72px;right:calc(max(0px,(100% - 1080px)/2) + 28px);width:260px;height:260px;display:none}
+.hero-fx .fx-mark svg{width:100%;height:100%;display:block;transition:opacity .9s ease}
+.hero-fx .fx-mark .fx-live{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}
+.hero-fx.live .fx-bg,.hero-fx.live .fx-mark .fx-live{opacity:1}
+.hero-fx.live .fx-mark.has-live svg{opacity:0}
+@media (min-width:1100px){.hero-fx .fx-mark{display:block}}
+</style>
 </head>
 <body>
 <div class="rail">
@@ -161,6 +174,10 @@ footer p{margin:0;max-width:72ch;line-height:1.6}
 </div>
 
 <header>
+  <div class="hero-fx" aria-hidden="true">
+    <div class="fx-bg"></div>
+    <div class="fx-mark"><svg viewBox="0 0 200 200"><defs><linearGradient id="fxm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9FB4E8"/><stop offset=".5" stop-color="#1B47CC"/><stop offset="1" stop-color="#0B1E4A"/></linearGradient></defs><g fill="none" stroke="url(#fxm)" stroke-width="22" stroke-linecap="round"><path d="M34 62C74 30 112 94 166 58"/><path d="M34 102C74 70 112 134 166 98"/><path d="M34 142C74 110 112 174 166 138"/></g></svg><div class="fx-live"></div></div>
+  </div>
   <div class="wrap">
     <div class="eyebrow r d1">Websites · apps · AI assistants · automation</div>
     <h1 class="r d2">Software that still works <em>a year later.</em></h1>
@@ -388,5 +405,88 @@ footer p{margin:0;max-width:72ch;line-height:1.6}
     <p>Flow Lab · Luna. The demos on this site are self-initiated; the companies in them are invented.</p>
   </div>
 </footer>
+<script type="module">
+// WOW first screen (Flow Lab). Same rules as demo №30:
+// the still gradient and mark are painted at once from CSS/SVG (LCP stays the heading/text);
+// the live effect (Paper Shaders, Apache-2.0) is fetched only after the page has loaded, in idle time,
+// and only on devices that can afford it: no reduced motion, no Save-Data, no slow network, WebGL2, enough memory/cores.
+// The mark is desktop-only (≥1100 px). Paper Shaders pauses itself off screen and on hidden tabs.
+const LIB = 'https://cdn.jsdelivr.net/npm/@paper-design/shaders@0.0.81/dist/';
+const fx = document.querySelector('.hero-fx');
+const root = document.documentElement;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+const darkMq = matchMedia('(prefers-color-scheme: dark)');
+const isDark = () => root.getAttribute('data-theme') === 'dark' || (root.getAttribute('data-theme') !== 'light' && darkMq.matches);
+const PALETTE = {
+  light: ['#F3F6F6', '#DCE4FF', '#F1F4F7', '#E4EBFF', '#F3F6F6'],
+  dark: ['#050B0C', '#0B1E4A', '#061213', '#0D2560', '#050B0C'],
+};
+const MARK = '/assets/mark-metal.webp'; // the mark pre-processed for liquid metal on our machine (build/prep-mark.mjs), 29 KB
+
+function canAfford() {
+  if (!fx || reduce.matches) return false;
+  const c = navigator.connection;
+  if (c && (c.saveData || /(^|-)2g|3g/.test(c.effectiveType || ''))) return false;
+  const phone = innerWidth < 760;
+  if (navigator.deviceMemory && navigator.deviceMemory < (phone ? 4 : 2)) return false;
+  if (phone && navigator.hardwareConcurrency && navigator.hardwareConcurrency < 6) return false;
+  try {
+    const gl = document.createElement('canvas').getContext('webgl2');
+    if (!gl) return false;
+    gl.getExtension('WEBGL_lose_context')?.loseContext();
+    return true;
+  } catch (e) { return false; }
+}
+
+let lib = null, bg = null, metal = null;
+async function start() {
+  const wantMark = innerWidth >= 1100;
+  const mark = new Image();
+  if (wantMark) mark.src = MARK;       // starts downloading while the code loads
+  const [{ ShaderMount }, { meshGradientFragmentShader }, lm, { getShaderColorFromString: col }, { ShaderFitOptions: fit }] = await Promise.all([
+    import(LIB + 'shader-mount.js'), import(LIB + 'shaders/mesh-gradient.js'),
+    wantMark ? import(LIB + 'shaders/liquid-metal.js') : Promise.resolve(null),
+    import(LIB + 'get-shader-color-from-string.js'), import(LIB + 'shader-sizing.js'),
+    wantMark ? mark.decode() : Promise.resolve(),
+  ]);
+  lib = { ShaderMount, meshGradientFragmentShader, col, fit };
+  const sizing = (f, scale) => ({ u_fit: fit[f], u_scale: scale, u_rotation: 0, u_originX: 0.5, u_originY: 0.5, u_offsetX: 0, u_offsetY: 0, u_worldWidth: 0, u_worldHeight: 0 });
+  mountBg(sizing);
+  if (wantMark && lm) {
+    try {
+      metal = new ShaderMount(fx.querySelector('.fx-live'), lm.liquidMetalFragmentShader, {
+        u_image: mark, u_isImage: true, u_shape: 0,
+        u_colorBack: col('rgba(0,0,0,0)'), u_colorTint: col(isDark() ? '#9DB8FF' : '#1B47CC'),
+        u_repetition: 2, u_softness: 0.2, u_shiftRed: 0.2, u_shiftBlue: 0.3, u_distortion: 0.07, u_contour: 0.4, u_angle: 70,
+        ...sizing('contain', 0.9),
+      }, { premultipliedAlpha: false, alpha: true }, 0.8, 0, 1, 0.15e6);
+      fx.querySelector('.fx-mark').classList.add('has-live');
+    } catch (e) { console.warn('Live mark skipped:', e && e.message); }
+  }
+  requestAnimationFrame(() => requestAnimationFrame(() => fx.classList.add('live')));
+}
+
+function mountBg(sizing) {
+  const { ShaderMount, meshGradientFragmentShader, col, fit } = lib;
+  sizing = sizing || ((f, scale) => ({ u_fit: fit[f], u_scale: scale, u_rotation: 0, u_originX: 0.5, u_originY: 0.5, u_offsetX: 0, u_offsetY: 0, u_worldWidth: 0, u_worldHeight: 0 }));
+  bg?.dispose();
+  const colors = PALETTE[isDark() ? 'dark' : 'light'];
+  // very soft picture → tiny pixel budget, stretched by the browser: no visible difference, cool GPU
+  bg = new ShaderMount(fx.querySelector('.fx-bg'), meshGradientFragmentShader, {
+    u_colors: colors.map(col), u_colorsCount: colors.length,
+    u_distortion: 0.8, u_swirl: 0.2, u_grainMixer: 0, u_grainOverlay: 0, ...sizing('none', 1),
+  }, undefined, 0.25, 0, 1, 0.12e6);   // ~0.12 MP stretched: the same soft picture, 1 long task at start instead of ~150/10 s
+}
+
+// theme changes (system or site toggle) → repaint the gradient in the new colours
+const onTheme = () => { if (lib) mountBg(); if (metal) metal.setUniforms?.({ u_colorTint: lib.col(isDark() ? '#9DB8FF' : '#1B47CC') }); };
+darkMq.addEventListener?.('change', onTheme);
+new MutationObserver(onTheme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+reduce.addEventListener?.('change', (e) => { bg?.setSpeed(e.matches ? 0 : 0.25); metal?.setSpeed(e.matches ? 0 : 0.8); });
+
+const go = () => { if (canAfford()) start().catch((e) => console.warn('Live hero skipped:', e && e.message)); };
+const later = () => ('requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 2000 }) : setTimeout(go, 400));
+if (document.readyState === 'complete') later(); else addEventListener('load', later, { once: true });
+</script>
 </body>
 </html>
