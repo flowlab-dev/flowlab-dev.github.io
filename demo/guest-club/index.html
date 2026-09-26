@@ -1,0 +1,1077 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Клуб гостя · Сосновый берег (демо)</title>
+<meta name="description" content="Программа лояльности для двух направлений с разными системами бронирования: один гость при разном написании телефона и почты, бонусы только за состоявшиеся поездки и без задвоений, уровни, промокоды и личный кабинет.">
+<meta name="color-scheme" content="light dark">
+<style>
+  :root {
+    --bg: #f5f5f1; --panel: #ffffff; --ink: #17191a; --muted: #5f6567; --line: #e2e2dc; --soft: #eeeee8;
+    --accent: #245c45; --accent-ink: #ffffff; --accent-soft: #e2efe8; --warn: #9a5b00; --warn-soft: #fbf1df; --bad: #b42318; --bad-soft: #fdecea;
+    --base: #8a8f93; --silver: #7b8794; --gold: #b8860b; --premium: #6b3fa0;
+    --radius: 14px; --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 28px rgba(0,0,0,.05);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #101312; --panel: #191c1b; --ink: #eceeea; --muted: #a0a7a4; --line: #2b302e; --soft: #222725;
+      --accent: #74c7a0; --accent-ink: #0c1f16; --accent-soft: #1c2d25; --warn: #f3b760; --warn-soft: #36291a; --bad: #ff8a80; --bad-soft: #3a1f1d;
+      --gold: #e2b54a; --premium: #b38ce8; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #101312; --panel: #191c1b; --ink: #eceeea; --muted: #a0a7a4; --line: #2b302e; --soft: #222725;
+    --accent: #74c7a0; --accent-ink: #0c1f16; --accent-soft: #1c2d25; --warn: #f3b760; --warn-soft: #36291a; --bad: #ff8a80; --bad-soft: #3a1f1d;
+    --gold: #e2b54a; --premium: #b38ce8; --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--font); }
+  button, input { font: inherit; color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  .brand { font-weight: 650; display: flex; gap: 10px; align-items: center; }
+  .brand i { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); display: inline-block; }
+  .theme { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 14px; }
+  .hero { padding: 36px 0 20px; }
+  .hero h1 { font-size: clamp(30px, 4.6vw, 50px); line-height: 1.08; letter-spacing: -.02em; margin: 0 0 16px; max-width: 20ch; }
+  .hero p { font-size: 19px; color: var(--muted); max-width: 64ch; margin: 0; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+  h2 { font-size: clamp(24px, 3.2vw, 32px); letter-spacing: -.015em; line-height: 1.15; margin: 0 0 10px; }
+  .lead { color: var(--muted); font-size: 17px; max-width: 66ch; margin: 0 0 22px; }
+  section.block { padding: 48px 0; }
+  section.block + section.block { border-top: 1px solid var(--line); }
+
+  .sim { display: grid; grid-template-columns: 360px 1fr; gap: 18px; align-items: start; }
+  .steps { padding: 16px; display: grid; gap: 10px; }
+  .step { text-align: left; border: 1px solid var(--line); background: var(--panel); border-radius: 12px; padding: 12px 14px; cursor: pointer; display: grid; gap: 2px; }
+  .step b { font-weight: 600; }
+  .step span { font-size: 13.5px; color: var(--muted); }
+  .step:hover:not(:disabled) { border-color: var(--accent); }
+  .step.done { background: var(--accent-soft); border-color: transparent; }
+  .step:disabled { opacity: .5; cursor: default; }
+  .reset { border: 0; background: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 14px; padding: 4px 0 0; justify-self: start; }
+  .nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 16px 16px 0; }
+  .num .n { font-size: 28px; font-weight: 700; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .num .l { font-size: 13px; color: var(--muted); }
+  .log { list-style: none; margin: 0; padding: 12px 16px 16px; max-height: 330px; overflow-y: auto; display: grid; gap: 6px; font-size: 14.5px; }
+  .log li { padding: 8px 10px; border-radius: 10px; background: var(--soft); }
+  .log li.merge { background: var(--accent-soft); }
+  .log li.warn { background: var(--warn-soft); }
+  .log li.change { background: var(--bad-soft); }
+  .log .empty { background: none; color: var(--muted); padding: 8px 0; }
+
+  .guests { display: grid; grid-template-columns: 1fr 1.1fr; gap: 18px; align-items: start; }
+  .glist { padding: 14px; }
+  .glist input { width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+  .grow { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; width: 100%; text-align: left; border: 0; background: none; padding: 9px 10px; border-radius: 10px; cursor: pointer; }
+  .grow:hover, .grow.on { background: var(--soft); }
+  .grow small { color: var(--muted); display: block; font-size: 13px; }
+  .tier { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; color: #fff; letter-spacing: .02em; }
+  .tier.base { background: var(--base); } .tier.silver { background: var(--silver); } .tier.gold { background: var(--gold); } .tier.premium { background: var(--premium); }
+  .bal { font-variant-numeric: tabular-nums; font-weight: 600; min-width: 64px; text-align: right; }
+  .gscroll { max-height: 520px; overflow-y: auto; }
+
+  .card { padding: 22px; }
+  .card .who { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .card h3 { margin: 0; font-size: 22px; }
+  .big { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .big div { background: var(--soft); border-radius: 12px; padding: 12px; }
+  .big b { display: block; font-size: 24px; font-variant-numeric: tabular-nums; }
+  .big span { font-size: 13px; color: var(--muted); }
+  .bar { height: 8px; background: var(--soft); border-radius: 99px; overflow: hidden; margin: 6px 0 2px; }
+  .bar i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+  .hint { font-size: 14px; color: var(--muted); }
+  .card h4 { margin: 18px 0 8px; font-size: 15px; }
+  table.t { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.t td, table.t th { text-align: left; padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.t th { color: var(--muted); font-weight: 600; font-size: 12.5px; }
+  .nw { white-space: nowrap; }
+  .plus { color: var(--accent); font-weight: 600; white-space: nowrap; } .minus { color: var(--bad); font-weight: 600; white-space: nowrap; }
+  .st { font-size: 12.5px; padding: 1px 7px; border-radius: 99px; background: var(--soft); white-space: nowrap; }
+  @media (max-width: 420px) { table.t td, table.t th { padding: 7px 4px; } .st { font-size: 11.5px; padding: 1px 5px; } }
+  .st.completed { background: var(--accent-soft); color: var(--accent); } .st.cancelled { background: var(--bad-soft); color: var(--bad); }
+  details.admin { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 10px; font-size: 14px; }
+  details.admin summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+  .review { margin-top: 12px; font-size: 14px; background: var(--warn-soft); border-radius: 10px; padding: 10px 12px; }
+  .review ul { margin: 6px 0 0; padding-left: 18px; } .review li { margin-bottom: 4px; }
+
+  .rules { padding: 18px; overflow-x: auto; }
+  .rules input { width: 90px; border: 1px solid var(--line); background: var(--bg); border-radius: 8px; padding: 6px 8px; font-variant-numeric: tabular-nums; }
+  .btn { border: 0; background: var(--accent); color: var(--accent-ink); border-radius: 12px; padding: 11px 18px; font-weight: 600; cursor: pointer; }
+  .checks { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; }
+  .checks li { padding: 12px 14px; }
+  .checks b { display: block; } .checks span { color: var(--muted); font-size: 14px; }
+  .checks .ok::before { content: '✓ '; color: var(--accent); font-weight: 700; } .checks .no::before { content: '✗ '; color: var(--bad); font-weight: 700; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid3 .panel { padding: 18px; } .grid3 h3 { margin: 0 0 6px; font-size: 16px; } .grid3 p { margin: 0; color: var(--muted); font-size: 15px; }
+  footer { padding: 32px 0 56px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+  .sim > *, .guests > * { min-width: 0; }
+  @media (max-width: 900px) { .sim, .guests { grid-template-columns: minmax(0, 1fr); } .grid3 { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 16px; } .hero p { font-size: 17px; }
+    .nums { grid-template-columns: 1fr 1fr; } .big { gap: 8px; } .big div { padding: 10px; } .big b { font-size: 19px; } .card { padding: 16px; }
+    .grow { grid-template-columns: 1fr auto; } .grow .bal { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- flowlab-band -->
+<style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
+.fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
+.fl-band__more{white-space:nowrap}</style>
+<p class="fl-band" role="note">Демо <a href="https://flowlab-dev.github.io/work/guest-club/">Flow Lab</a> по своей инициативе. «Сосновый берег» и гости вымышлены.</p>
+<!-- /flowlab-band -->
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><i aria-hidden="true"></i>Сосновый берег · Клуб гостя</div>
+    <button class="theme" id="theme" type="button" aria-label="Сменить тему">Тёмная</button>
+  </header>
+  <div class="hero">
+    <h1>Один гость, две системы бронирования, один личный кабинет.</h1>
+    <p>Апартаменты в городе и загородные дома «Соснового берега» ведут брони в разных системах. Клуб узнаёт гостя по телефону или почте, как бы их ни записали администраторы. Бонусы он начисляет только за состоявшиеся поездки и не даёт им задвоиться, сколько бы раз система ни прислала одну и ту же бронь.</p>
+  </div>
+</div>
+
+<section class="block">
+  <div class="wrap">
+    <h2>Обмен с системами бронирования</h2>
+    <p class="lead">Нажимайте шаги по порядку. Справа видно, что клуб сделал с каждой выгрузкой: кого узнал, кого объединил, что пересчитал.</p>
+    <div class="sim">
+      <div class="panel steps" id="steps"></div>
+      <div class="panel">
+        <div class="nums" id="nums"></div>
+        <ul class="log" id="log"><li class="empty">Пока пусто. Начните с первого шага.</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <h2>Гости и личный кабинет</h2>
+    <p class="lead">Слева — список, как его видит администратор. Справа — кабинет выбранного гостя: уровень, бонусы, скидка и история обоих направлений.</p>
+    <div class="guests">
+      <div class="panel glist"><input id="q" type="search" placeholder="Имя, телефон или почта" aria-label="Поиск гостя"><div class="gscroll" id="glist"></div><div id="review"></div></div>
+      <div class="panel card" id="cab"><p class="hint">Загрузите историю на первом шаге и выберите гостя.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap reveal">
+    <h2>Правила клуба</h2>
+    <p class="lead">Уровень — по сумме состоявшихся поездок за последние 12 месяцев. Процент бонуса фиксируется в момент начисления и может только вырасти, если клуб позже узнал о более ранней поездке. Оплата бонусами фиксируется в момент оплаты. Поменяйте цифры, и демо заново проиграет загруженные выгрузки по новым правилам, чтобы было видно разницу. В работающем клубе новые правила действуют с даты изменения, а уже начисленное не пересчитывается.</p>
+    <div class="panel rules">
+      <table class="t" id="rules"></table>
+      <p class="hint" id="rules2"></p>
+      <button class="btn" id="apply" type="button">Применить и пересчитать</button>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap reveal">
+    <h2>Проверки правил</h2>
+    <p class="lead" id="checkslead">Правила, от которых зависят бонусы гостя. Они проверяются на тех же выгрузках и на нескольких коротких сюжетах в одну-три брони, прямо на этой странице, за доли секунды.</p>
+    <button class="btn" id="run" type="button">Запустить проверки</button>
+    <ul class="checks" id="checks"></ul>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap reveal">
+    <h2>Как это будет у вас</h2>
+    <div class="grid3">
+      <div class="panel"><h3>Своя база клуба</h3><p>Отдельный сервис со своей базой гостей, броней и журналом бонусов. Обмен с ним описан, поэтому потом к нему можно подключить приложение, бота или CRM.</p></div>
+      <div class="panel"><h3>Обмен по API</h3><p>Системы бронирования сами сообщают о новых и изменённых бронях, с временем изменения. Перед оплатой бонусами они спрашивают у клуба, сколько можно списать, и берут скидку по уровню гостя. Здесь обмен показан на выгрузках, правила те же.</p></div>
+      <div class="panel"><h3>Вход по коду</h3><p>Гость входит в кабинет по коду из SMS или ссылке на почту. Кнопка «Личный кабинет» появляется на обоих сайтах.</p></div>
+      <div class="panel"><h3>Правила без программиста</h3><p>Пороги уровней, проценты, приветственный бонус и промокоды меняет администратор. Новые правила действуют с даты изменения.</p></div>
+      <div class="panel"><h3>Спорные случаи — человеку</h3><p>Общий телефон у людей с разными именами, бронь без контактов, списание больше разрешённого, долг по бонусам. Такие случаи клуб откладывает в список для администратора.</p></div>
+      <div class="panel"><h3>Поддержка каждый месяц</h3><p>Сверка бонусов с бронями, разбор спорных карточек, новые акции и уровни, отчёт: сколько гостей вернулось во второе направление.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">«Сосновый берег», гости, телефоны и почты вымышлены; телефоны на странице показаны частично, как в настоящем кабинете. Обмен с системами бронирования здесь показан на выгрузках. Логика страницы та же, что проверяют тесты проекта.</div></footer>
+
+<script>
+// Создано build/make-feeds.mjs. Все имена, телефоны и адреса почты вымышлены.
+(function (r) { var FEEDS = {"today":"2026-09-20","steps":[{"id":"a1","source":"apartments","title":"Выгрузка Апартаментов","records":[{"id":1041,"guest_name":"Ирина Соколова","phone":"8 (900) 000-11-22","email":"Irina.Sokolova@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-03-06","check_out":"2026-03-09","total_rub":25500,"state":"checked_out","bonus_used":0,"updated_at":"2026-03-09T12:00:00"},{"id":1042,"guest_name":"Ирина Соколова","phone":"9000001122","email":"irina.sokolova@POCHTA.example ","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-08-14","check_out":"2026-08-18","total_rub":27600,"state":"checked_out","bonus_used":0,"updated_at":"2026-08-18T12:00:00","promo_code":"ЛЕТО2026"},{"id":1043,"guest_name":"Олег Васильев","phone":"8 (900) 000-33-44","email":"","unit":"Студия у парка","check_in":"2026-02-20","check_out":"2026-02-22","total_rub":8400,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-22T12:00:00"},{"id":1044,"guest_name":"Дмитрий Орлов","phone":"8 (900) 000-55-66","email":"orlov.d@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-01-08","check_out":"2026-01-13","total_rub":42500,"state":"checked_out","bonus_used":0,"updated_at":"2026-01-13T12:00:00"},{"id":1045,"guest_name":"Анна Кузнецова","phone":"8 (900) 000-77-88","email":"anna.k@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-04-10","check_out":"2026-04-13","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-04-13T12:00:00"},{"id":1046,"guest_name":"Сергей Лебедев","phone":"123-45","email":"lebedev.s@pochta.example","unit":"Студия у парка","check_in":"2026-06-01","check_out":"2026-06-03","total_rub":8400,"state":"checked_out","bonus_used":0,"updated_at":"2026-06-03T12:00:00"},{"id":1047,"guest_name":"Гость без контактов","phone":"","email":"","unit":"Студия у парка","check_in":"2026-07-03","check_out":"2026-07-04","total_rub":4200,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-04T12:00:00"},{"id":1048,"guest_name":"Вера Громова","phone":"+7 (999) 999-99-99","email":"v.gromova@pochta.example","unit":"Студия у парка","check_in":"2026-04-17","check_out":"2026-04-19","total_rub":8400,"state":"checked_out","bonus_used":0,"updated_at":"2026-04-19T12:00:00"},{"id":1049,"guest_name":"Ксения Белова","phone":"","email":"K.Belova+booking@gmail.com","unit":"Апартаменты с террасой","check_in":"2026-05-22","check_out":"2026-05-24","total_rub":17000,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-24T12:00:00"},{"id":1050,"guest_name":"Павел Смирнов","phone":"8 (900) 000-22-11","email":"p.smirnov@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-11-20","check_out":"2026-11-22","total_rub":17000,"state":"confirmed","bonus_used":5000,"updated_at":"2026-09-10T12:00:00"},{"id":1051,"guest_name":"Елена Миронова","phone":"8 (900) 000-44-55","email":"mironova.e@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-08-03","check_out":"2026-08-08","total_rub":34500,"state":"checked_out","bonus_used":0,"updated_at":"2026-08-08T12:00:00"},{"id":1052,"guest_name":"Алексей Морозов","phone":"8 (900) 001-04-00","email":"guest1@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-07-06","check_out":"2026-07-09","total_rub":25500,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-09T12:00:00"},{"id":1053,"guest_name":"Екатерина Новикова","phone":"+7(900)0011410","email":"guest2@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-06-01","check_out":"2026-06-05","total_rub":34000,"state":"checked_out","bonus_used":0,"updated_at":"2026-06-05T12:00:00"},{"id":1054,"guest_name":"Николай Фёдоров","phone":"+7(900)0012420","email":"guest3@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-03-01","check_out":"2026-03-03","total_rub":13800,"state":"checked_out","bonus_used":0,"updated_at":"2026-03-03T12:00:00"},{"id":1055,"guest_name":"Ольга Волкова","phone":"9000013430","email":"guest4@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-02-12","check_out":"2026-02-13","total_rub":8500,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-13T12:00:00"},{"id":1056,"guest_name":"Ольга Волкова","phone":"8 (900) 001-34-30","email":"guest4@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-15","check_out":"2026-05-18","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-18T12:00:00"},{"id":1057,"guest_name":"Татьяна Егорова","phone":"8 (900) 001-44-40","email":"guest5@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-07-17","check_out":"2026-07-21","total_rub":27600,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-21T12:00:00"},{"id":1058,"guest_name":"Андрей Попов","phone":"9000015450","email":"guest6@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-08-24","check_out":"2026-08-26","total_rub":13800,"state":"checked_out","bonus_used":0,"updated_at":"2026-08-26T12:00:00"},{"id":1059,"guest_name":"Андрей Попов","phone":"+7(900)0015450","email":"guest6@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-09","check_out":"2026-05-12","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-12T12:00:00"},{"id":1060,"guest_name":"Андрей Попов","phone":"9000015450","email":"guest6@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-07-05","check_out":"2026-07-06","total_rub":6900,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-06T12:00:00"},{"id":1061,"guest_name":"Юлия Зайцева","phone":"9000016460","email":"guest7@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-03-02","check_out":"2026-03-06","total_rub":34000,"state":"checked_out","bonus_used":0,"updated_at":"2026-03-06T12:00:00"},{"id":1062,"guest_name":"Михаил Белов","phone":"8 (900) 001-74-70","email":"guest8@pochta.example","unit":"Студия у парка","check_in":"2026-02-23","check_out":"2026-02-26","total_rub":12600,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-26T12:00:00"},{"id":1063,"guest_name":"Наталья Козлова","phone":"8 (900) 001-84-80","email":"guest9@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-01-13","check_out":"2026-01-16","total_rub":25500,"state":"checked_out","bonus_used":0,"updated_at":"2026-01-16T12:00:00"},{"id":1064,"guest_name":"Наталья Козлова","phone":"8 (900) 001-84-80","email":"guest9@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-02-04","check_out":"2026-02-07","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-07T12:00:00"},{"id":1065,"guest_name":"Игорь Никитин","phone":"+7 900 0019490","email":"guest10@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-08-15","check_out":"2026-08-19","total_rub":34000,"state":"checked_out","bonus_used":0,"updated_at":"2026-08-19T12:00:00"},{"id":1066,"guest_name":"Светлана Павлова","phone":"89000020500","email":"guest11@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-04","check_out":"2026-05-08","total_rub":27600,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-08T12:00:00"},{"id":1067,"guest_name":"Светлана Павлова","phone":"9000020500","email":"guest11@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-17","check_out":"2026-05-21","total_rub":27600,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-21T12:00:00"},{"id":1068,"guest_name":"Роман Григорьев","phone":"8 (900) 002-15-10","email":"guest12@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-01-25","check_out":"2026-01-26","total_rub":6900,"state":"checked_out","bonus_used":0,"updated_at":"2026-01-26T12:00:00"},{"id":1069,"guest_name":"Роман Григорьев","phone":"89000021510","email":"guest12@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-05-17","check_out":"2026-05-18","total_rub":8500,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-18T12:00:00"}]},{"id":"v1","source":"village","title":"Выгрузка Деревни","records":[{"booking_no":"D-311","client":{"fio":"Ирина Соколова","tel":"+7 900 0001122","mail":""},"house":"Дом «Берёза»","dates":{"from":"2026-06-12","to":"2026-06-15"},"sum":43500,"status":"done","paid_with_bonus":0,"changed":"2026-06-15T12:00:00","promo":"лето2026"},{"booking_no":"D-312","client":{"fio":"Васильев Олег","tel":"","mail":"o.vasiliev@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-05-01","to":"2026-05-04"},"sum":29400,"status":"done","paid_with_bonus":0,"changed":"2026-05-04T12:00:00"},{"booking_no":"D-313","client":{"fio":"Олег Васильев","tel":"+7 900 0003344","mail":"o.vasiliev@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-07-24","to":"2026-07-27"},"sum":51000,"status":"done","paid_with_bonus":0,"changed":"2026-07-27T12:00:00"},{"booking_no":"D-314","client":{"fio":"Мария Васильева","tel":"+7 900 0003344","mail":"m.vasilyeva@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-08-28","to":"2026-08-30"},"sum":24000,"status":"done","paid_with_bonus":0,"changed":"2026-08-30T12:00:00"},{"booking_no":"D-315","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом у пруда","dates":{"from":"2025-07-10","to":"2025-07-14"},"sum":68000,"status":"done","paid_with_bonus":0,"changed":"2025-07-14T12:00:00"},{"booking_no":"D-316","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2025-11-14","to":"2025-11-17"},"sum":36000,"status":"done","paid_with_bonus":0,"changed":"2025-11-17T12:00:00"},{"booking_no":"D-317","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-03-13","to":"2026-03-18"},"sum":85000,"status":"done","paid_with_bonus":0,"changed":"2026-03-18T12:00:00"},{"booking_no":"D-318","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-05-08","to":"2026-05-13"},"sum":85000,"status":"done","paid_with_bonus":0,"changed":"2026-05-13T12:00:00"},{"booking_no":"D-319","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-08-21","to":"2026-08-25"},"sum":58000,"status":"done","paid_with_bonus":0,"changed":"2026-08-25T12:00:00"},{"booking_no":"D-320","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-10-09","to":"2026-10-12"},"sum":36000,"status":"paid","paid_with_bonus":0,"changed":"2026-09-10T12:00:00"},{"booking_no":"D-321","client":{"fio":"Анна Кузнецова","tel":"+7 900 0007788","mail":"anna.k@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-10-02","to":"2026-10-04"},"sum":24000,"status":"paid","paid_with_bonus":600,"changed":"2026-09-10T12:00:00"},{"booking_no":"D-322","client":{"fio":"Сергей Лебедев","tel":"+7 900 0009900","mail":"lebedev.s@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-09-05","to":"2026-09-07"},"sum":19600,"status":"done","paid_with_bonus":0,"changed":"2026-09-07T12:00:00"},{"booking_no":"D-323","client":{"fio":"Артём Седов","tel":"+7 (999) 999-99-99","mail":"sedov.a@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-06-20","to":"2026-06-22"},"sum":19600,"status":"done","paid_with_bonus":0,"changed":"2026-06-22T12:00:00"},{"booking_no":"D-324","client":{"fio":"Ксения Белова","tel":"+7 900 0006677","mail":"kbelova@gmail.com"},"house":"Дом «Берёза»","dates":{"from":"2026-07-10","to":"2026-07-12"},"sum":29000,"status":"done","paid_with_bonus":0,"changed":"2026-07-12T12:00:00"},{"booking_no":"D-325","client":{"fio":"Павел Смирнов","tel":"+7 900 0002211","mail":"p.smirnov@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-09-11","to":"2026-09-14"},"sum":43500,"status":"paid","paid_with_bonus":0,"changed":"2026-08-22T12:00:00"},{"booking_no":"D-326","client":{"fio":"Николай Фёдоров","tel":"+7 900 0012420","mail":"guest3@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-08-16","to":"2026-08-20"},"sum":68000,"status":"done","paid_with_bonus":0,"changed":"2026-08-20T12:00:00"},{"booking_no":"D-327","client":{"fio":"Николай Фёдоров","tel":"8 (900) 001-24-20","mail":"guest3@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-05-22","to":"2026-05-23"},"sum":17000,"status":"done","paid_with_bonus":0,"changed":"2026-05-23T12:00:00"},{"booking_no":"D-328","client":{"fio":"Юлия Зайцева","tel":"+7 900 0016460","mail":"guest7@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-06-17","to":"2026-06-19"},"sum":19600,"status":"done","paid_with_bonus":0,"changed":"2026-06-19T12:00:00"},{"booking_no":"D-329","client":{"fio":"Юлия Зайцева","tel":"9000016460","mail":"guest7@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-06-17","to":"2026-06-18"},"sum":12000,"status":"done","paid_with_bonus":0,"changed":"2026-06-18T12:00:00"},{"booking_no":"D-330","client":{"fio":"Михаил Белов","tel":"9000017470","mail":"guest8@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-02-04","to":"2026-02-05"},"sum":17000,"status":"done","paid_with_bonus":0,"changed":"2026-02-05T12:00:00"},{"booking_no":"D-331","client":{"fio":"Игорь Никитин","tel":"9000019490","mail":"guest10@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-03-17","to":"2026-03-19"},"sum":29000,"status":"done","paid_with_bonus":0,"changed":"2026-03-19T12:00:00"},{"booking_no":"D-332","client":{"fio":"Светлана Павлова","tel":"8 (900) 002-05-00","mail":"guest11@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-07-07","to":"2026-07-10"},"sum":43500,"status":"done","paid_with_bonus":0,"changed":"2026-07-10T12:00:00"},{"booking_no":"D-333","client":{"fio":"Роман Григорьев","tel":"+7 900 0021510","mail":"guest12@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-03-01","to":"2026-03-04"},"sum":51000,"status":"done","paid_with_bonus":0,"changed":"2026-03-04T12:00:00"}]},{"id":"a2","source":"apartments","title":"Апартаменты: всё заново, с доплатой и отменой","records":[{"id":1041,"guest_name":"Ирина Соколова","phone":"8 (900) 000-11-22","email":"Irina.Sokolova@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-03-06","check_out":"2026-03-09","total_rub":25500,"state":"checked_out","bonus_used":0,"updated_at":"2026-03-09T12:00:00"},{"id":1042,"guest_name":"Ирина Соколова","phone":"9000001122","email":"irina.sokolova@POCHTA.example ","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-08-14","check_out":"2026-08-18","total_rub":30600,"state":"checked_out","bonus_used":0,"updated_at":"2026-09-19T12:00:00","promo_code":"ЛЕТО2026"},{"id":1043,"guest_name":"Олег Васильев","phone":"8 (900) 000-33-44","email":"","unit":"Студия у парка","check_in":"2026-02-20","check_out":"2026-02-22","total_rub":8400,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-22T12:00:00"},{"id":1044,"guest_name":"Дмитрий Орлов","phone":"8 (900) 000-55-66","email":"orlov.d@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-01-08","check_out":"2026-01-13","total_rub":42500,"state":"checked_out","bonus_used":0,"updated_at":"2026-01-13T12:00:00"},{"id":1045,"guest_name":"Анна Кузнецова","phone":"8 (900) 000-77-88","email":"anna.k@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-04-10","check_out":"2026-04-13","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-04-13T12:00:00"},{"id":1046,"guest_name":"Сергей Лебедев","phone":"123-45","email":"lebedev.s@pochta.example","unit":"Студия у парка","check_in":"2026-06-01","check_out":"2026-06-03","total_rub":8400,"state":"checked_out","bonus_used":0,"updated_at":"2026-06-03T12:00:00"},{"id":1047,"guest_name":"Гость без контактов","phone":"","email":"","unit":"Студия у парка","check_in":"2026-07-03","check_out":"2026-07-04","total_rub":4200,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-04T12:00:00"},{"id":1048,"guest_name":"Вера Громова","phone":"+7 (999) 999-99-99","email":"v.gromova@pochta.example","unit":"Студия у парка","check_in":"2026-04-17","check_out":"2026-04-19","total_rub":8400,"state":"checked_out","bonus_used":0,"updated_at":"2026-04-19T12:00:00"},{"id":1049,"guest_name":"Ксения Белова","phone":"","email":"K.Belova+booking@gmail.com","unit":"Апартаменты с террасой","check_in":"2026-05-22","check_out":"2026-05-24","total_rub":17000,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-24T12:00:00"},{"id":1050,"guest_name":"Павел Смирнов","phone":"8 (900) 000-22-11","email":"p.smirnov@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-11-20","check_out":"2026-11-22","total_rub":17000,"state":"cancelled","bonus_used":5000,"updated_at":"2026-09-19T12:00:00"},{"id":1051,"guest_name":"Елена Миронова","phone":"8 (900) 000-44-55","email":"mironova.e@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-08-03","check_out":"2026-08-08","total_rub":34500,"state":"checked_out","bonus_used":0,"updated_at":"2026-08-08T12:00:00"},{"id":1052,"guest_name":"Алексей Морозов","phone":"8 (900) 001-04-00","email":"guest1@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-07-06","check_out":"2026-07-09","total_rub":25500,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-09T12:00:00"},{"id":1053,"guest_name":"Екатерина Новикова","phone":"+7(900)0011410","email":"guest2@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-06-01","check_out":"2026-06-05","total_rub":34000,"state":"checked_out","bonus_used":0,"updated_at":"2026-06-05T12:00:00"},{"id":1054,"guest_name":"Николай Фёдоров","phone":"+7(900)0012420","email":"guest3@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-03-01","check_out":"2026-03-03","total_rub":13800,"state":"checked_out","bonus_used":0,"updated_at":"2026-03-03T12:00:00"},{"id":1055,"guest_name":"Ольга Волкова","phone":"9000013430","email":"guest4@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-02-12","check_out":"2026-02-13","total_rub":8500,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-13T12:00:00"},{"id":1056,"guest_name":"Ольга Волкова","phone":"8 (900) 001-34-30","email":"guest4@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-15","check_out":"2026-05-18","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-18T12:00:00"},{"id":1057,"guest_name":"Татьяна Егорова","phone":"8 (900) 001-44-40","email":"guest5@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-07-17","check_out":"2026-07-21","total_rub":27600,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-21T12:00:00"},{"id":1058,"guest_name":"Андрей Попов","phone":"9000015450","email":"guest6@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-08-24","check_out":"2026-08-26","total_rub":13800,"state":"checked_out","bonus_used":0,"updated_at":"2026-08-26T12:00:00"},{"id":1059,"guest_name":"Андрей Попов","phone":"+7(900)0015450","email":"guest6@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-09","check_out":"2026-05-12","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-12T12:00:00"},{"id":1060,"guest_name":"Андрей Попов","phone":"9000015450","email":"guest6@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-07-05","check_out":"2026-07-06","total_rub":6900,"state":"checked_out","bonus_used":0,"updated_at":"2026-07-06T12:00:00"},{"id":1061,"guest_name":"Юлия Зайцева","phone":"9000016460","email":"guest7@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-03-02","check_out":"2026-03-06","total_rub":34000,"state":"checked_out","bonus_used":0,"updated_at":"2026-03-06T12:00:00"},{"id":1062,"guest_name":"Михаил Белов","phone":"8 (900) 001-74-70","email":"guest8@pochta.example","unit":"Студия у парка","check_in":"2026-02-23","check_out":"2026-02-26","total_rub":12600,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-26T12:00:00"},{"id":1063,"guest_name":"Наталья Козлова","phone":"8 (900) 001-84-80","email":"guest9@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-01-13","check_out":"2026-01-16","total_rub":25500,"state":"checked_out","bonus_used":0,"updated_at":"2026-01-16T12:00:00"},{"id":1064,"guest_name":"Наталья Козлова","phone":"8 (900) 001-84-80","email":"guest9@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-02-04","check_out":"2026-02-07","total_rub":20700,"state":"checked_out","bonus_used":0,"updated_at":"2026-02-07T12:00:00"},{"id":1065,"guest_name":"Игорь Никитин","phone":"+7 900 0019490","email":"guest10@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-08-15","check_out":"2026-08-19","total_rub":34000,"state":"checked_out","bonus_used":0,"updated_at":"2026-08-19T12:00:00"},{"id":1066,"guest_name":"Светлана Павлова","phone":"89000020500","email":"guest11@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-04","check_out":"2026-05-08","total_rub":27600,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-08T12:00:00"},{"id":1067,"guest_name":"Светлана Павлова","phone":"9000020500","email":"guest11@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-05-17","check_out":"2026-05-21","total_rub":27600,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-21T12:00:00"},{"id":1068,"guest_name":"Роман Григорьев","phone":"8 (900) 002-15-10","email":"guest12@pochta.example","unit":"Апартаменты на Набережной, 2 комнаты","check_in":"2026-01-25","check_out":"2026-01-26","total_rub":6900,"state":"checked_out","bonus_used":0,"updated_at":"2026-01-26T12:00:00"},{"id":1069,"guest_name":"Роман Григорьев","phone":"89000021510","email":"guest12@pochta.example","unit":"Апартаменты с террасой","check_in":"2026-05-17","check_out":"2026-05-18","total_rub":8500,"state":"checked_out","bonus_used":0,"updated_at":"2026-05-18T12:00:00"}]},{"id":"v2","source":"village","title":"Деревня: всё заново, с отменами и закрытой бронью","records":[{"booking_no":"D-311","client":{"fio":"Ирина Соколова","tel":"+7 900 0001122","mail":""},"house":"Дом «Берёза»","dates":{"from":"2026-06-12","to":"2026-06-15"},"sum":43500,"status":"done","paid_with_bonus":0,"changed":"2026-06-15T12:00:00","promo":"лето2026"},{"booking_no":"D-312","client":{"fio":"Васильев Олег","tel":"","mail":"o.vasiliev@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-05-01","to":"2026-05-04"},"sum":29400,"status":"done","paid_with_bonus":0,"changed":"2026-05-04T12:00:00"},{"booking_no":"D-313","client":{"fio":"Олег Васильев","tel":"+7 900 0003344","mail":"o.vasiliev@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-07-24","to":"2026-07-27"},"sum":51000,"status":"done","paid_with_bonus":0,"changed":"2026-07-27T12:00:00"},{"booking_no":"D-314","client":{"fio":"Мария Васильева","tel":"+7 900 0003344","mail":"m.vasilyeva@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-08-28","to":"2026-08-30"},"sum":24000,"status":"done","paid_with_bonus":0,"changed":"2026-08-30T12:00:00"},{"booking_no":"D-315","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом у пруда","dates":{"from":"2025-07-10","to":"2025-07-14"},"sum":68000,"status":"done","paid_with_bonus":0,"changed":"2025-07-14T12:00:00"},{"booking_no":"D-316","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2025-11-14","to":"2025-11-17"},"sum":36000,"status":"done","paid_with_bonus":0,"changed":"2025-11-17T12:00:00"},{"booking_no":"D-317","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-03-13","to":"2026-03-18"},"sum":85000,"status":"done","paid_with_bonus":0,"changed":"2026-03-18T12:00:00"},{"booking_no":"D-318","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-05-08","to":"2026-05-13"},"sum":85000,"status":"done","paid_with_bonus":0,"changed":"2026-05-13T12:00:00"},{"booking_no":"D-319","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-08-21","to":"2026-08-25"},"sum":58000,"status":"canceled","paid_with_bonus":0,"changed":"2026-09-19T12:00:00"},{"booking_no":"D-320","client":{"fio":"Дмитрий Орлов","tel":"+7 900 0005566","mail":"orlov.d@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-10-09","to":"2026-10-12"},"sum":36000,"status":"paid","paid_with_bonus":0,"changed":"2026-09-10T12:00:00"},{"booking_no":"D-321","client":{"fio":"Анна Кузнецова","tel":"+7 900 0007788","mail":"anna.k@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-10-02","to":"2026-10-04"},"sum":24000,"status":"canceled","paid_with_bonus":600,"changed":"2026-09-19T12:00:00"},{"booking_no":"D-322","client":{"fio":"Сергей Лебедев","tel":"+7 900 0009900","mail":"lebedev.s@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-09-05","to":"2026-09-07"},"sum":19600,"status":"done","paid_with_bonus":0,"changed":"2026-09-07T12:00:00"},{"booking_no":"D-323","client":{"fio":"Артём Седов","tel":"+7 (999) 999-99-99","mail":"sedov.a@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-06-20","to":"2026-06-22"},"sum":19600,"status":"done","paid_with_bonus":0,"changed":"2026-06-22T12:00:00"},{"booking_no":"D-324","client":{"fio":"Ксения Белова","tel":"+7 900 0006677","mail":"kbelova@gmail.com"},"house":"Дом «Берёза»","dates":{"from":"2026-07-10","to":"2026-07-12"},"sum":29000,"status":"done","paid_with_bonus":0,"changed":"2026-07-12T12:00:00"},{"booking_no":"D-325","client":{"fio":"Павел Смирнов","tel":"+7 900 0002211","mail":"p.smirnov@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-09-11","to":"2026-09-14"},"sum":43500,"status":"done","paid_with_bonus":0,"changed":"2026-09-19T12:00:00"},{"booking_no":"D-326","client":{"fio":"Николай Фёдоров","tel":"+7 900 0012420","mail":"guest3@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-08-16","to":"2026-08-20"},"sum":68000,"status":"done","paid_with_bonus":0,"changed":"2026-08-20T12:00:00"},{"booking_no":"D-327","client":{"fio":"Николай Фёдоров","tel":"8 (900) 001-24-20","mail":"guest3@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-05-22","to":"2026-05-23"},"sum":17000,"status":"done","paid_with_bonus":0,"changed":"2026-05-23T12:00:00"},{"booking_no":"D-328","client":{"fio":"Юлия Зайцева","tel":"+7 900 0016460","mail":"guest7@pochta.example"},"house":"Домик с баней","dates":{"from":"2026-06-17","to":"2026-06-19"},"sum":19600,"status":"done","paid_with_bonus":0,"changed":"2026-06-19T12:00:00"},{"booking_no":"D-329","client":{"fio":"Юлия Зайцева","tel":"9000016460","mail":"guest7@pochta.example"},"house":"Дом «Сосна»","dates":{"from":"2026-06-17","to":"2026-06-18"},"sum":12000,"status":"done","paid_with_bonus":0,"changed":"2026-06-18T12:00:00"},{"booking_no":"D-330","client":{"fio":"Михаил Белов","tel":"9000017470","mail":"guest8@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-02-04","to":"2026-02-05"},"sum":17000,"status":"done","paid_with_bonus":0,"changed":"2026-02-05T12:00:00"},{"booking_no":"D-331","client":{"fio":"Игорь Никитин","tel":"9000019490","mail":"guest10@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-03-17","to":"2026-03-19"},"sum":29000,"status":"done","paid_with_bonus":0,"changed":"2026-03-19T12:00:00"},{"booking_no":"D-332","client":{"fio":"Светлана Павлова","tel":"8 (900) 002-05-00","mail":"guest11@pochta.example"},"house":"Дом «Берёза»","dates":{"from":"2026-07-07","to":"2026-07-10"},"sum":43500,"status":"done","paid_with_bonus":0,"changed":"2026-07-10T12:00:00"},{"booking_no":"D-333","client":{"fio":"Роман Григорьев","tel":"+7 900 0021510","mail":"guest12@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-03-01","to":"2026-03-04"},"sum":51000,"status":"done","paid_with_bonus":0,"changed":"2026-03-04T12:00:00"},{"booking_no":"D-334","client":{"fio":"Елена Миронова","tel":"+7 900 000 44 55","mail":"mironova.e@pochta.example"},"house":"Дом у пруда","dates":{"from":"2026-05-15","to":"2026-05-19"},"sum":68000,"status":"done","paid_with_bonus":0,"changed":"2026-09-19T12:00:00"}]}]};
+if (typeof module !== 'undefined' && module.exports) module.exports = FEEDS; else r.FEEDS = FEEDS; })(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+// Клуб гостя: один гость на два направления, брони из двух систем бронирования, бонусы без дублей.
+// Работает в браузере (demo/index.html) и в Node (tests/run.mjs). Без сети и без сервера.
+//
+//   const club = Club.create(rules, { today: '2026-09-20' });
+//   club.importHistory([{ source, records }, …])  // запуск: история обеих систем, по датам
+//   club.importFeed('apartments', records)        // дальше — обычный обмен по одной системе
+//   club.list(), club.cabinet(id), club.toReview(), club.log, club.stats()
+//
+// Правила, на которых всё держится:
+//  • гость узнаётся по телефону или почте в разном написании; две карточки сливаются, только если бронь
+//    связала их и имена совпадают. Разные имена при общем контакте — отдельные карточки и вопрос администратору;
+//  • журнал бонусов только дописывается: каждая бронь даёт ровно положенное сейчас («положено − уже есть»),
+//    поэтому повтор ничего не добавляет, отмена возвращает, доплата доначисляет разницу, а бронь,
+//    переписанная на другого гостя, забирает бонусы у прежнего;
+//  • бонусы — только за состоявшийся выезд, по уровню на дату выезда; процент фиксируется при начислении
+//    и может только вырасти, если позже пришла более ранняя поездка;
+//  • бонусами оплачивается не больше установленной доли брони и не больше баланса;
+//  • устаревшая версия брони (пришла после более новой) не применяется.
+
+(function (root) {
+  'use strict';
+
+  const DEFAULT_RULES = {
+    tiers: [ // уровень по сумме состоявшихся проживаний за 12 месяцев до даты
+      { id: 'base', name: 'Base', from: 0, bonusPct: 3, discountPct: 0 },
+      { id: 'silver', name: 'Silver', from: 50000, bonusPct: 5, discountPct: 3 },
+      { id: 'gold', name: 'Gold', from: 150000, bonusPct: 7, discountPct: 5 },
+      { id: 'premium', name: 'Premium', from: 300000, bonusPct: 10, discountPct: 10 },
+    ],
+    welcomeBonus: 500,        // за первую состоявшуюся поездку в любом направлении
+    maxBonusPayPct: 30,       // бонусами можно оплатить до 30 % брони
+    promos: [{ code: 'ЛЕТО2026', bonus: 1000, from: '2026-06-01', to: '2026-08-31' }], // раз на гостя, за поездку в эти даты
+  };
+
+  // ---- Контакты -----------------------------------------------------------------------------------
+  // Номера-заглушки, которые администраторы вписывают, когда номера нет: по ним никого не склеиваем.
+  const PLACEHOLDER = /^(\d)\1+$|^1234567890$|^0123456789$|^9876543210$/;
+  function phoneParts(raw) {
+    if (!raw) return { phone: null, note: '' };
+    const parts = String(raw).split(/[;,/]|\s+или\s+/i).map((x) => x.trim()).filter(Boolean);
+    if (!parts.length) return { phone: null, note: '' };
+    const first = parts[0].replace(/\s*(доб\.?|ext\.?|вн\.?)\s*\d+\s*$/i, '');
+    const d = first.replace(/\D/g, '');
+    const plus = first.trim().startsWith('+');
+    let phone = null;
+    if (d.length === 11 && (d[0] === '8' || d[0] === '7')) phone = '7' + d.slice(1);
+    else if (d.length === 10 && !plus) phone = '7' + d;
+    else if (d.length === 12 && d.startsWith('375')) phone = d;          // Беларусь без «+»
+    else if (plus && d.length >= 10 && d.length <= 15) phone = d;       // другие страны с «+»
+    if (phone && PLACEHOLDER.test(phone.startsWith('7') ? phone.slice(1) : phone.slice(3))) return { phone: null, note: 'заглушка' };
+    return { phone: phone ? '+' + phone : null, note: parts.length > 1 ? 'два номера' : '' };
+  }
+  const normPhone = (raw) => phoneParts(raw).phone;
+  function normEmail(raw) {
+    if (!raw) return null;
+    const e = String(raw).trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return null;
+    let [local, domain] = e.split('@');
+    if (domain === 'googlemail.com') domain = 'gmail.com';
+    if (domain === 'gmail.com') local = local.split('+')[0].replace(/\./g, '');             // Gmail не различает точки и «+метку»
+    if (/^(yandex\.(ru|com|by|kz)|ya\.ru)$/.test(domain)) { local = local.split('+')[0].replace(/\./g, '-'); domain = 'yandex.ru'; } // и Яндекс
+    return local + '@' + domain;
+  }
+  const fmtPhone = (p) => !p ? '' : p.startsWith('+7') && p.length === 12 ? `${p.slice(0, 2)} ${p.slice(2, 5)} ${p.slice(5, 8)}-${p.slice(8, 10)}-${p.slice(10)}` : p;
+  // Для журнала и администратора — частично: +7 900 ***-11-22, ir***@pochta.example.
+  const maskPhone = (p) => !p ? '' : p.startsWith('+7') && p.length === 12 ? `${p.slice(0, 2)} ${p.slice(2, 5)} ***-${p.slice(8, 10)}-${p.slice(10)}` : p.slice(0, 4) + '***' + p.slice(-4);
+  const maskEmail = (e) => { const i = e.indexOf('@'); return i > 2 ? e.slice(0, 2) + '***' + e.slice(i) : e; };
+
+  // Имена «Олег Васильев», «Васильев Олег» и «Олег» совместимы; «Мария Васильева» с ними — нет.
+  const nameWords = (n) => new Set(String(n || '').toLowerCase().replace(/ё/g, 'е').split(/[^a-zа-я]+/).filter(Boolean));
+  function sameName(a, b) {
+    const A = nameWords(a), B = nameWords(b);
+    if (!A.size || !B.size) return true;
+    const sub = (x, y) => [...x].every((w) => y.has(w));
+    return sub(A, B) || sub(B, A);
+  }
+
+  // ---- Две системы бронирования называют одно и то же по-разному ----------------------------------
+  const ADAPTERS = {
+    apartments: (r) => ({
+      extId: String(r.id), name: r.guest_name, phone: r.phone, email: r.email,
+      checkIn: r.check_in, checkOut: r.check_out, amount: Number(r.total_rub) || 0,
+      bonusUsed: Number(r.bonus_used) || 0, promo: r.promo_code || '', updated: r.updated_at || '',
+      status: { confirmed: 'booked', checked_out: 'completed', cancelled: 'cancelled' }[r.state] || 'booked',
+      object: r.unit,
+    }),
+    village: (r) => ({
+      extId: String(r.booking_no), name: r.client && r.client.fio, phone: r.client && r.client.tel, email: r.client && r.client.mail,
+      checkIn: r.dates && r.dates.from, checkOut: r.dates && r.dates.to, amount: Number(r.sum) || 0,
+      bonusUsed: Number(r.paid_with_bonus) || 0, promo: r.promo || '', updated: r.changed || '',
+      status: { new: 'booked', paid: 'booked', done: 'completed', canceled: 'cancelled' }[r.status] || 'booked',
+      object: r.house,
+    }),
+  };
+  const SOURCE_NAME = { apartments: 'Апартаменты', village: 'Деревня' };
+  const STATUS_NAME = { booked: 'забронирована', completed: 'состоялась', cancelled: 'отменена' };
+
+  const plural = (n, a, b, c) => { const m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 10 || h >= 20) ? b : c; };
+  const bron = (n) => `${n} ${plural(n, 'бронь', 'брони', 'броней')}`;
+
+  function create(rules, opts) {
+    rules = rules || DEFAULT_RULES;
+    const today = (opts && opts.today) || new Date().toISOString().slice(0, 10);
+    let seq = 0;
+    const guests = new Map();          // id → { id, names:Set, phones:Set, emails:Set, merged:[] }
+    const byPhone = new Map(), byEmail = new Map();
+    const bookings = new Map();        // 'apartments:1042' → бронь
+    const ledger = [];                 // { guestId, key, kind, amount, date, note, booking, code, adminOnly }
+    const log = [];
+    const review = new Map();          // вопросы администратору: ключ → { text: строка или функция, open: функция }
+    const alias = new Map();           // id слитой карточки → id основной
+    const seen = new Set();            // одно сообщение в журнале на повод, сколько бы раз бронь ни прислали
+
+    const main = (id) => { while (alias.has(id)) id = alias.get(id); return id; };
+    const note = (key, text) => { if (!seen.has(key)) { seen.add(key); log.push({ kind: 'warn', text }); } };
+    // Вопрос администратору. open() — ещё ли он актуален: решённые уходят из списка сами.
+    const ask = (key, text, open) => { note(key, typeof text === 'function' ? text() : text); if (!review.has(key)) review.set(key, { text, open: open || (() => true) }); };
+    const label = (source, extId) => `${SOURCE_NAME[source]}, бронь №${extId}`;
+    const sum = (rows) => rows.reduce((s, l) => s + l.amount, 0);
+
+    function newGuest(name) {
+      const id = ++seq;
+      const g = { id, names: new Set(name ? [name.trim()] : []), phones: new Set(), emails: new Set(), merged: [], created: seq };
+      guests.set(id, g);
+      return g;
+    }
+    // Контакт записывается в карточку; в поиск — только если он ещё ничей (общий телефон семьи не «переезжает»).
+    function attach(g, phone, email, name) {
+      if (phone) { g.phones.add(phone); if (!byPhone.has(phone)) byPhone.set(phone, g.id); }
+      if (email) { g.emails.add(email); if (!byEmail.has(email)) byEmail.set(email, g.id); }
+      if (name) g.names.add(name.trim());
+    }
+    const isCompatible = (g, name) => !name || !g.names.size || [...g.names].some((n) => sameName(n, name));
+    // Слить две карточки можно, только если у них есть совпадающее полное имя (имя и фамилия).
+    const full = (n) => nameWords(n).size >= 2;
+    const sameFullName = (a, b) => [...a.names].some((x) => full(x) && [...b.names].some((y) => full(y) && sameName(x, y)));
+
+    // ---- Уровни ---------------------------------------------------------------------------------------
+    function spend12(guestId, date) {
+      const to = new Date(date + 'T00:00:00Z'), from = new Date(to); from.setUTCFullYear(from.getUTCFullYear() - 1);
+      let s = 0;
+      for (const b of bookings.values()) {
+        if (b.guestId !== guestId || b.status !== 'completed') continue;
+        const out = new Date(b.checkOut + 'T00:00:00Z');
+        if (out > from && out <= to) s += b.amount;
+      }
+      return s;
+    }
+    function tierFor(s) { let t = rules.tiers[0]; for (const x of rules.tiers) if (s >= x.from) t = x; return t; }
+    // Уровень на дату выезда — по поездкам, закончившимся раньше (выезды в тот же день друг друга не повышают).
+    function tierBefore(b) {
+      const to = new Date(b.checkOut + 'T00:00:00Z'), from = new Date(to); from.setUTCFullYear(from.getUTCFullYear() - 1);
+      let s = 0;
+      for (const o of bookings.values()) {
+        if (o.guestId !== b.guestId || o.status !== 'completed' || o === b) continue;
+        const out = new Date(o.checkOut + 'T00:00:00Z');
+        if (out > from && out < to) s += o.amount;
+      }
+      return tierFor(s);
+    }
+    const balanceOf = (guestId, exceptKey) => sum(ledger.filter((l) => l.guestId === guestId && l.key !== exceptKey));
+
+    // ---- Сколько бонусов бронь должна дать (или забрать) сейчас --------------------------------------
+    function target(b) {
+      const out = [];
+      if (b.status === 'cancelled' || !b.bonusUsed) b.spentFor = null;
+      else {
+        // Списание фиксируется в момент оплаты и пересчитывается, только если изменилась сама бронь.
+        const sig = `${b.bonusUsed}:${b.amount}`;
+        if (b.spentFor !== sig) {
+          const cap = Math.floor(b.amount * rules.maxBonusPayPct / 100);
+          const have = Math.max(0, balanceOf(b.guestId, b.key));
+          const was = b.spentFor ? b.spent : 0;
+          // Уже списанное не «прощается»: правка суммы может только урезать списание до нового потолка,
+          // а добавить к нему можно лишь то, что есть на счёте сверх уже списанного.
+          const extra = Math.max(0, Math.min(b.bonusUsed - was, have - was));
+          b.spent = Math.min(b.bonusUsed, cap, was + extra);
+          b.spentFor = sig;
+          b.spendInfo = { cap, have: b.spendInfo ? b.spendInfo.have : have, asked: b.bonusUsed };
+          if (b.spent < b.bonusUsed) {
+            const bb = b;
+            ask(b.key + ':spend:' + sig, () => `${bb.label}: оплачено бонусами ${bb.spendInfo.asked}, а можно было не больше ${Math.min(bb.spendInfo.cap, bb.spendInfo.have)} (${rules.maxBonusPayPct} % брони — ${bb.spendInfo.cap}, на счёте было ${bb.spendInfo.have}). Списано ${bb.spent}, разницу нужно выяснить с гостем.`,
+              () => { const x = bookings.get(bb.key); return !!x && x.status !== 'cancelled' && x.spentFor === sig && x.spent < x.bonusUsed; });
+          }
+        }
+        if (b.spent) out.push({ kind: 'spend', amount: -b.spent, note: 'оплата бонусами' });
+      }
+      if (b.status === 'completed') {
+        if (!b.baseRate) { const t = tierBefore(b); b.baseRate = { pct: t.bonusPct, name: t.name }; b.rate = b.baseRate; }
+        const paid = b.spentFor ? b.spent : 0;
+        out.push({ kind: 'accrual', amount: Math.floor(Math.max(0, b.amount - paid) * b.rate.pct / 100), note: `${b.rate.pct} % по уровню ${b.rate.name}` });
+      }
+      return out;
+    }
+
+    // Журнал только дописывается: добавляем разницу между «положено» и «уже есть» у этого гостя по этой брони.
+    function settle(b, date, why) {
+      const want = new Map(target(b).map((x) => [x.kind, x]));
+      for (const kind of ['spend', 'accrual']) {
+        const has = sum(ledger.filter((l) => l.key === b.key && l.guestId === b.guestId && l.kind === kind));
+        const w = want.get(kind);
+        const diff = (w ? w.amount : 0) - has;
+        if (!diff) continue;
+        const text = why || (!w ? (b.status === 'cancelled' ? 'поездка отменена' : 'пересчёт') : has === 0 ? w.note : `изменение брони: ${w.note}`);
+        ledger.push({ guestId: b.guestId, key: b.key, kind, amount: diff, date, note: text, booking: b.label });
+      }
+    }
+
+    // Бронь переписали на другого человека: всё, что она дала прежнему гостю, у него забираем.
+    function unsettle(b, oldGuestId, date) {
+      for (const kind of ['spend', 'accrual']) {
+        const has = sum(ledger.filter((l) => l.key === b.key && l.guestId === oldGuestId && l.kind === kind));
+        if (has) ledger.push({ guestId: oldGuestId, key: b.key, kind, amount: -has, date, note: 'бронь переписана на другого гостя', booking: b.label });
+      }
+    }
+
+    // Приветственный бонус и промокоды считаются по гостю целиком — «положено − есть»:
+    // так они не задваиваются при слиянии карточек и не теряются, если одну из поездок отменили.
+    function welcome(g, date, why, adminOnly) {
+      if (!g) return;
+      const done = [...bookings.values()].some((b) => b.guestId === g.id && b.status === 'completed');
+      const has = sum(ledger.filter((l) => l.guestId === g.id && l.kind === 'welcome'));
+      const diff = (done && rules.welcomeBonus ? rules.welcomeBonus : 0) - has;
+      if (diff) ledger.push({ guestId: g.id, key: `welcome:${g.id}`, kind: 'welcome', amount: diff, date, adminOnly: !!adminOnly,
+        note: why || (diff > 0 ? 'приветственный бонус за первую поездку' : 'поездок не осталось — приветственный бонус снят') });
+    }
+    const promoOk = (p, b) => b.status === 'completed' && b.promo && String(b.promo).trim().toLowerCase() === p.code.toLowerCase() && b.checkIn >= p.from && b.checkIn <= p.to;
+    function promos(g, date, why, adminOnly) {
+      if (!g) return;
+      for (const p of rules.promos || []) {
+        const uses = [...bookings.values()].filter((b) => b.guestId === g.id && promoOk(p, b)).sort((a, b) => a.checkIn.localeCompare(b.checkIn));
+        if (uses.length > 1) note(`promo2:${g.id}:${p.code}:${uses.length}`, `${uses[1].label}: промокод ${p.code} гость уже использовал — начислен один раз.`);
+        const has = sum(ledger.filter((l) => l.guestId === g.id && l.kind === 'promo' && l.code === p.code));
+        const diff = (uses.length ? p.bonus : 0) - has;
+        if (diff) ledger.push({ guestId: g.id, key: `promo:${g.id}:${p.code}`, kind: 'promo', code: p.code, amount: diff, date, adminOnly: !!adminOnly,
+          note: why || (diff > 0 ? `промокод ${p.code}` : `поездки с промокодом ${p.code} не осталось`), booking: diff > 0 ? uses[0].label : undefined });
+      }
+    }
+    function checkPromoCode(b) {
+      if (!b.promo || b.status !== 'completed') return;
+      const p = (rules.promos || []).find((x) => x.code.toLowerCase() === String(b.promo).trim().toLowerCase());
+      if (!p) note(b.key + ':promo', `${b.label}: промокод «${b.promo}» не найден.`);
+      else if (b.checkIn < p.from || b.checkIn > p.to) note(b.key + ':promo', `${b.label}: промокод ${p.code} действует с ${p.from} по ${p.to}, а поездка ${b.checkIn} — не начислен.`);
+    }
+
+    // Процент за поездку фиксируется при начислении. Если позже пришла более ранняя поездка и уровень на ту дату
+    // выше — доначисляем; если её потом отменили — процент возвращается к исходному, не ниже.
+    function recalc(g, date, why) {
+      if (!g) return;
+      const mine = [...bookings.values()].filter((b) => b.guestId === g.id).sort((a, b) => (a.checkOut || '').localeCompare(b.checkOut || ''));
+      for (const b of mine) settle(b, date);
+      for (const b of mine) {
+        if (b.status !== 'completed' || !b.baseRate) continue;
+        const t = tierBefore(b);
+        const pct = Math.max(b.baseRate.pct, t.bonusPct);
+        if (pct !== b.rate.pct) {
+          const up = pct > b.rate.pct;
+          b.rate = pct === b.baseRate.pct ? b.baseRate : { pct, name: t.name };
+          settle(b, date, why || (up ? `доначисление до ${pct} % (${b.rate.name}): клуб позже узнал о более ранней поездке` : `процент вернулся к ${pct} %: более ранняя поездка отменена`));
+        }
+      }
+      welcome(g, date);
+      promos(g, date);
+    }
+
+    // Слияние: младшая карточка переезжает в старшую целиком — контакты, брони, журнал бонусов.
+    function merge(a, b, why) {
+      const [keep, gone] = a.created < b.created ? [a, b] : [b, a];
+      for (const p of gone.phones) { keep.phones.add(p); if (main(byPhone.get(p)) === gone.id) byPhone.set(p, keep.id); }
+      for (const e of gone.emails) { keep.emails.add(e); if (main(byEmail.get(e)) === gone.id) byEmail.set(e, keep.id); }
+      for (const n of gone.names) keep.names.add(n);
+      for (const bk of bookings.values()) if (bk.guestId === gone.id) bk.guestId = keep.id;
+      for (const l of ledger) if (l.guestId === gone.id) l.guestId = keep.id;
+      keep.merged.push({ from: gone.id, reason: why });
+      guests.delete(gone.id);
+      alias.set(gone.id, keep.id);
+      welcome(keep, today, 'карточки объединены: приветственный бонус положен один раз', true);
+      promos(keep, today, 'карточки объединены: промокод положен один раз', true);
+      recalc(keep, today); // уровень по общей истории: процент за поездки может вырасти
+      log.push({ kind: 'merge', text: `${why} Карточки №${gone.id} и №${keep.id} объединены в №${keep.id}, история и бонусы сохранены.` });
+      return keep;
+    }
+
+    function findOrCreate(rec) {
+      const pp = phoneParts(rec.phone), phone = pp.phone, email = normEmail(rec.email);
+      const lb = label(rec.source, rec.extId), bk = `${rec.source}:${rec.extId}`;
+      if (rec.phone && pp.note === 'заглушка') note(bk + ':ph', `${lb}: телефон «${rec.phone}» похож на заглушку — по нему никого не ищем.`);
+      else if (rec.phone && !phone) ask(bk + ':ph', `${lb}: телефон «${rec.phone}» не удалось разобрать — гость узнаётся только по почте.`);
+      if (pp.note === 'два номера') note(bk + ':ph2', `${lb}: в поле телефона два номера — взят первый.`);
+      if (!phone && !email) {
+        ask(bk + ':none', `${lb}: нет ни телефона, ни почты — гостя не узнать, бронь ждёт ручной проверки.`, () => !bookings.has(bk));
+        return null;
+      }
+      const byP = phone && byPhone.has(phone) ? guests.get(main(byPhone.get(phone))) : null;
+      const byE = email && byEmail.has(email) ? guests.get(main(byEmail.get(email))) : null;
+      const okP = byP && isCompatible(byP, rec.name) ? byP : null;
+      const okE = byE && isCompatible(byE, rec.name) ? byE : null;
+      for (const [c, what] of [[byP && !okP ? byP : null, 'телефон'], [byE && !okE ? byE : null, 'почта']]) {
+        if (c) { const cid = c.id; ask(`shared:${cid}:${[...nameWords(rec.name)].sort().join(' ')}`, `${lb}: ${what} как у карточки №${cid} (${[...c.names][0]}), а в брони — «${rec.name}». Не объединяем: семья или ошибка, решает администратор.`, () => guests.has(cid)); }
+      }
+      let g;
+      if (okP && okE && okP.id !== okE.id) {
+        // Сливаем, если у карточек есть общее полное имя — или бронь называет полное имя, которое совпадает
+        // с полным именем одной карточки и не противоречит другой («Олег» + «Олег Васильев» в брони «Олег Васильев»).
+        const bridge = full(rec.name) && [okP, okE].some((c) => [...c.names].some((n) => full(n) && sameName(n, rec.name)));
+        if (sameFullName(okP, okE) || bridge) g = merge(okP, okE, `${lb}: телефон карточки №${okP.id} и почта карточки №${okE.id}, имя и фамилия совпадают — это один гость.`);
+        else {
+          const [x, y] = okP.id < okE.id ? [okP, okE] : [okE, okP];
+          ask(`link:${x.id}:${y.id}`, `${lb}: в брони телефон карточки №${okP.id} (${[...okP.names][0]}) и почта карточки №${okE.id} (${[...okE.names][0]}). Полного совпадения имён нет — объединять ли, решает администратор. Бронь пока у №${okP.id}.`,
+            () => guests.has(x.id) && guests.has(y.id));
+          g = okP;
+        }
+      } else g = okP || okE;
+      const isNew = !g;
+      if (!g) g = newGuest(rec.name);
+      attach(g, phone, email, rec.name);
+      return { g, isNew };
+    }
+
+    function processRecord(source, raw, stat) {
+      const rec = { ...ADAPTERS[source](raw), source };
+      const key = `${source}:${rec.extId}`;
+      const lb = label(source, rec.extId);
+      const prev = bookings.get(key);
+      const t = rec.updated ? Date.parse(rec.updated) : NaN;
+      if (prev) {
+        const pt = prev.updatedMs;
+        if (!isNaN(t) && pt != null && t < pt) {
+          stat.stale++;
+          note(`${key}:stale:${rec.updated}`, `${lb}: пришла версия от ${rec.updated}, а у клуба уже новее — пропущена.`);
+          return;
+        }
+        // Откат «состоялась → забронирована» без более свежей отметки времени не применяем — это вопрос человеку.
+        const rollback = prev.status === 'completed' && rec.status === 'booked';
+        if (rollback && (isNaN(t) || pt == null || t === pt)) {
+          stat.stale++;
+          ask(`${key}:rollback`, `${lb}: пришла версия «забронирована» после «состоялась», без более свежего времени изменения. Не применяем, проверьте в системе бронирования.`,
+            () => { const x = bookings.get(key); return !!x && x.status === 'completed'; });
+          return;
+        }
+      }
+      let g, isNew = false;
+      const prevG = prev ? guests.get(main(prev.guestId)) : null;
+      const ph = normPhone(rec.phone), em = normEmail(rec.email);
+      const freeOrMine = (idx, v) => !v || !idx.has(v) || main(idx.get(v)) === prevG.id;
+      if (prev && !ph && !em) g = prevG; // бронь уже известна: отмена может прийти без контактов
+      else if (prev && isCompatible(prevG, rec.name) && freeOrMine(byPhone, ph) && freeOrMine(byEmail, em)) {
+        // В известной брони исправили или добавили контакт, который ни за кем не числится, имя то же — это тот же гость.
+        if ((ph && !prevG.phones.has(ph)) || (em && !prevG.emails.has(em))) log.push({ kind: 'change', text: `${lb}: новый контакт гостя — добавлен в карточку №${prevG.id}.` });
+        attach(prevG, ph, em, rec.name);
+        g = prevG;
+      } else {
+        const found = findOrCreate(rec);
+        if (!found) { stat.skipped++; return; }
+        ({ g, isNew } = found);
+      }
+      if (isNew) stat.newGuests++;
+      const b = { key, source, extId: rec.extId, guestId: g.id, checkIn: rec.checkIn, checkOut: rec.checkOut, amount: rec.amount,
+        bonusUsed: rec.bonusUsed, promo: rec.promo, status: rec.status, object: rec.object, label: lb,
+        updatedMs: isNaN(t) ? (prev ? prev.updatedMs : null) : Math.max(t, prev && prev.updatedMs != null ? prev.updatedMs : t) };
+      // При загрузке истории строки датируются днём выезда; в обычном обмене — днём, когда клуб узнал о брони.
+      let when = stat.history && rec.status === 'completed' ? rec.checkOut : today;
+      let oldGuest = null;
+      if (!prev) { stat.newBookings++; bookings.set(key, b); }
+      else {
+        const same = ['checkIn', 'checkOut', 'amount', 'bonusUsed', 'promo', 'status'].every((k) => prev[k] === b[k]) && main(prev.guestId) === g.id;
+        if (same) { stat.same++; prev.updatedMs = b.updatedMs; return; }
+        stat.changed++;
+        when = today;
+        if (prev.status !== b.status) log.push({ kind: 'change', text: `${lb}: ${STATUS_NAME[prev.status]} → ${STATUS_NAME[b.status]}.` });
+        if (prev.amount !== b.amount) log.push({ kind: 'change', text: `${lb}: сумма ${prev.amount.toLocaleString('ru-RU')} ₽ → ${b.amount.toLocaleString('ru-RU')} ₽.` });
+        if (main(prev.guestId) !== g.id) {
+          oldGuest = main(prev.guestId);
+          log.push({ kind: 'change', text: `${lb}: бронь переписана с карточки №${oldGuest} на №${g.id} — бонусы за неё переходят.` });
+          unsettle(prev, oldGuest, today);
+        }
+        const keep = oldGuest ? {} : { baseRate: prev.baseRate, rate: prev.rate, spent: prev.spent, spentFor: prev.spentFor, spendInfo: prev.spendInfo };
+        Object.assign(prev, b, { baseRate: null, rate: null, spent: 0, spentFor: null, spendInfo: null }, keep);
+      }
+      const bk = bookings.get(key);
+      checkPromoCode(bk);
+      settle(bk, when);
+      recalc(guests.get(main(g.id)), when);
+      if (oldGuest) recalc(guests.get(oldGuest), today);
+    }
+
+    const newStat = (source, n) => ({ source, history: source === 'history', received: n, newGuests: 0, newBookings: 0, changed: 0, same: 0, stale: 0, ledgerRows: 0, skipped: 0 });
+
+    // Текущий обмен: одна система прислала свои брони (новые, изменённые или те же самые).
+    function importFeed(source, records) {
+      const stat = newStat(source, records.length);
+      const before = ledger.length;
+      for (const raw of records) processRecord(source, raw, stat);
+      stat.ledgerRows = ledger.length - before;
+      log.push({ kind: 'import', text: `${SOURCE_NAME[source]}: пришло ${bron(stat.received)} — новых гостей ${stat.newGuests}, новых броней ${stat.newBookings}, изменилось ${stat.changed}, без изменений ${stat.same}` +
+        (stat.stale ? `, не применено ${stat.stale}` : '') + `; строк в журнале бонусов +${stat.ledgerRows}.` });
+      return stat;
+    }
+
+    // Запуск клуба: история обеих систем вместе, по датам — как если бы клуб работал всё это время.
+    function importHistory(parts) {
+      const all = [];
+      for (const p of parts) for (const raw of p.records) {
+        const r = ADAPTERS[p.source](raw);
+        all.push({ source: p.source, raw, when: r.status === 'completed' ? r.checkOut : r.checkIn || '' });
+      }
+      all.sort((x, y) => (x.when || '').localeCompare(y.when || ''));
+      const stat = newStat('history', all.length);
+      const before = ledger.length;
+      for (const x of all) processRecord(x.source, x.raw, stat);
+      stat.ledgerRows = ledger.length - before;
+      log.push({ kind: 'import', text: `Запуск: ${bron(stat.received)} обеих систем по датам. Создано карточек: ${stat.newGuests}` +
+        (stat.skipped ? `; без контактов отложено: ${bron(stat.skipped)}` : '') + `; строк в журнале бонусов: ${stat.ledgerRows}.` });
+      return stat;
+    }
+
+    // ---- Кабинет гостя и взгляд администратора --------------------------------------------------------
+    function cabinet(id) {
+      const g = guests.get(main(id));
+      if (!g) return null;
+      const s12 = spend12(g.id, today);
+      const t = tierFor(s12);
+      const next = rules.tiers.find((x) => x.from > s12) || null;
+      const mine = [...bookings.values()].filter((b) => b.guestId === g.id).sort((a, b) => (b.checkIn || '').localeCompare(a.checkIn || ''));
+      const rows = ledger.filter((l) => l.guestId === g.id);
+      return {
+        id: g.id, name: [...g.names][0] || 'Гость', names: [...g.names], phones: [...g.phones], emails: [...g.emails],
+        phonesMasked: [...g.phones].map(maskPhone), emailsMasked: [...g.emails].map(maskEmail),
+        merged: g.merged, tier: t, spend12: s12, next, toNext: next ? next.from - s12 : 0,
+        balance: sum(rows),
+        bookings: mine.map((b) => ({ ...b, sourceName: SOURCE_NAME[b.source] })),
+        ledger: rows.map((l, i) => ({ ...l, i })).sort((a, b) => b.date.localeCompare(a.date) || b.i - a.i),
+        maxBonusPayPct: rules.maxBonusPayPct,
+      };
+    }
+    // Карточка, у которой не осталось броней (например, бронь переписали обратно), в списке гостей не показывается.
+    const list = () => [...guests.values()].map((g) => cabinet(g.id)).filter((c) => c.bookings.length).sort((a, b) => b.spend12 - a.spend12);
+
+    function toReview() {
+      const out = [...review.values()].filter((r) => r.open()).map((r) => (typeof r.text === 'function' ? r.text() : r.text));
+      for (const c of list()) if (c.balance < 0) out.push(`Карточка №${c.id} (${c.name}): на счёте ${c.balance} — бонусы потрачены, а поездку потом отменили. Долг гасится следующими начислениями, либо его можно списать вручную.`);
+      return out;
+    }
+
+    return {
+      importFeed, importHistory, cabinet, list, toReview, log, today, rules,
+      stats: () => ({ guests: list().length, bookings: bookings.size, ledgerRows: ledger.length,
+        earned: sum(ledger.filter((l) => l.kind !== 'spend')), balance: sum(ledger) }),
+      _ledger: ledger, _bookings: bookings,
+    };
+  }
+
+  const api = { create, DEFAULT_RULES, normPhone, normEmail, fmtPhone, maskPhone, maskEmail, sameName, plural, SOURCE_NAME, STATUS_NAME };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.Club = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+// Проверки правил клуба. Один код для страницы (кнопка) и для tests/run.mjs.
+// Сюжеты из выгрузок «Соснового берега» и несколько коротких сюжетов прямо здесь (одна-три брони).
+(function (root) {
+  'use strict';
+
+  function runChecks(Club, FEEDS) {
+    const step = (id) => FEEDS.steps.find((x) => x.id === id);
+    const fresh = () => { const c = Club.create(null, { today: FEEDS.today }); c.importHistory([step('a1'), step('v1')]); return c; };
+    const blank = () => Club.create(null, { today: FEEDS.today });
+    const guest = (c, name) => c.list().find((g) => g.names.includes(name));
+    const n = (x) => Math.round(x).toLocaleString('ru-RU');
+    // Короткая бронь Апартаментов для маленьких сюжетов.
+    const A = (id, phone, email, name, sum, state, extra) => Object.assign({ id, guest_name: name, phone, email, unit: 'Студия у парка',
+      check_in: '2026-08-01', check_out: '2026-08-05', total_rub: sum || 40000, state: state || 'checked_out', bonus_used: 0 }, extra || {});
+    const out = [];
+    const check = (name, fn) => { try { const r = fn(); out.push({ name, ok: !!r.ok, detail: r.detail }); } catch (e) { out.push({ name, ok: false, detail: 'ошибка: ' + e.message }); } };
+
+    check('Один гость — одна карточка, как бы ни записали телефон и почту', () => {
+      const c = fresh();
+      const all = c.list().filter((g) => g.names.includes('Ирина Соколова'));
+      const k = c.list().filter((g) => g.names.includes('Ксения Белова'));
+      return { ok: all.length === 1 && all[0].bookings.length === 3 && k.length === 1 && k[0].bookings.length === 2,
+        detail: '«8 (900) 000-11-22», «+7 900 0001122» и «9000001122» — одна Ирина с тремя поездками; «K.Belova+booking@gmail.com» и «kbelova@gmail.com» — одна Ксения' };
+    });
+
+    check('Та же выгрузка ещё раз — ни лишнего бонуса, ни лишней брони', () => {
+      const c = fresh();
+      const before = c.stats();
+      c.importFeed('apartments', step('a1').records); c.importFeed('village', step('v1').records);
+      const after = c.stats();
+      return { ok: before.ledgerRows === after.ledgerRows && before.bookings === after.bookings && before.balance === after.balance,
+        detail: `броней ${before.bookings} → ${after.bookings}, строк в журнале бонусов ${before.ledgerRows} → ${after.ledgerRows}, бонусов у всех гостей ${n(before.balance)} → ${n(after.balance)}` };
+    });
+
+    check('Бронь связала две карточки одного человека — они слились, приветственный бонус один', () => {
+      const c = fresh();
+      const g = guest(c, 'Васильев Олег');
+      const welcomes = g.ledger.filter((l) => l.kind === 'welcome').reduce((s, l) => s + l.amount, 0);
+      return { ok: g && g.names.includes('Олег Васильев') && g.bookings.length === 3 && welcomes === 500,
+        detail: `телефон из Апартаментов и почта из Деревни, имя одно → карточка №${g.id}, ${g.bookings.length} поездки, приветственный бонус ${n(welcomes)}` };
+    });
+
+    check('Общий телефон, другое имя — отдельная карточка и вопрос администратору', () => {
+      const c = fresh();
+      const m = guest(c, 'Мария Васильева'), o = guest(c, 'Олег Васильев');
+      return { ok: m && o && m.id !== o.id && c.toReview().some((t) => /Мария Васильева/.test(t)),
+        detail: `Мария бронировала с телефоном мужа: у неё своя карточка №${m.id}, у Олега — №${o.id}; пара в списке «проверить»` };
+    });
+
+    check('Номер-заглушка никого не склеивает', () => {
+      const c = fresh();
+      const v = guest(c, 'Вера Громова'), a = guest(c, 'Артём Седов');
+      return { ok: v && a && v.id !== a.id && v.phones.length === 0,
+        detail: '«+7 (999) 999-99-99» у двух разных гостей — две карточки, по заглушке поиск не идёт' };
+    });
+
+    check('Бонусы — только за состоявшийся выезд', () => {
+      const c = fresh();
+      const g = guest(c, 'Дмитрий Орлов');
+      const future = g.bookings.find((b) => b.status === 'booked');
+      const got = c._ledger.filter((l) => l.key === future.key).length;
+      return { ok: future && got === 0, detail: `${future.label}: оплачена, поездка ${future.checkIn} ещё впереди — бонусов 0` };
+    });
+
+    check('Отменили состоявшуюся поездку — бонусы вернулись, уровень пересчитан', () => {
+      const c = fresh();
+      const was = guest(c, 'Дмитрий Орлов');
+      c.importFeed('village', step('v2').records);
+      const now = guest(c, 'Дмитрий Орлов');
+      const back = now.ledger.find((l) => l.note === 'поездка отменена');
+      return { ok: !!back && back.amount < 0 && was.tier.id === 'premium' && now.tier.id === 'gold',
+        detail: `снято ${n(-back.amount)} бонусов; уровень ${was.tier.name} → ${now.tier.name}: за 12 месяцев стало ${n(now.spend12)} ₽` };
+    });
+
+    check('Доплата к брони — доначислена только разница, по тому же проценту', () => {
+      const c = fresh();
+      c.importFeed('apartments', step('a2').records);
+      const g = guest(c, 'Ирина Соколова');
+      const add = g.ledger.find((l) => /^изменение брони/.test(l.note));
+      return { ok: !!add && add.amount === Math.floor(3000 * 5 / 100),
+        detail: add ? `+3 000 ₽ за поздний выезд → +${add.amount} бонусов (5 %, как при первом начислении)` : 'доначисления нет' };
+    });
+
+    check('Поездка, о которой клуб узнал позже, поднимает процент следующих — в пользу гостя', () => {
+      const c = fresh();
+      const before = guest(c, 'Елена Миронова').balance;
+      c.importFeed('village', step('v2').records);
+      const g = guest(c, 'Елена Миронова');
+      const up = g.ledger.find((l) => /^доначисление до/.test(l.note));
+      const aug = g.bookings.find((b) => b.source === 'apartments' && b.checkIn.startsWith('2026-08'));
+      return { ok: !!up && !!aug && up.amount === Math.floor(aug.amount * 5 / 100) - Math.floor(aug.amount * 3 / 100),
+        detail: up ? `майская поездка пришла в сентябре → за август доначислено ${n(up.amount)} (было 3 %, стало 5 %); баланс ${n(before)} → ${n(g.balance)}` : 'доначисления нет' };
+    });
+
+    check('Промокод — один раз на гостя', () => {
+      const c = fresh();
+      const g = guest(c, 'Ирина Соколова');
+      const promos = g.ledger.filter((l) => l.kind === 'promo').reduce((s, l) => s + l.amount, 0);
+      return { ok: promos === 1000 && c.log.some((l) => /уже использовал/.test(l.text)),
+        detail: `ЛЕТО2026 указан в двух поездках → начислено ${n(promos)} один раз, про второй — запись в журнале` };
+    });
+
+    check('Бонусами — не больше баланса и не больше 30 % брони', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 20000), A(2, '89001112233', 'a@pochta.example', 'Аня', 10000, 'confirmed', { check_in: '2026-10-01', check_out: '2026-10-03', bonus_used: 9000 })]);
+      const spentA = -guest(c, 'Аня').ledger.filter((l) => l.kind === 'spend').reduce((s, l) => s + l.amount, 0);
+      const d = blank();
+      d.importFeed('apartments', [A(1, '89004445566', 'b@pochta.example', 'Боря', 200000), A(2, '89004445566', 'b@pochta.example', 'Боря', 10000, 'confirmed', { check_in: '2026-10-01', check_out: '2026-10-03', bonus_used: 5000 })]);
+      const spentB = -guest(d, 'Боря').ledger.filter((l) => l.kind === 'spend').reduce((s, l) => s + l.amount, 0);
+      return { ok: spentA === 1100 && spentB === 3000 && c.toReview().some((t) => /можно было не больше/.test(t)),
+        detail: `на счёте 1 100, просят 9 000 → списано ${n(spentA)}; на счёте 6 500, просят 5 000 за бронь 10 000 ₽ → списано ${n(spentB)} (30 %); оба случая — на проверку` };
+    });
+
+    check('Списание фиксируется при оплате: долг не исчезает, новые бонусы не забираются', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'checked_out', { updated_at: '2026-08-05T12:00' }),
+        A(2, '89001112233', 'a@pochta.example', 'Аня', 10000, 'confirmed', { check_in: '2026-09-01', check_out: '2026-09-03', bonus_used: 1700, updated_at: '2026-08-10T12:00' })]);
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'cancelled', { updated_at: '2026-08-20T12:00' })]);
+      const debt = guest(c, 'Аня').balance;
+      c.importFeed('apartments', [A(2, '89001112233', 'a@pochta.example', 'Аня', 10000, 'checked_out', { check_in: '2026-09-01', check_out: '2026-09-03', bonus_used: 1700, updated_at: '2026-09-03T12:00' })]);
+      const g = guest(c, 'Аня');
+      const spent = -g.ledger.filter((l) => l.kind === 'spend').reduce((s, l) => s + l.amount, 0);
+      return { ok: debt === -1700 && spent === 1700 && g.balance === -1700 + 500 + Math.floor(8300 * 3 / 100),
+        detail: `потратила 1 700, поездку, за которую их дали, отменили → долг ${n(debt)}; следующая поездка состоялась → списание осталось ${n(spent)}, баланс ${n(g.balance)}` };
+    });
+
+    check('Отменили бронь, оплаченную бонусами, — бонусы вернулись гостю', () => {
+      const c = fresh();
+      const before = guest(c, 'Анна Кузнецова').balance;
+      c.importFeed('village', step('v2').records);
+      const after = guest(c, 'Анна Кузнецова').balance;
+      return { ok: after - before === 600, detail: `баланс ${n(before)} → ${n(after)}: 600 бонусов, которыми оплатили часть брони, снова на счёте` };
+    });
+
+    check('Бронь переписали на другого гостя — бонусы ушли вместе с ней', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'checked_out', { updated_at: '2026-08-05T12:00' })]);
+      const aId = guest(c, 'Аня').id;
+      c.importFeed('apartments', [A(1, '89004445566', 'b@pochta.example', 'Боря', 40000, 'checked_out', { updated_at: '2026-08-06T12:00' })]);
+      const a = c.cabinet(aId), b = guest(c, 'Боря');
+      return { ok: a.balance === 0 && b.balance === 500 + 1200 && b.bookings.length === 1 && a.bookings.length === 0,
+        detail: `у Ани было 1 700, после исправления брони — ${n(a.balance)}; у Бори ${n(b.balance)} и бронь` };
+    });
+
+    check('Устаревшая версия брони не отменяет новую', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'checked_out', { updated_at: '2026-08-05T12:00' })]);
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'confirmed', { updated_at: '2026-07-01T12:00' })]);
+      const a = guest(c, 'Аня');
+      return { ok: a.balance === 1700 && a.bookings[0].status === 'completed',
+        detail: 'после «выехала» пришла старая версия «подтверждено» — пропущена, бонусы на месте' };
+    });
+
+    check('Время изменения сравнивается как время, с часовым поясом', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'checked_out', { updated_at: '2026-08-06T12:00:00+03:00' })]);
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'cancelled', { updated_at: '2026-08-06T10:00:00Z' })]);
+      const aId = c._bookings.get('apartments:1').guestId;
+      return { ok: c._bookings.get('apartments:1').status === 'cancelled' && c.cabinet(aId).balance === 0,
+        detail: 'отмена с временем 10:00 по Гринвичу новее, чем «выехала» в 12:00 по Москве (09:00 по Гринвичу), — применена' };
+    });
+
+    check('Отмена без телефона и почты применяется к уже известной брони', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '89001112233', 'a@pochta.example', 'Аня', 40000, 'checked_out', { updated_at: '2026-08-05T12:00' })]);
+      c.importFeed('apartments', [A(1, '', '', 'Аня', 40000, 'cancelled', { updated_at: '2026-08-07T12:00' })]);
+      const aId = c._bookings.get('apartments:1').guestId;
+      return { ok: c._bookings.get('apartments:1').status === 'cancelled' && c.cabinet(aId).balance === 0 && !c.toReview().some((t) => /нет ни телефона/.test(t)),
+        detail: 'система стёрла контакты при отмене — клуб узнал бронь по номеру и вернул бонусы' };
+    });
+
+    check('Имя из одного слова не склеивает двух разных людей', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '89001112233', '', 'Олег Васильев', 30000), A(2, '', 'oleg.p@pochta.example', 'Олег Петров', 30000),
+        A(3, '89001112233', 'oleg.p@pochta.example', 'Олег', 30000, 'checked_out', { check_in: '2026-08-10', check_out: '2026-08-12' })]);
+      const v = guest(c, 'Олег Васильев'), p = guest(c, 'Олег Петров');
+      return { ok: v && p && v.id !== p.id && c.toReview().some((t) => /Полного совпадения имён нет/.test(t)),
+        detail: 'бронь «Олег» с телефоном Васильева и почтой Петрова → карточки не слиты, вопрос администратору' };
+    });
+
+    check('После слияния карточек промокод начислен один раз', () => {
+      const c = blank();
+      const P = { check_in: '2026-07-01', check_out: '2026-07-03', promo_code: 'ЛЕТО2026' };
+      c.importFeed('apartments', [A(1, '89001112233', '', 'Олег Васильев', 30000, 'checked_out', P), A(2, '', 'o.v@pochta.example', 'Васильев Олег', 30000, 'checked_out', { ...P, check_in: '2026-07-10', check_out: '2026-07-12' }),
+        A(3, '89001112233', 'o.v@pochta.example', 'Олег Васильев', 30000, 'checked_out', { check_in: '2026-08-10', check_out: '2026-08-12' })]);
+      const g = guest(c, 'Олег Васильев');
+      const promo = g.ledger.filter((l) => l.kind === 'promo').reduce((s, l) => s + l.amount, 0);
+      const welcome = g.ledger.filter((l) => l.kind === 'welcome').reduce((s, l) => s + l.amount, 0);
+      return { ok: g.names.includes('Васильев Олег') && promo === 1000 && welcome === 500,
+        detail: `у каждой карточки был свой ЛЕТО2026 и свой приветственный → после слияния промокод ${n(promo)}, приветственный ${n(welcome)}` };
+    });
+
+    check('Правка суммы брони не «прощает» потраченные бонусы', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '+79000000001', '', 'Иван Петров', 40000, 'checked_out', { check_in: '2026-06-01', check_out: '2026-06-05', updated_at: '2026-06-05T12:00' })]);
+      c.importFeed('apartments', [A(2, '+79000000001', '', 'Иван Петров', 40000, 'confirmed', { check_in: '2026-10-01', check_out: '2026-10-05', bonus_used: 1500, updated_at: '2026-06-10T12:00' })]);
+      c.importFeed('apartments', [A(1, '+79000000001', '', 'Иван Петров', 40000, 'cancelled', { check_in: '2026-06-01', check_out: '2026-06-05', updated_at: '2026-07-01T12:00' })]);
+      const debt = guest(c, 'Иван Петров').balance;
+      c.importFeed('apartments', [A(2, '+79000000001', '', 'Иван Петров', 42000, 'confirmed', { check_in: '2026-10-01', check_out: '2026-10-05', bonus_used: 1500, updated_at: '2026-07-02T12:00' })]);
+      const after = guest(c, 'Иван Петров').balance;
+      return { ok: debt === -1500 && after === -1500, detail: `потратил 1 500, поездку, за которую их дали, отменили → ${n(debt)}; потом изменили сумму другой брони → по-прежнему ${n(after)}` };
+    });
+
+    check('Повтор выгрузки после слияния ничего не меняет', () => {
+      const c = blank();
+      const feed = [A(1, '+79000000001', '', 'Олег', 100000, 'checked_out', { check_in: '2026-05-01', check_out: '2026-05-05' }),
+        A(2, '', 'oleg@pochta.example', 'Олег Васильев', 60000, 'checked_out', { check_in: '2026-06-01', check_out: '2026-06-05' }),
+        A(3, '+79000000001', 'oleg@pochta.example', 'Олег Васильев', 40000, 'checked_out', { check_in: '2026-08-01', check_out: '2026-08-05' })];
+      c.importFeed('apartments', feed);
+      const rows = c.stats().ledgerRows, cards = c.list().length;
+      c.importFeed('apartments', feed);
+      return { ok: cards === 1 && c.stats().ledgerRows === rows, detail: `«Олег» по телефону и «Олег Васильев» по почте слиты сразу, бронью с полным именем; повтор: строк в журнале ${rows} → ${c.stats().ledgerRows}` };
+    });
+
+    check('Исправили телефон в брони — гость тот же', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '+79000000001', '', 'Иван Петров', 40000, 'checked_out', { check_in: '2026-06-01', check_out: '2026-06-05' }),
+        A(2, '+79000000001', '', 'Иван Петров', 40000, 'checked_out', { check_in: '2026-08-01', check_out: '2026-08-05' })]);
+      c.importFeed('apartments', [A(2, '+79000000011', '', 'Иван Петров', 40000, 'checked_out', { check_in: '2026-08-01', check_out: '2026-08-05' })]);
+      const all = c.list().filter((g) => g.names.includes('Иван Петров'));
+      return { ok: all.length === 1 && all[0].phones.length === 2 && all[0].balance === 500 + 1200 + 1200,
+        detail: `одна карточка, два телефона, ${n(all[0].balance)} бонусов, приветственный — один раз` };
+    });
+
+    check('Две поездки с выездом в один день не повышают уровень друг другу', () => {
+      const c = blank();
+      c.importFeed('apartments', [A(1, '+79000000001', '', 'Иван Петров', 60000), A(2, '+79000000001', '', 'Иван Петров', 60000, 'checked_out', { unit: 'Студия 2' })]);
+      const g = guest(c, 'Иван Петров');
+      const acc = g.ledger.filter((l) => l.kind === 'accrual').reduce((s, l) => s + l.amount, 0);
+      return { ok: acc === 3600, detail: `семья сняла две студии на одни даты → обе по 3 % (Base), начислено ${n(acc)}` };
+    });
+
+    check('Уровень считается за последние 12 месяцев', () => {
+      const c = fresh();
+      const g = guest(c, 'Дмитрий Орлов');
+      const old = g.bookings.find((b) => b.checkIn.startsWith('2025-07'));
+      const all = g.bookings.filter((b) => b.status === 'completed').reduce((s, b) => s + b.amount, 0);
+      return { ok: old && g.spend12 === all - old.amount, detail: `поездка в июле 2025 (${n(old.amount)} ₽) — больше года назад, в уровень не входит` };
+    });
+
+    check('Бронь без телефона и почты не создаёт «пустого» гостя', () => {
+      const c = fresh();
+      const empty = c.list().filter((g) => !g.phones.length && !g.emails.length);
+      return { ok: empty.length === 0 && c.toReview().some((t) => /нет ни телефона, ни почты/.test(t)),
+        detail: 'бронь ждёт ручной проверки и видна в списке «проверить»' };
+    });
+
+    return out;
+  }
+
+  if (typeof module !== 'undefined' && module.exports) module.exports = { runChecks };
+  else root.ClubChecks = { runChecks };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var rub = function (n) { return Math.round(n).toLocaleString('ru-RU') + ' ₽'; };
+  var num = function (n) { return Math.round(n).toLocaleString('ru-RU'); };
+  var MON = ['янв.', 'февр.', 'марта', 'апр.', 'мая', 'июня', 'июля', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
+  var span = function (a, b) { // «24–27 июля 2026», «30 апр. – 2 мая 2026»
+    if (!a || !b) return '';
+    var A = a.split('-').map(Number), B = b.split('-').map(Number);
+    if (A[0] === B[0] && A[1] === B[1]) return A[2] + '–' + B[2] + ' ' + MON[B[1] - 1] + ' ' + B[0];
+    if (A[0] === B[0]) return A[2] + ' ' + MON[A[1] - 1] + ' – ' + B[2] + ' ' + MON[B[1] - 1] + ' ' + B[0];
+    return A[2] + ' ' + MON[A[1] - 1] + ' ' + A[0] + ' – ' + B[2] + ' ' + MON[B[1] - 1] + ' ' + B[0];
+  };
+  var date = function (iso) { return iso ? new Date(iso + 'T00:00:00Z').toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : ''; };
+
+  // Тема
+  var root = document.documentElement;
+  try { var saved = localStorage.getItem('club-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  function isDark() { return root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+  function label() { $('theme').textContent = isDark() ? 'Светлая' : 'Тёмная'; }
+  $('theme').addEventListener('click', function () { var n = isDark() ? 'light' : 'dark'; root.setAttribute('data-theme', n); try { localStorage.setItem('club-theme', n); } catch (e) {} label(); });
+  label();
+
+  // Шаги обмена
+  var STEPS = [
+    { id: 'start', title: 'Запуск клуба: история обеих систем', note: 'Брони Апартаментов и Деревни за год с небольшим, по датам', run: function (c) { c.importHistory([step('a1'), step('v1')]); } },
+    { id: 'a2', title: 'Апартаменты прислали всё заново', note: 'Среди них доплата за поздний выезд и отмена будущей брони', run: function (c) { c.importFeed('apartments', step('a2').records); } },
+    { id: 'v2', title: 'Деревня прислала всё заново', note: 'Две отмены, закрытая бронь и поездка, о которой клуб раньше не знал', run: function (c) { c.importFeed('village', step('v2').records); } },
+    { id: 'again', title: 'И ещё раз то же самое', note: 'Сбой на стороне системы: те же брони пришли повторно', run: function (c) { c.importFeed('apartments', step('a2').records); c.importFeed('village', step('v2').records); } },
+  ];
+  function step(id) { return FEEDS.steps.filter(function (s) { return s.id === id; })[0]; }
+  var rules = JSON.parse(JSON.stringify(Club.DEFAULT_RULES));
+  var club, done = 0, selected = null;
+
+  function rebuild() {
+    club = Club.create(rules, { today: FEEDS.today });
+    for (var i = 0; i < done; i++) STEPS[i].run(club);
+  }
+  function renderSteps() {
+    $('steps').innerHTML = STEPS.map(function (s, i) {
+      return '<button type="button" class="step' + (i < done ? ' done' : '') + '" data-i="' + i + '"' + (i !== done ? ' disabled' : '') + '><b>' + (i + 1) + '. ' + esc(s.title) + '</b><span>' + esc(s.note) + '</span></button>';
+    }).join('') + (done ? '<button type="button" class="reset" id="reset">Начать сначала</button>' : '');
+  }
+  $('steps').addEventListener('click', function (e) {
+    var b = e.target.closest('.step'), r = e.target.closest('#reset');
+    if (r) { done = 0; selected = null; rebuild(); render(); return; }
+    if (!b || b.disabled) return;
+    var before = club.log.length;
+    STEPS[done].run(club); done++;
+    render(club.log.length - before);
+  });
+
+  function renderNums(prev) {
+    var s = club.stats();
+    $('nums').innerHTML = [[s.guests, plural(s.guests, 'гость', 'гостя', 'гостей')], [s.bookings, plural(s.bookings, 'бронь', 'брони', 'броней')], [num(s.earned), 'бонусов за поездки, за вычетом отмен'], [num(s.balance), 'на счетах гостей']]
+      .map(function (x) { return '<div class="num"><div class="n">' + x[0] + '</div><div class="l">' + x[1] + '</div></div>'; }).join('');
+  }
+  function renderLog(fresh) {
+    if (!club.log.length) { $('log').innerHTML = '<li class="empty">Пока пусто. Начните с первого шага.</li>'; return; }
+    $('log').innerHTML = club.log.slice().reverse().map(function (l, i) {
+      return '<li class="' + l.kind + '"' + (fresh && i < fresh ? ' style="outline:2px solid var(--accent);outline-offset:-2px"' : '') + '>' + esc(l.text) + '</li>';
+    }).join('');
+  }
+  function renderList() {
+    var q = $('q').value.trim().toLowerCase(), qd = q.replace(/\D/g, '');
+    var all = done ? club.list() : [];
+    var rows = all.filter(function (g) {
+      if (!q) return true;
+      return g.names.join(' ').toLowerCase().indexOf(q) >= 0 || g.emails.join(' ').indexOf(q) >= 0 || (qd.length >= 3 && g.phones.join(' ').replace(/\D/g, '').indexOf(qd) >= 0);
+    });
+    $('glist').innerHTML = rows.length ? rows.map(function (g) {
+      var dirs = {}; g.bookings.forEach(function (b) { dirs[b.sourceName] = 1; });
+      return '<button type="button" class="grow' + (g.id === selected ? ' on' : '') + '" data-id="' + g.id + '"><span>' + esc(g.name) + '<small>' + Object.keys(dirs).join(' + ') + ' · ' + g.bookings.length + ' ' + plural(g.bookings.length, 'бронь', 'брони', 'броней') + '</small></span>' +
+        '<span class="tier ' + g.tier.id + '">' + g.tier.name + '</span><span class="bal">' + num(g.balance) + '</span></button>';
+    }).join('') : '<p class="hint">' + (done ? 'Никого не нашли.' : 'Список появится после первого шага.') + '</p>';
+    var rev = done ? club.toReview() : [];
+    $('review').innerHTML = rev.length ? '<div class="review"><b>Проверить администратору (' + rev.length + ')</b><ul>' + rev.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>' : '';
+  }
+  function plural(n, a, b, c) { var m = n % 10, h = n % 100; return m === 1 && h !== 11 ? a : m >= 2 && m <= 4 && (h < 10 || h >= 20) ? b : c; }
+  $('glist').addEventListener('click', function (e) { var b = e.target.closest('.grow'); if (!b) return; selected = +b.dataset.id; renderList(); renderCab(); });
+  $('q').addEventListener('input', renderList);
+
+  var ST = { booked: 'впереди', completed: 'состоялась', cancelled: 'отменена' };
+  var KIND = { accrual: 'начисление', spend: 'оплата бонусами', welcome: 'приветственный', promo: 'промокод' };
+  function renderCab() {
+    var g = selected && club.cabinet(selected);
+    if (!g) { $('cab').innerHTML = '<p class="hint">' + (done ? 'Выберите гостя в списке.' : 'Загрузите историю на первом шаге и выберите гостя.') + '</p>'; return; }
+    var pct = g.next ? Math.min(100, Math.round(100 * (g.spend12 - g.tier.from) / (g.next.from - g.tier.from))) : 100;
+    $('cab').innerHTML =
+      '<div class="who"><h3>' + esc(g.name) + '</h3><span class="tier ' + g.tier.id + '">' + g.tier.name + '</span></div>' +
+      '<div class="big"><div><b>' + (g.balance < 0 ? '−' + num(-g.balance) : num(g.balance)) + '</b><span>' + (g.balance < 0 ? 'в долг, погасится следующими поездками' : 'бонусов на счёте') + '</span></div><div><b>' + g.tier.discountPct + '\u00a0%</b><span>скидка на проживание</span></div><div><b>' + g.tier.bonusPct + '\u00a0%</b><span>возвращается бонусами</span></div></div>' +
+      '<div class="hint">За 12 месяцев: ' + rub(g.spend12) + (g.next ? ' · до уровня ' + g.next.name + ' осталось ' + rub(g.toNext) : ' · высший уровень') + '</div>' +
+      '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="hint">Бонусами можно оплатить до ' + g.maxBonusPayPct + ' % брони в любом направлении.</div>' +
+      '<h4>Поездки</h4><table class="t"><thead><tr><th>Где и когда</th><th>Сумма</th><th></th></tr></thead><tbody>' +
+      g.bookings.map(function (b) { return '<tr><td>' + esc(b.sourceName) + '<br><span class="hint">' + esc(b.object) + '<br>' + span(b.checkIn, b.checkOut) + '</span></td><td class="nw">' + rub(b.amount) + '</td><td><span class="st ' + b.status + '">' + ST[b.status] + '</span></td></tr>'; }).join('') +
+      '</tbody></table>' +
+      '<h4>Бонусы</h4><table class="t"><tbody>' +
+      g.ledger.filter(function (l) { return !l.adminOnly; }).map(function (l) { return '<tr><td class="nw">' + date(l.date) + '</td><td>' + esc(l.amount < 0 && l.kind !== 'spend' ? 'списано' : l.amount > 0 && l.kind === 'spend' ? 'возврат бонусов' : (KIND[l.kind] || l.kind)) + (l.booking ? ' · ' + esc(l.booking) : '') + '<br><span class="hint">' + esc(l.note).replace(/ %/g, '\u00a0%') + '</span></td><td class="' + (l.amount >= 0 ? 'plus' : 'minus') + '">' + (l.amount >= 0 ? '+' : '−') + num(Math.abs(l.amount)) + '</td></tr>'; }).join('') +
+      '</tbody></table>' +
+      '<details class="admin"><summary>Для администратора</summary><p>Карточка №' + g.id + '. Телефоны: ' + (g.phonesMasked.join(', ') || '—') + '. Почта: ' + (g.emailsMasked.join(', ') || '—') + '.' +
+      (g.names.length > 1 ? ' Имена в бронях: ' + g.names.map(esc).join(', ') + '.' : '') +
+      (g.merged.length ? ' Объединена с карточкой ' + g.merged.map(function (m) { return '№' + m.from + ' (' + esc(m.reason) + ')'; }).join(', ') + '.' : '') +
+      g.ledger.filter(function (l) { return l.adminOnly; }).map(function (l) { return ' Служебная строка журнала: ' + (l.amount >= 0 ? '+' : '−') + num(Math.abs(l.amount)) + ', ' + esc(l.note) + '.'; }).join('') + '</p></details>';
+  }
+
+  // Правила
+  function renderRules() {
+    $('rules').innerHTML = '<thead><tr><th>Уровень</th><th>От, ₽ за 12 мес.</th><th>Бонус, %</th><th>Скидка, %</th></tr></thead><tbody>' +
+      rules.tiers.map(function (t, i) {
+        return '<tr><td><span class="tier ' + t.id + '">' + t.name + '</span></td><td>' + (i ? '<input type="number" min="0" step="1000" data-t="' + i + '" data-f="from" value="' + t.from + '" aria-label="Порог ' + t.name + '">' : '0') + '</td>' +
+          '<td><input type="number" min="0" max="50" data-t="' + i + '" data-f="bonusPct" value="' + t.bonusPct + '" aria-label="Бонус ' + t.name + '"></td>' +
+          '<td><input type="number" min="0" max="50" data-t="' + i + '" data-f="discountPct" value="' + t.discountPct + '" aria-label="Скидка ' + t.name + '"></td></tr>';
+      }).join('') + '</tbody>';
+    var p = rules.promos[0];
+    $('rules2').innerHTML = 'Приветственный бонус: <input type="number" min="0" step="100" id="welcome" value="' + rules.welcomeBonus + '" aria-label="Приветственный бонус"> · оплатить бонусами можно до <input type="number" min="0" max="100" id="maxpay" value="' + rules.maxBonusPayPct + '" aria-label="Доля оплаты бонусами"> % брони' +
+      '<br>Промокод <b>' + esc(p.code) + '</b>: <input type="number" min="0" step="100" id="promoBonus" value="' + p.bonus + '" aria-label="Бонусов за промокод"> бонусов за поездку с ' + span(p.from, p.from).replace(/^\d+–/, '') + ' по ' + span(p.to, p.to).replace(/^\d+–/, '') + ', один раз на гостя';
+  }
+  $('apply').addEventListener('click', function () {
+    var next = JSON.parse(JSON.stringify(rules));
+    document.querySelectorAll('#rules input').forEach(function (inp) { next.tiers[+inp.dataset.t][inp.dataset.f] = Math.max(0, +inp.value || 0); });
+    next.welcomeBonus = Math.max(0, +$('welcome').value || 0);
+    next.maxBonusPayPct = Math.min(100, Math.max(0, +$('maxpay').value || 0));
+    next.promos[0].bonus = Math.max(0, +$('promoBonus').value || 0);
+    for (var i = 1; i < next.tiers.length; i++) if (next.tiers[i].from <= next.tiers[i - 1].from) next.tiers[i].from = next.tiers[i - 1].from + 1000;
+    rules = next; rebuild(); render(); renderRules();
+    $('apply').textContent = 'Пересчитано. Применить ещё раз';
+  });
+
+  // Проверки — всегда на правилах по умолчанию, как в тестах проекта
+
+  $('run').addEventListener('click', function () {
+    var res = ClubChecks.runChecks(Club, FEEDS);
+    var ok = res.filter(function (r) { return r.ok; }).length;
+    $('checks').innerHTML = res.map(function (r) { return '<li class="panel"><b class="' + (r.ok ? 'ok' : 'no') + '">' + esc(r.name) + '</b><span>' + esc(r.detail) + '</span></li>'; }).join('');
+    $('run').textContent = 'Пройдено ' + ok + ' из ' + res.length + '. Запустить ещё раз';
+  });
+
+  function render(fresh) { renderSteps(); renderNums(); renderLog(fresh); renderList(); renderCab(); }
+  rebuild(); render(); renderRules();
+
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08 });
+    els.forEach(function (el) { io.observe(el); });
+  } else { els.forEach(function (el) { el.classList.add('in'); }); }
+})();
+</script>
+</body>
+</html>
