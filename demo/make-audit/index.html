@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en" data-theme="auto" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Make Scenario Rescue: Sample Audit | Flow Lab</title>
+<meta name="description" content="A broken Make.com lead-intake scenario, the audit that found 11 problems (6 of them cost leads), and the fixed version. Demo case by Flow Lab.">
+<style>
+:root {
+  --bg: #f6f3ee; --bg-raised: #ffffff; --bg-sunken: #efeae2;
+  --ink: #1f1c18; --ink-soft: #57514a; --ink-faint: #756d64;
+  --line: #ded7cc; --line-strong: #c9c0b2;
+  --accent: #a6432a; --accent-soft: #f4e2dc;
+  --good: #2f6b4f; --good-soft: #dfeee6;
+  --warn: #7a4f0f; --warn-soft: #f7ecd6;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: ui-sans-serif, -apple-system, "Segoe UI", Inter, system-ui, sans-serif;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(31, 28, 24, .06), 0 8px 24px rgba(31, 28, 24, .05);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17161a; --bg-raised: #201e23; --bg-sunken: #121114;
+    --ink: #f2eee8; --ink-soft: #b7b0a7; --ink-faint: #9a938a;
+    --line: #322f36; --line-strong: #454049;
+    --accent: #e0896a; --accent-soft: #35231d;
+    --good: #7cc7a0; --good-soft: #1b2b23;
+    --warn: #d9ab5e; --warn-soft: #2d2519;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17161a; --bg-raised: #201e23; --bg-sunken: #121114;
+  --ink: #f2eee8; --ink-soft: #b7b0a7; --ink-faint: #9a938a;
+  --line: #322f36; --line-strong: #454049;
+  --accent: #e0896a; --accent-soft: #35231d;
+  --good: #7cc7a0; --good-soft: #1b2b23;
+  --warn: #d9ab5e; --warn-soft: #2d2519;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--sans); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+header.top { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+.brand { font-weight: 650; letter-spacing: -.01em; }
+.theme-toggle { font: inherit; font-size: 15px; color: var(--ink); background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: 999px; min-height: 44px; padding: 0 16px; cursor: pointer; }
+.theme-toggle:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.hero { padding: 40px 0 28px; }
+.eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+h1 { font-size: clamp(32px, 6vw, 54px); line-height: 1.08; letter-spacing: -.025em; margin: 0 0 18px; }
+h2 { font-size: clamp(24px, 3.6vw, 32px); line-height: 1.2; letter-spacing: -.015em; margin: 0 0 14px; }
+h3 { font-size: 18px; line-height: 1.35; margin: 0 0 6px; }
+.lead { font-size: clamp(18px, 2.2vw, 21px); color: var(--ink-soft); max-width: 44em; margin: 0; }
+.note { font-size: 15px; color: var(--ink-soft); margin-top: 14px; }
+section { padding: 36px 0; border-top: 1px solid var(--line); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+.stat { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+.stat b { display: block; font-size: 34px; line-height: 1.1; letter-spacing: -.02em; }
+.stat span { font-size: 15px; color: var(--ink-soft); }
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 15px; margin: 8px 0 0; padding: 0; list-style: none; }
+.flow li { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.flow li.arrow { background: none; border: 0; padding: 0; color: var(--ink-faint); }
+.cards { display: grid; gap: 14px; margin-top: 18px; }
+.card { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.card p { margin: 6px 0 0; color: var(--ink-soft); }
+.tag { display: inline-block; font-size: 13px; font-weight: 650; letter-spacing: .04em; border-radius: 999px; padding: 2px 10px; margin-bottom: 10px; }
+.tag.high { background: var(--accent-soft); color: var(--accent); }
+.tag.med { background: var(--warn-soft); color: var(--warn); }
+.tag.low { background: var(--bg-sunken); color: var(--ink-soft); }
+.fix { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line-strong); font-size: 16px; }
+.fix b { color: var(--good); }
+code { font-family: var(--mono); font-size: .88em; background: var(--bg-sunken); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+.table-wrap { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised); }
+table { border-collapse: collapse; width: 100%; font-size: 16px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 14px; color: var(--ink-soft); font-weight: 600; background: var(--bg-sunken); }
+tr:last-child td { border-bottom: 0; }
+.bad { color: var(--accent); font-weight: 600; }
+.ok { color: var(--good); font-weight: 600; }
+pre { font: 14px/1.55 var(--mono); background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin: 16px 0 0; }
+ol.steps { padding-left: 22px; margin: 12px 0 0; }
+ol.steps li { margin: 8px 0; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); text-decoration: none; background: var(--bg-raised); font-size: 15px; }
+.links a:hover { border-color: var(--accent); color: var(--accent); }
+footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 15px; }
+html.js .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+html.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { html.js .reveal { opacity: 1; transform: none; transition: none; } }
+@media (max-width: 640px) {
+  .stats { grid-template-columns: 1fr; }
+  .wrap { padding: 0 16px; }
+  th, td { padding: 10px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Flow Lab</div>
+    <button class="theme-toggle" id="theme-toggle" type="button" >Theme: auto</button>
+  </header>
+
+  <div class="hero">
+    <p class="eyebrow">Make.com scenario rescue · demo case</p>
+    <h1>Most runs looked fine. Leads were still slipping through.</h1>
+    <p class="lead">A website quote form feeds a Make scenario: log the request, look up the service area, ping the on-call tech for urgent jobs, email sales for the rest. Most runs look fine in History. The audit found 11 problems, and 6 of them mean a lead gets no alert or arrives with blank fields.</p>
+    <p class="note demo">Demo scenario built for this case, modeled on a typical home-services lead flow. Not a client's scenario.</p>
+    <div class="stats">
+      <div class="stat reveal"><b>11</b><span>problems found: 9 by the automatic review, 2 in manual review</span></div>
+      <div class="stat reveal"><b>6</b><span>of them: a lead gets no alert, or the alert has blank fields</span></div>
+      <div class="stat reveal"><b>0</b><span>flagged by the same automatic checks after the fix</span></div>
+    </div>
+  </div>
+
+  <section class="reveal">
+    <h2>The scenario</h2>
+    <ul class="flow" aria-label="Scenario modules in order">
+      <li>Webhook: quote form</li><li class="arrow" aria-hidden="true">→</li>
+      <li>Google Sheets: log request</li><li class="arrow" aria-hidden="true">→</li>
+      <li>HTTP: ZIP → service area</li><li class="arrow" aria-hidden="true">→</li>
+      <li>Router</li><li class="arrow" aria-hidden="true">→</li>
+      <li>Urgent: Slack to on-call tech</li><li class="arrow" aria-hidden="true">·</li>
+      <li>Standard: Gmail to sales</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="reveal">What was wrong, and the fix</h2>
+    <div class="cards">
+      <article class="card reveal">
+        <span class="tag high">HIGH · lost leads</span>
+        <h3>One failed step switched the whole scenario off</h3>
+        <p>"Allow storing of incomplete executions" was off. If Google Sheets, Slack or Gmail hiccuped, the run stopped with an error and there was nothing to retry: the website never resends a form. Worse, with the default error settings Make deactivates a webhook-triggered scenario right after its first error, so every quote request after that was missed until someone noticed.</p>
+        <p class="fix"><b>Fix:</b> incomplete executions on, plus Break handlers with automatic retry on the Sheets, Slack and Gmail steps. A failed step now waits and retries instead of stopping everything.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">HIGH · blank fields</span>
+        <h3>API errors were treated as answers</h3>
+        <p>The ZIP lookup (legacy HTTP module) had "Evaluate all states as errors" switched off. When the API returned 401 or 500, Make carried on with the error body as if it were the service area, and "Area:" in the alerts came out blank.</p>
+        <p class="fix"><b>Fix:</b> moved to the current HTTP "Make a request" module with "Return error if HTTP request fails" on, and a Resume handler that fills "area lookup failed, check ZIP", so the lead still reaches sales with a clear note.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">HIGH · security</span>
+        <h3>A live API key sat inside the module URL</h3>
+        <p>Anyone who got the exported blueprint (a freelancer, a shared template) got the key with it.</p>
+        <p class="fix"><b>Fix:</b> key moved into a Make keychain (API key authentication in the HTTP module), so it never appears in an export, and the old key rotated.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">HIGH · blank fields</span>
+        <h3>Two fields pulled data from steps that never ran</h3>
+        <p>The Slack alert showed "Quote #" from the Gmail module on the other route, and the sales email used a field from a module that had been deleted. Both always came out empty.</p>
+        <p class="fix"><b>Fix:</b> both now use the Google Sheets row number from the "Log request" step, which runs before the router on every path.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag med">MEDIUM · noise and a gap</span>
+        <h3>Sales got one email per service, or none at all</h3>
+        <p>An iterator over "services" fed Gmail directly. A customer who ticked three services produced three near-identical emails. Found in manual review: a customer who ticked none produced no email at all, because an empty list gives the iterator nothing to pass on.</p>
+        <p class="fix"><b>Fix:</b> no iterator. The email lists the services with <code>join()</code> and says "not specified" when the list is empty: one request, always one email.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">HIGH · found in manual review</span>
+        <h3>"Urgent" didn't match "urgent"</h3>
+        <p>The router filters used exact, case-sensitive matches for "urgent" and "standard". A form that sends "Urgent", or an empty value, matched neither route. The row was already in the sheet, but with no fallback route nobody was told about the lead.</p>
+        <p class="fix"><b>Fix:</b> case-insensitive match for "urgent", and the sales route became the fallback route: anything not urgent reaches sales.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag low">LOW · housekeeping</span>
+        <h3>Smaller settings</h3>
+        <p>Sheets rows were written as plain text, so dates and numbers didn't sort or filter.</p>
+        <p class="fix"><b>Fix:</b> <code>valueInputOption: USER_ENTERED</code>.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Before and after</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Situation</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+        <tbody>
+          <tr><td>Gmail or Sheets fails for a minute</td><td class="bad">Run fails, scenario switched off</td><td class="ok">Step retried, scenario keeps running</td></tr>
+          <tr><td>ZIP API returns an error</td><td class="bad">Blank "Area", no warning</td><td class="ok">Lead sent with "check ZIP" note</td></tr>
+          <tr><td>Form sends "Urgent" (capital U)</td><td class="bad">No route matches, nobody alerted</td><td class="ok">On-call tech alerted</td></tr>
+          <tr><td>Customer picks 3 services / none</td><td class="bad">3 emails / no email</td><td class="ok">Always 1 email</td></tr>
+          <tr><td>Quote reference in alerts</td><td class="bad">Always empty</td><td class="ok">Sheet row number</td></tr>
+          <tr><td>Exported blueprint shared</td><td class="bad">Leaks the API key</td><td class="ok">No secrets inside</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>The audit report</h2>
+    <p>The first pass is an automatic review of the exported blueprint: nothing runs, and no access to your accounts is needed. Then a manual review of the logic, and every item is checked in the editor before anything is changed. Excerpt:</p>
+<pre>Make scenario review: Quote requests -> Sheet -> Sales alerts (BEFORE)
+7 modules, trigger: instant (webhook).
+
+1. HIGH - Scenario settings: "Allow storing of incomplete executions" is off
+   and the scenario starts with a webhook. When any module fails, the run
+   stops and that request is gone. With default settings, Make deactivates
+   an instant-trigger scenario immediately after its first error.
+2. HIGH - "ZIP -> service area" [3]: "Evaluate all states as errors" is off:
+   a 4xx/5xx reply counts as success.
+4. HIGH - "Alert on-call tech" [5]: Maps a field from "Email sales" [7],
+   which is not on the path before this module. Always empty here.
+...
+AFTER: No issues found by the automatic checks. (Manual review: done.)</pre>
+    <div class="links">
+      <a href="scenarios/quote-intake-BROKEN.json" download>Blueprint before (.json)</a>
+      <a href="scenarios/quote-intake-FIXED.json" download>Blueprint after (.json)</a>
+      <a href="scenarios/REPORT-BEFORE.txt">Report before (.txt)</a>
+      <a href="scenarios/REPORT-AFTER.txt">Report after (.txt)</a>
+    </div>
+    <p class="note">The blueprints are hand-written for this demo to show the structure of the fix and have not been imported into Make; module settings are illustrative. On a real job every change is made and tested in your own account.</p>
+  </section>
+
+  <section class="reveal">
+    <h2>How a rescue works</h2>
+    <ol class="steps">
+      <li>You export the scenario: in the editor, <b>…</b> (More) → <b>Export Blueprint</b>, and send the .json file. No login needed for the first look.</li>
+      <li>Same day: a plain-English list of what's broken, what it costs you, and what I'd change.</li>
+      <li>You approve; I fix it in your account, run test submissions through every route and show you the results.</li>
+      <li>Optional monthly support: I watch the scenario's errors and fix new ones before they cost you leads.</li>
+    </ol>
+  </section>
+
+  <footer>Flow Lab · automation fixes for Make, n8n and Zapier · demo case, 2026</footer>
+</div>
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById('theme-toggle');
+  root.classList.add('js');
+  var order = ['auto', 'light', 'dark'], saved = null;
+  try { saved = localStorage.getItem('fl-theme'); } catch (e) {}
+  function apply(t) { root.setAttribute('data-theme', t); btn.textContent = 'Theme: ' + t; }
+  apply(order.indexOf(saved) >= 0 ? saved : 'auto');
+  btn.addEventListener('click', function () {
+    var next = order[(order.indexOf(root.getAttribute('data-theme')) + 1) % 3];
+    apply(next);
+    try { localStorage.setItem('fl-theme', next); } catch (e) {}
+  });
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.webdriver || /[?&]static\b/.test(location.search)) {
+    els.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
