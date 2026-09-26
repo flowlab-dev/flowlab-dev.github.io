@@ -21,7 +21,7 @@ export function validateLead(fields, values) {
     }
     if (f.type === 'tel') {
       const p = normalizePhone(raw);
-      if (!p) { errors[f.name] = 'Проверьте номер: нужно 10–11 цифр, например +7 900 123-45-67'; continue; }
+      if (!p) { errors[f.name] = 'Проверьте номер: нужно 10–11 цифр, например +7 9XX XXX-XX-XX'; continue; }
       clean[f.name] = p;
       continue;
     }
