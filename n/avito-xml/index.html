@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta name="robots" content="noindex">
+<meta charset="utf-8">
+<title>Набросок: автозагрузка Авито из Google Таблицы</title>
+<style>
+  :root { --bg: #eef1f5; --ink: #14181f; --muted: #667085; --line: #d9dee7; --card: #fff;
+          --green: #188038; --accent: #2a7de1; --warn: #c7771b; --code: #1d2330; }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1600px; height: 900px; background: var(--bg); color: var(--ink);
+         font: 15px/1.4 -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif; padding: 40px 48px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
+  .tag { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+         color: var(--warn); border: 2px solid var(--warn); border-radius: 6px; padding: 3px 9px; margin-bottom: 10px; }
+  h1 { font-size: 34px; line-height: 1.15; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 17px; margin-top: 6px; }
+  .brand { color: var(--muted); font-size: 14px; text-align: right; } .brand b { color: var(--ink); font-size: 16px; }
+  .flow { display: grid; grid-template-columns: 1.15fr 44px 0.9fr 44px 1.15fr; align-items: stretch; }
+  .arrow { display: grid; place-items: center; color: var(--muted); font-size: 28px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  .card h2 { font-size: 18px; margin-bottom: 3px; } .card .note { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+  .sheet { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+  .sheet .tab { background: #f3f6f4; font-size: 13px; font-weight: 600; padding: 6px 10px; border-bottom: 1px solid var(--line); color: var(--green); }
+  .grid { display: grid; font-size: 13px; }
+  .grid div { padding: 6px 8px; border-right: 1px solid #edf0f3; border-bottom: 1px solid #edf0f3; white-space: nowrap; overflow: hidden; }
+  .grid .h { background: #fafbfc; font-weight: 600; }
+  .grid .new { background: #fff5e6; color: var(--warn); font-weight: 600; }
+  .ph { display: block; height: 9px; border-radius: 5px; background: #e3e7ee; margin-top: 3px; }
+  .g5 { grid-template-columns: 1fr 1.6fr 1.1fr 1fr 1.1fr; } .g3 { grid-template-columns: 1fr 1fr 1fr; }
+  .more { font-size: 13px; color: var(--muted); padding: 6px 8px; }
+  ol { padding-left: 20px; display: grid; gap: 9px; font-size: 15px; }
+  ol b { display: block; }
+  ol span { color: var(--muted); font-size: 13.5px; }
+  .clock { margin-top: 14px; background: #eef5ff; color: var(--accent); border-radius: 10px; padding: 9px 12px; font-weight: 600; font-size: 14px; }
+  pre { background: var(--code); color: #d7dde8; border-radius: 10px; padding: 14px 16px; font: 13.5px/1.55 "SF Mono", Menlo, monospace; }
+  .t { color: #7cb7ff; } .v { color: #a8e3a1; } .c { color: #8a93a6; }
+  .link { margin-top: 12px; font-size: 14px; } .link code { background: #eef5ff; color: var(--accent); padding: 3px 7px; border-radius: 6px; font-size: 13px; }
+  .bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 22px; }
+  .bottom h3 { font-size: 16px; margin-bottom: 6px; }
+  .bottom ul { padding-left: 18px; display: grid; gap: 4px; font-size: 14.5px; }
+  .foot { color: var(--muted); font-size: 13px; margin-top: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="tag">Набросок</div>
+    <h1>Автозагрузка Авито из вашей Google Таблицы</h1>
+    <div class="sub">Как соберём XML для 18 LED-светильников. Данных ваших товаров здесь нет — серые полосы; поля и категорию возьмём из ваших шаблонов.</div>
+  </div>
+  <div class="brand"><b>Flow Lab</b><br>набросок к отклику на FL.ru</div>
+</header>
+
+<div class="flow">
+  <section class="card">
+    <h2>1. Ваша таблица</h2>
+    <div class="note">Файл данных + автообновляемый файл с остатками и ценами.</div>
+    <div class="sheet">
+      <div class="tab">LED Светильники · файл данных</div>
+      <div class="grid g5">
+        <div class="h">Артикул</div><div class="h">Название</div><div class="h">Свойства</div><div class="new">Адрес</div><div class="new">Фото</div>
+        <div><i class="ph"></i></div><div><i class="ph"></i></div><div><i class="ph"></i></div><div class="new">+ добавим</div><div class="new">+ добавим</div>
+        <div><i class="ph"></i></div><div><i class="ph"></i></div><div><i class="ph"></i></div><div class="new">+ добавим</div><div class="new">+ добавим</div>
+      </div>
+      <div class="more">… 18 товаров</div>
+    </div>
+    <div class="sheet">
+      <div class="tab">Остатки и цены · обновляется само</div>
+      <div class="grid g3">
+        <div class="h">Артикул</div><div class="h">Цена</div><div class="h">Остаток</div>
+        <div><i class="ph"></i></div><div><i class="ph"></i></div><div><i class="ph"></i></div>
+        <div><i class="ph"></i></div><div><i class="ph"></i></div><div><i class="ph"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="arrow">→</div>
+
+  <section class="card">
+    <h2>2. Скрипт в таблице</h2>
+    <div class="note">Apps Script внутри вашей таблицы, без сторонних сервисов.</div>
+    <ol>
+      <li><b>Сводит два файла по артикулу</b><span>цена и остаток — всегда свежие</span></li>
+      <li><b>Проверяет обязательные поля</b><span>пустое поле или битая ссылка на фото — строка подсвечивается, в XML не идёт</span></li>
+      <li><b>Нет в наличии — не выгружаем</b><span>товар с остатком 0 не попадает в файл</span></li>
+      <li><b>Собирает XML по шаблону Авито</b><span>категория и поля — из ваших XML-шаблонов</span></li>
+    </ol>
+    <div class="clock">⏱ Обновляется само, раз в час</div>
+  </section>
+
+  <div class="arrow">→</div>
+
+  <section class="card">
+    <h2>3. XML по постоянной ссылке</h2>
+    <div class="note">Ссылку один раз вставляете в настройки автозагрузки Авито.</div>
+<pre><span class="t">&lt;Ads</span> formatVersion=<span class="v">"3"</span> target=<span class="v">"Avito.ru"</span><span class="t">&gt;</span>
+  <span class="t">&lt;Ad&gt;</span>
+    <span class="t">&lt;Id&gt;</span><span class="c">артикул</span><span class="t">&lt;/Id&gt;</span>
+    <span class="t">&lt;Address&gt;</span><span class="c">адрес склада</span><span class="t">&lt;/Address&gt;</span>
+    <span class="t">&lt;Category&gt;</span><span class="c">из вашего шаблона</span><span class="t">&lt;/Category&gt;</span>
+    <span class="t">&lt;ContactPhone&gt;</span><span class="c">ваш телефон</span><span class="t">&lt;/ContactPhone&gt;</span>
+    <span class="t">&lt;Title&gt;</span><span class="c">название</span><span class="t">&lt;/Title&gt;</span>
+    <span class="t">&lt;Description&gt;</span><span class="c">текст + характеристики</span><span class="t">&lt;/Description&gt;</span>
+    <span class="t">&lt;Price&gt;</span><span class="c">из файла остатков</span><span class="t">&lt;/Price&gt;</span>
+    <span class="t">&lt;Condition&gt;</span><span class="c">новое</span><span class="t">&lt;/Condition&gt;</span>
+    <span class="t">&lt;Images&gt;</span>
+      <span class="t">&lt;Image</span> url=<span class="v">"https://…"</span><span class="t">/&gt;</span>
+    <span class="t">&lt;/Images&gt;</span>
+  <span class="t">&lt;/Ad&gt;</span>
+  <span class="c">… ещё 17 объявлений</span>
+<span class="t">&lt;/Ads&gt;</span></pre>
+    <div class="link">Постоянная ссылка: <code>https://…/avito.xml</code></div>
+  </section>
+</div>
+
+<div class="bottom">
+  <section class="card">
+    <h3>Дорабатывать файл данных — немного</h3>
+    <ul>
+      <li>уникальный номер товара (подойдёт артикул, если он не повторяется);</li>
+      <li>адрес, откуда продаёте, и контактный телефон;</li>
+      <li>фото — прямыми открытыми ссылками на картинки (с вашего сайта или хостинга картинок; помогу выложить).</li>
+    </ul>
+    <div class="foot">Точный список скажу, когда сверю ваш файл с вашими XML-шаблонами.</div>
+  </section>
+  <section class="card">
+    <h3>Что нужно от вас</h3>
+    <ul>
+      <li>доступ к Google Таблице и ссылка на файл с остатками;</li>
+      <li>подключённая автозагрузка в вашем кабинете Авито — туда вставим ссылку;</li>
+      <li>после первой загрузки — отчёт автозагрузки: исправлю всё, что Авито не принял.</li>
+    </ul>
+    <div class="foot">В ваш аккаунт Авито не входим: ссылку вставляете вы, отчёт присылаете вы.</div>
+  </section>
+</div>
+</body>
+</html>
