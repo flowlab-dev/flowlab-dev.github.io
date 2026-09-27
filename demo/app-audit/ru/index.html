@@ -1,0 +1,43 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Проверка готовности к магазинам — fieldcrew</title><style>
+:root{--bg:#f7f8f8;--card:#fff;--ink:#111827;--muted:#4b5563;--line:#d9dee0;--accent:#0f766e}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1413;--card:#17201f;--ink:#ecf1f0;--muted:#a7b4b2;--line:#2a3634;--accent:#5eead4}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:920px;margin:0 auto;padding:32px 16px 48px}h1{font-size:28px;line-height:1.2;margin:0 0 12px}h2{font-size:20px;margin:28px 0 8px}
+p{margin:6px 0;color:var(--muted)}p b{color:var(--ink)}.note{border:1.5px solid var(--accent);border-radius:12px;padding:10px 14px;color:var(--ink);margin-bottom:18px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;margin:16px 0;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}th{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+td.lvl{width:1.5em}ol{background:var(--card);border-radius:14px;padding:14px 14px 14px 36px}li{margin:4px 0}
+@media (max-width:640px){table,thead,tbody,tr,td,th{display:block}thead{display:none}tr{border-bottom:1px solid var(--line);padding:8px 4px}td{border:0;padding:2px 8px}}
+</style></head><body><main><p class=note>Пример отчёта на выдуманном проекте (FieldCrew) — такой отчёт вы получите по своему приложению.</p><h1>Проверка готовности к магазинам — fieldcrew</h1>
+<p>Стек: Expo ~53.0.9 · React Native 0.79.2 · TypeScript · тестов: 0 · lock-файл: yarn.lock</p>
+<p>iOS bundle id: com.example.fieldcrew · Android package: com.example.fieldcrew</p>
+<p><b>Мешает выпуску: 3 · исправить: 10 · заметки: 3.</b> Проверка только читала файлы проекта: ничего не устанавливалось и не запускалось.</p>
+<table><thead><tr><th></th><th>Раздел</th><th>Что нашли</th><th>Что сделать</th></tr></thead><tbody>
+<tr><td class=lvl>🔴</td><td>Стек</td><td>Expo SDK 53 отстаёт от текущего SDK 57 на 4 версии. Для магазинов сейчас нужны свежие Xcode/iOS SDK и уровни Android API — со старым SDK сборку обычно не примут.</td><td>Обновить SDK по шагам (53→57), исправить несовместимости, заново проверить.</td></tr>
+<tr><td class=lvl>🔴</td><td>Безопасность</td><td>.env лежит в проекте, и .gitignore не исключает файлы .env.</td><td>Убрать из репозитория, сменить ключи, добавить .env* в .gitignore.</td></tr>
+<tr><td class=lvl>🔴</td><td>Безопасность</td><td>Похоже на секрет (Stripe live secret key) в src/billing/config.ts.</td><td>Перенести на сервер или в секреты EAS и сменить: всё, что попало в приложение, может прочитать любой.</td></tr>
+<tr><td class=lvl>🟡</td><td>Настройки</td><td>Идентификатор iOS «com.example.fieldcrew» похож на шаблонный.</td><td>Выбрать окончательный идентификатор до первой загрузки в магазин — потом его не изменить.</td></tr>
+<tr><td class=lvl>🟡</td><td>Настройки</td><td>Имя пакета Android «com.example.fieldcrew» похоже на шаблонное.</td><td>Выбрать окончательный идентификатор до первой загрузки в магазин — потом его не изменить.</td></tr>
+<tr><td class=lvl>🟡</td><td>Сборка</td><td>Нет eas.json: облачная сборка не настроена.</td><td>Добавить профили сборки EAS (разработка / тест / магазин).</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>Значок 512×512, а магазину нужен 1024×1024.</td><td>Выгрузить значок в 1024×1024.</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>У значка есть прозрачность, а значки App Store должны быть без неё.</td><td>Положить значок на сплошной фон.</td></tr>
+<tr><td class=lvl>🟡</td><td>Google Play</td><td>Нет адаптивного значка Android.</td><td>Добавить adaptiveIcon: передний план и цвет фона.</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>Не указано, использует ли приложение шифрование, — App Store Connect спрашивает об этом при каждой загрузке.</td><td>Задать ios.config.usesNonExemptEncryption (обычно false, если приложение шифрует только через HTTPS).</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>expo-camera используется, но не задан текст разрешения iOS (NSCameraUsageDescription); стандартные общие тексты — частая причина отказа App Store (правило 5.1.1).</td><td>Написать для каждого разрешения конкретное объяснение, зачем оно нужно.</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>expo-location используется, но не задан текст разрешения iOS (NSLocationWhenInUseUsageDescription); стандартные общие тексты — частая причина отказа App Store (правило 5.1.1).</td><td>Написать для каждого разрешения конкретное объяснение, зачем оно нужно.</td></tr>
+<tr><td class=lvl>🟡</td><td>Безопасность</td><td>В разделе «extra» конфигурации есть supabaseServiceKey — всё из extra попадает внутрь приложения.</td><td>Оставить там только открытые значения.</td></tr>
+<tr><td class=lvl>⚪</td><td>Сборка</td><td>Скрипт при установке postinstall: «patch-package» (обычный инструмент).</td><td></td></tr>
+<tr><td class=lvl>⚪</td><td>App Store</td><td>Не описан манифест приватности приложения (для своих модулей Expo добавляет его сам).</td><td>Описать сбор данных и «API с обязательной причиной», если их использует приложение или подключённые библиотеки.</td></tr>
+<tr><td class=lvl>⚪</td><td>Качество</td><td>Автоматических тестов нет.</td><td>Перед изменениями добавить тесты на ключевую логику.</td></tr>
+</tbody></table>
+<p>Оценка работы до сборки, готовой к магазину: <b>около 21 ч</b> (исправления из таблицы + настройка EAS и первые сборки). Аккаунты магазинов (Apple Developer, Google Play) и публикация остаются на аккаунтах владельца.</p>
+<h2>План по шагам</h2>
+<ol>
+<li>Убрать ключи и секреты из кода и репозитория, сменить их (до всего остального).</li>
+<li>Обновить Expo SDK и зависимости, исправить несовместимости, прогнать приложение.</li>
+<li>Исправить пункты 🟡: тексты разрешений, значки, шифрование, настройки сборки.</li>
+<li>Настроить облачную сборку EAS и собрать тестовые версии iOS и Android.</li>
+<li>Проверка на ваших устройствах: TestFlight (iOS) и внутреннее тестирование (Google Play).</li>
+<li>Отправка на проверку в App Store и Google Play с вашего аккаунта; ответы на замечания проверяющих.</li>
+</ol></main></body></html>
