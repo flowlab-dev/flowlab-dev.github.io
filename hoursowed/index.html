@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HoursOwed: Overtime &amp; Shift Tracker for Split Shifts</title>
+<meta name="description" content="Log split shifts, night shifts and unpaid breaks. HoursOwed counts overtime at 1.5x after 40 hours and turns your pay period into a PDF.">
+<link rel="canonical" href="https://flowlab-dev.github.io/hoursowed/">
+<meta property="og:type" content="website"><meta property="og:title" content="HoursOwed: Overtime &amp; Shift Tracker for Split Shifts"><meta property="og:description" content="Log split shifts, night shifts and unpaid breaks. HoursOwed counts overtime at 1.5x after 40 hours and turns your pay period into a PDF."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b0f0e" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./assets/icon-180.png">
+<link rel="stylesheet" href="./assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HoursOwed","url":"https://flowlab-dev.github.io/hoursowed/","applicationCategory":"BusinessApplication","operatingSystem":"iOS, Android, Web","offers":[{"@type":"Offer","price":"3.99","priceCurrency":"USD","name":"Monthly"},{"@type":"Offer","price":"19.99","priceCurrency":"USD","name":"Yearly"},{"@type":"Offer","price":"39.99","priceCurrency":"USD","name":"Lifetime"}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><img src="./assets/icon.svg" alt="" width="28" height="28">HoursOwed</a>
+  <nav aria-label="Main"><a class="hide-sm" href="./time-card-calculator/">Free calculator</a><a class="hide-sm" href="./#pricing">Pricing</a><a class="btn small" href="https://flowlab-dev.github.io/hoursowed/app/">Try free</a></nav>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap hero-grid">
+<div>
+  <p class="eyebrow">For hourly and shift workers, caregivers, nurses</p>
+  <h1>Your hours and overtime,<br>counted right.</h1>
+  <p class="lead">Log split shifts, night shifts and unpaid breaks in a few taps. HoursOwed adds up overtime at 1.5× after 40 hours. Pro turns any pay period into a PDF you can send to your manager.</p>
+  <div class="actions">
+    <a class="btn" href="https://flowlab-dev.github.io/hoursowed/app/">Try HoursOwed free</a>
+    <a class="btn ghost" href="./time-card-calculator/">Use the free calculator</a>
+  </div>
+  <p class="muted small">Try Pro free for 7 days — no card needed. Then choose a plan or stay on Free; your data stays.</p>
+</div>
+<figure class="demo">
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="./assets/hoursowed-demo-still.webp">
+    <img src="./assets/hoursowed-demo.webp" width="432" height="1007" alt="HoursOwed: clock in, unpaid break, overtime after 40 hours, pay period report" decoding="async">
+  </picture>
+  <figcaption class="muted small">The real app, 10 seconds: clock in → overtime after 40 h → pay period report</figcaption>
+</figure>
+</div>
+<div class="wrap hero-week"><figure class="week card reveal" aria-label="Example week">
+  <figcaption class="muted small">Example week · $20/h</figcaption>
+  <table>
+    <tr><td>Mon</td><td>8:00–10:00 · 12:00–4:45</td><td>6:45</td></tr>
+    <tr><td>Tue</td><td>8:00–6:30 · 30 min break</td><td>10:00</td></tr>
+    <tr><td>Wed</td><td>8:00–6:30 · 30 min break</td><td>10:00</td></tr>
+    <tr><td>Thu</td><td>8:00–6:30 · 30 min break</td><td>10:00</td></tr>
+    <tr><td>Fri</td><td>8:00–6:30 · 30 min break</td><td>10:00</td></tr>
+    <tr><td>Sat</td><td>10:00 pm – 6:00 am</td><td>8:00</td></tr>
+  </table>
+  <div class="week-sum"><span>Regular <b>40:00</b></span><span>Overtime <b>14:45</b></span><span>Gross <b>$1,242.50</b></span></div>
+</figure></div></section>
+
+<section><div class="wrap">
+  <h2 class="reveal">Made for the weeks that don’t fit a template</h2>
+  <p class="lead reveal">Many weeks don’t fit one shift a day: split shifts, nights, unpaid breaks.</p>
+  <div class="grid-3">
+    <div class="card reveal">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h6M15 12h6M9 8v8M15 8v8"/></svg>
+      <h3>Split shifts</h3>
+      <p class="muted">Worked 8–10 in the morning and 12–4:45 in the afternoon? Add both parts to the same day. Overnight shifts count on the day they started.</p>
+    </div>
+    <div class="card reveal">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+      <h3>Overtime without math</h3>
+      <p class="muted">Time and a half after 40 hours a week, free. With Pro, daily overtime too: 1.5× after 8 hours a day, or the California setting with 2× after 12 hours (the seventh-day rule is not included).</p>
+    </div>
+    <div class="card reveal">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg>
+      <h3>Pay period report in one tap</h3>
+      <p class="muted">With Pro: a PDF file or CSV for a week, two weeks, half a month or a month, with every shift, break and total.</p>
+    </div>
+    <div class="card reveal">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="11" width="12" height="9" rx="2"/><path d="M9 11V8a3 3 0 0 1 6 0v3"/></svg>
+      <h3>Your data stays with you</h3>
+      <p class="muted">No account, no ads, no cookies. Your shifts are stored on your phone, not on our servers.</p>
+    </div>
+    <div class="card reveal">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 12h16M12 4v16"/></svg>
+      <h3>Works offline</h3>
+      <p class="muted">Add it to your home screen and log shifts with no signal at work. Install it to keep your data: Safari clears website data after 7 days without a visit.</p>
+    </div>
+    <div class="card reveal">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 7L9 18l-5-5"/></svg>
+      <h3>No weekly plans</h3>
+      <p class="muted">Free for the basics. Pro is monthly, yearly or a one-time payment, and a subscription can be cancelled any time.</p>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap"><h2 class="reveal">What it looks like</h2><p class="lead reveal">Screens from the app. The job and dates are examples.</p><div class="shots"><figure class="shot reveal"><img src="./shots/today.webp" alt="Today screen: working at Warehouse since 7:00 AM, timer at 3 hours, Unpaid break and Clock out buttons; this week 42 hours with 2 hours overtime" width="780" height="1488" loading="lazy"><figcaption>Clock in and out, unpaid breaks in one tap.</figcaption></figure><figure class="shot reveal"><img src="./shots/shifts.webp" alt="Shifts for Sep 13 – Sep 26: a split shift 7:00 AM – 12:00 PM and 12:30 PM – 5:30 PM, a running shift with 2 hours overtime" width="780" height="1488" loading="lazy"><figcaption>Split shifts, and overtime as it happens.</figcaption></figure><figure class="shot reveal"><img src="./shots/report.webp" alt="Report for Sep 13 – Sep 26: 82 hours, 80 regular, 2 overtime, $1,535.50 before taxes; by work week: 40 hours, then 42 hours with 2 overtime" width="780" height="1488" loading="lazy"><figcaption>The pay period, split by work week.</figcaption></figure><figure class="shot reveal"><img src="./shots/raise.webp" alt="Edit job screen: new hourly rate 19.75 starting 09/27/2026, overtime rule options federal, daily and California" width="780" height="1488" loading="lazy"><figcaption>A raise starts on its date; past pay stays as it was.</figcaption></figure></div></div></section>
+
+<section id="pricing"><div class="wrap">
+  <h2 class="reveal">Pricing</h2>
+  <p class="lead reveal">The time card calculator on this site is free for everyone. In the app, split shifts and weekly overtime are free; Pro adds daily overtime and pay period reports.</p>
+  <div class="price">
+    <div class="card reveal">
+      <h3>Free</h3>
+      <p class="amount">$0</p>
+      <ul><li>Split and overnight shifts</li><li>Unpaid breaks</li><li>Weekly overtime at 1.5× after 40 hours</li></ul>
+      <a class="btn ghost" href="https://flowlab-dev.github.io/hoursowed/app/">Open the app</a>
+    </div>
+    <div class="card reveal">
+      <h3>Pro monthly</h3>
+      <p class="amount">$3.99<span class="muted small"> / month</span></p>
+      <ul><li>Daily overtime and double time</li><li>PDF and CSV for any pay period</li><li>Renews monthly until you cancel</li></ul>
+      <a class="btn ghost" href="https://flowlab-dev.github.io/hoursowed/app/">Start monthly</a>
+    </div>
+    <div class="card best reveal">
+      <h3>Pro yearly <span class="badge">Save 58%</span></h3>
+      <p class="amount">$19.99<span class="muted small"> / year</span></p>
+      <ul><li>Everything in Pro</li><li>$1.67 a month</li><li>Renews yearly until you cancel</li></ul>
+      <a class="btn" href="https://flowlab-dev.github.io/hoursowed/app/">Start yearly</a>
+    </div>
+    <div class="card reveal">
+      <h3>Lifetime</h3>
+      <p class="amount">$39.99<span class="muted small"> once</span></p>
+      <ul><li>Everything in Pro, including updates</li><li>One payment, no renewals</li><li>For the web app; an App Store version will be sold separately</li></ul>
+      <a class="btn ghost" href="https://flowlab-dev.github.io/hoursowed/app/">Buy once</a>
+    </div>
+  </div>
+  <p class="muted small">Try Pro free for 7 days — no card needed. Then choose a plan or stay on Free; your data stays. Prices in USD. Payments are handled by Gumroad, which acts as the seller of record and adds sales tax or VAT where it applies.</p>
+</div></section>
+
+<section><div class="narrow">
+  <h2 class="reveal">Questions</h2>
+  <details><summary>Do I need an account?</summary><p>No. Open the app and start logging; add your hourly rate whenever you like. After you buy Pro, Gumroad shows your license key on the receipt page and emails it to you. Paste it into the app to unlock Pro.</p></details>
+  <details><summary>Where are my shifts stored?</summary><p>On your device only. We do not run a server that stores your hours. Add the app to your home screen so Safari does not clear its data, and export a CSV from time to time as a backup.</p></details>
+  <details><summary>How do I cancel?</summary><p>Use the “Manage membership” link in your Gumroad receipt email, or “Manage or cancel subscription” in the app’s Settings after you enter your key. You keep Pro until the end of the period you paid for. Lifetime is a one-time payment with nothing to cancel.</p></details>
+  <details><summary>What if my hourly rate changes?</summary><p>Set the new rate and the date it starts. Earlier pay periods keep the rate you had then; nothing is recalculated backwards.</p></details>
+  <details><summary>I travel for work. Will my hours shift?</summary><p>No. Pick your work time zone once, and trips to other time zones do not move shifts in past weeks.</p></details>
+  <details><summary>Which overtime rules does it follow?</summary><p>Weekly overtime after 40 hours at 1.5×, as in the federal FLSA. With Pro, daily overtime: 1.5× after 8 hours a day, or the California setting with 2× after 12 hours. The seventh-day rule and other special state rules are not calculated. It is a tracking tool, not legal or payroll advice.</p></details>
+</div></section>
+
+</main>
+<footer class="foot"><div class="wrap">
+  <span>© 2026 Flow Lab</span>
+  <span><a href="./time-card-calculator/">Time card</a> · <a href="./biweekly-time-card-calculator/">Biweekly</a> · <a href="./overtime-calculator-california/">California overtime</a> · <a href="./split-shift-calculator/">Split shifts</a> · <a href="./privacy/">Privacy</a> · <a href="./terms/">Terms</a> · <a href="mailto:trading.flowlab@gmail.com">trading.flowlab@gmail.com</a></span>
+</div></footer>
+<script data-goatcounter="https://hoursowed.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+  if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  } else document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+</script>
+</body>
+</html>
