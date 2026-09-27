@@ -1,0 +1,43 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Release readiness audit — fieldcrew</title><style>
+:root{--bg:#f7f8f8;--card:#fff;--ink:#111827;--muted:#4b5563;--line:#d9dee0;--accent:#0f766e}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1413;--card:#17201f;--ink:#ecf1f0;--muted:#a7b4b2;--line:#2a3634;--accent:#5eead4}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:920px;margin:0 auto;padding:32px 16px 48px}h1{font-size:28px;line-height:1.2;margin:0 0 12px}h2{font-size:20px;margin:28px 0 8px}
+p{margin:6px 0;color:var(--muted)}p b{color:var(--ink)}.note{border:1.5px solid var(--accent);border-radius:12px;padding:10px 14px;color:var(--ink);margin-bottom:18px}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;margin:16px 0;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}th{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+td.lvl{width:1.5em}ol{background:var(--card);border-radius:14px;padding:14px 14px 14px 36px}li{margin:4px 0}
+@media (max-width:640px){table,thead,tbody,tr,td,th{display:block}thead{display:none}tr{border-bottom:1px solid var(--line);padding:8px 4px}td{border:0;padding:2px 8px}}
+</style></head><body><main><p class=note>Sample report on an invented project (FieldCrew) — this is what you get for a real app.</p><h1>Release readiness audit — fieldcrew</h1>
+<p>Stack: Expo ~53.0.9 · React Native 0.79.2 · TypeScript · tests: 0 · lockfile: yarn.lock</p>
+<p>iOS bundle id: com.example.fieldcrew · Android package: com.example.fieldcrew</p>
+<p><b>3 blocking · 10 to fix · 3 notes.</b> This audit reads the project files only; nothing was installed or run.</p>
+<table><thead><tr><th></th><th>Area</th><th>Finding</th><th>Fix</th></tr></thead><tbody>
+<tr><td class=lvl>🔴</td><td>Stack</td><td>Expo SDK 53 is 4 versions behind the current SDK 57. Store builds now need recent Xcode/iOS SDK and Android target API levels; old SDKs usually cannot meet them.</td><td>Upgrade SDK step by step (53→57), fix breaking changes, retest.</td></tr>
+<tr><td class=lvl>🔴</td><td>Security</td><td>.env is in the project and .gitignore does not exclude .env files.</td><td>Remove it from the repository, rotate the keys, add .env* to .gitignore.</td></tr>
+<tr><td class=lvl>🔴</td><td>Security</td><td>Possible Stripe live secret key in src/billing/config.ts.</td><td>Move it to the server or EAS secrets and rotate it — anything in the app bundle can be read by anyone.</td></tr>
+<tr><td class=lvl>🟡</td><td>Config</td><td>iOS bundle identifier &quot;com.example.fieldcrew&quot; looks like a placeholder.</td><td>Choose the final id before the first store upload — it cannot be changed later.</td></tr>
+<tr><td class=lvl>🟡</td><td>Config</td><td>Android package &quot;com.example.fieldcrew&quot; looks like a placeholder.</td><td>Choose the final id before the first store upload — it cannot be changed later.</td></tr>
+<tr><td class=lvl>🟡</td><td>Build</td><td>No eas.json: cloud builds are not set up.</td><td>Add EAS build profiles (development / preview / production).</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>Icon is 512×512; the store needs 1024×1024.</td><td>Export the icon at 1024×1024.</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>Icon PNG has an alpha channel; App Store icons must not be transparent.</td><td>Flatten the icon onto a solid background.</td></tr>
+<tr><td class=lvl>🟡</td><td>Google Play</td><td>No Android adaptive icon.</td><td>Add adaptiveIcon foreground + background colour.</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>Export compliance (encryption) is not declared, so App Store Connect asks on every upload.</td><td>Set ios.config.usesNonExemptEncryption (usually false for HTTPS-only apps).</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>expo-camera is used but the iOS permission text is not set (NSCameraUsageDescription); generic default texts are a common rejection reason (guideline 5.1.1).</td><td>Write a specific purpose string for each permission.</td></tr>
+<tr><td class=lvl>🟡</td><td>App Store</td><td>expo-location is used but the iOS permission text is not set (NSLocationWhenInUseUsageDescription); generic default texts are a common rejection reason (guideline 5.1.1).</td><td>Write a specific purpose string for each permission.</td></tr>
+<tr><td class=lvl>🟡</td><td>Security</td><td>app config &quot;extra&quot; has supabaseServiceKey — values in extra ship inside the app.</td><td>Keep only public values there.</td></tr>
+<tr><td class=lvl>⚪</td><td>Build</td><td>Install script postinstall: &quot;patch-package&quot; (common tool).</td><td></td></tr>
+<tr><td class=lvl>⚪</td><td>App Store</td><td>No app-level privacy manifest declared (Expo adds manifests for its own modules).</td><td>Declare data collection / required-reason APIs if the app or its SDKs use them.</td></tr>
+<tr><td class=lvl>⚪</td><td>Quality</td><td>No automated tests found.</td><td>Add tests for the key logic before changes.</td></tr>
+</tbody></table>
+<p>Estimated work to a store-ready build: <b>about 21 h</b> (fixes above + EAS setup and first builds). Store accounts (Apple Developer, Google Play) and publishing stay on the owner's accounts.</p>
+<h2>Plan, step by step</h2>
+<ol>
+<li>Remove keys and secrets from the code and repository and rotate them (before anything else).</li>
+<li>Upgrade Expo SDK and dependencies, fix breaking changes, run the app.</li>
+<li>Fix the 🟡 items: permission texts, icons, encryption, build settings.</li>
+<li>Set up EAS cloud builds and make test builds for iOS and Android.</li>
+<li>Testing on your devices: TestFlight (iOS) and internal testing (Google Play).</li>
+<li>Submission to App Store and Google Play review from your accounts; answering reviewer notes.</li>
+</ol></main></body></html>
