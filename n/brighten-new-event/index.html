@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>New event in one minute — sketch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fbfaf7;--ink:#14130f;--muted:#6f6b60;--line:rgba(20,19,15,.1);--card:#fff;--acc:#ffc400;--acc-ink:#4a3d00;--ai:#fff4cc;--ok:#0f7a55;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#14130f;--ink:#f3f1ea;--muted:#a7a295;--line:rgba(255,255,255,.12);--card:#1e1c17;--ai:#3a3000;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Outfit,system-ui,sans-serif}
+.note{background:#14130f;color:#f3f1ea;font-size:12.5px;text-align:center;padding:8px 14px}
+.wrap{max-width:440px;margin:0 auto;padding:18px 18px 110px}
+.top{display:flex;align-items:center;gap:10px;margin:4px 0 22px}
+.logo{font-weight:700;font-size:19px;letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
+.logo i{width:15px;height:17px;background:var(--acc);border:2px solid var(--ink);border-radius:9px 9px 3px 3px;display:inline-block}
+.steps{margin-left:auto;display:flex;gap:6px}
+.steps b{width:26px;height:4px;border-radius:4px;background:var(--line)}
+.steps b.on{background:var(--ink)}
+h1{font-size:30px;line-height:1.1;letter-spacing:-.02em;margin:0 0 8px;font-weight:600}
+.sub{color:var(--muted);margin:0 0 20px}
+textarea{width:100%;min-height:118px;border:1.5px solid var(--line);border-radius:18px;background:var(--card);color:var(--ink);font:inherit;font-size:17px;padding:16px;resize:none;outline:none}
+textarea:focus{border-color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 22px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 13px;font:inherit;font-size:13.5px;cursor:pointer}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;border:0;border-radius:999px;background:var(--acc);color:var(--acc-ink);font:inherit;font-weight:600;font-size:16.5px;cursor:pointer}
+.btn.ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:12px 18px calc(12px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.bar .in{max-width:440px;margin:0 auto}
+.field{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+.field label{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);font-weight:500;letter-spacing:.02em;text-transform:uppercase}
+.field input{width:100%;border:0;background:transparent;color:var(--ink);font:inherit;font-size:17px;font-weight:500;padding:4px 0 0;outline:none}
+.tag{margin-left:auto;background:var(--ai);color:var(--acc-ink);border-radius:999px;padding:2px 8px;font-size:11.5px;text-transform:none;letter-spacing:0;font-weight:600}
+@media (prefers-color-scheme:dark){.tag{color:#ffd84d}}
+.cover{height:92px;border-radius:12px;margin-top:8px;background:linear-gradient(135deg,#ffc400 0%,#ffe27a 45%,#f6efe0 100%);display:flex;align-items:flex-end;padding:10px 12px;font-weight:700;color:#4a3d00}
+h2{font-size:15px;margin:22px 0 10px;font-weight:600}
+.later{display:grid;gap:8px}
+.opt{display:flex;align-items:center;gap:12px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:12px 14px}
+.opt span{color:var(--muted);font-size:13.5px}
+.opt b{font-weight:600}
+.opt em{margin-left:auto;font-style:normal;font-weight:600;font-size:13.5px}
+.done{text-align:center;padding-top:30px}
+.check{width:64px;height:64px;border-radius:50%;background:var(--acc);display:grid;place-items:center;margin:0 auto 18px;font-size:30px;color:var(--acc-ink)}
+.link{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:18px 0;font-weight:500;word-break:break-all}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{font-size:13px;color:var(--muted);margin:6px 2px 0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="note">Sketch for the Brighten pilot by Flow Lab · sample data from the Brighten design · not connected to anything</div>
+<div class="wrap">
+  <div class="top"><div class="logo"><i></i>brighten</div><div class="steps"><b class="on" id="s1"></b><b id="s2"></b><b id="s3"></b></div></div>
+
+  <section id="step1">
+    <h1>New event</h1>
+    <p class="sub">Paste a Luma or Eventbrite link, or say it in one sentence. Brighty drafts the page. You check four things.</p>
+    <textarea id="say" placeholder="Founders Coffee next Tuesday 8:30am at Blueprint Café, Newark. Free, runs if 20 people commit."></textarea>
+    <div class="chips">
+      <button class="chip" data-ex="Founders Coffee next Tuesday 8:30am at Blueprint Café, Newark. Free, runs if 20 people commit.">☕ One sentence</button>
+      <button class="chip" data-ex="https://lu.ma/founders-coffee-newark">🔗 Luma link</button>
+    </div>
+  </section>
+
+  <section id="step2" hidden>
+    <h1>Check four things</h1>
+    <p class="sub">Everything Brighty guessed is marked. Change anything, then publish.</p>
+    <div class="field"><label>Title <span class="tag">✦ filled by Brighty</span></label><input id="f-title" value="Founders Coffee"></div>
+    <div class="row">
+      <div class="field"><label>Date <span class="tag">✦</span></label><input id="f-date" value="Tue, Aug 11"></div>
+      <div class="field"><label>Time <span class="tag">✦</span></label><input id="f-time" value="8:30 AM"></div>
+    </div>
+    <div class="field"><label>Where <span class="tag">✦ filled by Brighty</span></label><input id="f-place" value="Blueprint Café, Newark, NJ"></div>
+    <div class="field"><label>Cover <span class="tag">✦ Chapter style</span></label><div class="cover">Founders Coffee · Newark Operators</div></div>
+    <p class="hint">Hosted under <b>Newark Operators</b> · a Chapter of TechUnited:NJ · its Standards apply</p>
+    <h2>Add now or later (optional)</h2>
+    <div class="later">
+      <div class="opt"><b>Minimum to run</b><span>runs if 20 commit</span><em>✦ found in your sentence</em></div>
+      <div class="opt"><b>Tickets</b><span>Free · capacity 20</span><em>✦</em></div>
+      <div class="opt"><b>Agenda & speakers</b><span>add session by session</span><em>+ Add</em></div>
+      <div class="opt"><b>Sponsors</b><span>tiers you name</span><em>+ Add</em></div>
+    </div>
+  </section>
+
+  <section id="step3" hidden class="done">
+    <div class="check">✓</div>
+    <h1>It's live</h1>
+    <p class="sub">Founders Coffee · Tue, Aug 11 · 8:30 AM. It goes ahead once 20 people commit; if not, everyone is released on the decide-by date.</p>
+    <div class="link">joinbrighten.com/newark-operators/founders-coffee</div>
+    <button class="btn ghost" id="again">Add the agenda now</button>
+  </section>
+</div>
+<div class="bar"><div class="in"><button class="btn" id="go">Draft it</button></div></div>
+<script>
+const $ = (s) => document.querySelector(s);
+const show = (n) => {
+  [1, 2, 3].forEach((i) => { $('#step' + i).hidden = i !== n; $('#s' + i).classList.toggle('on', i <= n); });
+  $('#go').textContent = n === 1 ? 'Draft it' : n === 2 ? 'Publish' : 'Share the link';
+  window.scrollTo(0, 0);
+  history.replaceState(null, '', '#' + n);
+};
+document.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => { $('#say').value = c.dataset.ex; $('#say').focus(); }));
+let step = 1;
+$('#go').addEventListener('click', () => { if (step === 1 && !$('#say').value.trim()) $('#say').value = $('#say').placeholder; step = Math.min(step + 1, 3); show(step); });
+$('#again').addEventListener('click', () => { step = 2; show(2); });
+const start = Number(location.hash.slice(1)) || 1; step = start; show(start);
+</script>
+</body>
+</html>
