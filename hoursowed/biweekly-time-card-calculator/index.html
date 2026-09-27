@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biweekly Time Card Calculator with Lunch Breaks — Free</title>
+<meta name="description" content="Free biweekly time card calculator: two weeks of shifts with lunch breaks, overtime counted per workweek as the FLSA requires, total hours and gross pay.">
+<link rel="canonical" href="https://flowlab-dev.github.io/hoursowed/biweekly-time-card-calculator/">
+<meta property="og:type" content="website"><meta property="og:title" content="Biweekly Time Card Calculator with Lunch Breaks — Free"><meta property="og:description" content="Free biweekly time card calculator: two weeks of shifts with lunch breaks, overtime counted per workweek as the FLSA requires, total hours and gross pay."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/biweekly-time-card-calculator/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b0f0e" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../assets/icon-180.png">
+<link rel="stylesheet" href="../assets/style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Biweekly Time Card Calculator with Lunch Breaks","url":"https://flowlab-dev.github.io/hoursowed/biweekly-time-card-calculator/","applicationCategory":"BusinessApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../"><img src="../assets/icon.svg" alt="" width="28" height="28">HoursOwed</a>
+  <nav aria-label="Main"><a class="hide-sm" href="../time-card-calculator/">Free calculator</a><a class="hide-sm" href="../#pricing">Pricing</a><a class="btn small" href="https://flowlab-dev.github.io/hoursowed/app/">Try free</a></nav>
+</div></header>
+<main id="main">
+<section class="hero"><div class="wrap">
+  <p class="eyebrow">Free · two weeks · no sign-up</p>
+  <h1>Biweekly time card calculator</h1>
+  <p class="lead">Enter two weeks of start and end times, lunch breaks included. Overtime is worked out for each week separately, the way federal law counts it, and you get total hours and gross pay for the whole pay period.</p>
+  <form class="calc" id="calc" onsubmit="return false" aria-label="Time card" data-weeks="2" data-daily="0" data-key="timecard-site-biweekly-v1">
+    <p class="print-only"><b>Time card</b> · <span id="print-date"></span></p>
+    <div class="settings">
+      <label class="f">Hourly rate, USD<input name="rate" type="number" inputmode="decimal" min="0" step="0.01" placeholder="20.00"></label>
+      <label class="f">Overtime after, hours a week<input name="weeklyAfter" type="number" inputmode="numeric" min="1" max="80" step="1"></label>
+      <label class="f">Overtime pay rate<select name="multiplier"><option value="1.5">1.5×</option><option value="2">2×</option></select></label>
+      <label class="f">Week starts on<select name="weekStart"><option value="0">Sunday</option><option value="1">Monday</option><option value="2">Tuesday</option><option value="3">Wednesday</option><option value="4">Thursday</option><option value="5">Friday</option><option value="6">Saturday</option></select></label>
+      <div class="daily">
+        <span id="daily-l">Daily overtime after, hours <span class="small">(2× after 12)</span></span>
+        <div class="row">
+          <label class="check"><input type="checkbox" name="dailyOn" aria-label="Count daily overtime"></label>
+          <input id="daily-after" name="dailyAfter" type="number" inputmode="numeric" min="1" max="24" step="1" aria-labelledby="daily-l">
+        </div>
+      </div>
+    </div>
+
+    <div id="days"></div>
+    <p class="err" id="err" hidden>Some times could not be read — check the fields marked in red.</p>
+
+    <div class="results" aria-live="polite">
+      <div class="stat"><span class="muted small">Total hours</span><b id="r-total">0:00</b><span class="muted small" id="r-total-dec">0.00 h</span></div>
+      <div class="stat"><span class="muted small">Regular</span><b id="r-reg">0:00</b></div>
+      <div class="stat"><span class="muted small">Overtime</span><b id="r-ot">0:00</b></div>
+      <div class="stat" id="s-dbl" hidden><span class="muted small">Double time</span><b id="r-dbl">0:00</b></div>
+      <div class="stat pay"><span class="small">Gross pay</span><b id="r-pay">—</b><span class="small" id="r-pay-note"></span></div>
+    </div>
+    <div class="tools">
+      <button type="button" class="btn ghost small" id="print">Print or save PDF</button>
+      <button type="button" class="btn ghost small" id="copy">Copy for spreadsheet</button>
+      <button type="button" class="btn ghost small" id="csv">Download CSV</button>
+      <button type="button" class="btn ghost small" id="clear">Clear week</button>
+    </div>
+    <p class="muted small no-print">Your times stay in this browser only. Nothing is sent to us.</p>
+  </form>
+
+  <div class="cta-band">
+    <p><b>Doing this every week?</b> HoursOwed keeps every shift on your phone and adds up overtime as you go. With Pro, it sends any pay period to your manager as a PDF.</p>
+    <a class="btn" href="https://flowlab-dev.github.io/hoursowed/app/">Try HoursOwed</a>
+  </div>
+
+</div></section>
+
+<section><div class="narrow prose">
+  <h2>Why each week is counted on its own</h2>
+  <p>Under the Fair Labor Standards Act, overtime is counted for each workweek on its own: averaging hours over two or more weeks is not permitted (<a href="https://www.dol.gov/agencies/whd/fact-sheets/23-flsa-overtime-pay" rel="noopener">U.S. Department of Labor, Fact Sheet #23</a>). If you work 50 hours in week 1 and 30 hours in week 2, you are owed 10 hours of overtime for week 1, even though the pay period adds up to 80 hours.</p>
+  <p>A workweek is a fixed period of seven days in a row. It does not have to start on Sunday or Monday, so choose the day your employer’s week starts on in <b>Week starts on</b>.</p>
+
+  <h2>Lunch and other unpaid breaks</h2>
+  <p>Enter unpaid breaks in minutes for each day, for example 30 for a lunch break. They are taken off that day’s hours. If you clock out and back in for lunch, you can enter the day as two shifts with <b>Add split shift</b> instead; the result is the same.</p>
+
+  <h2>Questions</h2>
+  <details><summary>My pay period is semi-monthly, not biweekly. Can I use this?</summary><p>Semi-monthly pay periods (for example, the 1st–15th) do not line up with workweeks. Overtime is still counted per full workweek, even when a week runs into the next pay period, so enter whole workweeks here and ask your employer which paycheck each week’s overtime goes on.</p></details>
+  <details><summary>Does it work for night shifts?</summary><p>Yes. A shift that ends after midnight, like 10 pm – 6 am, counts on the day it started.</p></details>
+  <details><summary>Is this payroll advice?</summary><p>No. It is an estimate to check your own hours, not legal or payroll advice. Bonuses, shift differentials and rounding rules can change what you are paid.</p></details>
+  <p class="small">More calculators: <a href="../time-card-calculator/">weekly time card</a> · <a href="../overtime-calculator-california/">California overtime</a> · <a href="../split-shift-calculator/">split shifts</a> · <a href="../overtime-calculator-texas/">Texas</a> · <a href="../overtime-calculator-florida/">Florida</a> · <a href="../overtime-calculator-new-york/">New York</a></p>
+</div></section>
+<script type="module" src="../assets/calculator.js"></script>
+
+</main>
+<footer class="foot"><div class="wrap">
+  <span>© 2026 Flow Lab</span>
+  <span><a href="../time-card-calculator/">Time card</a> · <a href="../biweekly-time-card-calculator/">Biweekly</a> · <a href="../overtime-calculator-california/">California overtime</a> · <a href="../split-shift-calculator/">Split shifts</a> · <a href="../privacy/">Privacy</a> · <a href="../terms/">Terms</a> · <a href="mailto:trading.flowlab@gmail.com">trading.flowlab@gmail.com</a></span>
+</div></footer>
+<script data-goatcounter="https://hoursowed.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+  if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  } else document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+</script>
+</body>
+</html>
