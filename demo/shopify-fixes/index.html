@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopify product page fixes — before → after · Flow Lab demo</title>
+<meta name="description" content="Demo: typical Shopify product page fixes on an invented store — right-sized photos, correct sale badges, size buttons, sticky Add to cart, plus a bulk product import check.">
+<style>
+  :root { --bg:#f6f5f2; --card:#fff; --ink:#1d2a30; --muted:#667077; --line:#e6e3dd; --bad:#c2410c; --good:#15803d; --accent:#e96f3a; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111416; --card:#1a1e21; --ink:#e9ecee; --muted:#9aa4aa; --line:#2a3035; --bad:#fb923c; --good:#4ade80; } }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,"Segoe UI",Roboto,Inter,sans-serif; background:var(--bg); color:var(--ink); }
+  .wrap { max-width:1100px; margin:0 auto; padding:48px 20px 64px; }
+  .tag { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:800; }
+  h1 { font-size:clamp(30px,4.6vw,48px); letter-spacing:-.03em; margin:10px 0 12px; line-height:1.05; }
+  .lead { color:var(--muted); font-size:18px; line-height:1.55; max-width:760px; margin:0; }
+  .kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:30px 0 36px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; }
+  .kpi small { color:var(--muted); font-weight:600; }
+  .kpi div { font-size:26px; font-weight:800; margin-top:6px; letter-spacing:-.02em; }
+  .kpi s { color:var(--bad); text-decoration:none; font-size:18px; }
+  .kpi b { color:var(--good); }
+  .phones { display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start; }
+  .ph h3 { margin:0 0 10px; font-size:16px; }
+  .frame { width:410px; max-width:100%; aspect-ratio:410/780; border-radius:28px; border:10px solid #0d1113; overflow:hidden; background:#fff; margin:0 auto; }
+  .frame iframe { width:390px; height:760px; border:0; display:block; }
+  ul.fix { list-style:none; padding:0; margin:14px 0 0; display:grid; gap:8px; }
+  ul.fix li { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; font-size:14px; line-height:1.45; }
+  ul.fix b { display:block; }
+  .bad b { color:var(--bad); } .good b { color:var(--good); }
+  h2 { font-size:28px; letter-spacing:-.02em; margin:54px 0 8px; }
+  .sub { color:var(--muted); margin:0 0 16px; line-height:1.55; }
+  pre { background:#0d1113; color:#d7e0e5; border-radius:14px; padding:18px; overflow:auto; font-size:13px; line-height:1.6; }
+  pre .e { color:#fca5a5; } pre .ok { color:#86efac; }
+  .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .grid div { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; font-size:14px; line-height:1.5; }
+  .grid b { display:block; margin-bottom:4px; font-size:15px; }
+  .note { font-size:13px; color:var(--muted); margin-top:26px; line-height:1.6; }
+  @media (max-width:760px) { .kpis, .phones, .grid { grid-template-columns:1fr; } .frame { max-width:320px; } .frame iframe { transform:scale(.82); transform-origin:0 0; width:476px; height:927px; } }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tag">Flow Lab · Shopify demo</div>
+  <h1>Shopify product page fixes: before → after</h1>
+  <p class="lead">The small fixes store owners ask for most often, shown on one invented store (North Ridge Outfitters, a Dawn-style product page). Numbers are measured on these two demo pages with the same phone test I'd run on your store.</p>
+
+  <div class="kpis">
+    <div class="kpi"><small>Product photo file</small><div><s>2,400 px PNG</s> → <b>900 px WebP</b></div></div>
+    <div class="kpi"><small>Main photo visible on slow 4G, this demo page</small><div><s>32.8 s</s> → <b>0.4 s</b></div></div>
+    <div class="kpi"><small>Page width on a 390 px phone</small><div><s>543 px</s> → <b>390 px</b></div></div>
+  </div>
+
+  <div class="phones">
+    <div class="ph"><h3>Before</h3><div class="frame"><iframe src="before/" title="Product page before the fixes" loading="lazy"></iframe></div>
+      <ul class="fix bad">
+        <li><b>Camera-size photos</b>2,400 px PNGs, 2 MB each, the same file for phones and desktops.</li>
+        <li><b>Sale price backwards</b>Compare-at price lower than the price, so the "discount" looks like a price rise.</li>
+        <li><b>Size chart breaks the layout</b>A wide table pushes the page to 543 px — the whole page slides sideways.</li>
+        <li><b>Add to cart far down</b>Long text and a dropdown before the button; sold-out sizes not marked.</li>
+      </ul></div>
+    <div class="ph"><h3>After</h3><div class="frame"><iframe src="after/" title="Product page after the fixes" loading="lazy"></iframe></div>
+      <ul class="fix good">
+        <li><b>Right-sized WebP photos</b>900 px and 450 px versions, the phone gets the small one; width and height set, so nothing jumps.</li>
+        <li><b>Correct sale badge</b>$79 with $89 crossed out and "Save $10".</li>
+        <li><b>Size buttons + size guide in a drawer</b>Sold-out size crossed out, low stock shown, the table scrolls inside itself.</li>
+        <li><b>Sticky Add to cart</b>Always under the thumb, with a free-shipping progress bar; delivery and returns next to the price; "Complete the look" for a bigger order.</li>
+      </ul></div>
+  </div>
+
+  <h2>Bulk product upload, checked before anything is sent</h2>
+  <p class="sub">A client's spreadsheet goes through a check first. Here is the real output for a sample file with four typical mistakes — nothing reaches the store until they're fixed.</p>
+<pre>$ python3 shopify_products.py products-client.csv
+3 product(s), 5 variant(s) in products-client.csv
+<span class="e">❌ fix the CSV first (nothing was sent):
+  - row 2: Compare At Price 79.00 must be higher than Price 89.00 (or empty)
+  - row 4: «trail-runner-shoe» variant ['42'] is listed twice
+  - row 5: image «http://example.com/img/beanie.jpg» must be a public https:// link
+  - row 6: Price «1a9» — a number like 19.99</span>
+<span class="ok"># after the fixes: products are created or updated in one pass through the Shopify Admin API,
+# existing variants keep their stock and links; a report lists every product that changed.</span></pre>
+
+  <h2>Typical 1–3 hour Shopify jobs</h2>
+  <div class="grid">
+    <div><b>Speed</b>Resize and convert product and banner images, lazy-load below the fold, remove unused apps' scripts.</div>
+    <div><b>Product page</b>Variant buttons, correct sale badges, size guides, sticky Add to cart, delivery and returns info.</div>
+    <div><b>Mobile layout</b>Find what makes the page wider than the phone and fix it in the theme, not with a hack.</div>
+    <div><b>Upsells</b>"Complete the look", cart cross-sells, a free-shipping bar — with the store's own products.</div>
+    <div><b>Catalogue</b>Bulk upload or update products from a spreadsheet, with a check and a change report.</div>
+    <div><b>Safe changes</b>Work on a duplicate theme, a preview link to check, then publish; the old theme stays as a backup.</div>
+  </div>
+
+  <p class="note">Demo on an invented store: products, prices and photos are made up. Measured with a headless phone test (iPhone 390×844, slow 4G 1.6 Mbit/s, 4× CPU slowdown, 3 runs, median) on 28 Sep 2026, pages served locally. A real Shopify page also loads the theme's and apps' scripts, so real numbers will be higher; the photo sizes and the layout fixes carry over as they are.</p>
+</div>
+</body>
+</html>
