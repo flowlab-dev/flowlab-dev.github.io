@@ -5,8 +5,8 @@
 // build, and a new build installs a new cache with fresh copies of the rest.
 // Requests to other sites (Lemon Squeezy) are never touched.
 const PREFIX = 'hoursowed-';
-const CACHE = PREFIX + 'a7c0f3f2c0d2';
-const FILES = ["./","./expo/static/js/web/index-3bbc1ab9c54dc8ce2922c25b3c61fd14.js","./apple-touch-icon.png","./favicon.ico","./icon-192.png","./icon-512.png","./manifest.webmanifest","./metadata.json"];
+const CACHE = PREFIX + 'ebeb4cd56461';
+const FILES = ["./","./apple-touch-icon.png","./expo/static/js/web/index-e1cfe7b3efd1924809750a4cd685dca3.js","./favicon.ico","./icon-192.png","./icon-512.png","./manifest.webmanifest","./metadata.json"];
 const SHELL = new URL('./', self.location).href;
 
 self.addEventListener('install', (e) => {
