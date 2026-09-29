@@ -3249,13 +3249,13 @@ html.shift-done .col .end { opacity: 1; }
       var m = runs[k].metrics, el = document.querySelector('.col.' + k + ' [data-k="lost"]');
       el.innerHTML = '<span>' + m.ordersLost + ' of ' + m.ordersPlaced + ' orders</span> <span>· ' + eur(m.lostRevenueEur) + '</span>';
       var note = document.querySelector('.col.' + k + ' .rows-note');
-      note.textContent = (m.ordersSaved + m.ordersParkedForReview) + ' different orders' + (m.duplicateRows ? ', ' + m.duplicateRows + ' of the rows are repeats' : ', no repeats');
+      note.textContent = m.ordersSaved + ' different orders' + (m.duplicateRows ? ', ' + m.duplicateRows + ' of the rows are repeats' : ', no repeats') + (m.ordersParkedForReview ? ' · ' + m.ordersParkedForReview + ' parked for a human to check' : '');
     });
     function paint(p) {
       var upto = Math.min(n, Math.round(p * n));
       ['bad', 'good'].forEach(function (k) {
         var log = runs[k].runLog.slice(0, upto), c = { saved: 0, failed: 0, alerts: 0 };
-        log.forEach(function (e) { c.saved += e.ordersSaved + e.ordersParked; if (e.status === 'error') c.failed += 1; c.alerts += e.alerts; });
+        log.forEach(function (e) { c.saved += e.ordersSaved; if (e.status === 'error') c.failed += 1; c.alerts += e.alerts; });
         Object.keys(c).forEach(function (key) { document.querySelector('.col.' + k + ' [data-k="' + key + '"]').textContent = c[key]; });
       });
       var last = runs.bad.runLog[Math.max(0, upto - 1)];
