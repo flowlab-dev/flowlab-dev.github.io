@@ -225,7 +225,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
  .article{grid-template-columns:1fr;gap:12px;padding-top:72px}.article .kicker{position:static}}
 @media (max-width:640px){.case-hero h1{font-size:9.6vw}.gallery{grid-template-columns:1fr}.gallery .frame:only-child{grid-column:auto}.kfacts div{padding:20px 12px 20px 0}.kfacts div+div{padding-left:12px}.kfacts div:nth-child(odd){padding-left:0;border-left:0}
  .article p{font-size:17px}.article p:first-child{font-size:18.5px}.nextstep .tiles{grid-template-columns:1fr}}
+
+/* ---- v3 case scenes ---- */
+.kicker{text-transform:none;letter-spacing:0;font:500 14px/1 var(--mono)}
+h1{letter-spacing:-.04em}
+@media (min-width:1024px){
+  html.scenes .case-hero .shot{transform-origin:50% 0;will-change:transform}
+  html.scenes .fig .frame{will-change:clip-path,transform}
+}
 </style>
+<script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
+
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -238,7 +248,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
 <main id="main">
 <header class="case-hero"><div class="wrap">
   <a class="back" href="/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Flow Lab</a>
-  <div><span class="eyebrow">Case study &middot; self-initiated demo</span></div>
   <h1>Moving a database to PostgreSQL, with a report that proves nothing was lost</h1>
   <p class="lede">A migration script plus a verification report: row counts and checksums for every table, column checks, foreign keys and key sequences.</p>
   <p class="note"><b>Self-initiated demo - not client work.</b> Built on the open Chinook sample database (MIT licence); no client data. Every number on this page comes from the demo itself, which you can open and try.</p>
@@ -247,7 +256,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
   <div class="kfacts" style="--n:3"><div class="reveal" style="--d:0"><b>11 tables</b><span>and 11 foreign keys, all matching</span></div><div class="reveal" style="--d:1"><b>15,607</b><span>rows moved and verified</span></div><div class="reveal" style="--d:2"><b>six</b><span>kinds of planted damage, each one caught</span></div></div>
 </div></header>
 
-<section class="article wrap" style="padding-bottom:24px"><div class="kicker">The case</div><div><p><span class="lead-in">Task.</span> Move a database to PostgreSQL in a way the owner can check for themselves: every row and every cent is there, and a report shows it.</p><p><span class="lead-in">Solution.</span> Structure and data move in one transaction, so a failure rolls everything back and never leaves half a database. The old database is opened read-only. A verification report then compares both sides table by table: row counts and a checksum of every value, per-column checks (empty values, sums, text length, date ranges), foreign keys validated on every row, indexes and key sequences.</p><p><span class="lead-in">Delivered.</span> 11 tables, 15,607 rows, 11 foreign keys and 10 indexes, all matching. The report was tested too. The data was damaged in six ways (one cent in a total, a lost row, one changed letter, a date off by a second, an extra row, a reset key sequence), and each time the report named the table and showed the first row that differs. It opens in a browser or on a phone and prints to PDF.</p><p><span class="lead-in">Between two PostgreSQL servers.</span> The same check also works from one PostgreSQL instance to another. On a test copy of Chinook it compared the row count and an MD5 checksum of every value in all 11 tables and counted orphaned rows for each of the 11 foreign keys, and everything matched. It also caught a deleted row, an orphaned row and a dropped foreign key that were planted on purpose. On a live server the move is done with pg_dump and pg_restore: data first, indexes next, foreign keys last, so PostgreSQL checks every key against every row, and the source is never written to. The plan below shows the steps.</p><figure style="margin:8px 0 20px"><img src="/img/work/db-migration-pg-plan.webp" width="1600" height="630" alt="How a move between two PostgreSQL servers is done: before the move, the move itself, and the validation report at the end." loading="lazy" decoding="async" style="width:100%;height:auto;border:1px solid var(--line);border-radius:var(--r,12px);background:#fff"><figcaption style="font-size:14px;color:var(--muted);margin-top:8px">How a move between two PostgreSQL servers is done: before the move, the move itself, and the validation report at the end.</figcaption></figure><p>Demo on the open Chinook sample database (MIT licence); no client. On a real project the first stage is a test migration of your database with this report, before anything changes on the live system.</p></div></section>
+<section class="article wrap" style="padding-bottom:24px"><div class="kicker">The case</div><div><p><span class="lead-in">Task.</span> Move a database to PostgreSQL in a way the owner can check for themselves: every row and every cent is there, and a report shows it.</p><p><span class="lead-in">Solution.</span> Structure and data move in one transaction, so a failure rolls everything back and never leaves half a database. The old database is opened read-only. A verification report then compares both sides table by table: row counts and a checksum of every value, per-column checks (empty values, sums, text length, date ranges), foreign keys validated on every row, indexes and key sequences.</p><p><span class="lead-in">Delivered.</span> 11 tables, 15,607 rows, 11 foreign keys and 10 indexes, all matching. The report was tested too. The data was damaged in six ways (one cent in a total, a lost row, one changed letter, a date off by a second, an extra row, a reset key sequence), and each time the report named the table and showed the first row that differs. It opens in a browser or on a phone and prints to PDF.</p><p>Demo on the open Chinook sample database (MIT licence); no client. On a real project the first stage is a test migration of your database with this report, before anything changes on the live system.</p></div></section>
 
 
 <section id="contact"><div class="wrap">
@@ -272,6 +281,66 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
   var els=document.querySelectorAll('.reveal'),snap=/[?&]snap/.test(location.search);
   if(!snap&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});els.forEach(function(el){io.observe(el)})}
   else els.forEach(function(el){el.classList.add('in')});
+})();
+</script>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('scenes')) return;
+  var snap = /[?&]snap/.test(location.search);
+  var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
+              'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
+              'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js'];
+  (function next(i) {
+    if (i === libs.length) return start();
+    var s = document.createElement('script'); s.src = libs[i]; s.onload = function () { next(i + 1); };
+    s.onerror = function () { root.classList.remove('scenes'); }; document.head.appendChild(s);
+  })(0);
+
+  // «EUR 2,504» → counts 0 → 2,504 keeping the text around the number; plain words stay as they are
+  function countUp(el) {
+    var src = el.textContent, nums = src.match(/\d[\d,]*(\.\d+)?/g);
+    if (!nums || snap) return;
+    var targets = nums.map(function (n) { return parseFloat(n.replace(/,/g, '')); });
+    var o = { p: 0 };
+    gsap.to(o, { p: 1, duration: 1.2, ease: 'power2.out', onUpdate: function () {
+      var k = 0;
+      el.textContent = src.replace(/\d[\d,]*(\.\d+)?/g, function (n) {
+        var t = targets[k++], dec = (n.split('.')[1] || '').length, v = t * o.p;
+        var s = v.toFixed(dec); if (n.indexOf(',') > -1) s = Number(s).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+        return s;
+      });
+    }, onComplete: function () { el.textContent = src; } });
+  }
+
+  function start() {
+    var gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+    if (!snap && window.Lenis) {
+      var lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 1 });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+    gsap.matchMedia().add('(min-width: 1024px)', function () {
+      root.classList.add('scenes');
+      // main screenshot: rises and grows to full size as the reader scrolls into it
+      gsap.fromTo('.case-hero .shot', { scale: 0.88, y: 60 }, { scale: 1, y: 0, ease: 'none',
+        scrollTrigger: { trigger: '.case-hero .shot', start: 'top 95%', end: 'top 25%', scrub: true } });
+      // figures in the text open from a frame
+      gsap.utils.toArray('.fig .frame').forEach(function (f) {
+        gsap.fromTo(f, { clipPath: 'inset(10% 8% 10% 8% round 20px)', scale: 1.04 }, { clipPath: 'inset(0% 0% 0% 0% round 14px)', scale: 1, ease: 'none',
+          scrollTrigger: { trigger: f, start: 'top 92%', end: 'top 40%', scrub: true } });
+      });
+      // numbers count once when they come into view
+      gsap.utils.toArray('.kfacts b, .pull b').forEach(function (b) {
+        ScrollTrigger.create({ trigger: b, start: 'top 88%', once: true, onEnter: function () { countUp(b); } });
+      });
+      return function () { root.classList.remove('scenes'); };
+    });
+    window.__st = ScrollTrigger;
+  }
 })();
 </script>
 </body>

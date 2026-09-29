@@ -225,7 +225,17 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
  .article{grid-template-columns:1fr;gap:12px;padding-top:72px}.article .kicker{position:static}}
 @media (max-width:640px){.case-hero h1{font-size:9.6vw}.gallery{grid-template-columns:1fr}.gallery .frame:only-child{grid-column:auto}.kfacts div{padding:20px 12px 20px 0}.kfacts div+div{padding-left:12px}.kfacts div:nth-child(odd){padding-left:0;border-left:0}
  .article p{font-size:17px}.article p:first-child{font-size:18.5px}.nextstep .tiles{grid-template-columns:1fr}}
+
+/* ---- v3 case scenes ---- */
+.kicker{text-transform:none;letter-spacing:0;font:500 14px/1 var(--mono)}
+h1{letter-spacing:-.04em}
+@media (min-width:1024px){
+  html.scenes .case-hero .shot{transform-origin:50% 0;will-change:transform}
+  html.scenes .fig .frame{will-change:clip-path,transform}
+}
 </style>
+<script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
+
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -238,7 +248,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
 <main id="main">
 <header class="case-hero"><div class="wrap">
   <a class="back" href="/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Flow Lab</a>
-  <div><span class="eyebrow">Case study &middot; own product</span></div>
   <h1>HoursOwed: an overtime and shift tracker I built and launched</h1>
   <p class="lede">An app for hourly workers that counts split shifts, unpaid breaks and overtime the way payroll does, checked by 112 logic tests in three time zones.</p>
   <p class="note"><b>Own product - not client work.</b> HoursOwed is an app I built and run myself. You can open it and try it.</p>
@@ -272,6 +281,66 @@ footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
   var els=document.querySelectorAll('.reveal'),snap=/[?&]snap/.test(location.search);
   if(!snap&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});els.forEach(function(el){io.observe(el)})}
   else els.forEach(function(el){el.classList.add('in')});
+})();
+</script>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('scenes')) return;
+  var snap = /[?&]snap/.test(location.search);
+  var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
+              'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
+              'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js'];
+  (function next(i) {
+    if (i === libs.length) return start();
+    var s = document.createElement('script'); s.src = libs[i]; s.onload = function () { next(i + 1); };
+    s.onerror = function () { root.classList.remove('scenes'); }; document.head.appendChild(s);
+  })(0);
+
+  // «EUR 2,504» → counts 0 → 2,504 keeping the text around the number; plain words stay as they are
+  function countUp(el) {
+    var src = el.textContent, nums = src.match(/\d[\d,]*(\.\d+)?/g);
+    if (!nums || snap) return;
+    var targets = nums.map(function (n) { return parseFloat(n.replace(/,/g, '')); });
+    var o = { p: 0 };
+    gsap.to(o, { p: 1, duration: 1.2, ease: 'power2.out', onUpdate: function () {
+      var k = 0;
+      el.textContent = src.replace(/\d[\d,]*(\.\d+)?/g, function (n) {
+        var t = targets[k++], dec = (n.split('.')[1] || '').length, v = t * o.p;
+        var s = v.toFixed(dec); if (n.indexOf(',') > -1) s = Number(s).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+        return s;
+      });
+    }, onComplete: function () { el.textContent = src; } });
+  }
+
+  function start() {
+    var gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+    if (!snap && window.Lenis) {
+      var lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 1 });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+    gsap.matchMedia().add('(min-width: 1024px)', function () {
+      root.classList.add('scenes');
+      // main screenshot: rises and grows to full size as the reader scrolls into it
+      gsap.fromTo('.case-hero .shot', { scale: 0.88, y: 60 }, { scale: 1, y: 0, ease: 'none',
+        scrollTrigger: { trigger: '.case-hero .shot', start: 'top 95%', end: 'top 25%', scrub: true } });
+      // figures in the text open from a frame
+      gsap.utils.toArray('.fig .frame').forEach(function (f) {
+        gsap.fromTo(f, { clipPath: 'inset(10% 8% 10% 8% round 20px)', scale: 1.04 }, { clipPath: 'inset(0% 0% 0% 0% round 14px)', scale: 1, ease: 'none',
+          scrollTrigger: { trigger: f, start: 'top 92%', end: 'top 40%', scrub: true } });
+      });
+      // numbers count once when they come into view
+      gsap.utils.toArray('.kfacts b, .pull b').forEach(function (b) {
+        ScrollTrigger.create({ trigger: b, start: 'top 88%', once: true, onEnter: function () { countUp(b); } });
+      });
+      return function () { root.classList.remove('scenes'); };
+    });
+    window.__st = ScrollTrigger;
+  }
 })();
 </script>
 </body>
