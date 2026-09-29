@@ -413,6 +413,34 @@ footer p { margin: 0 0 8px; max-width: 70ch; }
 a { color: var(--accent); }
 
 </style>
+<style>
+/* ---- v3: one scene — the shift, run by run (desktop only) ---- */
+h1 { font-size: clamp(38px, 5.2vw, 68px) !important; line-height: 1.04 !important; letter-spacing: -.03em !important; max-width: 18ch; }
+.shift { display: none; }
+html.scenes .shift { display: block; height: 100vh; }
+.shift-in { height: 100%; max-width: 1080px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column; justify-content: center; gap: 36px; }
+.shift-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.shift-head h2 { margin: 0; font-size: clamp(28px, 3vw, 40px); letter-spacing: -.02em; }
+.clock { text-align: right; font-family: var(--mono); color: var(--ink-soft); font-size: 13px; }
+.clock b { display: block; font-size: clamp(44px, 5vw, 72px); line-height: 1; color: var(--ink); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.tl { height: 3px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.tl i { display: block; height: 100%; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.col { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 18px; padding: 28px; box-shadow: var(--shadow); }
+.col h3 { margin: 0 0 18px; font-size: 18px; }
+.col dl { margin: 0; display: grid; grid-template-columns: 1fr auto; gap: 14px 16px; align-items: baseline; }
+.col dt { color: var(--ink-soft); }
+.col dd { margin: 0; font-family: var(--mono); font-size: clamp(30px, 3vw, 44px); font-weight: 650; font-variant-numeric: tabular-nums; text-align: right; }
+.col.bad dd[data-k="failed"] { color: var(--bad); } .col.good dd[data-k="alerts"] { color: var(--good); }
+.col .end { margin: 22px 0 0; padding-top: 18px; border-top: 1px solid var(--line); font-size: 17px; opacity: 0; transition: opacity .4s; }
+.col .end b { display: block; margin-top: 6px; font-family: var(--mono); font-size: 22px; }
+.col .end b span { white-space: nowrap; }
+.col .rows-note { grid-column: 1 / -1; margin: -8px 0 0; text-align: right; font-size: 13px; color: var(--ink-faint); opacity: 0; transition: opacity .4s; }
+html.shift-done .col .rows-note { opacity: 1; }
+.col.bad .end b { color: var(--bad); } .col.good .end b { color: var(--good); }
+html.shift-done .col .end { opacity: 1; }
+</style>
+<script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
 </head>
 <body>
 
@@ -475,6 +503,16 @@ a { color: var(--accent); }
     </div>
   </section>
 
+<section class="shift" aria-label="The same shift, run by run">
+    <div class="shift-in">
+      <div class="shift-head"><h2>The same shift, run by run.</h2><div class="clock"><b id="sh-clock">--:--</b><span id="sh-run">scroll to run it</span></div></div>
+      <div class="tl"><i id="sh-bar"></i></div>
+      <div class="cols">
+        <div class="col bad"><h3>Before · Order intake v3</h3><dl><dt>Rows written to the sheet</dt><dd data-k="saved">0</dd><p class="rows-note"></p><dt>Runs that failed</dt><dd data-k="failed">0</dd><dt>Alerts sent to anyone</dt><dd data-k="alerts">0</dd></dl><p class="end">Lost for good: <b data-k="lost"></b></p></div>
+        <div class="col good"><h3>After · Order intake v4</h3><dl><dt>Rows written to the sheet</dt><dd data-k="saved">0</dd><p class="rows-note"></p><dt>Runs that failed</dt><dd data-k="failed">0</dd><dt>Alerts sent to anyone</dt><dd data-k="alerts">0</dd></dl><p class="end">Lost for good: <b data-k="lost"></b></p></div>
+      </div>
+    </div>
+  </section>
   <section id="compare">
     <h2>Replay the same shift through both versions</h2>
     <p class="sub">
@@ -3188,6 +3226,50 @@ a { color: var(--accent); }
   }
 })();
 
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('scenes')) return;
+  var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
+  (function next(i) {
+    if (i === libs.length) return start();
+    var t = document.createElement('script'); t.src = libs[i]; t.onload = function () { next(i + 1); };
+    t.onerror = function () { root.classList.remove('scenes'); }; document.head.appendChild(t);
+  })(0);
+  function start() {
+    var WF = window.PalewoodWorkflows, SIM = window.PalewoodSimulation;
+    if (!WF || !SIM) { root.classList.remove('scenes'); return; }
+    // the same two runs the panels below use: same files, same shift
+    var runs = { bad: SIM.run({ workflow: WF['order-intake-BROKEN.json'] }),
+                 good: SIM.run({ workflow: WF['order-intake-FIXED.json'], errorWorkflow: WF['error-handler.json'] }) };
+    var n = runs.bad.runLog.length;
+    var eur = function (v) { return 'EUR ' + Math.round(v).toLocaleString('en-US'); };
+    ['bad', 'good'].forEach(function (k) {
+      var m = runs[k].metrics, el = document.querySelector('.col.' + k + ' [data-k="lost"]');
+      el.innerHTML = '<span>' + m.ordersLost + ' of ' + m.ordersPlaced + ' orders</span> <span>· ' + eur(m.lostRevenueEur) + '</span>';
+      var note = document.querySelector('.col.' + k + ' .rows-note');
+      note.textContent = (m.ordersSaved + m.ordersParkedForReview) + ' different orders' + (m.duplicateRows ? ', ' + m.duplicateRows + ' of the rows are repeats' : ', no repeats');
+    });
+    function paint(p) {
+      var upto = Math.min(n, Math.round(p * n));
+      ['bad', 'good'].forEach(function (k) {
+        var log = runs[k].runLog.slice(0, upto), c = { saved: 0, failed: 0, alerts: 0 };
+        log.forEach(function (e) { c.saved += e.ordersSaved + e.ordersParked; if (e.status === 'error') c.failed += 1; c.alerts += e.alerts; });
+        Object.keys(c).forEach(function (key) { document.querySelector('.col.' + k + ' [data-k="' + key + '"]').textContent = c[key]; });
+      });
+      var last = runs.bad.runLog[Math.max(0, upto - 1)];
+      document.getElementById('sh-clock').textContent = upto ? last.at.slice(11, 16) : runs.bad.runLog[0].at.slice(11, 16);
+      document.getElementById('sh-run').textContent = upto ? 'run ' + upto + ' of ' + n + ' · UTC' : 'scroll to run it';
+      document.getElementById('sh-bar').style.transform = 'scaleX(' + (upto / n).toFixed(3) + ')';
+      root.classList.toggle('shift-done', upto === n);
+    }
+    paint(0);
+    var gsap = window.gsap, ST = window.ScrollTrigger; gsap.registerPlugin(ST);
+    ST.create({ trigger: '.shift', start: 'top top', end: '+=160%', pin: true, scrub: true, onUpdate: function (st) { paint(st.progress); } });
+    window.__st = ST;
+  }
+})();
 </script>
 </body>
 </html>
