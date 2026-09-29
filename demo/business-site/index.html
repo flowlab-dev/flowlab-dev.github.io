@@ -877,6 +877,29 @@ legend {
 
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1e1c'/%3E%3Cpath d='M7 24V8l18 16V8' fill='none' stroke='%23e4b200' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+/* ---- v3: one scene — the bracket is cut, bent and measured (desktop only) ---- */
+.cutscene { display: none; }
+html.scenes .cutscene { display: block; height: 100vh; background: var(--panel); border-block: 1px solid var(--rule); }
+.cut-in { height: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; align-items: center; }
+.cut-in h2 { font-size: clamp(30px, 3.2vw, 44px); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 22px; }
+.cut-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.cut-steps li { display: grid; grid-template-columns: 2.2em 1fr; gap: 10px; color: var(--graphite); opacity: .45; transition: opacity .3s, color .3s; }
+.cut-steps li.on { opacity: 1; color: var(--ink); }
+.cut-steps li b { font-family: var(--mono); font-weight: 600; color: var(--layout-blue); }
+.cut-art { position: relative; }
+.cut-art svg { width: 100%; height: auto; display: block; overflow: visible; }
+.cut-art .laser { fill: #ff5a2a; filter: drop-shadow(0 0 6px #ff5a2a) drop-shadow(0 0 14px #ffb347); }
+.brk { position: absolute; inset: 0; perspective: 2400px; pointer-events: none; opacity: 0; }
+.brk-body { position: absolute; transform-style: preserve-3d; }
+.brk-p { position: absolute; top: 0; height: 100%; transform-style: preserve-3d; backface-visibility: visible; }
+.cut-art .brk-p svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+.brk-p .dw-outline { fill: url(#brk-metal-c); stroke: #3b403d; stroke-width: 1.4; }
+.brk-p.side .dw-outline { fill: url(#brk-metal-s); }
+.brk-p svg { filter: drop-shadow(0 1.5px 0 #6d736f) drop-shadow(0 12px 18px rgba(0,0,0,.14)); }
+.brk-p .dw-dim, .brk-p .dw-dim-text, .brk-p .dw-note { display: none; }
+</style>
+<script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
 </head>
 <body>
 <a class="skip-link" href="#top">Skip to the content</a>
@@ -1048,6 +1071,21 @@ legend {
 </section>
 
 <div class="shear" role="presentation"></div>
+
+<section class="cutscene" aria-label="The bracket from the drawing: cut, formed, measured">
+  <div class="cut-in">
+    <div>
+      <h2>From the drawing to the part.</h2>
+      <ol class="cut-steps">
+        <li data-s="0"><b>01</b><span>The laser cuts the 390 × 220 mm blank from 2.0 mm mild steel.</span></li>
+        <li data-s="1"><b>02</b><span>Four 9 mm holes and the slot go in the same pass.</span></li>
+        <li data-s="2"><b>03</b><span>The dimensions on the drawing are what the part is measured against.</span></li>
+        <li data-s="3"><b>04</b><span>Two bend lines, each formed to 90° on the press brake.</span></li>
+      </ol>
+    </div>
+    <div class="cut-art" id="cut-art" aria-hidden="true"></div>
+  </div>
+</section>
 
 <section id="how">
   <div class="wrap">
@@ -2262,6 +2300,78 @@ legend {
   update();
 })();
 
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('scenes')) return;
+  var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
+  (function next(i) {
+    if (i === libs.length) return start();
+    var t = document.createElement('script'); t.src = libs[i]; t.onload = function () { next(i + 1); };
+    t.onerror = function () { root.classList.remove('scenes'); }; document.head.appendChild(t);
+  })(0);
+  function start() {
+    var src = document.getElementById('hero-drawing'); if (!src) { root.classList.remove('scenes'); return; }
+    // the same drawing as the hero, drawn again step by step
+    var svg = src.cloneNode(true);
+    svg.removeAttribute('id'); svg.classList.remove('dw-animate'); svg.removeAttribute('aria-labelledby'); svg.setAttribute('role', 'presentation');
+    [].forEach.call(svg.querySelectorAll('[id]'), function (n) { if (n.tagName !== 'marker') n.removeAttribute('id'); });
+    [].forEach.call(svg.querySelectorAll('title,desc'), function (n) { n.remove(); });
+    document.getElementById('cut-art').appendChild(svg);
+    var outline = svg.querySelector('.dw-outline'), L = outline.getTotalLength();
+    outline.style.strokeDasharray = L; outline.style.strokeDashoffset = L;
+    var laser = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); laser.setAttribute('r', 4); laser.setAttribute('class', 'laser'); svg.appendChild(laser);
+    var holes = [].slice.call(svg.querySelectorAll('.dw-hole')), bends = [].slice.call(svg.querySelectorAll('.dw-bend'));
+    var dims = [].slice.call(svg.querySelectorAll('.dw-dim, .dw-dim-text, .dw-note'));
+    var steps = [].slice.call(document.querySelectorAll('.cut-steps li'));
+    var seg = function (v, a, b) { return Math.min(1, Math.max(0, (v - a) / (b - a))); };
+    // 3D bracket: centre panel + two flanges, each an exact crop of the drawing (x 80–168 · 168–382 · 382–470, y 70–290)
+    var art = document.getElementById('cut-art'), brk = document.createElement('div'); brk.className = 'brk';
+    var body = document.createElement('div'); body.className = 'brk-body'; brk.appendChild(body); art.appendChild(brk);
+    var parts = [[80, 168, 'l'], [168, 382, 'c'], [382, 470, 'r']].map(function (r) {
+      var d = document.createElement('div'); d.className = 'brk-p' + (r[2] === 'c' ? '' : ' side');
+      var c = svg.cloneNode(true); c.removeAttribute('class'); c.setAttribute('viewBox', r[0] + ' 70 ' + (r[1] - r[0]) + ' 220'); c.setAttribute('preserveAspectRatio', 'none');
+      [].forEach.call(c.querySelectorAll('.laser'), function (n) { n.remove(); });
+      [].forEach.call(c.querySelectorAll('*'), function (n) { n.style.opacity = ''; n.style.transform = ''; n.style.strokeDasharray = ''; n.style.strokeDashoffset = ''; });
+      var g = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      g.innerHTML = '<linearGradient id="brk-metal-' + (r[2] === 'c' ? 'c' : 's') + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + (r[2] === 'c' ? '#d9ddd9' : '#eceeeb') + '"/><stop offset="1" stop-color="' + (r[2] === 'c' ? '#b9bfbb' : '#cfd4d0') + '"/></linearGradient>';
+      c.insertBefore(g, c.firstChild);
+      d.appendChild(c); body.appendChild(d); return { el: d, x0: r[0], x1: r[1], side: r[2], bends: [].slice.call(c.querySelectorAll('.dw-bend')) };
+    });
+    function layoutBrk() {
+      var k = art.clientWidth / 508;                                    // drawing units → px (viewBox is 508 wide from x=26)
+      body.style.left = ((80 - 26) * k) + 'px'; body.style.top = ((70 - 22) * k) + 'px';
+      body.style.width = (390 * k) + 'px'; body.style.height = (220 * k) + 'px';
+      body.style.transformOrigin = (195 * k) + 'px ' + (110 * k) + 'px';
+      parts.forEach(function (q) { q.el.style.left = ((q.x0 - 80) * k) + 'px'; q.el.style.width = ((q.x1 - q.x0) * k) + 'px';
+        q.el.style.transformOrigin = q.side === 'l' ? '100% 50%' : q.side === 'r' ? '0% 50%' : '50% 50%'; });
+    }
+    layoutBrk(); addEventListener('resize', layoutBrk);
+    function paint(p) {
+      var c = seg(p, 0.02, 0.3);
+      outline.style.strokeDashoffset = (L * (1 - c)).toFixed(1);
+      var pt = outline.getPointAtLength(L * c); laser.setAttribute('cx', pt.x); laser.setAttribute('cy', pt.y);
+      laser.style.opacity = c > 0 && c < 1 ? 1 : 0;
+      holes.forEach(function (h, i) { var v = seg(p, 0.31 + i * 0.025, 0.36 + i * 0.025); h.style.opacity = v; h.style.transformOrigin = 'center'; h.style.transformBox = 'fill-box'; h.style.transform = 'scale(' + (0.4 + 0.6 * v) + ')'; });
+      dims.forEach(function (d) { d.style.opacity = seg(p, 0.46, 0.54) * (1 - seg(p, 0.6, 0.64)); });
+      bends.forEach(function (b, i) { b.style.opacity = seg(p, 0.58 + i * 0.02, 0.62 + i * 0.02); });
+      // the fold: flat drawing hands over to the 3D bracket, which turns and bends both flanges to 90°
+      var f = seg(p, 0.66, 0.96), e = f * f * (3 - 2 * f);
+      svg.style.opacity = (1 - seg(p, 0.64, 0.67)).toFixed(3); brk.style.opacity = seg(p, 0.64, 0.67).toFixed(3);
+      // the base tips back like a floor, the flanges stand up as walls: a U channel seen from the front and above
+      body.style.transform = 'rotateX(' + (54 * e) + 'deg) rotateZ(' + (-10 * e) + 'deg) scale(' + (1 - 0.1 * e) + ')';
+      parts.forEach(function (q) { q.bends.forEach(function (b) { b.style.opacity = (1 - seg(f, 0.85, 1)).toFixed(3); }); });
+      parts.forEach(function (q) { q.el.style.transform = q.side === 'l' ? 'rotateY(' + (90 * e) + 'deg)' : q.side === 'r' ? 'rotateY(' + (-90 * e) + 'deg)' : ''; });
+      var on = p < 0.3 ? 0 : p < 0.45 ? 1 : p < 0.6 ? 2 : 3;
+      steps.forEach(function (li, i) { li.classList.toggle('on', i <= on); });
+    }
+    paint(0);
+    var gsap = window.gsap, ST = window.ScrollTrigger; gsap.registerPlugin(ST);
+    ST.create({ trigger: '.cutscene', start: 'top top', end: '+=200%', pin: true, scrub: true, onUpdate: function (st) { paint(st.progress); } });
+    window.__st = ST;
+  }
+})();
 </script>
 </body>
 </html>
