@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Демо: бот таролога — карта дня, запись, оплата</title>
+<style>
+:root{--bg:#e7ebf0;--chat:#c9d7e3;--in:#ffffff;--out:#e2ffc7;--ink:#111;--muted:#6d7883;--btn:#ffffff;--btn-ink:#2c78c2;--head:#517da2;--gold:#d9b25f}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#1f2430;display:grid;place-items:center}
+.phone{width:390px;height:844px;max-width:100vw;max-height:100vh;background:var(--chat);display:flex;flex-direction:column;overflow:hidden;position:relative}
+@media(min-width:600px){.phone{border-radius:34px;box-shadow:0 30px 80px rgba(0,0,0,.45);border:10px solid #0d0f14}}
+.demo{background:#2b2f3a;color:#ffd98a;font-size:12px;text-align:center;padding:5px 8px;font-weight:600;letter-spacing:.02em}
+.head{background:var(--head);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 12px}
+.ava{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3b3f8f,#161a3d);display:grid;place-items:center;color:var(--gold);font-size:20px}
+.head b{display:block;font-size:16px}.head small{opacity:.8;font-size:13px}
+.feed{flex:1;overflow-y:auto;padding:10px 8px 14px;display:flex;flex-direction:column;gap:6px;scroll-behavior:smooth;background:linear-gradient(180deg,#c3d3e0,#d3dfd0)}
+.msg{max-width:86%;padding:7px 10px 6px;border-radius:14px;font-size:15px;line-height:1.35;white-space:pre-wrap;box-shadow:0 1px 1px rgba(0,0,0,.12);animation:pop .22s ease-out}
+.msg.in{align-self:flex-start;background:var(--in);border-bottom-left-radius:4px}
+.msg.out{align-self:flex-end;background:var(--out);border-bottom-right-radius:4px}
+.msg .t{display:block;text-align:right;color:var(--muted);font-size:11px;margin-top:2px}
+.kb{align-self:flex-start;max-width:86%;width:86%;display:grid;gap:4px;margin-top:-2px}
+.kb .row{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px}
+.kb button{font:inherit;font-size:14px;color:var(--btn-ink);background:rgba(255,255,255,.72);border:0;border-radius:8px;padding:9px 6px;cursor:pointer;backdrop-filter:blur(4px);transition:transform .12s,background .12s}
+.kb button.hit{background:#fff;transform:scale(.97);box-shadow:0 0 0 2px #2c78c2 inset}
+.kb.used button{opacity:.55;pointer-events:none}
+.card{width:190px;margin-bottom:6px;border-radius:12px;display:block}
+.inv{align-self:flex-start;width:86%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 1px rgba(0,0,0,.12);animation:pop .22s ease-out}
+.inv .top{background:linear-gradient(135deg,#1c2150,#3a2f6e);color:#fff;padding:12px}
+.inv .top b{display:block;font-size:15px}.inv .top span{font-size:13px;opacity:.85}
+.inv .sum{padding:10px 12px;font-size:22px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.inv .sum small{font-size:11px;font-weight:600;color:#b36b00;background:#fff3d6;border-radius:6px;padding:3px 6px}
+.inv button{width:100%;border:0;background:#2c78c2;color:#fff;font:inherit;font-weight:600;font-size:15px;padding:11px;cursor:pointer}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;padding:16px;box-shadow:0 -10px 30px rgba(0,0,0,.25);transform:translateY(110%);transition:transform .35s ease}
+.sheet.open{transform:none}
+.sheet h3{margin:0 0 4px;font-size:17px}.sheet p{margin:0 0 12px;color:var(--muted);font-size:13px}
+.sheet .row{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid #eee;font-size:14.5px}
+.sheet button{margin-top:12px;width:100%;border:0;border-radius:10px;background:#2c78c2;color:#fff;font:inherit;font-weight:600;padding:13px;font-size:15px;cursor:pointer}
+.sys{align-self:center;background:rgba(0,0,0,.32);color:#fff;font-size:12.5px;padding:4px 10px;border-radius:10px;animation:pop .22s ease-out}
+.typing{align-self:flex-start;background:#fff;border-radius:14px;padding:9px 12px;display:flex;gap:4px}
+.typing i{width:6px;height:6px;border-radius:50%;background:#9aa4ad;animation:blink 1s infinite}.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+.input{display:flex;gap:8px;align-items:center;background:#fff;padding:8px 10px}
+.input input{flex:1;border:0;font:inherit;font-size:15px;padding:8px;outline:none}
+.input button{border:0;background:none;color:#2c78c2;font-weight:700;font-size:15px;cursor:pointer}
+@keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes blink{50%{opacity:.3}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+  <div class="demo">ДЕМО · данные выдуманы · оплата тестовая</div>
+  <div class="head"><div class="ava">✦</div><div><b>Таро и астрология</b><small>бот</small></div></div>
+  <div class="feed" id="feed"></div>
+  <form class="input" id="form"><input id="txt" placeholder="Сообщение" autocomplete="off" aria-label="Сообщение"><button>➤</button></form>
+  <div class="sheet" id="sheet" role="dialog" aria-label="Тестовая оплата">
+    <h3>Оплата</h3><p>Тестовый режим: деньги не списываются</p>
+    <div class="row"><span id="sTitle"></span><b id="sSum"></b></div>
+    <div class="row"><span>Карта</span><span>•••• 4242 (тест)</span></div>
+    <button id="sPay">Оплатить</button>
+  </div>
+</div>
+<script type="module">
+import { handle, newShared, newUser, dueReminders, CARDS, rub } from '../engine/logic.js';
+
+const feed = document.getElementById('feed');
+const shared = newShared();
+let user = newUser();
+const chatId = 1001;
+// Демо-время: среда 30 сентября 2026, 10:00. Дальше «перематывается» для показа напоминаний.
+let now = new Date(2026, 8, 30, 10, 0);
+const hhmm = (d) => `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const scroll = () => { feed.scrollTop = feed.scrollHeight; };
+
+// Символ карты: у каждой старшей карты свой знак (звезда, солнце, луна…), остальным — нейтральная эмблема.
+function glyph(i) {
+  const G = '#d9b25f', c = (x, y, r, f) => `<circle cx="${x}" cy="${y}" r="${r}" ${f ? `fill="${G}"` : `fill="none" stroke="${G}" stroke-width="2"`}/>`;
+  const star = (x, y, R, r, n) => { let d = ''; for (let k = 0; k < n * 2; k++) { const a = -Math.PI / 2 + (k * Math.PI) / n, rr = k % 2 ? r : R; d += `${k ? 'L' : 'M'}${(x + Math.cos(a) * rr).toFixed(1)} ${(y + Math.sin(a) * rr).toFixed(1)}`; } return `<path d="${d}Z" fill="${G}"/>`; };
+  const rays = (n, r1, r2) => Array.from({ length: n }, (_, k) => { const a = (k / n) * Math.PI * 2; return `<line x1="${95 + Math.cos(a) * r1}" y1="${140 + Math.sin(a) * r1}" x2="${95 + Math.cos(a) * r2}" y2="${140 + Math.sin(a) * r2}" stroke="${G}" stroke-width="2" stroke-linecap="round"/>`; }).join('');
+  switch (i) {
+    case 17: return star(95, 132, 34, 13, 8) + star(58, 92, 8, 3, 8) + star(136, 96, 7, 3, 8) + star(64, 180, 6, 2.5, 8) + star(130, 178, 7, 3, 8) + `<path d="M62 205 Q95 192 128 205" fill="none" stroke="${G}" stroke-width="1.5"/>`; // Звезда
+    case 19: return c(95, 140, 24) + rays(12, 30, 46) + c(95, 140, 9, true); // Солнце
+    case 18: return `<path d="M108 108 A34 34 0 1 0 108 172 A26 26 0 1 1 108 108 Z" fill="${G}"/>` + star(132, 112, 5, 2, 5) + star(124, 170, 4, 1.6, 5); // Луна
+    case 10: return c(95, 140, 36) + c(95, 140, 20) + rays(8, 20, 36); // Колесо Фортуны
+    case 21: return `<ellipse cx="95" cy="140" rx="30" ry="42" fill="none" stroke="${G}" stroke-width="2"/>` + c(95, 140, 6, true); // Мир
+    default: return `<path d="M95 100 L125 140 L95 180 L65 140 Z" fill="none" stroke="${G}" stroke-width="2"/>` + c(95, 140, 8, true);
+  }
+}
+
+function cardSvg(i) {
+  const [num, name] = CARDS[i];
+  const dots = Array.from({ length: 14 }, (_, k) => `<circle cx="${(k * 53) % 170 + 10}" cy="${(k * 37) % 250 + 20}" r="${k % 3 ? 0.9 : 1.5}" fill="#fff" opacity=".7"/>`).join('');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 290"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2f6e"/><stop offset="1" stop-color="#11142e"/></linearGradient></defs><rect width="190" height="290" rx="12" fill="url(#g)"/><rect x="8" y="8" width="174" height="274" rx="8" fill="none" stroke="#d9b25f" stroke-width="1.5"/>${dots}<text x="95" y="40" fill="#d9b25f" font-family="Georgia,serif" font-size="20" text-anchor="middle">${num}</text>${glyph(i)}<text x="95" y="258" fill="#f4efe6" font-family="Georgia,serif" font-size="17" text-anchor="middle">${name}</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+function addOut(text) { const d = document.createElement('div'); d.className = 'msg out'; d.innerHTML = `${escapeHtml(text)}<span class="t">${hhmm(now)} ✓✓</span>`; feed.append(d); scroll(); }
+function addSys(text) { const d = document.createElement('div'); d.className = 'sys'; d.textContent = text; feed.append(d); scroll(); }
+function escapeHtml(s) { return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c])); }
+
+async function botSay(messages) {
+  for (const m of messages) {
+    const t = document.createElement('div'); t.className = 'typing'; t.innerHTML = '<i></i><i></i><i></i>'; feed.append(t); scroll();
+    await sleep(window.FAST ? 250 : 550); t.remove();
+    if (m.invoice) { renderInvoice(m.invoice); continue; }
+    const d = document.createElement('div'); d.className = 'msg in';
+    d.innerHTML = (m.card != null ? `<img class="card" alt="Карта ${CARDS[m.card][1]}" src="${cardSvg(m.card)}">` : '') + escapeHtml(m.text || '') + `<span class="t">${hhmm(now)}</span>`;
+    feed.append(d);
+    if (m.buttons) {
+      const kb = document.createElement('div'); kb.className = 'kb';
+      for (const row of m.buttons) {
+        const r = document.createElement('div'); r.className = 'row';
+        for (const b of row) { const el = document.createElement('button'); el.textContent = b.text; el.dataset.data = b.data; el.onclick = () => press(el, kb); r.append(el); }
+        kb.append(r);
+      }
+      feed.append(kb);
+    }
+    scroll();
+  }
+}
+
+function renderInvoice(inv) {
+  const d = document.createElement('div'); d.className = 'inv';
+  d.innerHTML = `<div class="top"><b>${escapeHtml(inv.title)}</b><span>${escapeHtml(inv.description)}</span></div><div class="sum">${rub(inv.amount)}<small>ТЕСТ</small></div><button type="button">Оплатить ${rub(inv.amount)}</button>`;
+  d.querySelector('button').onclick = () => openSheet(inv);
+  feed.append(d); scroll();
+}
+
+function openSheet(inv) {
+  document.getElementById('sTitle').textContent = inv.title;
+  document.getElementById('sSum').textContent = rub(inv.amount);
+  document.getElementById('sPay').textContent = `Оплатить ${rub(inv.amount)}`;
+  document.getElementById('sheet').classList.add('open');
+}
+document.getElementById('sPay').onclick = async () => {
+  document.getElementById('sheet').classList.remove('open');
+  await sleep(300);
+  await dispatch({ type: 'paid' });
+};
+
+async function press(el, kb) {
+  kb.classList.add('used');
+  addOut(el.textContent);
+  await dispatch({ type: 'button', data: el.dataset.data });
+}
+
+async function dispatch(event) {
+  now = new Date(now.getTime() + 60000); // часы в чате идут: +1 минута на каждое действие
+  const r = handle({ chatId, user, shared, event, now });
+  user = r.user;
+  await botSay(r.out);
+}
+
+document.getElementById('form').onsubmit = async (e) => {
+  e.preventDefault();
+  const v = document.getElementById('txt').value.trim(); if (!v) return;
+  document.getElementById('txt').value = ''; addOut(v); await dispatch({ type: 'text', text: v });
+};
+
+async function jump(to, label) {
+  now = to; addSys(label);
+  await sleep(500);
+  for (const r of dueReminders(shared, now)) await botSay([{ text: r.text }]);
+}
+
+// Автопоказ для видео: ?autoplay
+async function tap(re) {
+  const buttons = [...feed.querySelectorAll('.kb:not(.used) button')];
+  const b = buttons.find((x) => re.test(x.textContent) || re.test(x.dataset.data));
+  if (!b) throw new Error('нет кнопки ' + re);
+  b.classList.add('hit'); await sleep(window.FAST ? 200 : 650);
+  await press(b, b.closest('.kb'));
+  await sleep(window.FAST ? 200 : 900);
+}
+async function autoplay() {
+  window.FAST = /fast/.test(location.search);
+  addOut('/start'); await dispatch({ type: 'start' }); await sleep(1100);
+  await tap(/Карта дня/); await sleep(1600);
+  await tap(/Разобрать мою ситуацию/); await sleep(500);
+  await tap(/натальной/); await tap(/^day:2026-10-01$/); await tap(/^15:00$/); await sleep(500);
+  await tap(/Оплатить/);
+  const inv = feed.querySelector('.inv:last-of-type button'); inv.style.boxShadow = '0 0 0 3px #fff inset'; await sleep(700);
+  inv.click(); await sleep(1100);
+  document.getElementById('sPay').click(); await sleep(2200);
+  await jump(new Date(2026, 8, 30, 15, 5), '⏩ перемотка: до встречи остались сутки (ускорено для демо)'); await sleep(1400);
+  await jump(new Date(2026, 9, 1, 14, 5), '⏩ перемотка: за час до встречи'); await sleep(1500);
+  window.DONE = true;
+}
+window.startDemo = autoplay;
+window.cardSvg = cardSvg;
+
+if (/wait/.test(location.search)) { /* запись видео: старт по window.startDemo() */ }
+else if (/autoplay/.test(location.search)) autoplay();
+else { addOut('/start'); dispatch({ type: 'start' }); }
+</script>
+</body>
+</html>
