@@ -20,6 +20,7 @@ const GLOWS = ['#ffe7b8', '#ffffff', '#cfe3ff', '#ffc9a3'];
 const SCENES = [
   {
     id: 'kitchen', name: 'Kitchen backsplash', src: 'rooms/kitchen-tiles.jpg',
+    lightMatch: { colour: 1.45, strength: 0.95 }, // white tiles: the warm under-cabinet light is the light's own colour
     occluders: [rect(180, 464, 213, 514), rect(728, 464, 759, 514), rect(867, 466, 899, 516)],
     prints: () => [{
       type: 'tile', design: 'moroccan', widthIn: 99, heightIn: 28, tileIn: 6, grout: GROUTS[0],

@@ -69,24 +69,35 @@ export function buildTexture(print) {
 
 // Blurred, desaturated copy of the photo: used to let each print pick up the room's own light falloff.
 const shadeCache = new WeakMap();
-function shadeMap(photo) {
-  if (shadeCache.has(photo)) return shadeCache.get(photo);
+// colour: how much of the light's colour to keep (0 = brightness only). Only neutral walls (white tiles)
+// show the light's real colour; on a painted wall the photo's colour is the paint, not the light.
+function shadeMap(photo, colour = 0) {
+  const byPhoto = shadeCache.get(photo) || new Map();
+  shadeCache.set(photo, byPhoto);
+  if (byPhoto.has(colour)) return byPhoto.get(colour);
+  // Colour light map of the room: blurred photo scaled so its brightest area (95th percentile) is white.
+  // Multiplying a print by it keeps the room's light falloff and colour (warm under-cabinet lights, dim corners).
   const small = mk(photo.width / 4, photo.height / 4);
   const s = small.getContext('2d');
-  s.filter = 'grayscale(1) blur(6px)';
+  s.filter = 'blur(6px)';
   s.drawImage(photo, 0, 0, small.width, small.height);
-  // normalise so the average tone becomes near-white (multiply then only adds the falloff, not a grey cast)
   const d = s.getImageData(0, 0, small.width, small.height);
-  let sum = 0;
-  for (let i = 0; i < d.data.length; i += 4) sum += d.data[i];
-  const mean = sum / (d.data.length / 4) || 128;
-  const gain = Math.min(1.4, 235 / mean); // keep the photo's overall exposure: dark rooms stay dark
+  const lums = new Float32Array(d.data.length / 4);
+  for (let i = 0, k = 0; i < d.data.length; i += 4, k++) lums[k] = 0.3 * d.data[i] + 0.59 * d.data[i + 1] + 0.11 * d.data[i + 2];
+  const sorted = Float32Array.from(lums).sort();
+  const p95 = sorted[Math.floor(sorted.length * 0.95)] || 200;
+  const gain = 250 / Math.max(60, p95);
   for (let i = 0; i < d.data.length; i += 4) {
-    const v = Math.min(255, d.data[i] * gain);
-    d.data[i] = d.data[i + 1] = d.data[i + 2] = v;
+    // keep a floor so shadows stay readable, and soften the colour cast a little
+    const l = Math.min(255, lums[i / 4] * gain);
+    for (let c = 0; c < 3; c++) {
+      // boost the light's colour (blurring the photo greys it out), then add contrast so the falloff reads
+      const v = Math.max(0, Math.min(255, l + (d.data[i + c] * gain - l) * colour));
+      d.data[i + c] = Math.min(255, 22 + 233 * Math.pow(v / 255, 1.3));
+    }
   }
   s.putImageData(d, 0, 0);
-  shadeCache.set(photo, small);
+  byPhoto.set(colour, small);
   return small;
 }
 
@@ -136,8 +147,8 @@ function drawPrintBody(ctx, print, photo, opts) {
       ctx.save();
       quadPath(ctx, q); ctx.clip();
       ctx.globalCompositeOperation = 'multiply';
-      ctx.globalAlpha = 0.75;
-      ctx.drawImage(shadeMap(photo), 0, 0, photo.width, photo.height);
+      ctx.globalAlpha = opts.lightMatch?.strength ?? 0.8;
+      ctx.drawImage(shadeMap(photo, opts.lightMatch?.colour ?? 0), 0, 0, photo.width, photo.height);
       ctx.restore();
     }
     if (print.finish === 'gloss' || print.type !== 'tile') {
@@ -219,7 +230,7 @@ function drawOccluders(ctx, scene, photo, light) {
 
 // Draw everything at `scale` (canvas px per photo px).
 export function renderScene(ctx, { photo, scene, prints, light }, scale = 1, opts = {}) {
-  const o = { steps: opts.steps || 14, shadowScale: 1 };
+  const o = { steps: opts.steps || 14, shadowScale: 1, lightMatch: scene.lightMatch };
   ctx.save();
   ctx.setTransform(scale, 0, 0, scale, 0, 0);
   ctx.clearRect(0, 0, photo.width, photo.height);
