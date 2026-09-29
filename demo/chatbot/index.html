@@ -305,6 +305,28 @@ html[data-theme="dark"] .composer button, html[data-theme="dark"] .primary { col
 
 </style>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2324685A'/><path d='M8 11h16M8 16h16M8 21h9' stroke='white' stroke-width='2.6' stroke-linecap='round'/></svg>">
+<style>
+/* ---- v3: one scene — the test set, question by question (desktop only) ---- */
+.hero h1 { font-size: clamp(44px, 5.6vw, 76px); line-height: 1; letter-spacing: -.03em; }
+.tests-run { display: none; }
+html.scenes .tests-run { display: block; height: 100vh; }
+.tr-in { height: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 64px; align-items: center; }
+.tr-in h2 { font-family: var(--display); font-size: clamp(30px, 3.2vw, 44px); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 12px; }
+.tr-in .section-lede { margin: 0 0 28px; }
+.tr-count { font-family: var(--display); font-size: clamp(64px, 8vw, 116px); line-height: .9; letter-spacing: -.04em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tr-count small { font-size: .32em; color: var(--ink-soft); letter-spacing: 0; margin-left: 8px; }
+.tr-stats { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 10px; }
+.tr-stats li { display: flex; align-items: center; gap: 10px; color: var(--ink-soft); }
+.tr-stats b { color: var(--ink); font-variant-numeric: tabular-nums; min-width: 3.2em; }
+.tr-feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tr-feed li { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; box-shadow: var(--shadow); font-size: 15px; }
+.tr-feed li:not(:last-child) { opacity: .55; }
+.tr-feed .q { color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tr-feed .res { font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+.tr-feed .ok { color: var(--euc); font-weight: 700; }
+.tr-feed .bad { color: var(--signal); font-weight: 700; }
+</style>
+<script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
 </head>
 <body>
 
@@ -398,6 +420,21 @@ html[data-theme="dark"] .composer button, html[data-theme="dark"] .primary { col
     </div>
   </section>
 
+<section class="tests-run" aria-label="The test set, run question by question">
+    <div class="tr-in">
+      <div>
+        <h2>Every question, checked on every change.</h2>
+        <p class="section-lede">Scroll to run the test set. Each question below really goes through the assistant on this page.</p>
+        <div class="tr-count"><span id="tr-pass">0</span><small>of <span id="tr-total">0</span> passed</small></div>
+        <ul class="tr-stats">
+          <li><span class="dot dot--answer" aria-hidden="true"></span><b id="tr-a">0</b>answered from the right section</li>
+          <li><span class="dot dot--clarify" aria-hidden="true"></span><b id="tr-c">0</b>asked which topic was meant</li>
+          <li><span class="dot dot--unknown" aria-hidden="true"></span><b id="tr-u">0</b>said “I don’t know” and offered a person</li>
+        </ul>
+      </div>
+      <ol class="tr-feed" id="tr-feed" aria-hidden="true"></ol>
+    </div>
+  </section>
   <section class="band wrap" id="evaluation">
     <div class="eval__head">
       <div>
@@ -2037,6 +2074,52 @@ html[data-theme="dark"] .composer button, html[data-theme="dark"] .primary { col
   greet();
 })();
 
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('scenes')) return;
+  var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
+  (function next(i) {
+    if (i === libs.length) return start();
+    var t = document.createElement('script'); t.src = libs[i]; t.onload = function () { next(i + 1); };
+    t.onerror = function () { root.classList.remove('scenes'); }; document.head.appendChild(t);
+  })(0);
+  function start() {
+    var engine = window.ChatEngine, kb = window.KNOWLEDGE_BASE, set = window.EVAL_QUESTIONS || [];
+    if (!engine || !kb || !set.length) { root.classList.remove('scenes'); return; }
+    var index = engine.buildIndex(kb.documents);
+    // same rules as «Run the test set» below
+    var rows = set.map(function (t) {
+      var r = engine.ask(t.q, index), ok;
+      if (t.expect === 'answer') ok = r.status === 'answer' && r.source.id === t.section;
+      else ok = t.expect === 'refuse' ? r.status !== 'answer' : r.status === t.expect;
+      return { q: t.q, status: r.status, ok: ok };
+    });
+    var N = rows.length, $ = function (id) { return document.getElementById(id); };
+    $('tr-total').textContent = N;
+    var label = { answer: 'answered', clarify: 'asked which topic', unknown: 'said it does not know' };
+    function paint(p) {
+      var k = Math.min(N, Math.round(p * N)), done = rows.slice(0, k), c = { pass: 0, answer: 0, clarify: 0, unknown: 0 };
+      done.forEach(function (r) { if (r.ok) c.pass++; if (r.ok) c[r.status]++; });
+      $('tr-pass').textContent = c.pass; $('tr-a').textContent = c.answer; $('tr-c').textContent = c.clarify; $('tr-u').textContent = c.unknown;
+      var feed = $('tr-feed'); feed.textContent = '';
+      done.slice(-6).forEach(function (r) {
+        var li = document.createElement('li');
+        var dot = document.createElement('span'); dot.className = 'dot dot--' + r.status; li.appendChild(dot);
+        var q = document.createElement('span'); q.className = 'q'; q.textContent = r.q; li.appendChild(q);
+        var res = document.createElement('span'); res.className = 'res';
+        var m = document.createElement('span'); m.className = r.ok ? 'ok' : 'bad'; m.textContent = r.ok ? '✓ ' : '✕ ';
+        res.appendChild(m); res.appendChild(document.createTextNode(label[r.status] || r.status)); li.appendChild(res);
+        feed.appendChild(li);
+      });
+    }
+    paint(0);
+    var gsap = window.gsap, ST = window.ScrollTrigger; gsap.registerPlugin(ST);
+    ST.create({ trigger: '.tests-run', start: 'top top', end: '+=180%', pin: true, scrub: true, onUpdate: function (st) { paint(st.progress); } });
+    window.__st = ST;
+  }
+})();
 </script>
 </body>
 </html>
