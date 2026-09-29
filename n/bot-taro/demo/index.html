@@ -62,7 +62,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
   </div>
 </div>
 <script type="module">
-import { handle, newShared, newUser, dueReminders, CARDS, rub } from '../engine/logic.js';
+import { handle, newShared, newUser, dueReminders, cards, money, CONFIG, CONFIG_EN } from '../engine/logic.js';
+
+// Язык демо: ?lang=en — английская версия (цены в $, время ET), иначе русская.
+const EN = /lang=en/.test(location.search);
+const cfg = EN ? CONFIG_EN : CONFIG;
+const CARDS = cards(cfg);
+const rub = (n) => money(n, cfg);
+const UI = EN ? {
+  bar: 'DEMO · sample data · test payment', bot: 'bot', title: 'Tarot & Astrology', placeholder: 'Message',
+  test: 'TEST', pay: 'Pay', payTitle: 'Payment', payNote: 'Test mode: no money is charged', cardRow: 'Card', cardVal: '•••• 4242 (test)',
+  jump1: '⏩ fast-forward: one day before the session (sped up for the demo)', jump2: '⏩ fast-forward: one hour before', cardAlt: 'Card',
+  pageTitle: 'Demo: tarot reader bot — card of the day, booking, payment',
+  taps: [/Card of the day/, /Get a reading/, /Birth chart/, /^day:2026-10-01$/, /^3:00 PM$/, /Pay/],
+} : {
+  bar: 'ДЕМО · данные выдуманы · оплата тестовая', bot: 'бот', title: 'Таро и астрология', placeholder: 'Сообщение',
+  test: 'ТЕСТ', pay: 'Оплатить', payTitle: 'Оплата', payNote: 'Тестовый режим: деньги не списываются', cardRow: 'Карта', cardVal: '•••• 4242 (тест)',
+  jump1: '⏩ перемотка: до встречи остались сутки (ускорено для демо)', jump2: '⏩ перемотка: за час до встречи', cardAlt: 'Карта',
+  pageTitle: document.title,
+  taps: [/Карта дня/, /Разобрать мою ситуацию/, /натальной/, /^day:2026-10-01$/, /^15:00$/, /Оплатить/],
+};
+document.documentElement.lang = EN ? 'en' : 'ru';
+document.title = UI.pageTitle;
+document.querySelector('.demo').textContent = UI.bar;
+document.querySelector('.head b').textContent = UI.title;
+document.querySelector('.head small').textContent = UI.bot;
+document.getElementById('txt').placeholder = UI.placeholder;
+document.querySelector('#sheet h3').textContent = UI.payTitle;
+document.querySelector('#sheet p').textContent = UI.payNote;
+document.querySelector('#sheet .row:nth-of-type(2) span:first-child').textContent = UI.cardRow;
+document.querySelector('#sheet .row:nth-of-type(2) span:last-child').textContent = UI.cardVal;
 
 const feed = document.getElementById('feed');
 const shared = newShared();
@@ -106,7 +135,7 @@ async function botSay(messages) {
     await sleep(window.FAST ? 250 : 550); t.remove();
     if (m.invoice) { renderInvoice(m.invoice); continue; }
     const d = document.createElement('div'); d.className = 'msg in';
-    d.innerHTML = (m.card != null ? `<img class="card" alt="Карта ${CARDS[m.card][1]}" src="${cardSvg(m.card)}">` : '') + escapeHtml(m.text || '') + `<span class="t">${hhmm(now)}</span>`;
+    d.innerHTML = (m.card != null ? `<img class="card" alt="${UI.cardAlt} ${CARDS[m.card][1]}" src="${cardSvg(m.card)}">` : '') + escapeHtml(m.text || '') + `<span class="t">${hhmm(now)}</span>`;
     feed.append(d);
     if (m.buttons) {
       const kb = document.createElement('div'); kb.className = 'kb';
@@ -123,7 +152,7 @@ async function botSay(messages) {
 
 function renderInvoice(inv) {
   const d = document.createElement('div'); d.className = 'inv';
-  d.innerHTML = `<div class="top"><b>${escapeHtml(inv.title)}</b><span>${escapeHtml(inv.description)}</span></div><div class="sum">${rub(inv.amount)}<small>ТЕСТ</small></div><button type="button">Оплатить ${rub(inv.amount)}</button>`;
+  d.innerHTML = `<div class="top"><b>${escapeHtml(inv.title)}</b><span>${escapeHtml(inv.description)}</span></div><div class="sum">${rub(inv.amount)}<small>${UI.test}</small></div><button type="button">${UI.pay} ${rub(inv.amount)}</button>`;
   d.querySelector('button').onclick = () => openSheet(inv);
   feed.append(d); scroll();
 }
@@ -131,7 +160,7 @@ function renderInvoice(inv) {
 function openSheet(inv) {
   document.getElementById('sTitle').textContent = inv.title;
   document.getElementById('sSum').textContent = rub(inv.amount);
-  document.getElementById('sPay').textContent = `Оплатить ${rub(inv.amount)}`;
+  document.getElementById('sPay').textContent = `${UI.pay} ${rub(inv.amount)}`;
   document.getElementById('sheet').classList.add('open');
 }
 document.getElementById('sPay').onclick = async () => {
@@ -148,7 +177,7 @@ async function press(el, kb) {
 
 async function dispatch(event) {
   now = new Date(now.getTime() + 60000); // часы в чате идут: +1 минута на каждое действие
-  const r = handle({ chatId, user, shared, event, now });
+  const r = handle({ chatId, user, shared, event, now, cfg });
   user = r.user;
   await botSay(r.out);
 }
@@ -162,7 +191,7 @@ document.getElementById('form').onsubmit = async (e) => {
 async function jump(to, label) {
   now = to; addSys(label);
   await sleep(500);
-  for (const r of dueReminders(shared, now)) await botSay([{ text: r.text }]);
+  for (const r of dueReminders(shared, now, cfg)) await botSay([{ text: r.text }]);
 }
 
 // Автопоказ для видео: ?autoplay
@@ -177,15 +206,16 @@ async function tap(re) {
 async function autoplay() {
   window.FAST = /fast/.test(location.search);
   addOut('/start'); await dispatch({ type: 'start' }); await sleep(1100);
-  await tap(/Карта дня/); await sleep(1600);
-  await tap(/Разобрать мою ситуацию/); await sleep(500);
-  await tap(/натальной/); await tap(/^day:2026-10-01$/); await tap(/^15:00$/); await sleep(500);
-  await tap(/Оплатить/);
+  const [tCard, tRead, tNatal, tDay, tTime, tPay] = UI.taps;
+  await tap(tCard); await sleep(1600);
+  await tap(tRead); await sleep(500);
+  await tap(tNatal); await tap(tDay); await tap(tTime); await sleep(500);
+  await tap(tPay);
   const inv = feed.querySelector('.inv:last-of-type button'); inv.style.boxShadow = '0 0 0 3px #fff inset'; await sleep(700);
   inv.click(); await sleep(1100);
   document.getElementById('sPay').click(); await sleep(2200);
-  await jump(new Date(2026, 8, 30, 15, 5), '⏩ перемотка: до встречи остались сутки (ускорено для демо)'); await sleep(1400);
-  await jump(new Date(2026, 9, 1, 14, 5), '⏩ перемотка: за час до встречи'); await sleep(1500);
+  await jump(new Date(2026, 8, 30, 15, 5), UI.jump1); await sleep(1400);
+  await jump(new Date(2026, 9, 1, 14, 5), UI.jump2); await sleep(1500);
   window.DONE = true;
 }
 window.startDemo = autoplay;
