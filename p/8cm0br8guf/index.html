@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Praxos — message your team and AI agents in one place</title>
+<meta name="description" content="Message your team and AI agents in one place. Praxos lets people and agents talk, share work, and get things done together.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Praxos — team messaging for people and AI agents">
+<meta property="og:description" content="A messaging platform with built-in company memory: the next person, AI agent, or even you, a week later, can pick work back up.">
+<meta property="og:image" content="https://flowlab-dev.github.io/p/8cm0br8guf/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://flowlab-dev.github.io/p/8cm0br8guf/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light dark">
+<style>
+:root{--bg:#f3f4ef;--panel:#fbfbf8;--ink:#17191a;--muted:#5b615d;--line:#dcdfd6;--soft:#e9ebe4;--field:#3d5a37;--field-soft:#e1eadb;--on-ink:#fbfbf8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121412;--panel:#1a1d1a;--ink:#eef0ea;--muted:#9ea59d;--line:#2b302b;--soft:#232723;--field:#a9c79a;--field-soft:#223020;--on-ink:#121412}}
+:root[data-theme="dark"]{--bg:#121412;--panel:#1a1d1a;--ink:#eef0ea;--muted:#9ea59d;--line:#2b302b;--soft:#232723;--field:#a9c79a;--field-soft:#223020;--on-ink:#121412}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif;overflow-x:hidden}
+.plaque{background:var(--ink);color:var(--bg);font-size:13px;line-height:1.45;text-align:center;padding:8px 16px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0}
+.word{font:600 23px/1 ui-serif,"New York",Georgia,serif;letter-spacing:-.015em;color:var(--ink);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.nav{display:flex;align-items:center;gap:20px}
+.nav a{color:var(--muted);text-decoration:none;font-size:15px;font-weight:500;min-height:44px;display:inline-flex;align-items:center}
+.nav a:hover{color:var(--ink)}
+.hero{display:grid;gap:40px;padding:24px 0 56px}
+.yc{display:inline-block;font-size:13px;color:var(--muted);margin:0 0 18px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--panel)}
+.yc b{color:var(--ink);font-weight:600}
+h1{font:500 clamp(40px,6.2vw,68px)/1.02 ui-serif,"New York",Georgia,serif;letter-spacing:-.03em;margin:0;max-width:14ch}
+.lead{color:var(--muted);font-size:clamp(17px,1.8vw,20px);line-height:1.5;margin:20px 0 28px;max-width:34ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;border-radius:12px;text-decoration:none;font-weight:600;font-size:16px}
+.btn.primary{background:var(--ink);color:var(--on-ink)}
+.btn.ghost{background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.btn:hover{opacity:.88}
+a:focus-visible{outline:3px solid var(--field);outline-offset:3px;border-radius:12px}
+.platforms{margin:14px 0 0;font-size:14px;color:var(--muted)}
+.fit{margin:32px 0 0;font-size:15px;color:var(--muted);max-width:38ch}
+.fit b{color:var(--ink);font-weight:600}
+
+/* the one memorable thing: a channel where people and an agent share context */
+figure{margin:0;min-width:0}
+.chan{background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:0 30px 70px -40px rgba(20,40,20,.45);overflow:hidden}
+.chan-top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.chan-name{font-weight:650;font-size:15px}
+.chan-name span{color:var(--muted);font-weight:400}
+.who{display:flex}
+.who i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;font-style:normal;border:2px solid var(--panel);margin-left:-7px;background:var(--soft);color:var(--ink)}
+.who i.ag{background:var(--field-soft);color:var(--field)}
+.msgs{list-style:none;margin:0;padding:18px;display:grid;gap:16px}
+.m{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start;opacity:0;transform:translateY(6px);animation:in .45s ease forwards}
+.m:nth-child(2){animation-delay:.45s}.m:nth-child(3){animation-delay:.9s}.m:nth-child(4){animation-delay:1.5s}
+.av{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-weight:700;font-size:12px;background:var(--soft)}
+.av.ag{background:var(--field-soft);color:var(--field)}
+.av svg{width:18px;height:18px}
+.meta{font-size:13px;color:var(--muted);margin-bottom:2px}
+.meta b{color:var(--ink);font-weight:600;margin-right:6px}
+.badge{font-size:12px;font-weight:600;color:var(--field);background:var(--field-soft);border-radius:6px;padding:1px 7px}
+.txt{font-size:15px;overflow-wrap:anywhere}
+.ctx{margin-top:6px;border:1px solid var(--line);border-left:3px solid var(--field);border-radius:4px 12px 12px 4px;padding:12px 14px;background:var(--bg)}
+.ctx-h{font-size:13px;font-weight:600;color:var(--field);margin-bottom:8px}
+.ctx ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ctx li{display:flex;gap:9px;align-items:baseline;font-size:14px}
+.ctx li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;background:var(--field);transform:translateY(-2px)}
+.typing{display:inline-flex;gap:4px;padding:8px 0 0}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:dot 1.2s ease-in-out infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+.compose{margin:0 18px 18px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.compose kbd{font:inherit;font-size:12px;border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.caption{font-size:14px;color:var(--muted);margin:14px 4px 0;max-width:50ch}
+
+.between{padding:48px 0 64px;border-top:1px solid var(--line)}
+.between h2{font:500 clamp(24px,3vw,32px)/1.18 ui-serif,"New York",Georgia,serif;letter-spacing:-.015em;margin:0 0 20px;max-width:26ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
+.chips li{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;font-size:14px}
+.between p{color:var(--muted);margin:0;max-width:56ch}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding:20px 0 40px}
+
+@keyframes in{to{opacity:1;transform:none}}
+@keyframes dot{0%,80%,100%{opacity:.3}40%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.m{animation:none;opacity:1;transform:none}.typing i{animation:none;opacity:.6}}
+@media (min-width:920px){.hero{grid-template-columns:1fr 1fr;align-items:center;gap:64px;padding:56px 0 88px}}
+</style>
+</head>
+<body>
+<div class="plaque">Concept prepared by Flow Lab for Praxos — not affiliated with or endorsed by Praxos. A design sample: buttons go nowhere.</div>
+<div class="wrap">
+<header>
+ <a class="word" href="#top">Praxos</a>
+ <nav class="nav" aria-label="Main"><a href="#top">Blog</a><a href="#top">Book a demo</a></nav>
+</header>
+
+<main id="top">
+<section class="hero">
+ <div>
+  <p class="yc"><b>YC S24</b> — team messaging with built-in memory</p>
+  <h1>Message your team and AI agents.</h1>
+  <p class="lead">Praxos is a team messaging platform where people and agents can talk and work together.</p>
+  <div class="ctas">
+   <a class="btn primary" href="#top">Get Praxos</a>
+   <a class="btn ghost" href="#top">Book a demo</a>
+  </div>
+  <p class="platforms">Praxos for Mac and Praxos for Windows</p>
+  <p class="fit"><b>Works best for early-stage companies</b> ranging from a solo founder to teams of 25 people.</p>
+ </div>
+
+ <figure>
+  <div class="chan" role="img" aria-label="Example channel: teammates ask questions and a Praxos agent draws on the context the platform remembers">
+   <div class="chan-top">
+    <div class="chan-name"># team <span>people and agents</span></div>
+    <div class="who" aria-hidden="true"><i>A</i><i>B</i><i class="ag">AI</i></div>
+   </div>
+   <ul class="msgs">
+    <li class="m"><div class="av" aria-hidden="true">A</div><div><div class="meta"><b>Teammate</b></div><div class="txt">What did we tell Jane last week?</div></div></li>
+    <li class="m"><div class="av" aria-hidden="true">B</div><div><div class="meta"><b>Teammate</b></div><div class="txt">Is anyone else taking care of the client's request?</div></div></li>
+    <li class="m"><div class="av" aria-hidden="true">Y</div><div><div class="meta"><b>You</b></div><div class="txt">What was I doing on this Claude session yesterday?</div></div></li>
+    <li class="m"><div class="av ag" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="7" width="14" height="11" rx="3"/><path d="M12 3v4M9 12h.01M15 12h.01"/></svg></div><div><div class="meta"><b>Agent</b><span class="badge">Praxos</span></div>
+     <div class="ctx"><div class="ctx-h">Context around the conversation</div><ul><li>who said what</li><li>when they said it</li><li>what people were trying to do</li><li>what happened afterward</li></ul></div>
+     <div class="typing" aria-hidden="true"><i></i><i></i><i></i></div></div></li>
+   </ul>
+   <div class="compose" aria-hidden="true"><span>Message # team</span><kbd>↵</kbd></div>
+  </div>
+  <figcaption class="caption">That context can then be used by the next person, AI agent, or even you, a week later.</figcaption>
+ </figure>
+</section>
+
+<section class="between" aria-labelledby="b">
+ <h2 id="b">If you live between these, then Praxos is for you.</h2>
+ <ul class="chips"><li>Slack</li><li>Claude</li><li>Codex</li><li>customer conversations</li><li>docs</li><li>email</li></ul>
+ <p>Our business is making sure that context remains useful after the conversation where it was created has ended.</p>
+</section>
+</main>
+
+<footer>Product text above is from praxos.ai; layout by Flow Lab. To remove this page, write to trading.flowlab@gmail.com.</footer>
+</div>
+</body>
+</html>
