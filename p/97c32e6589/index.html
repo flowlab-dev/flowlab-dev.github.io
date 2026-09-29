@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Concept: AdRamp landing page, prepared by Flow Lab</title>
+<meta name="description" content="A first-screen concept for AdRamp's landing page, prepared by Flow Lab. Not the official site; not affiliated.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f8f7f4;--card:#fff;--ink:#1c1917;--ink-2:#57534e;--line:#eae8e4;--soft:#f3f2f0;--ok:#16a34a;--ok-bg:#dcfce7;--bad:#dc2626;--bad-bg:#fee2e2;
+  --sans:"Outfit",system-ui,-apple-system,sans-serif;--mono:"Fragment Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:6px}
+.concept{margin:0;padding:8px 16px;background:var(--ink);color:#f5f5f4;font-size:13.5px;text-align:center}
+.concept b{font-weight:600}
+nav{max-width:1200px;margin:0 auto;padding:18px 24px;display:flex;align-items:center;gap:28px}
+.logo{font-weight:700;font-size:20px;letter-spacing:-.02em;margin-right:auto}
+nav a.l{color:var(--ink-2);text-decoration:none;font-size:15px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:10px 22px;border-radius:999px;font-weight:600;font-size:15px;text-decoration:none;border:1px solid var(--ink)}
+.btn.solid{background:var(--ink);color:#fff}
+.btn.line{background:transparent}
+.hero{max-width:1200px;margin:0 auto;padding:48px 24px 24px;text-align:center}
+h1{font-size:clamp(44px,6.4vw,88px);line-height:.98;letter-spacing:-.045em;font-weight:600;margin:0 auto 20px;max-width:13ch}
+.lede{font-size:clamp(18px,1.6vw,21px);color:var(--ink-2);max-width:40em;margin:0 auto 28px;font-weight:300}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.stack{margin:34px auto 0;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;font-size:14px;color:var(--ink-2)}
+.stack .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--line);font-weight:500;color:var(--ink)}
+.stack .pill i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.stack .pill.soon{color:var(--ink-2)}.stack .pill.soon i{background:#d6d3d1}
+.stack small{font:400 12px var(--mono);color:var(--ink-2)}
+
+/* scene */
+.scene{max-width:1200px;margin:0 auto;padding:40px 24px 96px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px;align-items:center}
+.beats{display:grid;gap:40px}
+.beat h2{font-size:clamp(28px,2.8vw,40px);line-height:1.05;letter-spacing:-.03em;font-weight:600;margin:0 0 10px}
+.beat p{margin:0;color:var(--ink-2);font-weight:300}
+.beat .n{font:400 13px var(--mono);color:var(--ink-2);display:block;margin-bottom:10px}
+.chat{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:0 1px 2px rgba(28,25,23,.05),0 30px 60px -30px rgba(28,25,23,.25);overflow:hidden}
+.chat-top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line);font-size:14px}
+.chat-top span{font:400 12px var(--mono);color:var(--ink-2)}
+.chat-body{padding:18px;display:grid;gap:14px;min-height:430px}
+.msg{max-width:88%;padding:12px 14px;border-radius:16px;font-size:15px}
+.msg.me{justify-self:end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.msg.ai{background:var(--soft);border-bottom-left-radius:6px}
+.msg.ai p{margin:0 0 10px}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border-radius:12px;overflow:hidden}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line)}
+th{font:400 11.5px var(--mono);color:var(--ink-2);text-transform:none}
+td.num{font-family:var(--mono);font-size:13px;text-align:right;white-space:nowrap}
+tr.waste td:first-child{box-shadow:inset 3px 0 0 var(--bad)}
+td .act{display:inline-flex;align-items:center;min-height:30px;padding:4px 10px;border-radius:999px;border:1px solid var(--ink);font-size:12.5px;font-weight:600;background:#fff;white-space:nowrap}
+td .done{display:none;align-items:center;gap:6px;min-height:30px;padding:4px 10px;border-radius:999px;background:var(--ok-bg);color:var(--ok);font-size:12.5px;font-weight:600;white-space:nowrap}
+tr.added .act{display:none}tr.added .done{display:inline-flex}
+.approve{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--card);border:1px dashed #d6d3d1;font-size:14px}
+.approve b{font-weight:600}
+.approve .ok-note{display:none;color:var(--ok);font-weight:600;white-space:nowrap}
+.approve.ok .ask{display:none}.approve.ok .ok-note{display:inline}
+.sample{font:400 11.5px var(--mono);color:var(--ink-2);margin-top:8px}
+.composer{display:flex;gap:8px;padding:14px 18px;border-top:1px solid var(--line)}
+.composer div{flex:1;min-height:42px;border:1px solid var(--line);border-radius:999px;padding:10px 16px;color:#a8a29e;font-size:14px}
+.composer span{width:42px;height:42px;border-radius:50%;background:var(--ink);display:inline-block}
+
+.close{max-width:1200px;margin:0 auto;padding:72px 24px;text-align:center;border-top:1px solid var(--line)}
+.close h2{font-size:clamp(32px,3.6vw,52px);letter-spacing:-.035em;font-weight:600;margin:0 0 12px}
+.close p{color:var(--ink-2);margin:0 0 26px;font-weight:300}
+footer{max-width:1200px;margin:0 auto;padding:24px;color:var(--ink-2);font-size:13px;border-top:1px solid var(--line)}
+
+/* scene states, driven by scroll on desktop; phones show the finished state */
+html.scenes .chat .q, html.scenes .chat .a, html.scenes .chat .approve { opacity: 0; transform: translateY(10px); transition: opacity .35s, transform .35s; }
+html.scenes .chat.s1 .q, html.scenes .chat.s2 .a, html.scenes .chat.s4 .approve { opacity: 1; transform: none; }
+html.scenes .chat:not(.s3) tr.waste td:first-child { box-shadow: none; }
+html.scenes .beat { opacity: .3; transition: opacity .35s; }
+html.scenes .beat.on { opacity: 1; }
+tr.added td { color: var(--ink-2); }
+@media (min-width:1024px){ html.scenes .scene{min-height:100vh;padding-block:0} }
+@media (max-width:900px){ .scene{grid-template-columns:1fr;gap:32px} nav a.l{display:none} .chat-body{min-height:0} td,th{padding:8px 6px} }
+@media (max-width:520px){ table th:nth-child(3), table td:nth-child(3){display:none} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+</style>
+<script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
+</head>
+<body>
+<p class="concept">Concept by <b>Flow Lab</b> for AdRamp · not the official site, not affiliated · the chat shows sample data</p>
+<nav aria-label="Main"><span class="logo">AdRamp</span><a class="l" href="#how">How it works</a><a class="l" href="#close">Pricing</a><a class="btn solid" href="#close">Get Started →</a></nav>
+
+<header class="hero">
+  <h1>The AI Marketer that Acts on Your Data.</h1>
+  <p class="lede">AdRamp connects to your marketing stack to find trends, suggest optimizations, and execute changes — all within a single chat interface.</p>
+  <div class="cta"><a class="btn solid" href="#close">Start Free Trial</a><a class="btn line" href="#how">See it work</a></div>
+  <div class="stack" aria-label="Integrations">
+    <span class="pill"><i aria-hidden="true"></i>Google Ads</span>
+    <span class="pill soon"><i aria-hidden="true"></i>Meta</span>
+    <span class="pill soon"><i aria-hidden="true"></i>Shopify</span>
+    <span class="pill soon"><i aria-hidden="true"></i>Klaviyo</span>
+    <small>live today · coming next</small>
+  </div>
+</header>
+
+<section class="scene" id="how" aria-label="How AdRamp works, in one conversation">
+  <div class="beats">
+    <div class="beat" data-b="1"><span class="n">Ask</span><h2>Ask questions, get instant answers.</h2><p>Dive into campaign performance, keyword efficiency, and budget allocation — all through a natural language chat. No dashboards to learn, no reports to build.</p></div>
+    <div class="beat" data-b="2"><span class="n">Find</span><h2>Find waste, reclaim your budget.</h2><p>AdRamp surfaces wasteful search terms, underperforming keywords, and budget drains — then lets you take action with a single click.</p></div>
+    <div class="beat" data-b="3"><span class="n">Act</span><h2>From insight to action, instantly.</h2><p>Every action requires your explicit approval. You see what will change, confirm with one click. Nothing happens without you saying yes.</p></div>
+  </div>
+  <div class="chat s1 s2 s3 s4" id="chat" aria-label="Sample conversation with AdRamp">
+    <div class="chat-top"><b>AdRamp</b><span>Google Ads · sample account</span></div>
+    <div class="chat-body">
+      <div class="msg me q">Which search terms wasted money in the last 7 days?</div>
+      <div class="msg ai a">
+        <p>Four search terms spent <b>$412</b> with no conversions. Adding them as negatives stops that spend from tomorrow.</p>
+        <table>
+          <thead><tr><th>Search term</th><th>Spend</th><th>Clicks</th><th>Conv.</th><th></th></tr></thead>
+          <tbody>
+            <tr class="waste"><td>free marketing course</td><td class="num">$168</td><td class="num">94</td><td class="num">0</td><td><span class="act">Add Negative</span><span class="done">✓ Added</span></td></tr>
+            <tr class="waste"><td>ads manager jobs</td><td class="num">$121</td><td class="num">71</td><td class="num">0</td><td><span class="act">Add Negative</span><span class="done">✓ Added</span></td></tr>
+            <tr class="waste"><td>what is roas</td><td class="num">$78</td><td class="num">52</td><td class="num">0</td><td><span class="act">Add Negative</span><span class="done">✓ Added</span></td></tr>
+            <tr class="waste"><td>google ads login</td><td class="num">$45</td><td class="num">38</td><td class="num">0</td><td><span class="act">Add Negative</span><span class="done">✓ Added</span></td></tr>
+          </tbody>
+        </table>
+        <div class="approve"><span>Add 4 negative keywords to <b>Search · Brand + Generic</b>?</span><span class="btn solid ask" style="min-height:34px;padding:4px 14px">Approve</span><span class="ok-note">✓ Approved</span></div>
+        <p class="sample">Sample data for illustration, not a real account.</p>
+      </div>
+    </div>
+    <div class="composer" aria-hidden="true"><div>Ask about your campaigns…</div><span></span></div>
+  </div>
+</section>
+
+<section class="close" id="close">
+  <h2>Ready to put your data to work?</h2>
+  <p>Join the early access program and see how AdRamp can transform your marketing performance. Free during early access.</p>
+  <a class="btn solid" href="#close">Start Free Trial</a>
+</section>
+<footer>Landing page concept prepared by Flow Lab for AdRamp. Not the official site and not affiliated. Headlines and copy are from adramp.ai; the conversation uses sample data made up for this concept.</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('scenes')) return;
+  var chat = document.getElementById('chat'), beats = [].slice.call(document.querySelectorAll('.beat')), rows = [].slice.call(document.querySelectorAll('tr.waste'));
+  var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
+  (function next(i) {
+    if (i === libs.length) return start();
+    var t = document.createElement('script'); t.src = libs[i]; t.onload = function () { next(i + 1); };
+    t.onerror = function () { root.classList.remove('scenes'); }; document.head.appendChild(t);
+  })(0);
+  function paint(p) {
+    chat.className = 'chat s1' + (p > 0.12 ? ' s2' : '') + (p > 0.4 ? ' s3' : '') + (p > 0.62 ? ' s4' : '');
+    document.querySelector('.approve').classList.toggle('ok', p > 0.74);
+    var added = p < 0.78 ? 0 : Math.min(rows.length, Math.floor((p - 0.78) / 0.04) + 1);   // approved first, then each negative lands
+    rows.forEach(function (r, i) { r.classList.toggle('added', i < added); });
+    var b = p < 0.33 ? 0 : p < 0.62 ? 1 : 2;
+    beats.forEach(function (el, i) { el.classList.toggle('on', i === b); });
+  }
+  function start() {
+    var ST = window.ScrollTrigger; window.gsap.registerPlugin(ST);
+    paint(0);
+    ST.create({ trigger: '.scene', start: 'top top', end: '+=160%', pin: true, scrub: true, onUpdate: function (st) { paint(st.progress); } });
+    window.__st = ST;
+  }
+})();
+</script>
+</body>
+</html>
