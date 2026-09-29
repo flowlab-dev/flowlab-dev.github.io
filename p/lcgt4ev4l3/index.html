@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Donna — schedule multiple linked meetings in one booking flow</title>
+<meta name="description" content="Recurring, multi-step and one-time meetings in one booking link. Buffers between related meetings, auto-rescheduling and cancelled slots offered to the next attendee.">
+<meta property="og:title" content="Donna — multiple meetings, one booking flow">
+<meta property="og:description" content="Recurring, multi-step, one-time meetings: Donna manages the scheduling for you.">
+<meta property="og:image" content="https://flowlab-dev.github.io/p/lcgt4ev4l3/og.png">
+<meta property="og:url" content="https://flowlab-dev.github.io/p/lcgt4ev4l3/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light dark">
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--ink:#141414;--muted:#5d5d5a;--line:#e4e1da;--accent:#141414;--acc-ink:#fff;--a1:#2f6fed;--a2:#e0763f;--a3:#2e9d6b;--soft:#efece6}
+@media (prefers-color-scheme:dark){:root{--bg:#121211;--card:#1b1b1a;--ink:#f1efe9;--muted:#a8a59e;--line:#2c2b29;--accent:#f1efe9;--acc-ink:#121211;--soft:#232220}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Arial,sans-serif}
+.plaque{background:#141414;color:#eee;font-size:13px;text-align:center;padding:8px 16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1120px;margin:0 auto;padding:16px 20px}
+.word{font-weight:800;font-size:22px;letter-spacing:-.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:999px;background:var(--accent);color:var(--acc-ink);text-decoration:none;font-weight:600;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.hero{max-width:1120px;margin:0 auto;padding:28px 20px 56px;display:grid;gap:32px}
+h1{font:600 clamp(36px,4.6vw,54px)/1.04 Georgia,"Times New Roman",serif;letter-spacing:-.02em;margin:0}
+.lead{color:var(--muted);font-size:clamp(17px,2vw,20px);margin:14px 0 22px;max-width:34ch}
+.row{display:flex;gap:10px;flex-wrap:wrap}.note{font-size:14px;color:var(--muted);margin-top:12px}
+.demo{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 20px 60px -30px rgba(0,0,0,.25)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--soft);border-radius:999px;padding:4px;gap:4px;margin-bottom:14px}
+.tabs button{border:0;background:transparent;border-radius:999px;min-height:40px;font:600 14px/1 inherit;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected=true]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.tabs button:focus-visible,.btn:focus-visible{outline:3px solid var(--a1);outline-offset:2px}
+.panel{display:none}.panel.on{display:block}
+.m{display:flex;align-items:center;gap:12px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 8px;opacity:0;transform:translateY(8px);animation:in .45s ease forwards}
+.m i{width:10px;height:36px;border-radius:6px;flex:none}.m b{display:block;font-size:15px}.m span{font-size:13px;color:var(--muted)}
+.gap{font-size:12px;color:var(--muted);margin:-2px 0 8px 22px;border-left:2px dashed var(--line);padding:2px 0 2px 12px;opacity:0;animation:in .45s ease forwards}
+.panel .m:nth-child(1){animation-delay:.1s}.panel .gap:nth-child(2){animation-delay:.35s}.panel .m:nth-child(3){animation-delay:.6s}.panel .gap:nth-child(4){animation-delay:.85s}.panel .m:nth-child(5){animation-delay:1.1s}
+.ok{margin-top:10px;font-size:14px;font-weight:600;color:var(--a3);opacity:0;animation:in .45s 1.4s ease forwards}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips span{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;background:var(--bg)}
+@keyframes in{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.m,.gap,.ok{animation:none;opacity:1;transform:none}}
+@media (min-width:900px){.hero{grid-template-columns:1fr 1fr;align-items:center;padding:64px 20px 96px}}
+footer{max-width:1120px;margin:0 auto;padding:0 20px 40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="plaque">Concept prepared by Flow Lab for Donna — not affiliated with or endorsed by Donna. A design sample: buttons go nowhere.</div>
+<header><span class="word" aria-label="Donna">Donna</span><a class="btn" href="#try">Try Donna</a></header>
+<main class="hero">
+ <div>
+  <h1>Schedule multiple meetings in one flow</h1>
+  <p class="lead">Recurring, multi-step, one-time meetings — Donna manages all scheduling complexities for you.</p>
+  <div class="row" id="try"><a class="btn" href="#try">Try Donna</a><a class="btn ghost" href="#demo">See how it works</a></div>
+  <p class="note">Google Calendar · Outlook · Zoom · Google Meet · Teams · Slack · HubSpot · Salesforce</p>
+ </div>
+ <section class="demo" id="demo" aria-label="How Donna books linked meetings">
+  <div class="tabs" role="tablist">
+   <button role="tab" aria-selected="true" aria-controls="p1" id="t1">Multiple</button>
+   <button role="tab" aria-selected="false" aria-controls="p2" id="t2">Recurring</button>
+   <button role="tab" aria-selected="false" aria-controls="p3" id="t3">Integrations</button>
+  </div>
+  <div class="panel on" id="p1" role="tabpanel" aria-labelledby="t1">
+   <div class="m"><i style="background:var(--a1)"></i><div><b>Kick-off call</b><span>Tue · 10–11am</span></div></div>
+   <div class="gap">48 h buffer between related meetings</div>
+   <div class="m"><i style="background:var(--a2)"></i><div><b>Technical deep dive</b><span>Thu · 12–1pm</span></div></div>
+   <div class="gap">booked in the same flow — one link for the client</div>
+   <div class="m"><i style="background:var(--a3)"></i><div><b>Review &amp; next steps</b><span>Mon · 9–9:30am</span></div></div>
+   <p class="ok">3 meetings booked · buffers kept · calendars in sync</p>
+  </div>
+  <div class="panel" id="p2" role="tabpanel" aria-labelledby="t2">
+   <div class="m"><i style="background:var(--a1)"></i><div><b>Weekly coaching</b><span>Every Wed · 5–6pm · 8 weeks</span></div></div>
+   <div class="gap">make room for an important meeting — others move automatically</div>
+   <div class="m"><i style="background:var(--a2)"></i><div><b>Internal review → Thu · 9–10am</b><span>rescheduled automatically</span></div></div>
+   <div class="gap">a cancelled slot is offered to future attendees</div>
+   <div class="m"><i style="background:var(--a3)"></i><div><b>Wed · 5–6pm filled again</b><span>by the next attendee in the series</span></div></div>
+   <p class="ok">No gaps in the day, no back-and-forth emails</p>
+  </div>
+  <div class="panel" id="p3" role="tabpanel" aria-labelledby="t3">
+   <p style="margin:4px 0 12px;color:var(--muted)">Plays well with the tools you already use.</p>
+   <div class="chips"><span>Google Calendar</span><span>Outlook Calendar</span><span>Zoom</span><span>Google Meet</span><span>Microsoft Teams</span><span>Slack</span><span>HubSpot</span><span>Salesforce</span></div>
+  </div>
+ </section>
+</main>
+<footer>Product text above is from donna.shape.new; layout and demo by Flow Lab. To remove this page, write to trading.flowlab@gmail.com.</footer>
+<script>
+document.querySelectorAll('[role=tab]').forEach((t)=>t.addEventListener('click',()=>{document.querySelectorAll('[role=tab]').forEach((x)=>x.setAttribute('aria-selected',x===t));document.querySelectorAll('.panel').forEach((p)=>{const on=p.id===t.getAttribute('aria-controls');p.classList.toggle('on',on);if(on)p.querySelectorAll('.m,.gap,.ok').forEach((e)=>{e.style.animation='none';void e.offsetWidth;e.style.animation='';});});}));
+</script>
+</body>
+</html>
