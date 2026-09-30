@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supabase Oct 30 Check · Sample Report</title>
+<meta name="description" content="Sample readiness check for the Supabase change of October 30, 2026: which tables your app will not be able to reach, which are open without RLS, and ready-to-apply GRANT SQL.">
+<style>
+:root{--bg:#FBF8F5;--card:#fff;--ink:#1F1A17;--sub:#5B514B;--line:#EADFD7;--accent:#C2412D;--red:#B42318;--redbg:#FDECEA;--amber:#8A5A00;--amberbg:#FFF4DB;--green:#1E6B3A;--greenbg:#E6F4EA;--grey:#5B514B;--greybg:#F1ECE8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171412;--card:#211D1A;--ink:#F3EEEA;--sub:#B9ADA5;--line:#3A332E;--accent:#F08A76;--red:#FF8A80;--redbg:#3A1E1B;--amber:#F5C66B;--amberbg:#352A14;--green:#8BD7A3;--greenbg:#16301F;--grey:#B9ADA5;--greybg:#2A2522}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:40px 20px 64px}
+.band{font-size:14px;color:var(--sub);border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:34px}
+.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:40px;line-height:1.1;letter-spacing:-.02em;margin:10px 0 14px}
+h2{font-size:24px;margin:44px 0 14px}
+p{margin:0 0 14px}
+.lead{font-size:19px;color:var(--sub)}
+a{color:var(--accent)}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:26px 0}
+.meta div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.meta b{display:block;font-size:22px}
+.meta span{font-size:14px;color:var(--sub)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--sub)}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.t-red{background:var(--redbg);color:var(--red)}.t-amber{background:var(--amberbg);color:var(--amber)}.t-green{background:var(--greenbg);color:var(--green)}.t-grey{background:var(--greybg);color:var(--grey)}
+.f{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+.f h3{margin:8px 0 10px;font-size:20px}
+.f dl{display:grid;grid-template-columns:120px 1fr;gap:6px 14px;margin:0}
+.f dt{font-weight:700;color:var(--sub);font-size:14px;padding-top:2px}
+.f dd{margin:0}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.shots figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.shots img{width:100%;max-width:260px;border-radius:10px;border:1px solid var(--line)}
+figcaption{font-size:14px;color:var(--sub);margin-top:8px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;font-size:13.5px;line-height:1.45}
+.note{font-size:15px;color:var(--sub)}
+ul{padding-left:20px}
+@media (max-width:600px){h1{font-size:30px}.f dl{grid-template-columns:1fr}.f dt{padding-top:6px}.shots{grid-template-columns:1fr}th:nth-child(3),td:nth-child(3){display:none}}
+@media print{body{background:#fff;font-size:12.5px}.wrap{padding:0}h1{font-size:28px}h2{font-size:18px;margin-top:22px}.f,.meta div,table,pre,.shots figure{break-inside:avoid}.shots img{max-width:190px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="band">Self-initiated demo by Flow Lab · checked on our own test Supabase project (schema copied from our own Lovable demo app) · no client data · the flagged table was created by us for the test and deleted afterwards</div>
+
+<div class="kicker">Sample report · Supabase October 30 readiness</div>
+<h1>Will your app still reach its new tables after October 30?</h1>
+<p class="lead">From <b>October 30, 2026</b> Supabase stops opening new tables in the <code>public</code> schema to the Data API automatically — on every existing project. Tables you already have keep working. A table added after that date without an explicit <code>GRANT</code> answers every app request with <code>permission denied</code> (error 42501), however good its row level security is. Source: <a href="https://supabase.com/changelog/45329-breaking-change-tables-not-exposed-to-data-and-graphql-api-automatically">Supabase changelog</a>.</p>
+
+<div class="meta">
+<div><b>16</b><span>tables in <code>public</code> checked</span></div>
+<div><b>15</b><span>ready: RLS on, a policy, API roles have access</span></div>
+<div><b>1</b><span>the app can’t reach it (42501) — fix included</span></div>
+<div><b>0</b><span>tables open without RLS</span></div>
+</div>
+
+<h2>What was checked</h2>
+<p>One read-only query in the project’s SQL Editor (the owner runs it with their own login — no passwords or keys leave the account). For every table in <code>public</code>: is row level security on, how many policies it has, and what the API roles <code>anon</code>, <code>authenticated</code> and <code>service_role</code> are allowed to do. If the app keeps its migrations in a repository, the same check runs on the migration files: which tables are created without an explicit <code>GRANT</code> or without RLS.</p>
+
+<h2>Summary</h2>
+<table>
+<tr><th>#</th><th>What we found</th><th>Risk</th><th>Result</th></tr>
+<tr><td>1</td><td><code>t_after_1030</code> — created the way every new table will be created after October 30: no grants for the API roles. Any screen reading it would get “permission denied”.</td><td><span class="tag t-amber">Breaks new features</span></td><td><span class="tag t-green">Fix SQL generated</span></td></tr>
+<tr><td>—</td><td>15 existing tables (bookings, clients, dogs, leads, outbox, services, settings…) — RLS on, one policy each, API roles have access</td><td><span class="tag t-green">OK</span></td><td><span class="tag t-grey">No change</span></td></tr>
+<tr><td>—</td><td>Tables readable by anyone because RLS is off</td><td><span class="tag t-green">None found</span></td><td><span class="tag t-grey">—</span></td></tr>
+</table>
+
+<h2>Finding</h2>
+<div class="f">
+<span class="tag t-amber">Breaks new features</span>
+<h3>A new table the app can’t see</h3>
+<dl>
+<dt>What</dt><dd>The table exists, but <code>anon</code>, <code>authenticated</code> and <code>service_role</code> have no privileges on it. The app’s request fails with 42501 before row level security is even consulted.</dd>
+<dt>Why now</dt><dd>In projects created before May 30, 2026, Supabase adds these grants for you until October 30. After it, every table created by a migration, by an AI builder or in the dashboard starts like this one.</dd>
+<dt>Fix</dt><dd>Explicit grants in the same migration that creates the table — generated by the check, applied only after the table’s RLS policies are reviewed:</dd>
+</dl>
+<pre>grant select, insert, update, delete on public.t_after_1030 to authenticated;
+grant select, insert, update, delete on public.t_after_1030 to service_role;
+-- anon: only if guests are meant to see it and an RLS policy allows them</pre>
+<p class="note">Retest: the same query then shows the table as ready.</p>
+</div>
+
+<h2>The check, as it ran</h2>
+<pre>tbl            rls    policies  anon  authenticated  service_role  risk
+t_after_1030   false  0         —     —              —             API can't see it (42501) — needs GRANT
+automation_runs true  1         ✓     ✓              ✓             ready; write GRANT for new tables
+bookings       true   1         ✓     ✓              ✓             ready; write GRANT for new tables
+clients        true   1         ✓     ✓              ✓             ready; write GRANT for new tables
+…               15 tables ready in total</pre>
+<p class="note">Run on September 30, 2026 in the SQL Editor of our own test project. The query only reads the system catalog; it changes nothing.</p>
+
+<h2>What you get for your app</h2>
+<ul>
+<li>You run one read-only query in your SQL Editor (we send it as text) — or give us read access to the repository with your migrations.</li>
+<li>Within a day: the list of tables at risk, tables open without RLS, and ready-to-apply SQL.</li>
+<li>We add the grants to your migrations (or hand them over), you apply, we re-run the check together.</li>
+<li>Fixed price <b>USD 150</b>. Built with Claude Code; every change is checked before it ships.</li>
+</ul>
+<p class="note">Flow Lab · trading.flowlab@gmail.com · The Supabase change applies to new tables only: existing tables keep their access before and after October 30.</p>
+</div>
+</body>
+</html>
