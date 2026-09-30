@@ -64,7 +64,7 @@ ul{padding-left:20px}
 <tr><th>#</th><th>Step</th><th>Who</th></tr>
 <tr><td>1</td><td>We send you one workflow file for a new private GitHub repository. It checks the .ipa with Apple’s tool first, then uploads it, then deletes the key from the server.</td><td><span class="tag t-green">Flow Lab</span></td></tr>
 <tr><td>2</td><td>You create an App Store Connect API key (role “App Manager”) and paste it into your repository’s secrets. We send step-by-step instructions: where to click in App Store Connect and in GitHub.</td><td><span class="tag t-amber">You, ~10 min</span></td></tr>
-<tr><td>3</td><td>We run the first upload together: you press “Run workflow”, we read the log with you and fix anything Apple’s check flags.</td><td><span class="tag t-grey">Together</span></td></tr>
+<tr><td>3</td><td>We run the first upload together: you press “Run workflow”, you send us the run log (GitHub hides your secrets in it), and we fix anything Apple’s check flags.</td><td><span class="tag t-grey">Together</span></td></tr>
 <tr><td>4</td><td>After Apple processes the upload, the build shows up in App Store Connect → TestFlight. Next updates: new .ipa link → “Run workflow”.</td><td><span class="tag t-green">Done</span></td></tr>
 </table>
 
