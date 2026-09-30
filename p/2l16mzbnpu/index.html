@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>City tour — booking mockup for Visit me Kazakhstan</title>
+<meta name="description" content="Mockup of a tour page with date, guests and live total — prepared by Flow Lab for Visit me Kazakhstan.">
+<link rel="preload" href="fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Inter";font-style:normal;font-weight:300 700;font-display:swap;src:url(fonts/inter-latin-var.woff2) format("woff2")}
+:root{--bg:#f4f7fa;--card:#fff;--ink:#0f1c2a;--muted:#51606e;--line:#dbe3ea;--accent:#0369a1;--accent-2:#075985;--ok:#15803d;--radius:18px;--ease:cubic-bezier(.22,.61,.36,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.5;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+.plaque{background:#0f1c2a;color:#d7e2ec;font-size:13px;text-align:center;padding:8px 16px}
+.plaque b{color:#fff}
+header{background:#fff;border-bottom:1px solid var(--line)}
+.bar{max-width:1160px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;gap:24px}
+.logo{font-weight:700;letter-spacing:-.02em;color:var(--ink);text-decoration:none}
+.logo span{color:var(--accent)}
+nav{margin-left:auto;display:flex;gap:22px;font-size:15px}
+nav a{color:var(--muted);text-decoration:none;padding:10px 0}
+nav a[aria-current]{color:var(--ink);font-weight:600}
+.hero{position:relative;max-width:1160px;margin:24px auto 0;padding:0 20px}
+.hero img{width:100%;height:clamp(220px,38vw,420px);object-fit:cover;border-radius:var(--radius)}
+.credit{position:absolute;right:32px;bottom:10px;font-size:11px;color:#fff;background:rgba(0,0,0,.45);padding:2px 8px;border-radius:6px}
+.wrap{max-width:1160px;margin:0 auto;padding:32px 20px 120px;display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:start}
+.crumbs{font-size:14px;color:var(--muted);margin-bottom:12px}
+.crumbs a{color:var(--muted)}
+h1{font-size:clamp(34px,5vw,52px);line-height:1.05;letter-spacing:-.03em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 24px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;color:var(--ink)}
+.lead{font-size:19px;color:var(--muted);max-width:640px}
+h2{font-size:24px;letter-spacing:-.02em;margin:40px 0 16px}
+.steps{list-style:none;border-left:2px solid var(--line);margin-left:10px}
+.steps li{position:relative;padding:0 0 18px 24px}
+.steps li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:15px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+.box h3{font-size:16px;margin-bottom:10px}
+.box ul{list-style:none;display:grid;gap:8px;font-size:15px}
+.yes li::before{content:"✓ ";color:var(--ok);font-weight:700}
+.no li::before{content:"— ";color:var(--muted)}
+/* booking card */
+.book{position:sticky;top:20px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 12px 32px -18px rgba(15,28,42,.25)}
+.price{font-size:32px;font-weight:700;letter-spacing:-.02em}
+.price small{font-size:15px;font-weight:400;color:var(--muted)}
+.field{margin-top:18px}
+.field label,.field .lbl{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+input[type=date],input[type=text],input[type=email],textarea{width:100%;height:48px;border:1px solid var(--line);border-radius:12px;padding:0 14px;font:inherit;font-size:16px;color:var(--ink);background:#fff}
+textarea{height:96px;padding:12px 14px;resize:vertical}
+.stepper{display:flex;align-items:center;border:1px solid var(--line);border-radius:12px;height:48px;overflow:hidden}
+.stepper button{width:48px;height:100%;border:0;background:#f4f7fa;font-size:22px;color:var(--ink);cursor:pointer}
+.stepper button:disabled{color:#a4b0bb;cursor:not-allowed}
+.stepper output{flex:1;text-align:center;font-weight:600}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.check{display:flex;gap:10px;align-items:flex-start;margin-top:18px;font-size:15px;cursor:pointer}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent)}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);margin-top:20px;padding-top:16px}
+.total b{font-size:26px;letter-spacing:-.02em}
+.err{color:#b91c1c;font-size:14px;margin-top:6px;min-height:20px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border-radius:999px;border:0;font:inherit;font-weight:600;font-size:17px;cursor:pointer;text-decoration:none;transition:transform .15s var(--ease),background .2s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--accent);color:#fff;margin-top:14px}
+.btn-primary:hover{background:var(--accent-2)}
+.btn-wa{background:#fff;color:var(--ink);border:1px solid var(--line);margin-top:10px}
+.small{font-size:13px;color:var(--muted);margin-top:12px;text-align:center}
+.done{display:none;margin-top:14px;background:#ecfdf3;border:1px solid #bbf7d0;color:#14532d;border-radius:12px;padding:12px 14px;font-size:14px}
+.done.on{display:block}
+.custom{margin-top:8px}
+.custom form{display:grid;gap:12px;max-width:640px}
+/* mobile bar */
+.mbar{display:none}
+@media (max-width:900px){
+  nav{display:none}
+  .wrap{grid-template-columns:1fr;gap:28px;padding-bottom:140px}
+  .book{position:static}
+  .two{grid-template-columns:1fr}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom));align-items:center;gap:12px}
+  .mbar div{flex:1;font-size:14px;color:var(--muted)}
+  .mbar b{display:block;font-size:20px;color:var(--ink)}
+  .mbar a{width:auto;padding:0 24px;margin:0;height:48px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="plaque" role="note"><b>Mockup by Flow Lab for Visit me Kazakhstan.</b> Booking is simulated here: no payment is taken and nothing is sent.</div>
+<header>
+ <div class="bar">
+  <a class="logo" href="#">Visit me <span>Kazakhstan</span></a>
+  <nav aria-label="Main"><a href="#">Home</a><a href="#" aria-current="page">Tours</a><a href="#">Special tours</a><a href="#">About</a><a href="#">Contact</a></nav>
+ </div>
+</header>
+
+<div class="hero">
+ <img src="img/almaty-1024.webp" srcset="img/almaty-768.webp 768w, img/almaty-1024.webp 1024w" sizes="(max-width:1160px) 100vw, 1120px" width="1024" height="768" alt="Almaty with the mountains behind the city">
+ <span class="credit">Illustrative photo · public domain</span>
+</div>
+
+<main class="wrap">
+ <article>
+  <p class="crumbs"><a href="#">Tours</a> / <a href="#">Almaty</a> / City tour</p>
+  <h1>Almaty city tour</h1>
+  <div class="chips"><span class="chip">Half day</span><span class="chip">English-speaking guide</span><span class="chip">Up to 4 guests</span><span class="chip">Green Market tasting</span></div>
+  <p class="lead">A western city of beautiful avenues, lively cafes and green parks, with the mountains all around — east meets west. I’ll guide you around the highlights and we’ll visit the Shymbulak ski resort just outside the centre.</p>
+
+  <h2>Program</h2>
+  <ol class="steps">
+   <li><b>28th Panfilov Guardsmen Park</b><span>Stop 1</span></li>
+   <li><b>Green Market</b><span>Stop 2 · product tasting</span></li>
+   <li><b>Arbat Square</b><span>Stop 3</span></li>
+   <li><b>Shymbulak</b><span>Stop 4 · ski resort above the city</span></li>
+  </ol>
+
+  <h2>What’s included</h2>
+  <div class="two">
+   <div class="box yes"><h3>Included</h3><ul><li>City walk with an English-speaking guide</li><li>Green Market product tasting</li><li>Transport during the tour</li></ul></div>
+   <div class="box no"><h3>Not included</h3><ul><li>Pick-up and drop-off transfer — can be added for $40 (group of up to 4)</li></ul></div>
+  </div>
+
+ </article>
+
+ <aside class="book" id="book" aria-labelledby="h-book">
+  <p class="price" id="h-book">$185 <small>per tour · up to 4 guests</small></p>
+  <form id="bf" novalidate>
+   <div class="field">
+    <label for="date">Date</label>
+    <input id="date" type="date" required aria-describedby="derr">
+    <p class="err" id="derr" aria-live="polite"></p>
+   </div>
+   <div class="field">
+    <span class="lbl" id="glbl">Guests</span>
+    <div class="stepper" role="group" aria-labelledby="glbl">
+     <button type="button" id="minus" aria-label="Fewer guests">−</button>
+     <output id="guests" aria-live="polite">2</output>
+     <button type="button" id="plus" aria-label="More guests">+</button>
+    </div>
+    <p class="hint" id="ghint">One price for the group, up to 4 guests. More people? <a href="#custom">Send a custom request</a>.</p>
+   </div>
+   <label class="check"><input type="checkbox" id="transfer"> <span>Hotel pick-up and drop-off <b>+$40</b></span></label>
+   <div class="total"><span>Total</span><b id="total">$185</b></div>
+   <button class="btn btn-primary" type="submit">Book now</button>
+   <a class="btn btn-wa" id="wa" href="#" target="_blank" rel="noopener">Ask on WhatsApp</a>
+   <p class="small">Online payment and the confirmation email are set up on the live site.</p>
+   <p class="done" id="bdone" role="status"></p>
+  </form>
+ </aside>
+  <section class="custom" style="grid-column:1" id="custom" aria-labelledby="h-custom">
+   <h2 id="h-custom">Want something different?</h2>
+   <p class="lead" style="font-size:17px">Larger group, another route or a special tour — send a custom request. On the live site it goes straight to amoCRM.</p>
+   <form id="cf" novalidate>
+    <label for="cn" style="font-weight:600;font-size:14px">Name</label><input id="cn" type="text" autocomplete="name" required>
+    <label for="ce" style="font-weight:600;font-size:14px">Email</label><input id="ce" type="email" autocomplete="email" required>
+    <label for="cm" style="font-weight:600;font-size:14px">Dates, group size, wishes</label><textarea id="cm" required></textarea>
+    <p class="err" id="cerr" aria-live="polite"></p>
+    <button class="btn btn-primary" type="submit" style="max-width:320px">Send request</button>
+    <p class="done" id="cdone" role="status">Mockup: on the live site this request creates a deal in amoCRM and a confirmation email.</p>
+   </form>
+  </section>
+</main>
+
+<div class="mbar" aria-hidden="false"><div>Total <b id="mtotal">$185</b></div><a class="btn btn-primary" href="#book">Book</a></div>
+
+<script>
+(() => {
+  const PRICE = 185, TRANSFER = 40, MAXG = 4, PHONE = '77773950338';
+  const $ = id => document.getElementById(id);
+  const date = $('date'), g = $('guests'), tr = $('transfer');
+  const t = new Date(); t.setDate(t.getDate() + 1);
+  date.min = t.toISOString().slice(0, 10);
+  let guests = 2;
+  function update() {
+    g.textContent = guests;
+    $('minus').disabled = guests <= 1; $('plus').disabled = guests >= MAXG;
+    const total = PRICE + (tr.checked ? TRANSFER : 0);
+    $('total').textContent = $('mtotal').textContent = '$' + total;
+    const d = date.value ? new Date(date.value + 'T00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'a date to be agreed';
+    const msg = `Hello! I'd like to book the City tour on ${d} for ${guests} guest${guests > 1 ? 's' : ''}${tr.checked ? ', with hotel transfer' : ''}. Total $${total}.`;
+    $('wa').href = 'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(msg);
+  }
+  $('minus').onclick = () => { if (guests > 1) { guests--; update(); } };
+  $('plus').onclick = () => { if (guests < MAXG) { guests++; update(); } };
+  tr.onchange = update; date.onchange = () => { $('derr').textContent = ''; update(); };
+  $('bf').onsubmit = e => {
+    e.preventDefault();
+    if (!date.value) { $('derr').textContent = 'Please choose a date.'; date.focus(); return; }
+    const b = $('bdone'); b.textContent = 'Mockup: next step is the WooCommerce checkout → online payment → confirmation email → deal in amoCRM.'; b.classList.add('on');
+  };
+  $('cf').onsubmit = e => {
+    e.preventDefault();
+    const ok = $('cn').value.trim() && /\S+@\S+\.\S+/.test($('ce').value) && $('cm').value.trim();
+    $('cerr').textContent = ok ? '' : 'Please fill in your name, a valid email and your wishes.';
+    $('cdone').classList.toggle('on', !!ok);
+  };
+  update();
+})();
+</script>
+</body>
+</html>
