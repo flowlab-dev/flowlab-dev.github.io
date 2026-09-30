@@ -57,7 +57,7 @@
     gsap.ticker.add(t => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
 
-    // Scene A (home): the refractor arrives and extends its dew shield
+    // Scene A: the product drawing arrives and a part slides into place
     document.querySelectorAll('[data-scene="arrive"]').forEach(sec => {
       const scope = sec.querySelector('.scope-tilt');
       const dew = sec.querySelector('.dew');
@@ -72,7 +72,7 @@
         .fromTo(head, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 }, 0.1);
     });
 
-    // Scene B (home): NASA missions light up one after another
+    // Scene B: list rows light up one after another
     document.querySelectorAll('[data-scene="missions"]').forEach(sec => {
       const items = sec.querySelectorAll('.missions li');
       gsap.fromTo(items, { opacity: 0.18 }, {
@@ -81,7 +81,7 @@
       });
     });
 
-    // Scene C (product): the telescope comes apart into three sections
+    // Scene C: the product drawing comes apart into sections
     if (explode) {
       const tl = gsap.timeline({
         defaults: { ease: 'none' },
@@ -106,7 +106,7 @@
       if (fades.length) tl.fromTo(fades, { opacity: 0, y: 16 }, { opacity: 1, y: 0, stagger: 0.2, duration: 0.4 }, 0.4);
     });
 
-    // Scene D (product): specification rows settle in
+    // Scene D: specification rows settle in
     const rows = document.querySelectorAll('.specs > div');
     if (rows.length) {
       gsap.set(rows, { opacity: 0, y: 16 });
