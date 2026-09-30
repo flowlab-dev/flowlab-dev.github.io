@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IPA to App Store Without a Mac · Flow Lab</title>
+<meta name="description" content="Upload the .ipa from Base44, Lovable or Expo to App Store Connect without a Mac: a workflow in your own GitHub, your keys stay with you. USD 60–90, first upload together.">
+<style>
+:root{--bg:#FBF8F5;--card:#fff;--ink:#1F1A17;--sub:#5B514B;--line:#EADFD7;--accent:#C2412D;--red:#B42318;--redbg:#FDECEA;--amber:#8A5A00;--amberbg:#FFF4DB;--green:#1E6B3A;--greenbg:#E6F4EA;--grey:#5B514B;--greybg:#F1ECE8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171412;--card:#211D1A;--ink:#F3EEEA;--sub:#B9ADA5;--line:#3A332E;--accent:#F08A76;--red:#FF8A80;--redbg:#3A1E1B;--amber:#F5C66B;--amberbg:#352A14;--green:#8BD7A3;--greenbg:#16301F;--grey:#B9ADA5;--greybg:#2A2522}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:880px;margin:0 auto;padding:40px 20px 64px}
+.band{font-size:14px;color:var(--sub);border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:34px}
+.kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:40px;line-height:1.1;letter-spacing:-.02em;margin:10px 0 14px}
+h2{font-size:24px;margin:44px 0 14px}
+p{margin:0 0 14px}
+.lead{font-size:19px;color:var(--sub)}
+a{color:var(--accent)}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:26px 0}
+.meta div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.meta b{display:block;font-size:22px}
+.meta span{font-size:14px;color:var(--sub)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--sub)}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.t-red{background:var(--redbg);color:var(--red)}.t-amber{background:var(--amberbg);color:var(--amber)}.t-green{background:var(--greenbg);color:var(--green)}.t-grey{background:var(--greybg);color:var(--grey)}
+.f{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:14px 0}
+.f h3{margin:8px 0 10px;font-size:20px}
+.f dl{display:grid;grid-template-columns:120px 1fr;gap:6px 14px;margin:0}
+.f dt{font-weight:700;color:var(--sub);font-size:14px;padding-top:2px}
+.f dd{margin:0}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.shots figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.shots img{width:100%;max-width:260px;border-radius:10px;border:1px solid var(--line)}
+figcaption{font-size:14px;color:var(--sub);margin-top:8px}
+pre{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;font-size:13.5px;line-height:1.45}
+.note{font-size:15px;color:var(--sub)}
+ul{padding-left:20px}
+@media (max-width:600px){h1{font-size:30px}.f dl{grid-template-columns:1fr}.f dt{padding-top:6px}.shots{grid-template-columns:1fr}th:nth-child(3),td:nth-child(3){display:none}}
+@media print{body{background:#fff;font-size:12.5px}.wrap{padding:0}h1{font-size:28px}h2{font-size:18px;margin-top:22px}.f,.meta div,table,pre,.shots figure{break-inside:avoid}.shots img{max-width:190px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="band">Flow Lab · a service page · no client work shown here</div>
+
+<div class="kicker">Base44 · Lovable · Expo → App Store</div>
+<h1>Your .ipa is ready but you have no Mac? Upload it to the App Store anyway.</h1>
+<p class="lead">Base44 and similar builders give you an .ipa file, and then stop. Apple wants it sent from a Mac with a recent Xcode. You don’t need one: a small workflow in <b>your own GitHub</b> uploads the file for you on GitHub’s Mac servers, with Apple’s own upload tool. Your App Store key stays in your account, and we never see it.</p>
+
+<div class="meta">
+<div><b>No Mac</b><span>runs on GitHub’s macOS servers</span></div>
+<div><b>Your keys</b><span>you add them to your GitHub, not to us</span></div>
+<div><b>1 click</b><span>for every next update, done by you</span></div>
+<div><b>USD 60–90</b><span>setup and the first upload together</span></div>
+</div>
+
+<h2>What we do</h2>
+<table>
+<tr><th>#</th><th>Step</th><th>Who</th></tr>
+<tr><td>1</td><td>We send you one workflow file for a new private GitHub repository. It checks the .ipa with Apple’s tool first, then uploads it, then deletes the key from the server.</td><td><span class="tag t-green">Flow Lab</span></td></tr>
+<tr><td>2</td><td>You create an App Store Connect API key (role “App Manager”) and paste it into your repository’s secrets. We send step-by-step instructions: where to click in App Store Connect and in GitHub.</td><td><span class="tag t-amber">You, ~10 min</span></td></tr>
+<tr><td>3</td><td>We run the first upload together: you press “Run workflow”, we read the log with you and fix anything Apple’s check flags.</td><td><span class="tag t-grey">Together</span></td></tr>
+<tr><td>4</td><td>After Apple processes the upload, the build shows up in App Store Connect → TestFlight. Next updates: new .ipa link → “Run workflow”.</td><td><span class="tag t-green">Done</span></td></tr>
+</table>
+
+<h2>What you need</h2>
+<ul>
+<li>An Apple Developer account (Apple charges USD 99 a year; that’s Apple’s fee, not ours) and an app record in App Store Connect with the same bundle ID as your .ipa.</li>
+<li>The .ipa from your builder (a download link is enough).</li>
+<li>A free GitHub account.</li>
+</ul>
+
+<h2>Honest notes</h2>
+<ul>
+<li>This is the method Apple documents for uploads (<a href="https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds">Apple: upload builds</a>). We set it up and do the <b>first run together on your account</b>. We don’t have your account, so we can’t upload for you in advance, and we haven’t done this upload for a client yet.</li>
+<li>If the .ipa isn’t signed for the App Store, Apple’s check says so before anything is uploaded; that part is fixed in your builder’s signing settings.</li>
+<li>In-app subscriptions are a separate topic: builders like Base44 don’t include Apple’s purchase flow out of the box. Ask us if you need it.</li>
+</ul>
+
+<h2>Price</h2>
+<p><b>USD 60–90</b> fixed: the workflow, the setup guide and the first upload together. Help with later App Review questions and new versions: USD 30 a month, or per hour. Built with Claude Code; every change is checked before it ships.</p>
+<p class="note">Flow Lab · trading.flowlab@gmail.com · Telegram @flowlabdev</p>
+</div>
+</body>
+</html>
