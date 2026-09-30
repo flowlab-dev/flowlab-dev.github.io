@@ -1,4 +1,4 @@
-/* Company Seven concept — motion. Reveal everywhere; GSAP scenes only on desktop without reduced motion. */
+/* Concept by Flow Lab — motion. Reveal everywhere; GSAP scenes only on desktop without reduced motion. */
 (() => {
   const root = document.documentElement;
   root.classList.add('js');
