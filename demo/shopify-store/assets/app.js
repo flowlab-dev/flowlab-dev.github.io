@@ -11,7 +11,8 @@ async function gql(query, variables = {}) {
   return j.data;
 }
 
-const money = (m) => new Intl.NumberFormat('en-US', { style: 'currency', currency: m.currencyCode }).format(Number(m.amount));
+const { t, word } = window.MONO;
+const money = (m) => new Intl.NumberFormat(window.MONO.locale(), { style: 'currency', currency: m.currencyCode }).format(Number(m.amount));
 const img = (url, w) => url + (url.includes('?') ? '&' : '?') + 'width=' + w;
 const srcset = (url, ws) => ws.map((w) => `${img(url, w)} ${w}w`).join(', ');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -37,21 +38,29 @@ function heroVideo() {
 }
 
 /* ---------- collection grid ---------- */
+let currentCollection = 'featured';
+const COLS = ['featured', 'men', 'women', 'shoes', 'accessories'];
+const colCache = {};
+let colReq = 0;
 async function loadCollection(handle) {
   const grid = $('[data-grid]');
   if (!grid) return;
-  grid.innerHTML = Array(8).fill('<div class="card skel"><div class="ph"></div></div>').join('');
+  currentCollection = handle;
+  const req = ++colReq; // a slow answer for an older chip must not overwrite the newer one
   $$('[data-chip]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.chip === handle)));
+  if (!colCache[handle]) grid.innerHTML = Array(8).fill('<div class="card skel"><div class="ph"></div></div>').join('');
   try {
-    const d = await gql(`query($h:String!){collection(handle:$h){products(first:12){edges{node{handle title featuredImage{url altText} priceRange{minVariantPrice{amount currencyCode}}}}}}}`, { h: handle });
+    const d = colCache[handle] || await gql(`query($h:String!){collection(handle:$h){products(first:12){edges{node{handle title featuredImage{url altText} priceRange{minVariantPrice{amount currencyCode}}}}}}}`, { h: handle });
+    if (req !== colReq) return;
+    colCache[handle] = d;
     const items = d.collection ? d.collection.products.edges.map((e) => e.node) : [];
     grid.innerHTML = items.map((p) => `
       <a class="card${/sneaker|slides|shoe|boot/i.test(p.handle) ? ' shoe' : ''}" href="product.html?handle=${encodeURIComponent(p.handle)}">
         <div class="ph"><img src="${img(p.featuredImage.url, 600)}" srcset="${srcset(p.featuredImage.url, [360, 600, 900])}" sizes="(max-width:760px) 50vw, 25vw" width="600" height="600" loading="lazy" decoding="async" alt="${esc(p.featuredImage.altText || p.title)}"></div>
         <h3>${esc(p.title)}</h3><p class="price">${money(p.priceRange.minVariantPrice)}</p>
-      </a>`).join('') || '<p class="empty">No products in this collection.</p>';
+      </a>`).join('') || `<p class="empty">${t('no_products')}</p>`;
   } catch (e) {
-    grid.innerHTML = '<p class="empty">The demo catalog didn\'t load. Please refresh the page.</p>';
+    if (req === colReq) grid.innerHTML = `<p class="empty">${t('catalog_fail')}</p>`;
   }
 }
 
@@ -61,12 +70,20 @@ async function loadProduct() {
   if (!root) return;
   const handle = new URLSearchParams(location.search).get('handle') || 'men-t-shirt';
   let d;
+  if (loadProduct.cache && loadProduct.cache.handle === handle) return renderProduct(loadProduct.cache.p);
   try {
     d = await gql(`query($h:String!){product(handle:$h){title description options{name values} images(first:5){edges{node{url altText}}} variants(first:50){edges{node{id availableForSale price{amount currencyCode} selectedOptions{name value} image{url}}}}}}`, { h: handle });
-  } catch (e) { $('[data-title]').textContent = 'This product didn\'t load. Please refresh.'; return; }
+  } catch (e) { $('[data-title]').textContent = t('product_fail'); return; }
   const p = d.product;
-  if (!p) { $('[data-title]').textContent = 'Product not found'; return; }
-  document.title = `${p.title} · MONO demo store`;
+  if (!p) { $('[data-title]').textContent = t('not_found'); return; }
+  loadProduct.cache = { handle, p };
+  renderProduct(p);
+}
+
+let chosen = null;
+function renderProduct(p) {
+  $('[data-title]').removeAttribute('data-i18n');
+  document.title = `${p.title} · ${t('title_suffix')}`;
   $('[data-title]').textContent = p.title;
   $('[data-desc]').textContent = p.description;
   const pics = p.images.edges.map((e) => e.node).slice(0, 3);
@@ -74,23 +91,18 @@ async function loadProduct() {
 
   const variants = p.variants.edges.map((e) => e.node);
   const opts = p.options.filter((o) => !(o.values.length === 1 && o.values[0] === 'Default Title'));
-  const chosen = Object.fromEntries(opts.map((o) => [o.name, (variants.find((v) => v.availableForSale) || variants[0]).selectedOptions.find((s) => s.name === o.name).value]));
+  chosen = chosen || Object.fromEntries(opts.map((o) => [o.name, (variants.find((v) => v.availableForSale) || variants[0]).selectedOptions.find((s) => s.name === o.name).value]));
   const SW = { green: '#2f6b46', olive: '#6b6b3a', ocean: '#2f5f73', purple: '#5b3f7a', red: '#a3352f', black: '#151515', white: '#f7f7f5', gray: '#9a9a96', grey: '#9a9a96', navy: '#22304f', blue: '#3a5fa0', beige: '#d8c8ad', brown: '#6b4a32' };
   const SHORT = { Small: 'S', Medium: 'M', Large: 'L', 'X-Large': 'XL', 'XX-Large': 'XXL', 'X-Small': 'XS' };
   const isColor = (o) => /colou?r/i.test(o.name) && o.values.every((v) => SW[v.toLowerCase()]);
   $('[data-options]').innerHTML = opts.map((o) => {
     const sw = isColor(o);
-    return `<fieldset class="opt${sw ? ' swatches' : ''}" data-opt="${esc(o.name)}"><legend>${esc(o.name)}${sw ? ` <em>— <span data-chosen>${esc(chosen[o.name])}</span></em>` : ''}</legend><div class="vals">${o.values.map((val) => `
-      <label title="${esc(val)}"><input type="radio" name="${esc(o.name)}" value="${esc(val)}" ${chosen[o.name] === val ? 'checked' : ''}><span${sw ? ` style="--sw:${SW[val.toLowerCase()]}"` : ''}>${SHORT[val] ? `<span aria-hidden="true">${SHORT[val]}</span><span class="sr">${esc(val)}</span>` : esc(val)}</span></label>`).join('')}</div></fieldset>`;
+    return `<fieldset class="opt${sw ? ' swatches' : ''}" data-opt="${esc(o.name)}"><legend>${esc(word(o.name))}${sw ? ` <em>— <span data-chosen>${esc(word(chosen[o.name]))}</span></em>` : ''}</legend><div class="vals">${o.values.map((val) => `
+      <label title="${esc(word(val))}"><input type="radio" name="${esc(o.name)}" value="${esc(val)}" ${chosen[o.name] === val ? 'checked' : ''}><span${sw ? ` style="--sw:${SW[val.toLowerCase()]}"` : ''}>${SHORT[val] ? `<span aria-hidden="true">${SHORT[val]}</span><span class="sr">${esc(word(val))}</span>` : esc(word(val))}</span></label>`).join('')}</div></fieldset>`;
   }).join('');
   $('[data-options]').style.minHeight = '0';
   const gal = $('[data-gallery]'), cnt = $('[data-count-img]');
   const upd = () => { const n = gal.children.length; const i = Math.round(gal.scrollLeft / (gal.children[0].offsetWidth + 8)) + 1; cnt.textContent = n > 1 ? `${Math.min(i, n)} / ${n}` : ''; };
-  gal.addEventListener('scroll', upd, { passive: true }); upd();
-  const bar = $('[data-buybar]');
-  new IntersectionObserver(([e]) => { const show = !e.isIntersecting; bar.classList.toggle('on', show); bar.setAttribute('aria-hidden', String(!show)); $('[data-buy]').tabIndex = show ? 0 : -1; }).observe($('[data-add]'));
-  $('[data-buy]').addEventListener('click', () => $('[data-form]').requestSubmit());
-
   const match = () => variants.find((v) => v.selectedOptions.every((s) => !(s.name in chosen) || chosen[s.name] === s.value));
   const sync = () => {
     const v = match();
@@ -99,17 +111,24 @@ async function loadProduct() {
     $('[data-bp]').textContent = v ? money(v.price) : '';
     $('[data-buy]').disabled = !v || !v.availableForSale;
     btn.disabled = !v || !v.availableForSale;
-    $('[data-stock]').textContent = !v ? 'This combination isn\'t available.' : v.availableForSale ? 'In stock · ships in the demo only' : 'Sold out in this combination.';
+    $('[data-stock]').textContent = !v ? t('stock_na') : v.availableForSale ? t('in_stock') : t('sold_out');
     if (v && v.image) { const first = $('[data-gallery] img'); if (first) { first.src = img(v.image.url, 1000); first.srcset = srcset(v.image.url, [600, 1000, 1400]); } }
   };
-  $('[data-form]').addEventListener('change', (e) => { if (e.target.name) { chosen[e.target.name] = e.target.value; const c = e.target.closest('fieldset').querySelector('[data-chosen]'); if (c) c.textContent = e.target.value; sync(); } });
+  if (renderProduct.wired) { upd(); sync(); return; }
+  renderProduct.wired = true;
+  gal.addEventListener('scroll', upd, { passive: true }); upd();
+  const bar = $('[data-buybar]');
+  new IntersectionObserver(([e]) => { const show = !e.isIntersecting; bar.classList.toggle('on', show); bar.setAttribute('aria-hidden', String(!show)); $('[data-buy]').tabIndex = show ? 0 : -1; }).observe($('[data-add]'));
+  $('[data-buy]').addEventListener('click', () => $('[data-form]').requestSubmit());
+
+  $('[data-form]').addEventListener('change', (e) => { if (e.target.name) { chosen[e.target.name] = e.target.value; const c = e.target.closest('fieldset').querySelector('[data-chosen]'); if (c) c.textContent = word(e.target.value); sync(); } });
   $('[data-form]').addEventListener('submit', async (e) => {
     e.preventDefault();
     const v = match(); if (!v) return;
-    const btn = $('[data-add]'); btn.disabled = true; btn.textContent = 'Adding…';
+    const btn = $('[data-add]'); btn.disabled = true; btn.textContent = t('adding');
     try { await cartAdd(v.id); openCart(); }
-    catch (err) { toast('Couldn\'t add to cart. Try again.'); }
-    btn.textContent = 'Add to cart'; sync();
+    catch (err) { toast(t('add_fail')); }
+    btn.textContent = t('add'); sync();
   });
   sync();
 }
@@ -147,10 +166,10 @@ function renderCart() {
   box.innerHTML = lines.length ? lines.map((l) => `
     <div class="line">
       <img src="${l.merchandise.image ? img(l.merchandise.image.url, 160) : ''}" width="72" height="72" alt="">
-      <div><p class="t">${esc(l.merchandise.product.title)}</p><p class="v">${esc(l.merchandise.title)}</p>
-        <div class="qty"><button type="button" data-q="${l.id}" data-n="${l.quantity - 1}" aria-label="Decrease quantity">−</button><output>${l.quantity}</output><button type="button" data-q="${l.id}" data-n="${l.quantity + 1}" aria-label="Increase quantity">+</button></div></div>
+      <div><p class="t">${esc(l.merchandise.product.title)}</p><p class="v">${esc(window.MONO.variant(l.merchandise.title))}</p>
+        <div class="qty"><button type="button" data-q="${l.id}" data-n="${l.quantity - 1}" aria-label="${t('dec')}">−</button><output>${l.quantity}</output><button type="button" data-q="${l.id}" data-n="${l.quantity + 1}" aria-label="${t('inc')}">+</button></div></div>
       <p class="lp">${money(l.cost.totalAmount)}</p>
-    </div>`).join('') : '<p class="empty">Your cart is empty.</p>';
+    </div>`).join('') : `<p class="empty">${t('cart_empty')}</p>`;
   $('[data-subtotal]').textContent = lines.length ? money(cart.cost.subtotalAmount) : '—';
   const co = $('[data-checkout]');
   co.href = lines.length ? cart.checkoutUrl : '#';
@@ -161,18 +180,21 @@ function openCart() { const d = $('[data-drawer]'); lastFocus = document.activeE
 function closeCart() { const d = $('[data-drawer]'); if (d.inert) return; document.body.classList.remove('open'); d.setAttribute('aria-hidden', 'true'); d.inert = true; if (lastFocus) lastFocus.focus(); }
 
 document.addEventListener('click', async (e) => {
-  const t = e.target.closest('[data-open-cart],[data-close-cart],[data-q],[data-chip],[data-col],[data-checkout]');
-  if (!t) return;
-  if (t.matches('[data-open-cart]')) openCart();
-  else if (t.matches('[data-close-cart]')) closeCart();
-  else if (t.matches('[data-q]')) { t.disabled = true; try { await cartSetQty(t.dataset.q, Number(t.dataset.n)); } catch { toast('Couldn\'t update the cart.'); } }
-  else if (t.matches('[data-chip]')) loadCollection(t.dataset.chip);
-  else if (t.matches('[data-col]')) loadCollection(t.dataset.col);
-  else if (t.matches('[data-checkout]') && t.getAttribute('aria-disabled') === 'true') e.preventDefault();
+  const el = e.target.closest('[data-open-cart],[data-close-cart],[data-q],[data-chip],[data-col],[data-checkout]');
+  if (!el) return;
+  if (el.matches('[data-open-cart]')) openCart();
+  else if (el.matches('[data-close-cart]')) closeCart();
+  else if (el.matches('[data-q]')) { el.disabled = true; try { await cartSetQty(el.dataset.q, Number(el.dataset.n)); } catch { toast(t('cart_fail')); } }
+  else if (el.matches('[data-chip]')) loadCollection(el.dataset.chip);
+  else if (el.matches('[data-col]')) loadCollection(el.dataset.col);
+  else if (el.matches('[data-checkout]') && el.getAttribute('aria-disabled') === 'true') e.preventDefault();
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCart(); });
 
+document.addEventListener('langchange', () => { loadCollection(currentCollection); loadProduct(); renderCart(); });
+
 heroVideo();
-loadCollection('featured');
+const startCol = new URLSearchParams(location.search).get('col');
+loadCollection(COLS.includes(startCol) ? startCol : 'featured');
 loadProduct();
 cartLoad();
