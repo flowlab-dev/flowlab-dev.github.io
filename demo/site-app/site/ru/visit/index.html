@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Адрес · Crumb &amp; Co (демо)</title>
+<script>/* day / night chosen in the app demo (same site, localStorage) */(function(){var k="kit-demo-theme",d=document.documentElement;function a(){try{var t=localStorage.getItem(k);if(t==="light"||t==="dark")d.setAttribute("data-theme",t);else d.removeAttribute("data-theme")}catch(e){}}a();addEventListener("storage",function(e){if(e.key===k)a()})})();</script>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="../">Crumb &amp; Co</a>
+  <nav><a href="../">Главная</a><a href="../menu/">Меню</a><a href="./" aria-current="page">Адрес</a></nav></div></header>
+<div class="demo-note">Демо-сайт: пекарню Crumb&nbsp;&amp;&nbsp;Co придумали во Flow&nbsp;Lab.</div>
+<main class="wrap">
+  <p class="eyebrow">Как нас найти</p>
+  <h1>12 Harbor St</h1>
+  <p class="lead">Две минуты от парома. Можно с велосипедом, у входа есть скамейки.</p>
+  <ul class="list">
+    <li><span>Пн – Пт</span><span>7:00 – 17:00</span></li>
+    <li><span>Сб – Вс</span><span>8:00 – 15:00</span></li>
+  </ul>
+  <h2>Как добраться</h2>
+  <div class="row">
+    <a class="btn" href="https://maps.apple.com/?q=Harbor+St">Открыть в Картах</a>
+    <a class="btn ghost" href="mailto:hello@crumb-and-co.example">Написать нам</a>
+  </div>
+  <p class="muted">Карты, звонки и почта открываются в приложениях телефона, а это приложение остаётся там, где вы его оставили.</p>
+</main>
+<footer><div class="wrap">Crumb &amp; Co (вымышленная) · Демо: <a href="https://flowlab-dev.github.io/">Flow Lab</a></div></footer>
+</body>
+</html>

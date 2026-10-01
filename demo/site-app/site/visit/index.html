@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Visit — Crumb &amp; Co (demo)</title>
+<script>/* day / night chosen in the app demo (same site, localStorage) */(function(){var k="kit-demo-theme",d=document.documentElement;function a(){try{var t=localStorage.getItem(k);if(t==="light"||t==="dark")d.setAttribute("data-theme",t);else d.removeAttribute("data-theme")}catch(e){}}a();addEventListener("storage",function(e){if(e.key===k)a()})})();</script>
 <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <header><div class="wrap"><a class="brand" href="../">Crumb &amp; Co</a>
   <nav><a href="../">Home</a><a href="../menu/">Menu</a><a href="./" aria-current="page">Visit</a></nav></div></header>
-<div class="demo-note">Demo site: Crumb &amp; Co is a fictional bakery made by Flow Lab.</div>
+<div class="demo-note">Demo site: Crumb&nbsp;&amp;&nbsp;Co is a fictional bakery made by Flow&nbsp;Lab.</div>
 <main class="wrap">
   <p class="eyebrow">Find us</p>
   <h1>12 Harbor St</h1>

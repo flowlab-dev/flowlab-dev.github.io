@@ -1,12 +1,14 @@
 /* Crumb & Co — a fictional bakery site for the Flow Lab "site → app" demo. */
 :root {
   --bg: #FBF7F1; --surface: #FFFFFF; --ink: #2A1F17; --muted: #6B5B4E; --line: #EADFD2;
-  --accent: #9A3412; --accent-soft: #F7E6DA;
+  --accent: #9A3412; --accent-soft: #F7E6DA; --on-accent: #FFFFFF;
   color-scheme: light;
 }
+/* night: the phone's setting, or the demo's day / night switch (data-theme, set from localStorage) */
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #1A1411; --surface: #231B17; --ink: #F3EAE2; --muted: #BFAE9F; --line: #3A2E27; --accent: #F59E6B; --accent-soft: #3A2419; color-scheme: dark; }
+  :root:not([data-theme="light"]) { --bg: #1A1411; --surface: #231B17; --ink: #F3EAE2; --muted: #BFAE9F; --line: #3A2E27; --accent: #F59E6B; --accent-soft: #3A2419; --on-accent: #1A1411; color-scheme: dark; }
 }
+:root[data-theme="dark"] { --bg: #1A1411; --surface: #231B17; --ink: #F3EAE2; --muted: #BFAE9F; --line: #3A2E27; --accent: #F59E6B; --accent-soft: #3A2419; --on-accent: #1A1411; color-scheme: dark; }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
@@ -22,7 +24,7 @@ body > header nav a { color: var(--muted); text-decoration: none; font-size: 15p
 body > header nav a[aria-current] { color: var(--ink); font-weight: 600; }
 body > footer { border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; padding: 24px 0 40px; margin-top: 48px; }
 
-.demo-note { background: var(--accent-soft); color: var(--ink); font-size: 13px; text-align: center; padding: 8px 16px; }
+.demo-note { background: var(--accent-soft); color: var(--ink); font-size: 13px; text-align: center; padding: 8px 16px; text-wrap: balance; }
 main { padding: 28px 0 8px; }
 .eyebrow { color: var(--accent); font-weight: 600; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
 h1 { font: 700 clamp(32px, 8vw, 48px)/1.08 ui-serif, Georgia, serif; margin: 0 0 14px; letter-spacing: -.01em; }
@@ -30,8 +32,7 @@ h2 { font: 700 24px/1.2 ui-serif, Georgia, serif; margin: 36px 0 12px; }
 .lead { color: var(--muted); font-size: 19px; margin: 0 0 22px; }
 .hero-art { border-radius: 22px; overflow: hidden; background: var(--accent-soft); margin: 8px 0 24px; }
 .hero-art svg { display: block; width: 100%; height: auto; }
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 14px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; }
-@media (prefers-color-scheme: dark) { .btn { color: #1A1411; } }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border-radius: 14px; background: var(--accent); color: var(--on-accent); font-weight: 600; text-decoration: none; }
 .btn.ghost { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
 .row { display: flex; gap: 12px; flex-wrap: wrap; }
 .cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Меню · Crumb &amp; Co (демо)</title>
+<script>/* day / night chosen in the app demo (same site, localStorage) */(function(){var k="kit-demo-theme",d=document.documentElement;function a(){try{var t=localStorage.getItem(k);if(t==="light"||t==="dark")d.setAttribute("data-theme",t);else d.removeAttribute("data-theme")}catch(e){}}a();addEventListener("storage",function(e){if(e.key===k)a()})})();</script>
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="../">Crumb &amp; Co</a>
+  <nav><a href="../">Главная</a><a href="./" aria-current="page">Меню</a><a href="../visit/">Адрес</a></nav></div></header>
+<div class="demo-note">Демо-сайт: пекарню Crumb&nbsp;&amp;&nbsp;Co придумали во Flow&nbsp;Lab.</div>
+<main class="wrap">
+  <p class="eyebrow">Сегодня</p>
+  <h1>Меню</h1>
+  <p class="lead">Всё печём здесь же. Закончилось, значит, закончилось.</p>
+  <h2>Хлеб</h2>
+  <ul class="list">
+    <li><span>Деревенский на закваске <span class="muted">· 900 г</span></span><span>$9</span></li>
+    <li><span>Ржаной с семечками</span><span>$8</span></li>
+    <li><span>Багет</span><span>$4</span></li>
+  </ul>
+  <h2>Выпечка</h2>
+  <ul class="list">
+    <li><span>Круассан на сливочном масле</span><span>$4</span></li>
+    <li><span>Круассан с шоколадом</span><span>$4.50</span></li>
+    <li><span>Булочка с кардамоном</span><span>$5</span></li>
+  </ul>
+  <h2>Кофе</h2>
+  <ul class="list">
+    <li><span>Флэт уайт</span><span>$4.50</span></li>
+    <li><span>Фильтр-кофе, доливаем бесплатно</span><span>$3</span></li>
+  </ul>
+  <p class="muted">Аллергены и полное меню в <a href="../../menu.pdf">PDF</a> (на английском; файлы открываются вне приложения).</p>
+  <div class="row"><a class="btn" href="tel:+12075550188">Заказать по телефону</a></div>
+</main>
+<footer><div class="wrap">Crumb &amp; Co (вымышленная) · Демо: <a href="https://flowlab-dev.github.io/">Flow Lab</a></div></footer>
+</body>
+</html>

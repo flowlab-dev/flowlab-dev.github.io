@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Crumb &amp; Co — пекарня у дома (демо)</title>
+<script>/* day / night chosen in the app demo (same site, localStorage) */(function(){var k="kit-demo-theme",d=document.documentElement;function a(){try{var t=localStorage.getItem(k);if(t==="light"||t==="dark")d.setAttribute("data-theme",t);else d.removeAttribute("data-theme")}catch(e){}}a();addEventListener("storage",function(e){if(e.key===k)a()})})();</script>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header><div class="wrap"><a class="brand" href="./">Crumb &amp; Co</a>
+  <nav><a href="./" aria-current="page">Главная</a><a href="menu/">Меню</a><a href="visit/">Адрес</a></nav></div></header>
+<div class="demo-note">Демо-сайт: пекарню Crumb&nbsp;&amp;&nbsp;Co придумали во Flow&nbsp;Lab.</div>
+<main class="wrap">
+  <p class="eyebrow">Испекли сегодня утром</p>
+  <h1>Хлеб на закваске, круассаны и кофе без спешки.</h1>
+  <p class="lead">Закажите по дороге на работу и не стойте в очереди: через 10 минут заказ ждёт на кассе.</p>
+  <div class="hero-art" aria-hidden="true">
+    <svg viewBox="0 0 640 300"><rect width="640" height="300" style="fill:var(--accent-soft)"/>
+      <ellipse cx="220" cy="190" rx="150" ry="70" fill="#C2410C"/><ellipse cx="220" cy="175" rx="150" ry="62" fill="#EA8A4A"/>
+      <path d="M110 170q40-30 80 0M170 158q40-30 80 0M230 150q40-30 80 0" stroke="#FBD9B8" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M420 215c10-60 60-95 110-95s70 40 60 95z" fill="#D97706"/><path d="M445 205c8-40 40-66 78-66" stroke="#FCD34D" stroke-width="8" fill="none" stroke-linecap="round"/>
+      <circle cx="560" cy="80" r="28" fill="#FFF7ED"/><path d="M548 60q6-14 0-26M566 58q6-14 0-26" stroke="#FFF7ED" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>
+    </svg>
+  </div>
+  <div class="row"><a class="btn" href="menu/">Меню на сегодня</a><a class="btn ghost" href="tel:+12075550188">Заказать по телефону</a></div>
+
+  <h2>Почему к нам возвращаются</h2>
+  <div class="cards">
+    <div class="card"><h3>Тесто зреет 48 часов</h3><p>Долгая холодная расстойка, хрустящая корка, пористый мякиш.</p></div>
+    <div class="card"><h3>Заказ заранее</h3><p>Всё готово к вашему приходу.</p></div>
+    <div class="card"><h3>Открыты с 7:00</h3><p>Кофе и круассаны до работы.</p></div>
+  </div>
+  <p class="muted">Подписывайтесь на пекарню в <a href="https://www.instagram.com/">Instagram</a>: ссылка откроется вне приложения.</p>
+</main>
+<footer><div class="wrap">Crumb &amp; Co (вымышленная) · 12 Harbor St · <a href="tel:+12075550188">+1 207 555 0188</a> · Демо: <a href="https://flowlab-dev.github.io/">Flow Lab</a></div></footer>
+</body>
+</html>

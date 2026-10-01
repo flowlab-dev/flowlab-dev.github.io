@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#FFFFFF">
 <title>Crumb &amp; Co — neighbourhood bakery (demo)</title>
+<script>/* day / night chosen in the app demo (same site, localStorage) */(function(){var k="kit-demo-theme",d=document.documentElement;function a(){try{var t=localStorage.getItem(k);if(t==="light"||t==="dark")d.setAttribute("data-theme",t);else d.removeAttribute("data-theme")}catch(e){}}a();addEventListener("storage",function(e){if(e.key===k)a()})})();</script>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header><div class="wrap"><a class="brand" href="./">Crumb &amp; Co</a>
   <nav><a href="./" aria-current="page">Home</a><a href="menu/">Menu</a><a href="visit/">Visit</a></nav></div></header>
-<div class="demo-note">Demo site: Crumb &amp; Co is a fictional bakery made by Flow Lab.</div>
+<div class="demo-note">Demo site: Crumb&nbsp;&amp;&nbsp;Co is a fictional bakery made by Flow&nbsp;Lab.</div>
 <main class="wrap">
   <p class="eyebrow">Baked this morning</p>
   <h1>Sourdough, croissants and slow coffee.</h1>
   <p class="lead">Order ahead on the way to work and skip the line — pick up at the counter in 10 minutes.</p>
   <div class="hero-art" aria-hidden="true">
-    <svg viewBox="0 0 640 300"><rect width="640" height="300" fill="#F7E6DA"/>
+    <svg viewBox="0 0 640 300"><rect width="640" height="300" style="fill:var(--accent-soft)"/>
       <ellipse cx="220" cy="190" rx="150" ry="70" fill="#C2410C"/><ellipse cx="220" cy="175" rx="150" ry="62" fill="#EA8A4A"/>
       <path d="M110 170q40-30 80 0M170 158q40-30 80 0M230 150q40-30 80 0" stroke="#FBD9B8" stroke-width="10" fill="none" stroke-linecap="round"/>
       <path d="M420 215c10-60 60-95 110-95s70 40 60 95z" fill="#D97706"/><path d="M445 205c8-40 40-66 78-66" stroke="#FCD34D" stroke-width="8" fill="none" stroke-linecap="round"/>
