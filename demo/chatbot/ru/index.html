@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="ru" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shiftbloom — support assistant demo</title>
-<meta name="description" content="A support assistant that answers only from a company's own help centre, shows its source, and says when it does not know.">
+<title>Shiftbloom — демо ассистента поддержки</title>
+<meta name="description" content="Ассистент поддержки, который отвечает только по справочному центру компании, показывает источник и честно говорит, когда не знает.">
 <link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/chatbot/">
 <link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/chatbot/ru/">
 <style>
@@ -351,7 +351,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/support-assistant/">Flow Lab</a>. Shiftbloom is invented.</p>
+<p class="fl-band" role="note">Демо сделано <a href="https://flowlab-dev.github.io/ru/work/support-assistant/">Flow Lab</a> без заказчика. Компания Shiftbloom выдумана.</p>
 <!-- /flowlab-band -->
 <header class="topbar">
   <div class="wrap topbar__inner">
@@ -360,13 +360,13 @@ html.scenes .tests-run { display: block; height: 100vh; }
         <svg viewBox="0 0 32 32" width="28" height="28"><rect width="32" height="32" rx="7" fill="currentColor"/><path d="M8 11h16M8 16h16M8 21h9" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>
       </span>
       <span class="brand__name">Shiftbloom</span>
-      <span class="tag">Portfolio demo</span>
+      <span class="tag">Демо для портфолио</span>
     </div>
     <div class="topbar__tools">
-      <div class="fl-lang" role="group" aria-label="Language"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
+      <div class="fl-lang" role="group" aria-label="Язык"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ночь: включить тёмную тему">
         <span class="theme-toggle__dot" aria-hidden="true"></span>
-        <span id="themeLabel">Dark</span>
+        <span id="themeLabel">Ночь</span>
       </button>
     </div>
   </div>
@@ -375,79 +375,79 @@ html.scenes .tests-run { display: block; height: 100vh; }
 <main>
   <section class="hero wrap">
     <div class="hero__copy">
-      <h1>The rota your team actually reads.</h1>
-      <p class="lede">Shiftbloom plans shifts for cafés and restaurants. Its support assistant answers from the company help centre — and only from there.</p>
+      <h1>График, который команда правда читает.</h1>
+      <p class="lede">Shiftbloom составляет графики смен для кафе и ресторанов. Его ассистент поддержки отвечает по справочному центру компании и только по нему.</p>
 
-      <div class="rota" role="img" aria-label="Example schedule for Tuesday: Nadia bar 07:00 to 15:00, Petar kitchen 08:00 to 16:00, Lena floor 11:00 to 19:00, Sam bar 15:00 to 23:00">
+      <div class="rota" role="img" aria-label="Пример графика на вторник: Надя, бар, с 07:00 до 15:00; Петар, кухня, с 08:00 до 16:00; Лена, зал, с 11:00 до 19:00; Сэм, бар, с 15:00 до 23:00">
         <div class="rota__head">
-          <span class="rota__day">Tue 22 Sep</span>
-          <span class="rota__meta">4 on shift · labour 26.4%</span>
+          <span class="rota__day">Вт, 22 сентября</span>
+          <span class="rota__meta">4 в смене · затраты на персонал 26,4 %</span>
         </div>
         <ul class="rota__list">
-          <li class="shift shift--bar"><span class="shift__who">Nadia</span><span class="shift__role">Bar</span><span class="shift__time">07:00–15:00</span></li>
-          <li class="shift shift--kitchen"><span class="shift__who">Petar</span><span class="shift__role">Kitchen</span><span class="shift__time">08:00–16:00</span></li>
-          <li class="shift shift--floor"><span class="shift__who">Lena</span><span class="shift__role">Floor</span><span class="shift__time">11:00–19:00</span></li>
-          <li class="shift shift--bar"><span class="shift__who">Sam</span><span class="shift__role">Bar</span><span class="shift__time">15:00–23:00</span></li>
+          <li class="shift shift--bar"><span class="shift__who">Надя</span><span class="shift__role">Бар</span><span class="shift__time">07:00–15:00</span></li>
+          <li class="shift shift--kitchen"><span class="shift__who">Петар</span><span class="shift__role">Кухня</span><span class="shift__time">08:00–16:00</span></li>
+          <li class="shift shift--floor"><span class="shift__who">Лена</span><span class="shift__role">Зал</span><span class="shift__time">11:00–19:00</span></li>
+          <li class="shift shift--bar"><span class="shift__who">Сэм</span><span class="shift__role">Бар</span><span class="shift__time">15:00–23:00</span></li>
         </ul>
       </div>
 
-      <p class="disclaimer">Shiftbloom is an invented company, written for this demonstration. Every fact the assistant states comes from the 33 help-centre sections published on this page.</p>
+      <p class="disclaimer">Shiftbloom — компания, выдуманная для этого демо. Каждый факт, который называет ассистент, взят из 33 разделов справочного центра, опубликованных на этой странице.</p>
     </div>
 
     <div class="assistant" id="assistant">
       <div class="assistant__head">
         <div>
-          <p class="assistant__title">Shiftbloom support</p>
-          <p class="assistant__status"><span class="pulse" aria-hidden="true"></span>Answers from the help centre, updated 18 Sep 2026</p>
+          <p class="assistant__title">Поддержка Shiftbloom</p>
+          <p class="assistant__status"><span class="pulse" aria-hidden="true"></span>Справочный центр обновлён 18 сентября 2026</p>
         </div>
-        <button type="button" class="linkish" id="resetChat">Start over</button>
+        <button type="button" class="linkish" id="resetChat">Начать заново</button>
       </div>
 
-      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Conversation with the Shiftbloom support assistant"><div class="msg msg--bot"><div class="bubble"><p>Hello. I answer questions about Shiftbloom from our help centre — pricing, scheduling, time clock, integrations, data and support.</p><p>If something is not written there, I will tell you instead of inventing it.</p></div></div></div>
+      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Разговор с ассистентом поддержки Shiftbloom"><div class="msg msg--bot"><div class="bubble"><p>Здравствуйте. Я отвечаю на вопросы о Shiftbloom по справочному центру: цены, графики, учёт времени, интеграции, данные и поддержка.</p><p>Если чего-то там нет, я так и скажу и не стану выдумывать.</p></div></div></div>
 
-      <div class="suggestions" id="suggestions" aria-label="Example questions"><button class="suggestion" type="button">How much does it cost?</button><button class="suggestion" type="button">Do you have a free trial?</button><button class="suggestion" type="button">Which POS systems do you support?</button><button class="suggestion" type="button">Are you GDPR compliant?</button></div>
+      <div class="suggestions" id="suggestions" aria-label="Примеры вопросов"><button class="suggestion" type="button">Сколько это стоит?</button><button class="suggestion" type="button">Есть пробный период?</button><button class="suggestion" type="button">С какими кассами работаете?</button><button class="suggestion" type="button">Вы соблюдаете GDPR?</button></div>
 
       <form class="composer" id="composer" autocomplete="off">
-        <label class="visually-hidden" for="question">Ask the assistant a question</label>
-        <input id="question" name="question" type="text" placeholder="Ask about pricing, shifts, payroll, data…" maxlength="200">
-        <button type="submit" id="send">Ask</button>
+        <label class="visually-hidden" for="question">Задайте вопрос ассистенту</label>
+        <input id="question" name="question" type="text" placeholder="Спросите о ценах, сменах, данных…" maxlength="200">
+        <button type="submit" id="send">Спросить</button>
       </form>
     </div>
   </section>
 
   <section class="band wrap" id="grounding">
-    <h2>Three answers, three honest outcomes</h2>
-    <p class="section-lede">Most complaints about support bots come from one habit: inventing an answer rather than admitting a gap. In this demo the assistant has no generative step, so it can only do one of three things. In a real project the same rules wrap a language model, so answers stay grounded in your documents.</p>
+    <h2>Три ответа, три честных исхода</h2>
+    <p class="section-lede">Большинство жалоб на ботов поддержки вырастает из одной привычки: выдумать ответ вместо того, чтобы признать пробел. В этом демо у ассистента нет генерирующего шага, поэтому он может сделать только одно из трёх. В настоящем проекте те же правила стоят поверх языковой модели, и ответы остаются привязаны к вашим документам.</p>
 
     <div class="states">
       <article class="state">
-        <p class="state__name"><span class="dot dot--answer" aria-hidden="true"></span>It answers</p>
-        <p>The question matches a help-centre section closely enough. The reply is that section's text, with the source printed underneath.</p>
-        <button class="try" type="button" data-ask="How much does Shiftbloom cost per month?">Try “How much does Shiftbloom cost per month?”</button>
+        <p class="state__name"><span class="dot dot--answer" aria-hidden="true"></span>Отвечает</p>
+        <p>Вопрос достаточно близко совпадает с разделом справочного центра. В ответе текст этого раздела, а под ним источник.</p>
+        <button class="try" type="button" data-ask="Сколько стоит Shiftbloom в месяц?">Спросить «Сколько стоит Shiftbloom в месяц?»</button>
       </article>
       <article class="state">
-        <p class="state__name"><span class="dot dot--clarify" aria-hidden="true"></span>It asks which topic you mean</p>
-        <p>The topic is in the help centre but the exact question is not — there is nothing about commission. Rather than pass off a nearby page as the answer, it offers the closest topics and lets you choose.</p>
-        <button class="try" type="button" data-ask="what commission do you take on card payments">Try “what commission do you take on card payments”</button>
+        <p class="state__name"><span class="dot dot--clarify" aria-hidden="true"></span>Уточняет, какая тема нужна</p>
+        <p>Тема в справочном центре есть, а ответа на сам вопрос нет: про комиссию там ничего не сказано. Вместо того чтобы выдать соседнюю страницу за ответ, ассистент предлагает ближайшие темы и даёт выбрать.</p>
+        <button class="try" type="button" data-ask="какую комиссию вы берёте с оплаты картой">Спросить «какую комиссию вы берёте с оплаты картой»</button>
       </article>
       <article class="state">
-        <p class="state__name"><span class="dot dot--unknown" aria-hidden="true"></span>It says it does not know</p>
-        <p>Nothing in the help centre covers the question. It says so, names the word it did not recognise, and offers a human.</p>
-        <button class="try" type="button" data-ask="do you have a loyalty program for customers">Try “do you have a loyalty program for customers”</button>
+        <p class="state__name"><span class="dot dot--unknown" aria-hidden="true"></span>Говорит, что не знает</p>
+        <p>В справочном центре нет ничего на эту тему. Ассистент так и говорит, называет слова, которых не нашёл, и предлагает написать человеку.</p>
+        <button class="try" type="button" data-ask="есть ли у вас программа лояльности для гостей">Спросить «есть ли у вас программа лояльности для гостей»</button>
       </article>
     </div>
   </section>
 
-<section class="tests-run" aria-label="The test set, run question by question">
+<section class="tests-run" aria-label="Контрольный набор, вопрос за вопросом">
     <div class="tr-in">
       <div>
-        <h2>Every question, checked on every change.</h2>
-        <p class="section-lede">Scroll to run the test set. Each question below really goes through the assistant on this page.</p>
-        <div class="tr-count"><span id="tr-pass">0</span><small>of <span id="tr-total">0</span> passed</small></div>
+        <h2>Все вопросы прогоняются после любой правки.</h2>
+        <p class="section-lede">Прокрутите, чтобы прогнать контрольный набор. Все вопросы ниже по-настоящему проходят через ассистента на этой странице.</p>
+        <div class="tr-count"><span id="tr-pass">0</span><small>из <span id="tr-total">0</span> пройдено</small></div>
         <ul class="tr-stats">
-          <li><span class="dot dot--answer" aria-hidden="true"></span><b id="tr-a">0</b>answered from the right section</li>
-          <li><span class="dot dot--clarify" aria-hidden="true"></span><b id="tr-c">0</b>asked which topic was meant</li>
-          <li><span class="dot dot--unknown" aria-hidden="true"></span><b id="tr-u">0</b>said “I don’t know” and offered a person</li>
+          <li><span class="dot dot--answer" aria-hidden="true"></span><b id="tr-a">0</b>ответ из нужного раздела</li>
+          <li><span class="dot dot--clarify" aria-hidden="true"></span><b id="tr-c">0</b>уточнил, какая тема нужна</li>
+          <li><span class="dot dot--unknown" aria-hidden="true"></span><b id="tr-u">0</b>сказал «не знаю» и позвал человека</li>
         </ul>
       </div>
       <ol class="tr-feed" id="tr-feed" aria-hidden="true"></ol>
@@ -456,36 +456,36 @@ html.scenes .tests-run { display: block; height: 100vh; }
   <section class="band wrap" id="evaluation">
     <div class="eval__head">
       <div>
-        <h2>Checked, not promised</h2>
-        <p class="section-lede">A fixed set of questions runs against the assistant on every change: real phrasings for things the help centre covers, plus questions it must not answer. Run it here, in your browser.</p>
+        <h2>Проверено, а не обещано</h2>
+        <p class="section-lede">Постоянный набор вопросов прогоняется через ассистента после каждой правки: живые формулировки того, что есть в справочном центре, и вопросы, на которые он отвечать не должен. Запустите его здесь, прямо в браузере.</p>
       </div>
-      <button class="primary" type="button" id="runEval">Run the test set</button>
+      <button class="primary" type="button" id="runEval">Запустить проверку</button>
     </div>
     <div class="eval" id="evalResult" aria-live="polite">
-      <p class="eval__idle">Not run yet.</p>
+      <p class="eval__idle">Ещё не запускали.</p>
     </div>
   </section>
 
   <section class="band wrap" id="knowledge">
-    <h2>What the assistant was given</h2>
-    <p class="section-lede">Nothing else. Pick any line to ask it.</p>
+    <h2>Что знает ассистент</h2>
+    <p class="section-lede">И больше ничего. Нажмите на любую строку, чтобы спросить.</p>
     <div class="kb" id="kb"></div>
   </section>
 
   <section class="band wrap" id="delivery">
-    <h2>What this looks like as a project</h2>
+    <h2>Как это выглядит в настоящем проекте</h2>
     <div class="delivery">
       <div>
-        <h3>Build</h3>
-        <p>Your help centre, PDFs, policies and past support replies become the knowledge base. The assistant is embedded on your site and in your help centre, in your own colours.</p>
+        <h3>Сборка</h3>
+        <p>Ваш справочный центр, PDF, регламенты и прошлые ответы поддержки становятся базой знаний. Ассистент встраивается на ваш сайт и в справочный центр, в цветах вашего сайта.</p>
       </div>
       <div>
-        <h3>Proof</h3>
-        <p>You get the question set as a file you can read: what it must answer, what it must refuse. It runs on every content change, so a new price never leaves an old answer behind.</p>
+        <h3>Доказательство</h3>
+        <p>Вы получаете понятный файл с вопросами: на что ассистент обязан ответить и от чего отказаться. Набор прогоняется после каждой правки текстов, поэтому новая цена не оставит в ответах старую.</p>
       </div>
       <div>
-        <h3>Every month after</h3>
-        <p>A short report of the questions it could not answer — the gaps in your own documentation — plus the content updates and a re-run of the test set.</p>
+        <h3>Каждый месяц после запуска</h3>
+        <p>Короткий отчёт о вопросах, на которые ассистент не ответил (это пробелы в вашей же документации), обновление текстов и повторный прогон набора.</p>
       </div>
     </div>
   </section>
@@ -493,8 +493,8 @@ html.scenes .tests-run { display: block; height: 100vh; }
 
 <footer class="foot">
   <div class="wrap foot__inner">
-    <p>Portfolio demonstration. Shiftbloom, its staff, prices and policies are invented for this page.</p>
-    <p>Runs entirely in your browser: no server, no keys, no accounts.</p>
+    <p>Демо для портфолио. Shiftbloom, его сотрудники, цены и правила выдуманы для этой страницы.</p>
+    <p>Работает целиком в браузере: без сервера, ключей и аккаунтов.</p>
   </div>
 </footer>
 
@@ -1322,15 +1322,19 @@ html.scenes .tests-run { display: block; height: 100vh; }
 </script>
 <script>
 /*
- * Knowledge base for the demo: the public help centre of Shiftbloom, a fictional
- * shift-scheduling product for cafés and restaurants. Every fact here is invented
- * for this portfolio piece, so the demo contains no third-party content.
+ * База знаний для демо (русская версия): открытый справочный центр Shiftbloom,
+ * выдуманного сервиса графиков смен для кафе и ресторанов. Все факты придуманы
+ * для этой работы в портфолио, поэтому в демо нет чужого контента.
  *
- * In a real project this file is generated from the client's own material:
- * help centre, PDFs, policy documents, past support replies.
+ * В настоящем проекте этот файл собирается из материалов клиента: справочного
+ * центра, PDF, внутренних правил, прошлых ответов поддержки.
  *
- * Product names of the POS, payroll and chat tools are invented too (Tilltap,
- * Payloom, Pulsechat...), so nothing here states anything about a real company.
+ * Названия касс, зарплатных сервисов и чатов тоже выдуманы (Tilltap, Payloom,
+ * Pulsechat...), поэтому здесь нет утверждений о какой-либо реальной компании.
+ *
+ * Те же документы, разделы, id и факты, что в английской knowledge-base.js.
+ * Интерфейс Shiftbloom по базе не переведён на русский, поэтому названия меню
+ * и кнопок оставлены как в интерфейсе, а перевод дан в скобках.
  */
 (function (root, factory) {
   var kb = factory();
@@ -1340,477 +1344,490 @@ html.scenes .tests-run { display: block; height: 100vh; }
   'use strict';
 
   return {
+    language: 'ru',
     company: {
       name: 'Shiftbloom',
-      tagline: 'Shift scheduling for cafés and restaurants',
+      tagline: 'Графики смен для кафе и ресторанов',
       supportEmail: 'hello@shiftbloom.example',
       updated: '2026-09-18'
     },
     documents: [
       {
         id: 'pricing',
-        title: 'Pricing & Billing',
-        type: 'Help centre article',
-        category: 'Pricing',
+        title: 'Тарифы и оплата',
+        type: 'Статья справочного центра',
+        category: 'Цены',
         updated: '2026-09-12',
         sections: [
           {
             id: 'plans',
-            title: 'Plans and monthly price',
-            category: 'Pricing',
-            tags: ['pricing', 'plans', 'starter', 'growth', 'multi-site', 'per location'],
+            title: 'Тарифы и цена в месяц',
+            category: 'Цены',
+            tags: ['цена', 'стоимость', 'тариф', 'Starter', 'Growth', 'Multi-site', 'заведение', 'точка'],
             questions: [
-              'How much does Shiftbloom cost?',
-              'What are your plans and prices?',
-              'How much per month for one café?',
-              'What does it cost for a small café or bakery?',
-              'What is the price for two or three locations?'
+              'Сколько стоит Shiftbloom?',
+              'Какие у вас тарифы и цены?',
+              'Какие есть тарифы?',
+              'Сколько стоит ваша программа на месяц?',
+              'Сколько платить в месяц за одно кафе?',
+              'Во сколько обойдётся маленькой кофейне или пекарне?',
+              'Какая стоимость для двух или трёх точек?'
             ],
-            body: 'Shiftbloom is priced per location, per month. Starter is $29 and covers up to 15 staff at one location. Growth is $59 and covers unlimited staff, shift swaps and sales forecasting at one location. Multi-site is for three locations or more: $49 per location per month for every location, including the first two, and it adds central reporting. Every plan includes the mobile apps and email support at no extra cost.'
+            body: 'Цена считается за одно заведение в месяц. Starter стоит 29 $ и подходит для одного заведения, где работает до 15 сотрудников. Growth стоит 59 $: одно заведение, сотрудников сколько угодно, обмен сменами и прогноз продаж. Multi-site нужен, если у вас три заведения и больше: 49 $ в месяц за каждое, включая первые два, плюс общие отчёты по всем заведениям. Мобильные приложения и поддержка по почте входят в любой тариф без доплаты.'
           },
           {
             id: 'annual-discount',
-            title: 'Annual billing discount',
-            category: 'Pricing',
-            tags: ['annual', 'yearly', 'discount', 'invoice'],
+            title: 'Скидка при оплате за год',
+            category: 'Цены',
+            tags: ['годовая оплата', 'год', 'скидка', 'счёт', 'выгода', 'дешевле', 'подешевле'],
             questions: [
-              'Is there a discount if I pay yearly?',
-              'Do you offer annual billing?',
-              'Can I pay for a year upfront?'
+              'Есть ли скидка, если платить за год?',
+              'Можно оплатить сразу на год вперёд?',
+              'У вас есть годовая подписка?',
+              'Можно платить раз в год, чтобы вышло дешевле?'
             ],
-            body: 'Yes. Paying annually gives you two months free, so Starter is $290 a year, Growth is $590 a year per location, and Multi-site is $490 a year per location. You can switch from monthly to annual at any time from Billing → Plan, and we credit the unused part of the month you already paid for.'
+            body: 'Да. При оплате за год два месяца получаются бесплатными: Starter стоит 290 $ в год, Growth 590 $ в год за заведение, Multi-site 490 $ в год за заведение. Перейти с помесячной оплаты на годовую можно в любой момент в разделе Billing → Plan (Оплата → Тариф). Неиспользованную часть уже оплаченного месяца мы зачтём.'
           },
           {
             id: 'trial',
-            title: 'Free trial',
-            category: 'Pricing',
-            tags: ['trial', 'free', 'card', 'evaluation'],
+            title: 'Бесплатный пробный период',
+            category: 'Цены',
+            tags: ['пробный период', 'срок пробного периода', 'бесплатно', 'попробовать', 'карта', 'тест'],
             questions: [
-              'Do you have a free trial?',
-              'Can I try Shiftbloom before paying?',
-              'Do I need a credit card to start the trial?'
+              'Есть ли бесплатный пробный период?',
+              'Можно попробовать Shiftbloom до оплаты?',
+              'Нужна ли банковская карта, чтобы начать пробный период?',
+              'Сколько можно пользоваться бесплатно?'
             ],
-            body: 'Every account starts with a 21-day free trial of the Growth plan. No card is needed to start, and we do not charge anything automatically: when the trial ends the account switches to read-only until you choose a plan. Your schedules and staff data stay intact for 90 days after that.'
+            body: 'Первые 21 день тариф Growth бесплатный. Карта для старта не нужна, и автоматически мы ничего не списываем: когда пробный период закончится, аккаунт перейдёт в режим «только чтение», пока вы не выберете тариф. Графики и данные сотрудников после этого хранятся ещё 90 дней.'
           },
           {
             id: 'payment-methods',
-            title: 'Accepted payment methods',
-            category: 'Pricing',
-            tags: ['payment', 'card', 'sepa', 'paypal', 'invoice', 'vat'],
+            title: 'Способы оплаты',
+            category: 'Цены',
+            tags: ['оплата', 'оплата подписки', 'карта', 'SEPA', 'PayPal', 'банковский перевод', 'счёт', 'НДС', 'VAT'],
             questions: [
-              'How can I pay?',
-              'Which payment methods do you accept?',
-              'Can I pay by bank transfer?'
+              'Как можно оплатить?',
+              'Какие способы оплаты вы принимаете?',
+              'Можно заплатить банковским переводом?',
+              'Принимаете ли вы карты?'
             ],
-            body: 'We accept Visa, Mastercard and American Express, SEPA direct debit for EU accounts, and bank transfer for annual plans over $1,000. Every payment produces a PDF invoice with your VAT number, available under Billing → Invoices. We do not accept cash or prepaid vouchers.'
+            body: 'Мы принимаем карты Visa, Mastercard и American Express, прямое списание SEPA для аккаунтов из ЕС и банковский перевод для годовых тарифов на сумму больше 1 000 $. После каждой оплаты формируется счёт в PDF с вашим номером плательщика НДС (VAT), он лежит в разделе Billing → Invoices (Оплата → Счета). Наличные и предоплаченные ваучеры мы не принимаем.'
           },
           {
             id: 'cancellation',
-            title: 'Cancelling a subscription',
-            category: 'Pricing',
-            tags: ['cancel', 'unsubscribe', 'downgrade', 'notice period'],
+            title: 'Как отменить подписку',
+            category: 'Цены',
+            tags: ['отменить', 'отмена', 'подписка', 'отказаться', 'понизить тариф', 'срок уведомления'],
             questions: [
-              'How do I cancel my subscription?',
-              'Can I cancel any time?',
-              'Is there a notice period or contract?'
+              'Как отменить подписку?',
+              'Можно отказаться в любой момент?',
+              'Есть ли договор или срок, за который нужно предупредить?',
+              'Как расторгнуть подписку и больше не платить?'
             ],
-            body: 'You can cancel yourself at any time from Billing → Plan → Cancel subscription. There is no contract and no notice period. The account stays fully usable until the end of the period you have already paid for, then becomes read-only. Nothing is deleted automatically: you can export or reactivate within 90 days.'
+            body: 'Отменить подписку можно самостоятельно в любой момент: Billing → Plan → Cancel subscription (Оплата → Тариф → Отменить подписку). Договор не нужен, предупреждать заранее тоже не нужно. Аккаунт работает полностью до конца уже оплаченного периода, а потом переходит в режим «только чтение». Автоматически ничего не удаляется: в течение 90 дней можно выгрузить данные или снова включить аккаунт.'
           },
           {
             id: 'refunds',
-            title: 'Refund policy',
-            category: 'Pricing',
-            tags: ['refund', 'money back', 'annual'],
+            title: 'Возврат денег',
+            category: 'Цены',
+            tags: ['возврат', 'вернуть деньги', 'возврат средств', 'годовой тариф', 'возврат за год'],
             questions: [
-              'Do you give refunds?',
-              'Can I get my money back?',
-              'What is your refund policy?'
+              'Вы возвращаете деньги?',
+              'Можно вернуть оплату?',
+              'Какие у вас условия возврата?',
+              'Вернёте деньги за годовую подписку?'
             ],
-            body: 'Monthly plans are not refunded for the current month, but you are never charged again after you cancel. Annual plans are refunded pro rata for the full months remaining if you cancel within the first six months. Write to hello@shiftbloom.example and we process the refund within five working days.'
+            body: 'На помесячном тарифе деньги за текущий месяц не возвращаются, но после отмены мы больше ничего не списываем. За годовой тариф возвращаем деньги пропорционально, за полные оставшиеся месяцы, если вы отменили подписку в первые шесть месяцев. Напишите на hello@shiftbloom.example, и мы оформим возврат в течение пяти рабочих дней.'
           }
         ]
       },
       {
         id: 'getting-started',
-        title: 'Getting Started',
-        type: 'Onboarding guide',
-        category: 'Setup',
+        title: 'Начало работы',
+        type: 'Руководство по подключению',
+        category: 'Настройка',
         updated: '2026-08-30',
         sections: [
           {
             id: 'setup-time',
-            title: 'How long setup takes',
-            category: 'Setup',
-            tags: ['setup', 'onboarding', 'launch', 'first schedule'],
+            title: 'Сколько времени занимает настройка',
+            category: 'Настройка',
+            tags: ['настройка', 'подключение', 'запуск', 'первый график', 'начать'],
             questions: [
-              'How long does it take to set up?',
-              'How quickly can we start using it?',
-              'Is setup complicated?'
+              'Сколько времени займёт настройка?',
+              'Как быстро можно начать работать?',
+              'Сложно ли всё настроить?'
             ],
-            body: 'A single café is usually live in about 40 minutes: add your location and opening hours, import staff, then build the first week from a template. Most teams publish their first real schedule the same day. Multi-site accounts take longer because each location needs its own opening hours and roles.'
+            body: 'Чтобы запустить одно кафе, обычно хватает 40 минут: добавьте заведение и часы работы, загрузите сотрудников и соберите первую неделю по шаблону. Большинство команд публикуют первый настоящий график в тот же день. Аккаунты с несколькими заведениями настраиваются дольше, потому что у каждого заведения свои часы работы и должности.'
           },
           {
             id: 'import-staff',
-            title: 'Importing staff and past schedules',
-            category: 'Setup',
-            tags: ['import', 'csv', 'migration', 'excel', 'spreadsheet'],
+            title: 'Импорт сотрудников и старых графиков',
+            category: 'Настройка',
+            tags: ['импорт', 'загрузить', 'перенос', 'список сотрудников', 'CSV', 'Excel', 'таблица'],
             questions: [
-              'Can I import my staff from a spreadsheet?',
-              'How do I migrate from Excel or another app?',
-              'Can you import our existing rota?'
+              'Можно загрузить сотрудников из таблицы?',
+              'Как перейти с Excel или другого сервиса?',
+              'Вы сможете перенести наш текущий график?'
             ],
-            body: 'Yes. Settings → Staff → Import accepts a CSV or Excel file with name, email, role, contracted hours and pay rate; the importer previews every row before anything is saved. Past schedules can be imported the same way, which is what our forecasting uses to suggest staffing levels in the first weeks.'
+            body: 'Да. В разделе Settings → Staff → Import (Настройки → Сотрудники → Импорт) можно загрузить файл CSV или Excel с именем, почтой, должностью, часами по договору и ставкой оплаты. Перед сохранением импорт показывает каждую строку для проверки. Старые графики загружаются так же: по ним прогноз в первые недели подсказывает, сколько людей нужно на смену.'
           },
           {
             id: 'onboarding-help',
-            title: 'Onboarding help from our team',
-            category: 'Setup',
-            tags: ['onboarding call', 'training', 'help', 'setup service'],
+            title: 'Помощь с подключением от нашей команды',
+            category: 'Настройка',
+            tags: ['помощь', 'обучение', 'вводный звонок', 'настроить', 'менеджер'],
             questions: [
-              'Do you help with setup?',
-              'Is there an onboarding call?',
-              'Do you train my managers?'
+              'Вы помогаете с настройкой?',
+              'Есть ли вводный звонок?',
+              'Вы обучаете наших менеджеров?',
+              'Можете настроить всё за нас?'
             ],
-            body: 'Every new account can book a free 30-minute onboarding call, and Multi-site accounts get a second call for manager training. Both are booked from the banner on your dashboard. We also set up your first location for you at no charge if you send your current rota to hello@shiftbloom.example.'
+            body: 'Любой новый клиент может бесплатно записаться на вводный звонок на 30 минут, а аккаунтам Multi-site положен второй звонок для обучения менеджеров. Записаться на оба можно через баннер на главной панели. Ещё мы бесплатно настроим ваше первое заведение, если пришлёте текущий график на hello@shiftbloom.example.'
           },
           {
             id: 'languages',
-            title: 'Languages supported',
-            category: 'Setup',
-            tags: ['language', 'translation', 'localisation'],
+            title: 'Языки интерфейса',
+            category: 'Настройка',
+            tags: ['язык', 'перевод', 'локализация', 'английский', 'испанский'],
             questions: [
-              'What languages does Shiftbloom support?',
-              'Is the app available in Spanish?',
-              'Can staff use it in their own language?'
+              'На каких языках работает Shiftbloom?',
+              'Есть ли приложение на испанском?',
+              'Сотрудники могут пользоваться им на своём языке?',
+              'Есть ли русский язык?'
             ],
-            body: 'The web app and both mobile apps are available in English, Spanish, French, German, Italian and Portuguese. Each person picks their own language in their profile, so a manager can work in English while the team reads shift notifications in Spanish. Dates and currency follow the location, not the person.'
+            body: 'Веб-версия и оба мобильных приложения доступны на английском, испанском, французском, немецком, итальянском и португальском. Каждый выбирает язык в своём профиле, поэтому менеджер может работать на английском, а команда получать уведомления о сменах на испанском. Формат дат и валюта зависят от заведения, а не от человека.'
           }
         ]
       },
       {
         id: 'scheduling',
-        title: 'Scheduling & Shifts',
-        type: 'Help centre article',
-        category: 'Scheduling',
+        title: 'Графики и смены',
+        type: 'Статья справочного центра',
+        category: 'Графики',
         updated: '2026-09-05',
         sections: [
           {
             id: 'publish',
-            title: 'Publishing a schedule',
-            category: 'Scheduling',
-            tags: ['publish', 'notify', 'notifications', 'draft'],
+            title: 'Публикация графика',
+            category: 'Графики',
+            tags: ['опубликовать', 'публикация', 'уведомление', 'оповещение', 'черновик'],
             questions: [
-              'How do staff find out about their shifts?',
-              'What happens when I publish the schedule?',
-              'Do people get notified about changes?',
-              'Can I plan the schedule a month ahead?'
+              'Как сотрудники узнают о своих сменах?',
+              'Что происходит, когда я публикую график?',
+              'Людям приходят уведомления об изменениях?',
+              'Можно составить график на месяц вперёд?'
             ],
-            body: 'You can plan as far ahead as you like: a week, two weeks or a whole month. A schedule stays a private draft until you press Publish. On publishing, everyone with a shift gets a push notification and an email, and later edits send a separate "shift changed" alert only to the people affected. You can see who has opened the schedule under the Seen column.'
+            body: 'График можно составить на любой срок вперёд: на неделю, две или целый месяц. Пока вы не нажали Publish (Опубликовать), график остаётся закрытым черновиком. После публикации каждый, у кого есть смена, получает пуш-уведомление и письмо. Если потом что-то поменять, отдельное оповещение «смена изменилась» придёт только тем, кого это касается. Кто уже открыл график, видно в столбце Seen (Просмотрено).'
           },
           {
             id: 'swaps',
-            title: 'Shift swaps and cover requests',
-            category: 'Scheduling',
-            tags: ['swap', 'cover', 'trade shifts', 'approval'],
+            title: 'Обмен сменами и просьбы о замене',
+            category: 'Графики',
+            tags: ['обмен', 'поменяться', 'замена', 'подменить', 'одобрение', 'смена'],
             questions: [
-              'Can staff swap shifts?',
-              'How do cover requests work?',
-              'Do I have to approve a swap?'
+              'Могут ли сотрудники меняться сменами?',
+              'Как работают просьбы подменить?',
+              'Мне нужно подтверждать каждый обмен?'
             ],
-            body: 'Staff on the Growth and Multi-site plans can offer a shift to colleagues who have the right role and no clashing shift. A swap only becomes real when a manager approves it, unless you turn on auto-approve for swaps inside the same role. Every swap is kept in the shift history with both names and the time of approval.'
+            body: 'На тарифах Growth и Multi-site сотрудник может предложить свою смену коллегам с подходящей должностью и без пересекающейся смены. Обмен вступает в силу только после одобрения менеджера, если вы не включили автоодобрение для обменов внутри одной должности. Каждый обмен сохраняется в истории смен: оба имени и время одобрения.'
           },
           {
             id: 'availability',
-            title: 'Availability and time-off requests',
-            category: 'Scheduling',
-            tags: ['availability', 'holiday', 'time off', 'unavailable'],
+            title: 'Доступность, отпуска и отгулы',
+            category: 'Графики',
+            tags: ['доступность', 'отпуск', 'отгул', 'выходной', 'недоступен', 'заявка'],
             questions: [
-              'Can staff set when they are available?',
-              'How do holiday requests work?',
-              'Does it stop me scheduling someone on holiday?'
+              'Сотрудники могут указать, когда им удобно работать?',
+              'Как оформить отпуск?',
+              'Система не даст поставить смену тому, кто в отпуске?'
             ],
-            body: 'Staff set weekly availability and request time off from their app. Approved time off and declared unavailability block the calendar: if you drag a shift onto that person anyway, Shiftbloom warns you before saving. Pending requests appear as a striped marker so you can see them while planning.'
+            body: 'Сотрудники отмечают в приложении, когда могут работать, и отправляют заявки на отгулы и отпуск. Одобренный отпуск и отмеченная недоступность блокируют календарь: если всё равно перетащить на этого человека смену, Shiftbloom предупредит перед сохранением. Заявки, которые ещё ждут решения, видны в графике полосатой отметкой.'
           },
           {
             id: 'forecasting',
-            title: 'Sales forecasting and labour cost',
-            category: 'Scheduling',
-            tags: ['forecast', 'labour cost', 'budget', 'sales'],
+            title: 'Прогноз продаж и затраты на персонал',
+            category: 'Графики',
+            tags: ['прогноз', 'затраты на персонал', 'ФОТ', 'бюджет', 'продажи', 'выручка'],
             questions: [
-              'Can it tell me how many people I need?',
-              'Does it show labour cost as I plan?',
-              'How does the sales forecast work?'
+              'Подскажет ли система, сколько людей мне нужно?',
+              'Видно ли затраты на персонал, пока я составляю график?',
+              'Как работает прогноз продаж?',
+              'Можно следить за ФОТ в процентах от выручки?'
             ],
-            body: 'On the Growth and Multi-site plans, Shiftbloom forecasts hourly sales from the last 8 weeks of your POS data and weekday patterns, then suggests how many people each hour needs. The planner shows live labour cost and labour-cost percentage against that forecast, so you see a problem while you are building the week rather than at month end.'
+            body: 'На тарифах Growth и Multi-site Shiftbloom прогнозирует продажи по часам по данным вашей кассы (POS) за последние 8 недель и с учётом дня недели, а затем подсказывает, сколько людей нужно на каждый час. Пока вы составляете график, планировщик сразу показывает затраты на персонал и их долю в процентах от прогноза продаж. Так перерасход видно ещё при планировании недели, а не в конце месяца.'
           },
           {
             id: 'templates',
-            title: 'Schedule templates and repeating weeks',
-            category: 'Scheduling',
-            tags: ['template', 'repeat', 'copy week'],
+            title: 'Шаблоны и повтор недель',
+            category: 'Графики',
+            tags: ['шаблон', 'повторить', 'копировать неделю', 'скопировать'],
             questions: [
-              'Can I reuse last week\'s schedule?',
-              'Are there schedule templates?',
-              'How do I copy a week?'
+              'Можно взять график с прошлой недели?',
+              'Есть ли шаблоны графиков?',
+              'Как скопировать неделю?'
             ],
-            body: 'Yes. Any week can be saved as a template, and Copy week duplicates a previous week into the one you are planning, keeping roles and times while skipping people who are now unavailable. Many venues keep separate templates for quiet season, high season and holiday weeks.'
+            body: 'Да. Любую неделю можно сохранить как шаблон, а кнопка Copy week (Копировать неделю) переносит прошлую неделю в ту, которую вы сейчас планируете: должности и время сохраняются, а тех, кто теперь недоступен, система пропустит. Многие заведения держат отдельные шаблоны на низкий сезон, высокий сезон и праздничные недели.'
           }
         ]
       },
       {
         id: 'time-payroll',
-        title: 'Time Clock & Payroll',
-        type: 'Help centre article',
-        category: 'Time & pay',
+        title: 'Учёт времени и зарплата',
+        type: 'Статья справочного центра',
+        category: 'Время и оплата',
         updated: '2026-09-10',
         sections: [
           {
             id: 'clock-in',
-            title: 'Clocking in and out',
-            category: 'Time & pay',
-            tags: ['clock in', 'attendance', 'tablet', 'pin', 'gps'],
+            title: 'Отметка прихода и ухода',
+            category: 'Время и оплата',
+            tags: ['отметка', 'отметиться', 'приход', 'учёт времени', 'планшет', 'PIN', 'GPS'],
             questions: [
-              'How do staff clock in?',
-              'Is there a time clock?',
-              'Can people clock in from their phone?'
+              'Как сотрудники отмечают приход на работу?',
+              'Есть ли учёт рабочего времени?',
+              'Можно отмечаться с телефона?'
             ],
-            body: 'Staff clock in with a four-digit PIN on a shared tablet at the venue, or from their own phone when you allow it. Phone clock-ins can require the person to be inside a radius you set around the location, from 50 to 500 metres. Early or late clock-ins outside a 5-minute window are flagged for the manager to confirm.'
+            body: 'Сотрудники отмечаются четырёхзначным PIN-кодом на общем планшете в заведении или со своего телефона, если вы это разрешите. Для отметки с телефона можно требовать, чтобы человек был в заданном радиусе от заведения: от 50 до 500 метров. Отметки раньше или позже графика больше чем на 5 минут попадают к менеджеру на подтверждение.'
           },
           {
             id: 'missed-clock-out',
-            title: 'Missed clock-ins and forgotten clock-outs',
-            category: 'Time & pay',
-            tags: ['forgot to clock out', 'missed clock in', 'auto clock out', 'correction'],
+            title: 'Забытые отметки прихода и ухода',
+            category: 'Время и оплата',
+            tags: ['забыть отметиться', 'пропущенная отметка', 'уход', 'автозакрытие', 'исправление'],
             questions: [
-              'What happens if someone forgets to clock out?',
-              'Can a manager fix a missed clock-in?',
-              'Does it close open shifts automatically?'
+              'Что будет, если сотрудник забыл отметить уход?',
+              'Менеджер может исправить пропущенную отметку?',
+              'Открытые смены закрываются сами?'
             ],
-            body: 'If someone never clocks out, Shiftbloom closes the entry at the scheduled end time after 3 hours and marks it "needs review" instead of guessing paid hours. The manager sets the real time from Time → Timesheets, and the person gets a note saying their entry was corrected. Repeat offenders show up in the weekly Time issues digest.'
+            body: 'Если человек так и не отметил уход, через 3 часа Shiftbloom закрывает запись по времени окончания смены из графика и помечает её needs review (нужна проверка), чтобы не гадать, сколько часов оплачивать. Менеджер ставит фактическое время в разделе Time → Timesheets (Время → Табели), а сотрудник получает уведомление, что его запись исправили. Те, кто забывает регулярно, попадают в еженедельную сводку Time issues (Проблемы с учётом времени).'
           },
           {
             id: 'timesheets',
-            title: 'Timesheet approval',
-            category: 'Time & pay',
-            tags: ['timesheet', 'approve', 'hours', 'edit'],
+            title: 'Подтверждение табелей',
+            category: 'Время и оплата',
+            tags: ['табель', 'подтвердить', 'отработанные часы', 'часы', 'исправить'],
             questions: [
-              'How do I approve hours?',
-              'Can I edit a timesheet?',
-              'Where do I check worked hours?'
+              'Как подтвердить отработанные часы?',
+              'Можно поправить табель?',
+              'Где посмотреть, сколько часов отработано?'
             ],
-            body: 'Timesheets sit under Time → Timesheets, grouped by pay period. Each line shows scheduled versus actual time and the difference. A manager can edit any line, and every edit keeps the original value with the name of the person who changed it, which is what auditors normally ask for.'
+            body: 'Табели находятся в разделе Time → Timesheets (Время → Табели) и сгруппированы по расчётным периодам. В каждой строке видно время по графику, фактическое время и разницу. Менеджер может изменить любую строку, и при каждой правке сохраняется исходное значение и имя того, кто его поменял. Обычно именно это и просят показать аудиторы.'
           },
           {
             id: 'payroll-export',
-            title: 'Payroll export',
-            category: 'Time & pay',
-            tags: ['payroll', 'export', 'csv', 'payloom', 'ledgerly'],
+            title: 'Выгрузка для расчёта зарплаты',
+            category: 'Время и оплата',
+            tags: ['зарплата', 'выгрузка', 'экспорт', 'CSV', 'Payloom', 'Ledgerly', 'Wagebox'],
             questions: [
-              'Can I export hours to payroll?',
-              'Does it work with my payroll provider?',
-              'How do I get hours into Ledgerly?'
+              'Можно выгрузить часы для расчёта зарплаты?',
+              'Это работает с моим сервисом для зарплаты?',
+              'Как передать часы в Ledgerly?'
             ],
-            body: 'Approved timesheets export as CSV, or go directly to Payloom, Ledgerly or Wagebox through the built-in connection. The export contains regular hours, overtime hours, unpaid breaks and pay rate per person. Shiftbloom itself does not pay wages and does not calculate tax.'
+            body: 'Подтверждённые табели выгружаются в CSV или передаются напрямую в Payloom, Ledgerly или Wagebox через встроенное подключение. В выгрузке есть обычные часы, сверхурочные часы, неоплачиваемые перерывы и ставка по каждому сотруднику. Сам Shiftbloom зарплату не выплачивает и налоги не считает.'
           },
           {
             id: 'overtime',
-            title: 'Overtime and break rules',
-            category: 'Time & pay',
-            tags: ['overtime', 'breaks', 'labour law', 'compliance', 'minors'],
+            title: 'Сверхурочные и перерывы',
+            category: 'Время и оплата',
+            tags: ['сверхурочные', 'переработка', 'перерыв', 'трудовое законодательство', 'несовершеннолетний', 'правило'],
             questions: [
-              'Does it handle overtime rules?',
-              'Can it enforce breaks?',
-              'Will it warn me about labour law?'
+              'Учитывает ли система правила сверхурочных?',
+              'Как считаются сверхурочные?',
+              'Может ли она следить за перерывами?',
+              'Предупредит ли о нарушении трудового законодательства?'
             ],
-            body: 'You set the rules per location: weekly hours before overtime, overtime multiplier, minimum rest between shifts, and required break length per shift length. The planner warns you while you build the schedule when a rule would be broken, and timesheets mark overtime separately. Rules for staff under 18 can be set to stricter limits.'
+            body: 'Правила задаются для каждого заведения: сколько часов в неделю можно отработать до начала сверхурочных, коэффициент оплаты сверхурочных, минимальный отдых между сменами и длина обязательного перерыва в зависимости от длины смены. Если правило нарушается, планировщик предупредит ещё при составлении графика, а в табелях сверхурочные отмечаются отдельно. Для сотрудников младше 18 лет можно задать более строгие ограничения.'
           }
         ]
       },
       {
         id: 'integrations',
-        title: 'Integrations & Apps',
-        type: 'Help centre article',
-        category: 'Integrations',
+        title: 'Интеграции и приложения',
+        type: 'Статья справочного центра',
+        category: 'Интеграции',
         updated: '2026-09-18',
         sections: [
           {
             id: 'pos-integrations',
-            title: 'POS integrations',
-            category: 'Integrations',
-            tags: ['pos', 'tilltap', 'brewline', 'panfare', 'coinlane', 'sales data'],
+            title: 'Интеграции с кассами (POS)',
+            category: 'Интеграции',
+            tags: ['касса', 'поддерживаемые кассы', 'POS', 'Tilltap', 'Brewline', 'Panfare', 'Coinlane', 'продажи', 'интеграция'],
             questions: [
-              'Which POS systems do you support?',
-              'Does it connect to Tilltap?',
-              'Can you pull sales data from my till?'
+              'С какими кассами вы работаете?',
+              'Есть ли подключение к Tilltap?',
+              'Можно подтянуть продажи из моей кассы?'
             ],
-            body: 'Shiftbloom connects to Tilltap, Brewline Restaurant, Panfare and Coinlane. The connection pulls hourly sales every 15 minutes and feeds the forecast and the labour-cost percentage. You connect it yourself under Settings → Integrations; it takes about two minutes and needs only a manager login to the POS.'
+            body: 'Shiftbloom подключается к Tilltap, Brewline Restaurant, Panfare и Coinlane. Каждые 15 минут подключение забирает продажи по часам и передаёт их в прогноз и в расчёт доли затрат на персонал. Подключаете вы сами в разделе Settings → Integrations (Настройки → Интеграции): это занимает около двух минут, нужен только вход менеджера в кассу.'
           },
           {
             id: 'other-integrations',
-            title: 'Payroll, accounting and calendar connections',
-            category: 'Integrations',
-            tags: ['payloom', 'ledgerly', 'wagebox', 'calendar', 'ical', 'team chat'],
+            title: 'Зарплата, бухгалтерия и календарь',
+            category: 'Интеграции',
+            tags: ['Payloom', 'Ledgerly', 'Wagebox', 'календарь', 'iCal', 'рабочий чат', 'Pulsechat'],
             questions: [
-              'What else does Shiftbloom integrate with?',
-              'Can shifts appear in my calendar app?',
-              'Can it post to our team chat?'
+              'С чем ещё интегрируется Shiftbloom?',
+              'Смены могут появляться в моём календаре?',
+              'Можно отправлять сообщения в наш рабочий чат?'
             ],
-            body: 'Besides POS, we connect to Payloom, Ledgerly and Wagebox for payroll, publish a personal iCal shift feed that works in any calendar app, and post schedule-published announcements to Pulsechat in a channel of your choice.'
+            body: 'Кроме касс, мы подключаемся к Payloom, Ledgerly и Wagebox для расчёта зарплаты, даём личную ссылку iCal со сменами, которая работает в любом календаре, и публикуем объявления о новом графике в Pulsechat, в выбранный вами канал.'
           },
           {
             id: 'unsupported-integrations',
-            title: 'Systems we do not support yet',
-            category: 'Integrations',
-            tags: ['kettle', 'paywell', 'bookline', 'orbit', 'roadmap', 'not supported'],
+            title: 'Что мы пока не поддерживаем',
+            category: 'Интеграции',
+            tags: ['Kettle', 'Paywell', 'Bookline', 'Orbit', 'не поддерживается', 'планы развития'],
             questions: [
-              'Do you integrate with Kettle POS?',
-              'Is Paywell supported?',
-              'What if my system is not on the list?'
+              'Вы работаете с Kettle POS?',
+              'Поддерживается ли Paywell?',
+              'А если моей системы нет в списке?'
             ],
-            body: 'Kettle POS, Paywell, Bookline Accounts and Orbit POS are not supported today. For anything that is not on our list you can still use the CSV export, or build your own connection with the REST API. Tell us what you use at hello@shiftbloom.example — requested integrations are prioritised by how many venues ask for them.'
+            body: 'Kettle POS, Paywell, Bookline Accounts и Orbit POS сейчас не поддерживаются. Если вашей системы нет в списке, можно пользоваться выгрузкой в CSV или сделать своё подключение через REST API. Напишите нам на hello@shiftbloom.example, чем вы пользуетесь: очередь новых интеграций мы строим по тому, сколько заведений их просят.'
           },
           {
             id: 'api',
-            title: 'API access',
-            category: 'Integrations',
-            tags: ['api', 'rest', 'webhook', 'developer', 'token'],
+            title: 'Доступ к API',
+            category: 'Интеграции',
+            tags: ['API', 'апи', 'открытый API', 'REST', 'вебхук', 'webhook', 'разработчик', 'токен'],
             questions: [
-              'Do you have an API?',
-              'Can developers build on Shiftbloom?',
-              'Are there webhooks?'
+              'У вас есть API?',
+              'Могут ли разработчики подключать свои решения к Shiftbloom?',
+              'Есть ли вебхуки?'
             ],
-            body: 'Yes. Growth and Multi-site accounts can create REST API tokens under Settings → Developer, with read and write access to staff, shifts and timesheets, plus webhooks for shift published, swap approved and timesheet approved. The limit is 120 requests per minute and the reference lives at docs.shiftbloom.example.'
+            body: 'Да. На тарифах Growth и Multi-site можно создать токены REST API в разделе Settings → Developer (Настройки → Разработчикам) с доступом на чтение и запись к сотрудникам, сменам и табелям. Есть и вебхуки на три события: график опубликован, обмен одобрен, табель подтверждён. Лимит 120 запросов в минуту, документация лежит на docs.shiftbloom.example.'
           },
           {
             id: 'mobile-apps',
-            title: 'Mobile apps and offline use',
-            category: 'Integrations',
-            tags: ['mobile', 'ios', 'android', 'offline', 'app store'],
+            title: 'Мобильные приложения и работа без интернета',
+            category: 'Интеграции',
+            tags: ['мобильное приложение', 'телефон', 'iOS', 'Android', 'iPhone', 'офлайн', 'интернет'],
             questions: [
-              'Is there a mobile app?',
-              'Does it work on iPhone and Android?',
-              'Can staff see their schedule on their phone?',
-              'Can my team check the rota on Android?',
-              'What happens if the internet goes down?'
+              'Есть ли мобильное приложение?',
+              'Работает ли на iPhone и Android?',
+              'Сотрудники могут смотреть график в телефоне?',
+              'Как сотрудник видит свою смену?',
+              'Можно смотреть расписание смен на андроиде?',
+              'Что будет, если пропадёт интернет?'
             ],
-            body: 'There are free apps for iOS 16+ and Android 10+, included in every plan, for both managers and staff. The apps keep the current and next week readable offline, and clock-ins made without a connection are stored on the device and sync as soon as it is back. The web planner needs a connection.'
+            body: 'Есть бесплатные приложения для iOS 16+ и Android 10+, они входят в любой тариф и подходят и менеджерам, и сотрудникам. Текущая и следующая неделя доступны в приложении без интернета, а отметки прихода, сделанные без связи, сохраняются на устройстве и отправляются, как только связь вернётся. Веб-планировщику нужен интернет.'
           }
         ]
       },
       {
         id: 'company',
-        title: 'About Shiftbloom',
-        type: 'Company page',
-        category: 'Company',
+        title: 'О Shiftbloom',
+        type: 'Страница о компании',
+        category: 'Компания',
         updated: '2026-09-02',
         sections: [
           {
             id: 'who-we-are',
-            title: 'Who we are',
-            category: 'Company',
-            tags: ['about', 'company', 'team size', 'founded', 'office', 'headquarters'],
+            title: 'Кто мы',
+            category: 'Компания',
+            tags: ['о компании', 'компания', 'команда', 'основание', 'офис', 'Берлин'],
             questions: [
-              'Who is behind Shiftbloom?',
-              'How many employees does Shiftbloom have?',
-              'Where is your office?',
-              'When was the company founded?'
+              'Кто основал Shiftbloom?',
+              'Сколько человек работает в Shiftbloom?',
+              'Где ваш офис?',
+              'Когда основана компания?'
             ],
-            body: 'Shiftbloom was founded in 2021 by two former café managers and is a team of 24 people. The company is registered in Berlin, where the only office is; everyone else works remotely across Europe. We are independently owned, with no outside investors.'
+            body: 'Shiftbloom основали в 2021 году два бывших управляющих кафе, сейчас в команде 24 человека. Компания зарегистрирована в Берлине, там и единственный офис, остальные работают удалённо из разных стран Европы. Мы независимая компания без сторонних инвесторов.'
           },
           {
             id: 'customers',
-            title: 'Who uses Shiftbloom',
-            category: 'Company',
-            tags: ['customers', 'venues', 'how many locations', 'case study'],
+            title: 'Кто пользуется Shiftbloom',
+            category: 'Компания',
+            tags: ['клиент', 'заведение', 'сколько заведений', 'кейс', 'пекарня', 'столовая'],
             questions: [
-              'How many venues use Shiftbloom?',
-              'How many locations do you have?',
-              'What kind of businesses use it?'
+              'Сколько заведений пользуются Shiftbloom?',
+              'Сколько у вас клиентов?',
+              'Какой бизнес обычно работает с вами?'
             ],
-            body: 'About 1,200 venues in 14 countries use Shiftbloom: independent cafés, bakeries, small restaurant groups and two university canteens. The typical account is a single location with 9 to 20 staff. The largest runs 38 locations from one dashboard.'
+            body: 'Shiftbloom пользуются около 1 200 заведений в 14 странах: независимые кафе, пекарни, небольшие ресторанные сети и две университетские столовые. Типичный аккаунт: одно заведение, где работает от 9 до 20 человек. Самый крупный клиент ведёт 38 заведений из одной панели.'
           }
         ]
       },
       {
         id: 'trust-support',
-        title: 'Security, Privacy & Support',
-        type: 'Policy page',
-        category: 'Trust',
+        title: 'Безопасность, данные и поддержка',
+        type: 'Правила и политика',
+        category: 'Безопасность',
         updated: '2026-09-15',
         sections: [
           {
             id: 'gdpr',
-            title: 'GDPR and where data is stored',
-            category: 'Trust',
-            tags: ['gdpr', 'privacy', 'data location', 'dpa', 'eu'],
+            title: 'GDPR и где хранятся данные',
+            category: 'Безопасность',
+            tags: ['GDPR', 'персональные данные', 'хранение данных', 'DPA', 'ЕС', 'сервер', 'конфиденциальность'],
             questions: [
-              'Are you GDPR compliant?',
-              'Where is my data stored?',
-              'Can I sign a data processing agreement?'
+              'Вы соблюдаете GDPR?',
+              'Где хранятся мои данные?',
+              'Можно подписать договор об обработке данных?'
             ],
-            body: 'Shiftbloom is GDPR compliant and stores all customer data in the EU, in Frankfurt, with backups in Dublin. We sign a data processing agreement with any account that asks: request it from Settings → Legal and it is countersigned within two working days. We never sell data and never use your staff data to train anything.'
+            body: 'Shiftbloom соблюдает GDPR и хранит все данные клиентов в ЕС, во Франкфурте, а резервные копии в Дублине. Договор об обработке данных (DPA) мы подписываем с любым аккаунтом, который о нём попросит: запросите его в разделе Settings → Legal (Настройки → Юридические документы), и мы подпишем его со своей стороны за два рабочих дня. Мы никогда не продаём данные и не используем данные ваших сотрудников для обучения ИИ.'
           },
           {
             id: 'security',
-            title: 'Security measures',
-            category: 'Trust',
-            tags: ['security', 'encryption', 'two-factor', 'backup', 'audit'],
+            title: 'Как мы защищаем данные',
+            category: 'Безопасность',
+            tags: ['безопасность', 'шифрование', 'двухфакторная аутентификация', '2FA', 'резервная копия', 'бэкап', 'аудит'],
             questions: [
-              'How secure is my data?',
-              'Do you support two-factor authentication?',
-              'How often do you back up?'
+              'Насколько защищены мои данные?',
+              'Есть ли двухфакторная аутентификация?',
+              'Как часто вы делаете резервные копии?'
             ],
-            body: 'Data is encrypted in transit with TLS 1.3 and at rest with AES-256. Two-factor authentication is available on every plan and can be made compulsory for managers. Backups run hourly and are kept for 35 days, and an external penetration test is carried out once a year with the summary available on request.'
+            body: 'Данные шифруются при передаче по TLS 1.3 и при хранении по AES-256. Двухфакторная аутентификация есть на любом тарифе, и её можно сделать обязательной для менеджеров. Резервные копии создаются каждый час и хранятся 35 дней, а раз в год проводится внешний тест на проникновение. Краткий отчёт о нём можно получить по запросу.'
           },
           {
             id: 'data-deletion',
-            title: 'Deleting your data',
-            category: 'Trust',
-            tags: ['delete', 'erase', 'right to be forgotten', 'account closure'],
+            title: 'Удаление данных',
+            category: 'Безопасность',
+            tags: ['удалить', 'удаление', 'стереть', 'право на забвение', 'закрыть аккаунт'],
             questions: [
-              'How do I delete my data?',
-              'What happens to data after I leave?',
-              'Can an employee ask to be erased?'
+              'Как удалить свои данные?',
+              'Что будет с данными, если мы уйдём?',
+              'Может ли сотрудник попросить стереть его данные?'
             ],
-            body: 'Closing the account from Settings → Account → Delete removes everything within 35 days, backups included — that is the length of one backup cycle. An individual employee can also be erased on request: their personal details are removed while worked hours stay as anonymous entries, because payroll records must be kept for six years.'
+            body: 'Если закрыть аккаунт в разделе Settings → Account → Delete (Настройки → Аккаунт → Удалить), все данные удаляются в течение 35 дней вместе с резервными копиями: столько длится один цикл резервного копирования. По запросу можно удалить и отдельного сотрудника: его личные данные стираются, а отработанные часы остаются обезличенными записями, потому что документы по зарплате нужно хранить шесть лет.'
           },
           {
             id: 'account-access',
-            title: 'Signing in, passwords and locked accounts',
-            category: 'Trust',
-            tags: ['password', 'reset password', 'login', 'locked out', 'sso'],
+            title: 'Вход, пароль и блокировка аккаунта',
+            category: 'Безопасность',
+            tags: ['пароль', 'сбросить пароль', 'вход', 'войти', 'блокировка', 'SSO', 'Google', 'Microsoft'],
             questions: [
-              'How do I reset my password?',
-              'I am locked out of my account, what do I do?',
-              'Can we sign in with Google?'
+              'Как сбросить пароль?',
+              'Не могу войти в аккаунт, что делать?',
+              'Можно входить через Google?'
             ],
-            body: 'Use "Forgot password" on the sign-in page and the reset link arrives within a minute, valid for 2 hours. Accounts lock for 15 minutes after 10 failed attempts. Managers can also send a reset link to any team member from Settings → Staff. Google and Microsoft single sign-on are available on the Multi-site plan.'
+            body: 'Нажмите Forgot password («Забыли пароль?») на странице входа: ссылка для сброса придёт в течение минуты и действует 2 часа. После 10 неудачных попыток аккаунт блокируется на 15 минут. Менеджер может отправить ссылку для сброса любому сотруднику из раздела Settings → Staff (Настройки → Сотрудники). Вход через Google и Microsoft (единый вход, SSO) доступен на тарифе Multi-site.'
           },
           {
             id: 'support-hours',
-            title: 'Support channels and response time',
-            category: 'Trust',
-            tags: ['support', 'contact', 'response time', 'chat', 'phone'],
+            title: 'Как связаться с поддержкой и как быстро мы отвечаем',
+            category: 'Безопасность',
+            tags: ['поддержка', 'связаться', 'контакты', 'время ответа', 'чат', 'телефон', 'позвонить'],
             questions: [
-              'How do I contact support?',
-              'What are your support hours?',
-              'Can I call you?',
-              'Do you have a phone number?',
-              'How fast do you answer?'
+              'Как связаться с поддержкой?',
+              'В какое время работает поддержка?',
+              'Можно вам позвонить?',
+              'Есть ли у вас номер телефона?',
+              'Как быстро вы отвечаете?'
             ],
-            body: 'Email hello@shiftbloom.example or use the in-app chat, Monday to Friday 08:00–18:00 CET. First reply is within 4 working hours on Starter and Growth, and within 1 hour on Multi-site, which also includes weekend cover for anything that stops a schedule being published. There is no phone line.'
+            body: 'Пишите на hello@shiftbloom.example или в чат в приложении, с понедельника по пятницу с 08:00 до 18:00 CET. На тарифах Starter и Growth первый ответ приходит в течение 4 рабочих часов, на Multi-site в течение часа, и там же поддержка работает по выходным, если что-то мешает опубликовать график. Телефонной линии у нас нет.'
           },
           {
             id: 'uptime',
-            title: 'Uptime and status',
-            category: 'Trust',
-            tags: ['uptime', 'downtime', 'status page', 'sla', 'incident'],
+            title: 'Стабильность работы и страница статуса',
+            category: 'Безопасность',
+            tags: ['uptime', 'аптайм', 'сбой', 'простой', 'страница статуса', 'SLA', 'инцидент'],
             questions: [
-              'How reliable is the service?',
-              'Do you have a status page?',
-              'What is your uptime guarantee?'
+              'Насколько надёжно работает сервис?',
+              'Есть ли страница статуса?',
+              'Вы гарантируете, что сервис не будет падать?'
             ],
-            body: 'Uptime over the last 12 months was 99.96%, and Multi-site accounts have a 99.9% contractual guarantee with service credits if we miss it. Live status and incident history are at status.shiftbloom.example, and planned maintenance is announced there at least 48 hours in advance.'
+            body: 'За последние 12 месяцев сервис работал 99,96 % времени, а для аккаунтов Multi-site по договору гарантируется 99,9 %, с компенсацией в счёт следующих платежей, если мы не уложимся. Текущий статус и история сбоев публикуются на status.shiftbloom.example, там же минимум за 48 часов мы объявляем плановые работы.'
           }
         ]
       }
@@ -1821,16 +1838,17 @@ html.scenes .tests-run { display: block; height: 100vh; }
 </script>
 <script>
 /*
- * Evaluation set for the Shiftbloom assistant.
+ * Контрольные вопросы для ассистента Shiftbloom (русская версия).
  *
- * "answer"  - the assistant must answer, and from the expected section.
- * "refuse"  - the assistant must NOT state a fact: it either says it does not
- *             know, or asks which topic was meant. Anything else is a made-up answer.
- * "clarify" - stricter: the assistant must ask which topic was meant. Used for the
- *             examples shown on the demo page, which have to behave as advertised.
+ * "answer"  - ассистент должен ответить, и именно из ожидаемого раздела.
+ * "refuse"  - ассистент НЕ должен называть факт: он либо говорит, что не знает,
+ *             либо спрашивает, какая тема имелась в виду. Всё остальное - выдуманный ответ.
+ * "clarify" - строже: ассистент должен спросить, какая тема имелась в виду. Так помечены
+ *             примеры со страницы демо: они обязаны вести себя так, как там обещано.
+ * "unknown" - ассистент должен прямо сказать, что не знает.
  *
- * Questions are written the way a café owner would actually type them, including
- * paraphrases and typos, not the way the knowledge base is worded.
+ * Вопросы написаны так, как их на самом деле набирает владелец кафе: своими словами,
+ * с опечатками, без терминов продукта, а не так, как сформулирована база знаний.
  */
 (function (root, factory) {
   var set = factory();
@@ -1839,95 +1857,141 @@ html.scenes .tests-run { display: block; height: 100vh; }
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
   return [
-    // --- straightforward questions -------------------------------------------
-    { q: 'How much does Shiftbloom cost per month?', expect: 'answer', section: 'pricing#plans' },
-    { q: 'What do your plans include?', expect: 'answer', section: 'pricing#plans' },
-    { q: 'Is it cheaper if I pay for a whole year?', expect: 'answer', section: 'pricing#annual-discount' },
-    { q: 'Do you have a free trial?', expect: 'answer', section: 'pricing#trial' },
-    { q: 'Do I need to enter a credit card to try it?', expect: 'answer', section: 'pricing#trial' },
-    { q: 'Which payment methods do you accept?', expect: 'answer', section: 'pricing#payment-methods' },
-    { q: 'How do I cancel my subscription?', expect: 'answer', section: 'pricing#cancellation' },
-    { q: 'What is your refund policy?', expect: 'answer', section: 'pricing#refunds' },
-    { q: 'How long does setup take?', expect: 'answer', section: 'getting-started#setup-time' },
-    { q: 'Can I import my staff from a spreadsheet?', expect: 'answer', section: 'getting-started#import-staff' },
-    { q: 'Do you help us with onboarding?', expect: 'answer', section: 'getting-started#onboarding-help' },
-    { q: 'Which languages are supported?', expect: 'answer', section: 'getting-started#languages' },
-    { q: 'How do staff find out about their shifts?', expect: 'answer', section: 'scheduling#publish' },
-    { q: 'Can staff swap shifts with each other?', expect: 'answer', section: 'scheduling#swaps' },
-    { q: 'How do holiday requests work?', expect: 'answer', section: 'scheduling#availability' },
-    { q: 'Does it show labour cost while I plan?', expect: 'answer', section: 'scheduling#forecasting' },
-    { q: "Can I copy last week's schedule?", expect: 'answer', section: 'scheduling#templates' },
-    { q: 'How do staff clock in?', expect: 'answer', section: 'time-payroll#clock-in' },
-    { q: 'Where do I approve worked hours?', expect: 'answer', section: 'time-payroll#timesheets' },
-    { q: 'Can I export hours to payroll?', expect: 'answer', section: 'time-payroll#payroll-export' },
-    { q: 'Does it warn me about overtime rules?', expect: 'answer', section: 'time-payroll#overtime' },
-    { q: 'Which POS systems do you support?', expect: 'answer', section: 'integrations#pos-integrations' },
-    { q: 'Do you have an API?', expect: 'answer', section: 'integrations#api' },
-    { q: 'Is there a mobile app for iPhone?', expect: 'answer', section: 'integrations#mobile-apps' },
-    { q: 'Are you GDPR compliant?', expect: 'answer', section: 'trust-support#gdpr' },
-    { q: 'Do you support two-factor authentication?', expect: 'answer', section: 'trust-support#security' },
-    { q: 'How do I delete all our data?', expect: 'answer', section: 'trust-support#data-deletion' },
-    { q: 'What are your support hours?', expect: 'answer', section: 'trust-support#support-hours' },
-    { q: 'What is your uptime guarantee?', expect: 'answer', section: 'trust-support#uptime' },
+    // --- простые вопросы ------------------------------------------------------
+    { q: 'что входит в ваши тарифы', expect: 'answer', section: 'pricing#plans' },
+    { q: 'сколько выйдет за год на тарифе Growth', expect: 'answer', section: 'pricing#annual-discount' },
+    { q: 'есть бесплатный период, чтобы потестить?', expect: 'answer', section: 'pricing#trial' },
+    { q: 'надо ли вводить данные карты для пробного доступа', expect: 'answer', section: 'pricing#trial' },
+    { q: 'чем можно оплатить подписку', expect: 'answer', section: 'pricing#payment-methods' },
+    { q: 'как отписаться от сервиса', expect: 'answer', section: 'pricing#cancellation' },
+    { q: 'вернёте деньги, если не подойдёт?', expect: 'answer', section: 'pricing#refunds' },
+    { q: 'сколько времени уйдёт на запуск', expect: 'answer', section: 'getting-started#setup-time' },
+    { q: 'можно закинуть список сотрудников из экселя?', expect: 'answer', section: 'getting-started#import-staff' },
+    { q: 'поможете всё настроить?', expect: 'answer', section: 'getting-started#onboarding-help' },
+    { q: 'на каких языках интерфейс', expect: 'answer', section: 'getting-started#languages' },
+    { q: 'как персонал узнаёт, когда выходить на смену', expect: 'answer', section: 'scheduling#publish' },
+    { q: 'сотрудники могут меняться сменами между собой?', expect: 'answer', section: 'scheduling#swaps' },
+    { q: 'как подать заявку на отпуск', expect: 'answer', section: 'scheduling#availability' },
+    { q: 'видно ли затраты на персонал во время планирования', expect: 'answer', section: 'scheduling#forecasting' },
+    { q: 'можно скопировать прошлую неделю', expect: 'answer', section: 'scheduling#templates' },
+    { q: 'как сотрудники отмечаются на работе', expect: 'answer', section: 'time-payroll#clock-in' },
+    { q: 'где подтверждать отработанные часы', expect: 'answer', section: 'time-payroll#timesheets' },
+    { q: 'как выгрузить часы для расчёта зарплаты в бухгалтерию', expect: 'answer', section: 'time-payroll#payroll-export' },
+    { q: 'предупреждает ли о переработках', expect: 'answer', section: 'time-payroll#overtime' },
+    { q: 'какие кассы поддерживаются', expect: 'answer', section: 'integrations#pos-integrations' },
+    { q: 'есть открытый API?', expect: 'answer', section: 'integrations#api' },
+    { q: 'есть ли приложение на iPhone', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'вы соответствуете GDPR?', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'есть двухфакторная защита входа?', expect: 'answer', section: 'trust-support#security' },
+    { q: 'как удалить все наши данные', expect: 'answer', section: 'trust-support#data-deletion' },
+    { q: 'во сколько работает ваша поддержка', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'какая гарантия, что сервис не ляжет', expect: 'answer', section: 'trust-support#uptime' },
 
-    // --- paraphrases, sloppy typing, no product vocabulary --------------------
-    { q: 'price for 2 cafes', expect: 'answer', section: 'pricing#plans' },
-    { q: 'i want to stop paying, how', expect: 'answer', section: 'pricing#cancellation' },
-    { q: 'can my team trade shifts between them', expect: 'answer', section: 'scheduling#swaps' },
-    { q: 'does it connect to Tilltap till', expect: 'answer', section: 'integrations#pos-integrations' },
-    { q: 'where do you keep our data, is it in europe', expect: 'answer', section: 'trust-support#gdpr' },
-    { q: 'what if the wifi drops during service', expect: 'answer', section: 'integrations#mobile-apps' },
-    { q: 'do you integrate with Kettle POS', expect: 'answer', section: 'integrations#unsupported-integrations' },
+    // --- своими словами, без терминов продукта -------------------------------
+    { q: 'цена за 2 кафе', expect: 'answer', section: 'pricing#plans' },
+    { q: 'хочу перестать платить, как это сделать', expect: 'answer', section: 'pricing#cancellation' },
+    { q: 'можно ли ребятам поменяться сменой', expect: 'answer', section: 'scheduling#swaps' },
+    { q: 'подключается к кассе Tilltap?', expect: 'answer', section: 'integrations#pos-integrations' },
+    { q: 'данные хранятся в европе?', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'что будет, если интернет отвалится посреди смены', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'работаете с Kettle POS', expect: 'answer', section: 'integrations#unsupported-integrations' },
+    { q: 'можете перенести наш старый график', expect: 'answer', section: 'getting-started#import-staff' },
 
-    // --- the four starter questions offered on the demo page ------------------
-    { q: 'How much does it cost?', expect: 'answer', section: 'pricing#plans' },
-    { q: 'labour cost while planning', expect: 'answer', section: 'scheduling#forecasting' },
+    // --- вопросы-подсказки на странице демо ----------------------------------
+    { q: 'Сколько это стоит?', expect: 'answer', section: 'pricing#plans' },
+    { q: 'затраты на персонал при планировании', expect: 'answer', section: 'scheduling#forecasting' },
 
-    // --- wording taken from real support inboxes ------------------------------
-    { q: 'can i get an invoice with vat', expect: 'answer', section: 'pricing#payment-methods' },
-    { q: 'do you take amex', expect: 'answer', section: 'pricing#payment-methods' },
-    { q: 'how many days is the trial', expect: 'answer', section: 'pricing#trial' },
-    { q: 'is there a way to see who has read the schedule', expect: 'answer', section: 'scheduling#publish' },
-    { q: 'what happens to hours if someone forgets to clock out', expect: 'answer', section: 'time-payroll#missed-clock-out' },
-    { q: 'how do i reset my password', expect: 'answer', section: 'trust-support#account-access' },
-    { q: 'is my data used for ai training', expect: 'answer', section: 'trust-support#gdpr' },
-    { q: 'send shifts to our team chat', expect: 'answer', section: 'integrations#other-integrations' },
-    { q: 'can i block someone from being scheduled when theyre off sick', expect: 'answer', section: 'scheduling#availability' },
-    { q: 'how fast do you reply to emails', expect: 'answer', section: 'trust-support#support-hours' },
+    // --- как пишут в настоящую поддержку --------------------------------------
+    { q: 'нужен счёт с НДС', expect: 'answer', section: 'pricing#payment-methods' },
+    { q: 'принимаете American Express?', expect: 'answer', section: 'pricing#payment-methods' },
+    { q: 'сколько длится пробный', expect: 'answer', section: 'pricing#trial' },
+    { q: 'как понять, кто из сотрудников уже открыл график', expect: 'answer', section: 'scheduling#publish' },
+    { q: 'сотрудник не отметил уход со смены, что будет с часами', expect: 'answer', section: 'time-payroll#missed-clock-out' },
+    { q: 'как поменять пароль, если забыл', expect: 'answer', section: 'trust-support#account-access' },
+    { q: 'используете ли вы наши данные для обучения ИИ', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'присылать новый график в наш рабочий чат', expect: 'answer', section: 'integrations#other-integrations' },
+    { q: 'запретить ставить смену тому, кто недоступен', expect: 'answer', section: 'scheduling#availability' },
+    { q: 'как быстро вы отвечаете на письма', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'где посмотреть статус сервиса', expect: 'answer', section: 'trust-support#uptime' },
 
-    // --- cases the reviewer found answered wrongly ---------------------------
-    { q: 'can I call you', expect: 'answer', section: 'trust-support#support-hours' },
-    { q: 'do you have a phone number', expect: 'answer', section: 'trust-support#support-hours' },
-    { q: 'how many locations do you have', expect: 'answer', section: 'company#customers' },
-    { q: 'how many employees does Shiftbloom have', expect: 'answer', section: 'company#who-we-are' },
-    { q: 'where are your servers located', expect: 'answer', section: 'trust-support#gdpr' },
-    { q: 'can staff see the schedule on their phone', expect: 'answer', section: 'integrations#mobile-apps' },
-    { q: 'can staff see the rota on android', expect: 'answer', section: 'integrations#mobile-apps' },
-    { q: 'whats the price for a small bakery with 8 staff', expect: 'answer', section: 'pricing#plans' },
+    // --- случаи, на которых проверяющий находил ошибки -----------------------
+    { q: 'вам можно позвонить', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'дайте номер телефона поддержки', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'сколько заведений с вами работает', expect: 'answer', section: 'company#customers' },
+    { q: 'сколько человек в команде Shiftbloom', expect: 'answer', section: 'company#who-we-are' },
+    { q: 'где стоят ваши серверы', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'видят ли сотрудники график в телефоне', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'расписание смен на андроиде', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'сколько будет стоить для пекарни на 8 человек', expect: 'answer', section: 'pricing#plans' },
 
-    // --- typed badly, the way people actually type ---------------------------
-    { q: 'cancle my account', expect: 'answer', section: 'pricing#cancellation' },
-    { q: 'how mcuh does it cost', expect: 'answer', section: 'pricing#plans' },
-    { q: 'gdpr complient?', expect: 'answer', section: 'trust-support#gdpr' },
-    { q: 'pyroll export', expect: 'answer', section: 'time-payroll#payroll-export' },
-    { q: 'integartion with tiltap', expect: 'answer', section: 'integrations#pos-integrations' },
+    // --- другой падеж и число -------------------------------------------------
+    { q: 'шаблонов графиков на сезон у вас нет?', expect: 'answer', section: 'scheduling#templates' },
+    { q: 'правила для несовершеннолетних сотрудников', expect: 'answer', section: 'time-payroll#overtime' },
+    { q: 'можно ли править табели', expect: 'answer', section: 'time-payroll#timesheets' },
 
-    // --- must refuse: nothing in the knowledge base covers this ---------------
-    { q: 'Can Shiftbloom file my restaurant tax return?', expect: 'refuse' },
-    { q: 'Do you sell coffee beans wholesale?', expect: 'refuse' },
-    { q: 'What is the weather in Lisbon tomorrow?', expect: 'refuse' },
-    { q: 'Do you offer franchise financing or business loans?', expect: 'refuse' },
-    { q: 'Can you write my employment contracts for me?', expect: 'refuse' },
-    { q: 'Who is the CEO of Shiftbloom?', expect: 'refuse' },
-    { q: 'Do you have an office in Tokyo?', expect: 'refuse' },
-    { q: 'can i get a demo of the product with a salesperson', expect: 'refuse' },
-    { q: 'what commission do you take on card payments', expect: 'clarify' },
-    { q: 'help', expect: 'refuse' },
-    { q: 'can you recommend a good coffee supplier', expect: 'refuse' },
+    // --- с опечатками, как набирают на самом деле -----------------------------
+    { q: 'как отменть подписку', expect: 'answer', section: 'pricing#cancellation' },
+    { q: 'скока стоит', expect: 'answer', section: 'pricing#plans' },
+    { q: 'есть пробнй период?', expect: 'answer', section: 'pricing#trial' },
+    { q: 'выгрузка часов для зарплты', expect: 'answer', section: 'time-payroll#payroll-export' },
+    { q: 'интеграцыя с Tiltap', expect: 'answer', section: 'integrations#pos-integrations' },
+    { q: 'как сбросить пороль', expect: 'answer', section: 'trust-support#account-access' },
 
-    // --- examples printed on the demo page: they must behave as promised -----
-    { q: 'do you have a loyalty program for customers', expect: 'unknown' },
-    { q: 'How much does Shiftbloom cost per month?', expect: 'answer', section: 'pricing#plans' }
+    // --- нужно отказаться: в базе знаний этого нет ---------------------------
+    { q: 'Shiftbloom может сдать налоговую декларацию за мой ресторан?', expect: 'refuse' },
+    { q: 'продаёте кофейные зёрна оптом?', expect: 'refuse' },
+    { q: 'какая погода завтра в Лиссабоне', expect: 'refuse' },
+    { q: 'составите трудовые договоры для моих сотрудников?', expect: 'refuse' },
+    { q: 'кто генеральный директор Shiftbloom', expect: 'refuse' },
+    { q: 'у вас есть офис в Токио?', expect: 'refuse' },
+    { q: 'можно через вас бронировать столики', expect: 'refuse' },
+    { q: 'вы доставляете еду', expect: 'refuse' },
+    { q: 'поможете найти поваров и официантов', expect: 'refuse' },
+    { q: 'есть интеграция с iiko', expect: 'refuse' },
+    { q: 'помощь', expect: 'refuse' },
+    { q: 'посоветуйте хорошего поставщика кофе', expect: 'refuse' },
+
+    // --- второй набор: написан после настройки поиска, как проверка на новых словах --
+    { q: 'а скидки за годовую оплату бывают?', expect: 'answer', section: 'pricing#annual-discount' },
+    { q: 'карту привязывать для пробного обязательно?', expect: 'answer', section: 'pricing#trial' },
+    { q: 'как отказаться от подписки', expect: 'answer', section: 'pricing#cancellation' },
+    { q: 'деньги вернёте если отменю?', expect: 'answer', section: 'pricing#refunds' },
+    { q: 'за сколько дней можно всё запустить', expect: 'answer', section: 'getting-started#setup-time' },
+    { q: 'есть приложение для айфона', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'можно выгрузить часы для бухгалтера', expect: 'answer', section: 'time-payroll#payroll-export' },
+    { q: 'что если сотрудник забыл отметиться на выходе', expect: 'answer', section: 'time-payroll#missed-clock-out' },
+    { q: 'где хранятся данные', expect: 'answer', section: 'trust-support#gdpr' },
+    { q: 'как связаться с поддержкой', expect: 'answer', section: 'trust-support#support-hours' },
+    { q: 'как удалить аккаунт', expect: 'answer', section: 'trust-support#data-deletion' },
+    { q: 'прогноз продаж есть?', expect: 'answer', section: 'scheduling#forecasting' },
+    { q: 'можно сделать шаблон недели', expect: 'answer', section: 'scheduling#templates' },
+    { q: 'вы делаете сайты для ресторанов?', expect: 'refuse' },
+    { q: 'сколько стоит реклама у вас', expect: 'refuse' },
+    { q: 'можно заказать у вас бариста на смену', expect: 'refuse' },
+    { q: 'поддерживаете криптовалюту?', expect: 'refuse' },
+    { q: 'продаёте кофемашины?', expect: 'refuse' },
+    { q: 'как подключить эквайринг', expect: 'refuse' },
+    { q: 'можно нанять у вас повара', expect: 'refuse' },
+    { q: 'как зарегистрировать ИП', expect: 'refuse' },
+    { q: 'сделаете меню для кафе?', expect: 'refuse' },
+    { q: 'обучаете персонал работе с кассой?', expect: 'refuse' },
+    { q: 'сколько стоит доставка', expect: 'refuse' },
+    { q: 'Добрый день! Подскажите, сколько стоит Shiftbloom для одного кафе?', expect: 'answer', section: 'pricing#plans' },
+    { q: 'здравствуйте, как отменить подписку', expect: 'answer', section: 'pricing#cancellation' },
+
+    // --- примеры, напечатанные на странице демо: должны работать как обещано --
+    { q: 'какую комиссию вы берёте с оплаты картой', expect: 'clarify' },
+    { q: 'есть ли у вас программа лояльности для гостей', expect: 'unknown' },
+    { q: 'Сколько стоит Shiftbloom в месяц?', expect: 'answer', section: 'pricing#plans' },
+
+    // --- найдено при свежей проверке 02.10: раньше отвечал не тем разделом или переспрашивал --
+    { q: 'есть ли у вас апи', expect: 'answer', section: 'integrations#api' },
+    { q: 'как сотрудник видит свою смену', expect: 'answer', section: 'integrations#mobile-apps' },
+    { q: 'сверхурочные как считаются', expect: 'answer', section: 'time-payroll#overtime' },
+    { q: 'какие есть тарифы', expect: 'answer', section: 'pricing#plans' },
+    { q: 'скок стоит ваша прога на месяц', expect: 'answer', section: 'pricing#plans' },
+    { q: 'а можно платить раз в год подешевле?', expect: 'answer', section: 'pricing#annual-discount' },
+    { q: 'верните деньги за год', expect: 'answer', section: 'pricing#refunds' }
   ];
 });
 
@@ -2420,7 +2484,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
     var engine = window.ChatEngine, kb = window.KNOWLEDGE_BASE, set = window.EVAL_QUESTIONS || [];
     if (!engine || !kb || !set.length) { root.classList.remove('scenes'); return; }
     var index = engine.buildIndex(kb.documents, kb.language);
-    // same rules as «Run the test set» below
+    // same rules as «Запустить проверку» below
     var rows = set.map(function (t) {
       var r = engine.ask(t.q, index), ok;
       if (t.expect === 'answer') ok = r.status === 'answer' && r.source.id === t.section;
@@ -2429,7 +2493,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
     });
     var N = rows.length, $ = function (id) { return document.getElementById(id); };
     $('tr-total').textContent = N;
-    var label = { answer: 'answered', clarify: 'asked which topic', unknown: 'said it does not know' };
+    var label = { answer: 'ответил', clarify: 'уточнил тему', unknown: 'сказал «не знаю»' };
     function paint(p) {
       var k = Math.min(N, Math.round(p * N)), done = rows.slice(0, k), c = { pass: 0, answer: 0, clarify: 0, unknown: 0 };
       done.forEach(function (r) { if (r.ok) c.pass++; if (r.ok) c[r.status]++; });
