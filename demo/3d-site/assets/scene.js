@@ -109,7 +109,10 @@ export async function createStage(canvas, opts = {}) {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping;
   renderer.toneMappingExposure = 1.05;
-  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  // чёткость: до 2x; на телефоне автоспуск не опускает ниже 1.5 (на экране 3x при 1x сцена мыльная), на ПК — до 1
+  const maxDpr = Math.min(window.devicePixelRatio || 1, 2);
+  const minDpr = Math.min(maxDpr, mobile ? 1.5 : 1);
+  let dpr = maxDpr;
   renderer.setPixelRatio(dpr);
 
   const scene = new THREE.Scene();
@@ -201,7 +204,7 @@ export async function createStage(canvas, opts = {}) {
     M.mats.strip.emissiveIntensity = 0.4 + 1.4 * g;
   }
 
-  let last = performance.now(), slow = 0, frames = 0;
+  let last = performance.now(), slow = 0, frames = 0, steady30 = 0, warm = 90;
   function tick(now) {
     requestAnimationFrame(tick);
     const dt = Math.min(64, now - last); last = now;
@@ -219,10 +222,12 @@ export async function createStage(canvas, opts = {}) {
     settled = false; dirty = false;
     apply(now);
     renderer.render(scene, camera);
-    if (dt <= 40) { frames++; if (dt > 21) slow++; }
+    // первые 90 кадров не считаем: шейдеры, картинки и библиотеки прокрутки ещё грузятся
+    if (dt <= 40) { if (warm > 0) warm--; else { frames++; if (dt > 21) slow++; if (dt > 29 && dt < 38) steady30++; } }
     if (frames >= 45) {
-      if (slow > 18 && dpr > 1) { dpr = Math.max(1, dpr - 0.25); renderer.setPixelRatio(dpr); renderer.setSize(w, h, false); }
-      frames = 0; slow = 0;
+      // ровные ~33 мс — экран 30 Гц (энергосбережение iPhone): меньше пикселей не ускорит, только размоет
+      if (slow > 18 && steady30 < 36 && dpr > minDpr) { dpr = Math.max(minDpr, dpr - 0.25); renderer.setPixelRatio(dpr); renderer.setSize(w, h, false); }
+      frames = 0; slow = 0; steady30 = 0;
     }
   }
 
