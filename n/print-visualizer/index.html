@@ -56,6 +56,11 @@
         <canvas id="view" width="1024" height="767"></canvas>
         <svg id="outline" class="outline" aria-hidden="true"><polygon class="frame" points=""/><polygon class="cut" points=""/></svg>
         <div id="handles"></div>
+        <button type="button" class="stage-done" id="btnDone" hidden>
+          <svg class="i-done" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+          <svg class="i-edit" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h3.5L18 9.5 14.5 6 5 15.5zM13 7.5l3.5 3.5"/></svg>
+          <span data-i18n="stage.done">Done</span>
+        </button>
         <div class="loading" id="loading" data-i18n="stage.loading">Loading room…</div>
       </div>
       <div class="layers" id="layers" role="toolbar" aria-label="Prints in this room" data-i18n-aria="stage.layers"></div>
@@ -218,13 +223,17 @@
             <button type="button" data-nudge="down" aria-label="Move down" data-i18n-aria="move.down"><svg viewBox="0 0 24 24"><path d="m6 10 6 6 6-6"/></svg></button>
             <button type="button" data-nudge="right" aria-label="Move right" data-i18n-aria="move.right"><svg viewBox="0 0 24 24"><path d="m10 6 6 6-6 6"/></svg></button>
             <button type="button" class="text" id="btnSquare" data-i18n="move.square">Square up</button>
-            <button type="button" class="text danger" id="btnDelete" data-i18n="move.remove">Remove</button>
+            <button type="button" class="text danger" id="btnDelete" data-i18n="move.remove">Delete print</button>
           </div>
         </section>
       </div>
 
       <section class="group" id="emptyNote" hidden>
-        <p class="muted" data-i18n-html="empty">No prints in this room yet. Tap <strong>Add print</strong> under the photo.</p>
+        <p class="muted" data-i18n="empty">No prints in this room yet.</p>
+        <button type="button" class="btn primary empty-add" id="btnEmptyAdd">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <span data-i18n="chip.add">Add print</span>
+        </button>
       </section>
 
       <section class="group">

@@ -129,6 +129,7 @@ const state = {
   scene: null, photo: null, prints: [], sel: -1,
   light: { ...LIGHT.day, preset: 'day' },
   shape: false, // editing the outline points of the selected print
+  preview: false, // "Done": corner dots and frame hidden, the room as it will look
 };
 
 const canvas = $('#view');
@@ -184,6 +185,7 @@ async function setScene(scene, photo) {
   state.prints = (scene.prints ? scene.prints() : []).map(withDefaults);
   state.sel = state.prints.length ? 0 : -1;
   state.shape = false;
+  state.preview = false;
   $('#loading').classList.add('done');
   layout();
   syncAll();
@@ -246,17 +248,22 @@ const pts = (arr) => arr.map((c) => `${c.x * viewScale},${c.y * viewScale}`).joi
 
 function drawOverlay() {
   const p = state.prints[state.sel];
-  const shaping = !!p && state.shape && !!p.clip;
+  const shaping = !!p && state.shape && !!p.clip && !state.preview;
   const n = shaping ? p.clip.length : 0;
-  handles.forEach((h) => { h.hidden = !p || shaping; });
+  const done = $('#btnDone');
+  done.hidden = !state.prints.length;
+  done.classList.toggle('on', state.preview);
+  done.querySelector('span').textContent = t(state.preview ? 'stage.edit' : 'stage.done');
+  handles.forEach((h) => { h.hidden = !p || shaping || state.preview; });
   pool(vtxEls, n, 'vtx', 'v');
   pool(midEls, n, 'mid', 'm');
-  $('#outline .frame').setAttribute('points', p ? pts(p.corners) : '');
+  $('#outline .frame').setAttribute('points', p && !state.preview ? pts(p.corners) : '');
   $('#outline .cut').setAttribute('points', shaping ? pts(p.clip) : '');
   stage.classList.toggle('shaping', shaping);
-  const hint = $('#hint'), key = shaping ? 'stage.hintShape' : 'stage.hint';
+  const hint = $('#hint'), key = state.preview ? 'stage.hintPreview' : shaping ? 'stage.hintShape' : 'stage.hint';
   if (hint.dataset.i18n !== key) { hint.dataset.i18n = key; hint.textContent = t(key); }
-  if (!p) return;
+  placeDone(done, !p || state.preview ? [] : [...p.corners, ...(shaping ? p.clip : [])]);
+  if (!p || state.preview) return;
   p.corners.forEach((c, i) => put(handles[i], c));
   for (let i = 0; i < n; i++) {
     const a = p.clip[i], b = p.clip[(i + 1) % n];
@@ -268,6 +275,21 @@ function drawOverlay() {
   }
 }
 
+// The Done button sits in a corner of the photo that no handle is near, so it never covers a point you need.
+function placeDone(btn, points) {
+  if (btn.hidden) return;
+  const W = stage.clientWidth, H = stage.clientHeight, bw = btn.offsetWidth, bh = btn.offsetHeight, m = 10, pad = 24;
+  const cx = (W - bw) / 2;
+  const spots = { tr: [W - m - bw, m], tl: [m, m], br: [W - m - bw, H - m - bh], bl: [m, H - m - bh],
+    tc: [cx, m], bc: [cx, H - m - bh], ml: [m, (H - bh) / 2], mr: [W - m - bw, (H - bh) / 2] };
+  const free = (x, y) => points.every((c) => {
+    const px = c.x * viewScale, py = c.y * viewScale;
+    return px < x - pad || px > x + bw + pad || py < y - pad || py > y + bh + pad;
+  });
+  const pos = Object.keys(spots).find((k) => free(...spots[k])) || 'tr';
+  if (btn.dataset.pos !== pos) btn.dataset.pos = pos;
+}
+
 // Move the corners and carry the outline with them: the outline keeps its place on the print.
 function setCorners(p, next, from = p.corners, clipFrom = p.clip) {
   if (clipFrom) {
@@ -275,6 +297,44 @@ function setCorners(p, next, from = p.corners, clipFrom = p.clip) {
     p.clip = clipFrom.map((q) => { const { u, v } = toUV(q.x, q.y); return applyH(H, u, v); });
   }
   p.corners = next;
+}
+
+// The outline may reach past the print's edge (a wider backsplash, a taller part at the stove):
+// grow the print in its own perspective so it fills the whole outline, and keep the size in inches true.
+// It grows from the size it had before, so pulling the outline back in shrinks it again.
+const MAX_W = 240, MAX_H = 120; // the largest print the size fields allow
+const sameQuad = (a, b) => a.every((c, i) => Math.abs(c.x - b[i].x) < 1e-6 && Math.abs(c.y - b[i].y) < 1e-6);
+function ungrow(p) {
+  if (!p.grow) return;
+  if (sameQuad(p.grow.at, p.corners)) Object.assign(p, { ...p.grow.base, corners: p.grow.base.corners.map((c) => ({ ...c })) });
+  p.grow = null;
+}
+function growToClip(p) {
+  if (!p?.clip) return;
+  if (p.grow && !sameQuad(p.grow.at, p.corners)) p.grow = null; // moved or resized since: start from here
+  const base = p.grow ? p.grow.base : { corners: p.corners.map((c) => ({ ...c })), widthIn: p.widthIn, heightIn: p.heightIn, doors: p.doors };
+  const H = squareToQuad(base.corners), toUV = invertH(H);
+  const uv = p.clip.map((q) => toUV(q.x, q.y));
+  let capped = uv.some((a) => !Number.isFinite(a.u) || !Number.isFinite(a.v));
+  const ok = uv.filter((a) => Number.isFinite(a.u) && Number.isFinite(a.v));
+  const span = (vals, max) => {
+    let a = Math.max(0, -Math.min(...vals)), b = Math.max(0, Math.max(...vals) - 1);
+    const room = Math.max(0, max - 1);
+    if (a + b > room) { const k = room / (a + b); a *= k; b *= k; capped = true; }
+    return [-a, 1 + b];
+  };
+  const [u0, u1] = span(ok.map((a) => a.u), MAX_W / base.widthIn);
+  const [v0, v1] = span(ok.map((a) => a.v), MAX_H / base.heightIn);
+  if (u1 - u0 < 1.005 && v1 - v0 < 1.005) { ungrow(p); return; }
+  const next = [applyH(H, u0, v0), applyH(H, u1, v0), applyH(H, u1, v1), applyH(H, u0, v1)];
+  if (!isConvex(next)) { say(t('shape.cantGrow')); return; }
+  p.corners = next; // the outline stays exactly where it was drawn
+  p.widthIn = Math.round(base.widthIn * (u1 - u0));
+  p.heightIn = Math.round(base.heightIn * (v1 - v0));
+  if (p.type === 'cabinet') p.doors = clamp(Math.round(base.doors * (u1 - u0)), 1, 6);
+  if (p.type === 'glassblock') snapBlocks(p);
+  p.grow = { base, at: p.corners.map((c) => ({ ...c })) };
+  if (capped) say(t('shape.max'));
 }
 
 // The outline in the print's own coordinates (0–1 across, 0–1 down), or null when nothing is cut away.
@@ -301,7 +361,7 @@ function ensureClip(p) {
 function setShape(on) {
   const p = sel();
   state.shape = !!on && !!p;
-  if (state.shape) ensureClip(p);
+  if (state.shape) { ensureClip(p); state.preview = false; }
   syncControls(); redraw();
 }
 function removePoint(i) {
@@ -321,6 +381,7 @@ function toImage(e) {
 let drag = null;
 
 stage.addEventListener('pointerdown', (e) => {
+  if (e.target.closest('#btnDone')) return;
   const h = e.target.closest('.handle');
   const pt = toImage(e);
   if (h && h.dataset.m != null) {
@@ -342,6 +403,7 @@ stage.addEventListener('pointerdown', (e) => {
     let hit = -1;
     for (let i = state.prints.length - 1; i >= 0; i--) if (pointInQuad(state.prints[i].corners, pt)) { hit = i; break; }
     if (hit < 0) return;
+    if (state.preview) { state.preview = false; redraw(); }
     if (hit !== state.sel) { state.sel = hit; syncAll(); }
     drag = { kind: 'move', last: pt };
   }
@@ -375,7 +437,10 @@ stage.addEventListener('pointermove', (e) => {
 function endDrag() {
   if (!drag) return;
   drag.el?.classList.remove('drag');
-  drag = null; fast = false; redraw();
+  const grew = drag.kind === 'vtx';
+  drag = null; fast = false;
+  if (grew) { growToClip(sel()); syncAll(); }
+  redraw();
 }
 stage.addEventListener('pointerup', endDrag);
 stage.addEventListener('pointercancel', endDrag);
@@ -404,12 +469,16 @@ function nudge(dx, dy, cornerIndex) {
 
 document.addEventListener('keydown', (e) => {
   const map = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+  if (state.preview && document.activeElement === stage && (map[e.key] || e.key === 'Delete' || e.key === 'Backspace')) {
+    // "Done" hides the frame: the first key brings it back instead of moving or deleting a print you can't see
+    state.preview = false; redraw(); e.preventDefault(); return;
+  }
   const h = document.activeElement?.closest?.('.handle');
   const v = h?.dataset.v != null ? +h.dataset.v : null;
   if (v != null && sel()?.clip && map[e.key]) {
     const k = (e.shiftKey ? 10 : 2) / Math.max(0.3, viewScale), q = sel().clip[v];
     q.x = clamp(q.x + map[e.key][0] * k, 0, state.photo.width); q.y = clamp(q.y + map[e.key][1] * k, 0, state.photo.height);
-    redraw(); e.preventDefault();
+    growToClip(sel()); syncAll(); e.preventDefault();
   } else if (v != null && (e.key === 'Delete' || e.key === 'Backspace')) {
     removePoint(v); e.preventDefault();
   } else if (h?.dataset.m != null && (e.key === 'Enter' || e.key === ' ')) {
@@ -444,6 +513,7 @@ function addPrint() {
     corners: rect(cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2),
   }));
   state.sel = state.prints.length - 1;
+  state.preview = false;
   syncAll();
 }
 
@@ -453,6 +523,7 @@ function removeSelected() {
   state.sel = Math.min(state.sel, state.prints.length - 1);
   if (state.sel < 0) state.shape = false;
   syncAll();
+  if (!state.prints.length) $('#btnEmptyAdd').focus();
 }
 
 // Keep the print's centre and size, remove the perspective (a straight-on rectangle).
@@ -531,7 +602,7 @@ function syncLayers() {
     b.type = 'button'; b.className = 'chip';
     b.setAttribute('aria-pressed', i === state.sel);
     b.innerHTML = `<img src="${designThumb(p)}" alt="">${t(`type.${p.type}`)} · ${p.widthIn}×${p.heightIn} ${t('unit.in')}`;
-    b.addEventListener('click', () => { state.sel = i; syncAll(); });
+    b.addEventListener('click', () => { state.sel = i; state.preview = false; syncAll(); });
     box.append(b);
   });
   const add = document.createElement('button');
@@ -548,11 +619,30 @@ function syncDesigns() {
   box.innerHTML = '';
   if (!p) return;
   const list = listDesigns(p.type);
-  if (p.upload) {
+  if (p.myArt) {
+    // the visitor's own artwork stays a choice next to the designs until they remove it with ×
+    const w = document.createElement('div'); w.className = 'design-own';
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'design'; b.setAttribute('aria-pressed', 'true');
-    b.innerHTML = `<img src="${p.uploadThumb}" alt=""><span>${t('design.yours')}</span>`;
-    box.append(b);
+    b.type = 'button'; b.className = 'design'; b.setAttribute('aria-pressed', !!p.upload);
+    b.innerHTML = `<img src="${p.myArt.thumb}" alt=""><span>${t('design.yours')}</span>`;
+    b.addEventListener('click', () => {
+      Object.assign(p, { upload: p.myArt.canvas, uploadKey: p.myArt.key, uploadThumb: p.myArt.thumb, layout: 'mural' });
+      syncAll();
+    });
+    const x = document.createElement('button');
+    x.type = 'button'; x.className = 'design-x';
+    x.setAttribute('aria-label', t('design.removeYours')); x.title = t('design.removeYours');
+    x.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>';
+    x.addEventListener('click', () => {
+      // only the picture goes: the print, its size, place and product stay, back on the last design
+      p.myArt = null; p.upload = null; p.uploadThumb = null;
+      p.layout = p.type === 'tile' ? 'auto' : 'mural';
+      syncAll();
+      $('#designs .design')?.focus();
+      say(t('design.removed'));
+    });
+    w.append(b, x);
+    box.append(w);
   }
   list.forEach((d) => {
     const b = document.createElement('button');
@@ -789,11 +879,19 @@ $('#clipOn').addEventListener('change', (e) => { sel().clipOn = e.target.checked
 $('#btnShape').addEventListener('click', () => setShape(!state.shape));
 $('#btnShapeReset').addEventListener('click', () => {
   const p = sel(); if (!p) return;
+  ungrow(p);
   p.clip = state.shape ? p.corners.map((c) => ({ ...c })) : undefined;
+  syncLayers(); syncSummary();
   syncControls(); redraw();
 });
 $('#btnSquare').addEventListener('click', squareUp);
 $('#btnDelete').addEventListener('click', removeSelected);
+$('#btnEmptyAdd').addEventListener('click', addPrint);
+$('#btnDone').addEventListener('click', () => {
+  state.preview = !state.preview;
+  if (state.preview) state.shape = false;
+  syncControls(); redraw();
+});
 
 $('#roomFile').addEventListener('change', async (e) => {
   const f = e.target.files[0]; if (!f) return;
@@ -826,9 +924,13 @@ $('#artFile').addEventListener('change', async (e) => {
   const s = Math.max(96 / art.width, 96 / art.height);
   tc.getContext('2d').drawImage(art, (96 - art.width * s) / 2, (96 - art.height * s) / 2, art.width * s, art.height * s);
   p.uploadThumb = tc.toDataURL('image/jpeg', 0.85);
-  // match the print's proportions to the artwork, keeping its width
-  const ratio = art.height / art.width;
-  setSize(p.widthIn, Math.max(4, Math.round(p.widthIn * ratio)));
+  p.myArt = { canvas: art, key: p.uploadKey, thumb: p.uploadThumb };
+  // A picture on glass or metal takes the artwork's proportions (keeping the width). A backsplash, doors
+  // or a glass block wall keep the area marked on the wall: the artwork fills it, cropped at the edges.
+  if (p.type === 'glass' || p.type === 'backlit' || p.type === 'metal') {
+    const ratio = art.height / art.width;
+    setSize(p.widthIn, Math.max(4, Math.round(p.widthIn * ratio)));
+  }
   e.target.value = '';
   syncAll();
 });

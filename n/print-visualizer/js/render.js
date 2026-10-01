@@ -104,11 +104,16 @@ function shadeMap(photo, colour = 0) {
   for (let i = 0; i < d.data.length; i += 4) {
     // keep a floor so shadows stay readable, and soften the colour cast a little
     const l = Math.min(255, lums[i / 4] * gain);
+    const o = [0, 0, 0];
     for (let c = 0; c < 3; c++) {
       // boost the light's colour (blurring the photo greys it out), then add contrast so the falloff reads
       const v = Math.max(0, Math.min(255, l + (d.data[i + c] * gain - l) * colour));
-      d.data[i + c] = Math.min(255, 22 + 233 * Math.pow(v / 255, 1.3));
+      o[c] = 22 + 233 * Math.pow(v / 255, 1.3);
     }
+    // floor at about 60 % brightness, all channels together so the light keeps its colour:
+    // a print moved over dark cabinets or shelves must not show their shapes
+    const lo = 0.3 * o[0] + 0.59 * o[1] + 0.11 * o[2], k = lo < 150 ? 150 / Math.max(1, lo) : 1;
+    for (let c = 0; c < 3; c++) d.data[i + c] = Math.min(255, o[c] * k);
   }
   s.putImageData(d, 0, 0);
   byPhoto.set(colour, small);
