@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make Scenario Rescue: Sample Audit | Flow Lab</title>
+<link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/make-audit/">
+<link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/make-audit/ru/">
 <meta name="description" content="A broken Make.com lead-intake scenario, the audit that found 11 problems (6 of them cost leads), and the fixed version. Demo case by Flow Lab.">
+<script>(function(){try{var t=localStorage.getItem('fl-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root {
   --bg: #f6f3ee; --bg-raised: #ffffff; --bg-sunken: #efeae2;
@@ -47,7 +50,13 @@ body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(-
 .wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
 header.top { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
 .brand { font-weight: 650; letter-spacing: -.01em; }
-.theme-toggle { font: inherit; font-size: 15px; color: var(--ink); background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: 999px; min-height: 44px; padding: 0 16px; cursor: pointer; }
+.top-tools { display: flex; align-items: center; gap: 8px; }
+.lang-switch { display: flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px; background: var(--bg-raised); }
+.lang-switch a { min-width: 44px; min-height: 36px; display: grid; place-items: center; border-radius: 999px; font-size: 14px; font-weight: 600; letter-spacing: .04em; color: var(--ink-soft); text-decoration: none; }
+.lang-switch a:hover { color: var(--ink); }
+.lang-switch a[aria-current="page"] { background: var(--ink); color: var(--bg-raised); }
+.theme-toggle { font: inherit; font-size: 15px; color: var(--ink); background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: 999px; min-height: 44px; min-width: 76px; padding: 0 16px; cursor: pointer; }
+.theme-toggle:hover { border-color: var(--ink-faint); }
 .theme-toggle:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .hero { padding: 40px 0 28px; }
 .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
@@ -62,8 +71,9 @@ section { padding: 36px 0; border-top: 1px solid var(--line); }
 .stat b { display: block; font-size: 34px; line-height: 1.1; letter-spacing: -.02em; }
 .stat span { font-size: 15px; color: var(--ink-soft); }
 .flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 15px; margin: 8px 0 0; padding: 0; list-style: none; }
-.flow li { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
-.flow li.arrow { background: none; border: 0; padding: 0; color: var(--ink-faint); }
+.flow li { display: inline-flex; align-items: center; gap: 8px; }
+.flow .m { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.flow .arrow { color: var(--ink-faint); }
 .cards { display: grid; gap: 14px; margin-top: 18px; }
 .card { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
 .card p { margin: 6px 0 0; color: var(--ink-soft); }
@@ -81,7 +91,7 @@ th { font-size: 14px; color: var(--ink-soft); font-weight: 600; background: var(
 tr:last-child td { border-bottom: 0; }
 .bad { color: var(--accent); font-weight: 600; }
 .ok { color: var(--good); font-weight: 600; }
-pre { font: 14px/1.55 var(--mono); background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin: 16px 0 0; }
+pre { font: 14px/1.55 var(--mono); background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: break-word; margin: 16px 0 0; }
 ol.steps { padding-left: 22px; margin: 12px 0 0; }
 ol.steps li { margin: 8px 0; }
 .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
@@ -94,7 +104,14 @@ html.js .reveal.in { opacity: 1; transform: none; }
 @media (max-width: 640px) {
   .stats { grid-template-columns: 1fr; }
   .wrap { padding: 0 16px; }
-  th, td { padding: 10px; }
+  .table-wrap { border: 0; background: none; overflow: visible; }
+  table, tbody, tr, td { display: block; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  tr { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+  td { padding: 0; border: 0; }
+  td:first-child { font-weight: 650; margin-bottom: 8px; }
+  td[data-label] { display: grid; grid-template-columns: 76px 1fr; gap: 8px; margin-top: 4px; }
+  td[data-label]::before { content: attr(data-label); font-size: 14px; font-weight: 600; color: var(--ink-soft); padding-top: 1px; }
 }
 </style>
 </head>
@@ -102,11 +119,14 @@ html.js .reveal.in { opacity: 1; transform: none; }
 <div class="wrap">
   <header class="top">
     <div class="brand">Flow Lab</div>
-    <button class="theme-toggle" id="theme-toggle" type="button" >Theme: auto</button>
+    <div class="top-tools">
+      <nav class="lang-switch" aria-label="Language"><a aria-current="page" href="./" hreflang="en" lang="en" title="English">EN</a><a href="ru/" hreflang="ru" lang="ru" title="Русский">RU</a></nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" title="Switch between day and night" data-to-dark="Night" data-to-light="Day">Night</button>
+    </div>
   </header>
 
   <div class="hero">
-    <p class="eyebrow">Make.com scenario rescue · demo case</p>
+    <p class="eyebrow">Make.com scenario rescue · demo&nbsp;case</p>
     <h1>Most runs looked fine. Leads were still slipping through.</h1>
     <p class="lead">A website quote form feeds a Make scenario: log the request, look up the service area, ping the on-call tech for urgent jobs, email sales for the rest. Most runs look fine in History. The audit found 11 problems, and 6 of them mean a lead gets no alert or arrives with blank fields.</p>
     <p class="note demo">Demo scenario built for this case, modeled on a typical home-services lead flow. Not a client's scenario.</p>
@@ -120,12 +140,12 @@ html.js .reveal.in { opacity: 1; transform: none; }
   <section class="reveal">
     <h2>The scenario</h2>
     <ul class="flow" aria-label="Scenario modules in order">
-      <li>Webhook: quote form</li><li class="arrow" aria-hidden="true">→</li>
-      <li>Google Sheets: log request</li><li class="arrow" aria-hidden="true">→</li>
-      <li>HTTP: ZIP → service area</li><li class="arrow" aria-hidden="true">→</li>
-      <li>Router</li><li class="arrow" aria-hidden="true">→</li>
-      <li>Urgent: Slack to on-call tech</li><li class="arrow" aria-hidden="true">·</li>
-      <li>Standard: Gmail to sales</li>
+      <li><span class="m">Webhook: quote form</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">Google Sheets: log request</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">HTTP: ZIP → service area</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">Router</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">Urgent: Slack to on-call tech</span><span class="arrow" aria-hidden="true">·</span></li>
+      <li><span class="m">Standard: Gmail to sales</span></li>
     </ul>
   </section>
 
@@ -183,12 +203,12 @@ html.js .reveal.in { opacity: 1; transform: none; }
       <table>
         <thead><tr><th scope="col">Situation</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
         <tbody>
-          <tr><td>Gmail or Sheets fails for a minute</td><td class="bad">Run fails, scenario switched off</td><td class="ok">Step retried, scenario keeps running</td></tr>
-          <tr><td>ZIP API returns an error</td><td class="bad">Blank "Area", no warning</td><td class="ok">Lead sent with "check ZIP" note</td></tr>
-          <tr><td>Form sends "Urgent" (capital U)</td><td class="bad">No route matches, nobody alerted</td><td class="ok">On-call tech alerted</td></tr>
-          <tr><td>Customer picks 3 services / none</td><td class="bad">3 emails / no email</td><td class="ok">Always 1 email</td></tr>
-          <tr><td>Quote reference in alerts</td><td class="bad">Always empty</td><td class="ok">Sheet row number</td></tr>
-          <tr><td>Exported blueprint shared</td><td class="bad">Leaks the API key</td><td class="ok">No secrets inside</td></tr>
+          <tr><td>Gmail or Sheets fails for a minute</td><td class="bad" data-label="Before">Run fails, scenario switched off</td><td class="ok" data-label="After">Step retried, scenario keeps running</td></tr>
+          <tr><td>ZIP API returns an error</td><td class="bad" data-label="Before">Blank "Area", no warning</td><td class="ok" data-label="After">Lead sent with "check ZIP" note</td></tr>
+          <tr><td>Form sends "Urgent" (capital U)</td><td class="bad" data-label="Before">No route matches, nobody alerted</td><td class="ok" data-label="After">On-call tech alerted</td></tr>
+          <tr><td>Customer picks 3 services / none</td><td class="bad" data-label="Before">3 emails / no email</td><td class="ok" data-label="After">Always 1 email</td></tr>
+          <tr><td>Quote reference in alerts</td><td class="bad" data-label="Before">Always empty</td><td class="ok" data-label="After">Sheet row number</td></tr>
+          <tr><td>Exported blueprint shared</td><td class="bad" data-label="Before">Leaks the API key</td><td class="ok" data-label="After">No secrets inside</td></tr>
         </tbody>
       </table>
     </div>
@@ -197,17 +217,12 @@ html.js .reveal.in { opacity: 1; transform: none; }
   <section class="reveal">
     <h2>The audit report</h2>
     <p>The first pass is an automatic review of the exported blueprint: nothing runs, and no access to your accounts is needed. Then a manual review of the logic, and every item is checked in the editor before anything is changed. Excerpt:</p>
-<pre>Make scenario review: Quote requests -> Sheet -> Sales alerts (BEFORE)
+<pre>Make scenario review: Quote requests → Sheet → Sales alerts (BEFORE)
 7 modules, trigger: instant (webhook).
 
-1. HIGH - Scenario settings: "Allow storing of incomplete executions" is off
-   and the scenario starts with a webhook. When any module fails, the run
-   stops and that request is gone. With default settings, Make deactivates
-   an instant-trigger scenario immediately after its first error.
-2. HIGH - "ZIP -> service area" [3]: "Evaluate all states as errors" is off:
-   a 4xx/5xx reply counts as success.
-4. HIGH - "Alert on-call tech" [5]: Maps a field from "Email sales" [7],
-   which is not on the path before this module. Always empty here.
+1. HIGH - Scenario settings: "Allow storing of incomplete executions" is off and the scenario starts with a webhook. When any module fails, the run stops and that request is gone. With default settings, Make deactivates an instant-trigger scenario immediately after its first error.
+2. HIGH - "ZIP → service area" [3]: "Evaluate all states as errors" is off: a 4xx/5xx reply counts as success.
+4. HIGH - "Alert on-call tech" [5]: Maps a field from "Email sales" [7], which is not on the path before this module. Always empty here.
 ...
 AFTER: No issues found by the automatic checks. (Manual review: done.)</pre>
     <div class="links">
@@ -235,12 +250,12 @@ AFTER: No issues found by the automatic checks. (Manual review: done.)</pre>
 (function () {
   var root = document.documentElement, btn = document.getElementById('theme-toggle');
   root.classList.add('js');
-  var order = ['auto', 'light', 'dark'], saved = null;
+  var saved = null;
   try { saved = localStorage.getItem('fl-theme'); } catch (e) {}
-  function apply(t) { root.setAttribute('data-theme', t); btn.textContent = 'Theme: ' + t; }
-  apply(order.indexOf(saved) >= 0 ? saved : 'auto');
+  function apply(t) { root.setAttribute('data-theme', t); btn.textContent = btn.getAttribute(t === 'dark' ? 'data-to-light' : 'data-to-dark'); }
+  apply(saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
   btn.addEventListener('click', function () {
-    var next = order[(order.indexOf(root.getAttribute('data-theme')) + 1) % 3];
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     apply(next);
     try { localStorage.setItem('fl-theme', next); } catch (e) {}
   });

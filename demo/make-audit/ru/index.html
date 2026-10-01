@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ru" data-theme="auto" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Починка сценария Make: пример аудита | Flow Lab</title>
+<link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/make-audit/">
+<link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/make-audit/ru/">
+<meta name="description" content="Сломанный сценарий Make.com для заявок с сайта, аудит, который нашёл 11 проблем (из-за 6 терялись заявки), и исправленная версия. Демо-кейс Flow Lab.">
+<script>(function(){try{var t=localStorage.getItem('fl-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+:root {
+  --bg: #f6f3ee; --bg-raised: #ffffff; --bg-sunken: #efeae2;
+  --ink: #1f1c18; --ink-soft: #57514a; --ink-faint: #756d64;
+  --line: #ded7cc; --line-strong: #c9c0b2;
+  --accent: #a6432a; --accent-soft: #f4e2dc;
+  --good: #2f6b4f; --good-soft: #dfeee6;
+  --warn: #7a4f0f; --warn-soft: #f7ecd6;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: ui-sans-serif, -apple-system, "Segoe UI", Inter, system-ui, sans-serif;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(31, 28, 24, .06), 0 8px 24px rgba(31, 28, 24, .05);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17161a; --bg-raised: #201e23; --bg-sunken: #121114;
+    --ink: #f2eee8; --ink-soft: #b7b0a7; --ink-faint: #9a938a;
+    --line: #322f36; --line-strong: #454049;
+    --accent: #e0896a; --accent-soft: #35231d;
+    --good: #7cc7a0; --good-soft: #1b2b23;
+    --warn: #d9ab5e; --warn-soft: #2d2519;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17161a; --bg-raised: #201e23; --bg-sunken: #121114;
+  --ink: #f2eee8; --ink-soft: #b7b0a7; --ink-faint: #9a938a;
+  --line: #322f36; --line-strong: #454049;
+  --accent: #e0896a; --accent-soft: #35231d;
+  --good: #7cc7a0; --good-soft: #1b2b23;
+  --warn: #d9ab5e; --warn-soft: #2d2519;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--sans); }
+.wrap { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+header.top { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; }
+.brand { font-weight: 650; letter-spacing: -.01em; }
+.top-tools { display: flex; align-items: center; gap: 8px; }
+.lang-switch { display: flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px; background: var(--bg-raised); }
+.lang-switch a { min-width: 44px; min-height: 36px; display: grid; place-items: center; border-radius: 999px; font-size: 14px; font-weight: 600; letter-spacing: .04em; color: var(--ink-soft); text-decoration: none; }
+.lang-switch a:hover { color: var(--ink); }
+.lang-switch a[aria-current="page"] { background: var(--ink); color: var(--bg-raised); }
+.theme-toggle { font: inherit; font-size: 15px; color: var(--ink); background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: 999px; min-height: 44px; min-width: 76px; padding: 0 16px; cursor: pointer; }
+.theme-toggle:hover { border-color: var(--ink-faint); }
+.theme-toggle:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.hero { padding: 40px 0 28px; }
+.eyebrow { font-size: 14px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+h1 { font-size: clamp(32px, 6vw, 54px); line-height: 1.08; letter-spacing: -.025em; margin: 0 0 18px; }
+h2 { font-size: clamp(24px, 3.6vw, 32px); line-height: 1.2; letter-spacing: -.015em; margin: 0 0 14px; }
+h3 { font-size: 18px; line-height: 1.35; margin: 0 0 6px; }
+.lead { font-size: clamp(18px, 2.2vw, 21px); color: var(--ink-soft); max-width: 44em; margin: 0; }
+.note { font-size: 15px; color: var(--ink-soft); margin-top: 14px; }
+section { padding: 36px 0; border-top: 1px solid var(--line); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+.stat { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+.stat b { display: block; font-size: 34px; line-height: 1.1; letter-spacing: -.02em; }
+.stat span { font-size: 15px; color: var(--ink-soft); }
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 15px; margin: 8px 0 0; padding: 0; list-style: none; }
+.flow li { display: inline-flex; align-items: center; gap: 8px; }
+.flow .m { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.flow .arrow { color: var(--ink-faint); }
+.cards { display: grid; gap: 14px; margin-top: 18px; }
+.card { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.card p { margin: 6px 0 0; color: var(--ink-soft); }
+.tag { display: inline-block; font-size: 13px; font-weight: 650; letter-spacing: .04em; border-radius: 999px; padding: 2px 10px; margin-bottom: 10px; }
+.tag.high { background: var(--accent-soft); color: var(--accent); }
+.tag.med { background: var(--warn-soft); color: var(--warn); }
+.tag.low { background: var(--bg-sunken); color: var(--ink-soft); }
+.fix { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line-strong); font-size: 16px; }
+.fix b { color: var(--good); }
+code { font-family: var(--mono); font-size: .88em; background: var(--bg-sunken); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+.table-wrap { overflow-x: auto; margin-top: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-raised); }
+table { border-collapse: collapse; width: 100%; font-size: 16px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 14px; color: var(--ink-soft); font-weight: 600; background: var(--bg-sunken); }
+tr:last-child td { border-bottom: 0; }
+.bad { color: var(--accent); font-weight: 600; }
+.ok { color: var(--good); font-weight: 600; }
+pre { font: 14px/1.55 var(--mono); background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; overflow-x: auto; white-space: pre-wrap; overflow-wrap: break-word; margin: 16px 0 0; }
+ol.steps { padding-left: 22px; margin: 12px 0 0; }
+ol.steps li { margin: 8px 0; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--ink); text-decoration: none; background: var(--bg-raised); font-size: 15px; }
+.links a:hover { border-color: var(--accent); color: var(--accent); }
+footer { padding: 32px 0 48px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 15px; }
+html.js .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+html.js .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { html.js .reveal { opacity: 1; transform: none; transition: none; } }
+@media (max-width: 640px) {
+  .stats { grid-template-columns: 1fr; }
+  .wrap { padding: 0 16px; }
+  .table-wrap { border: 0; background: none; overflow: visible; }
+  table, tbody, tr, td { display: block; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  tr { background: var(--bg-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; }
+  td { padding: 0; border: 0; }
+  td:first-child { font-weight: 650; margin-bottom: 8px; }
+  td[data-label] { display: grid; grid-template-columns: 76px 1fr; gap: 8px; margin-top: 4px; }
+  td[data-label]::before { content: attr(data-label); font-size: 14px; font-weight: 600; color: var(--ink-soft); padding-top: 1px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Flow Lab</div>
+    <div class="top-tools">
+      <nav class="lang-switch" aria-label="Язык"><a href="../" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="./" hreflang="ru" lang="ru" title="Русский">RU</a></nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" title="Переключить день и ночь" data-to-dark="Ночь" data-to-light="День">Ночь</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <p class="eyebrow">Починка сценария Make.com · демо&#8209;кейс</p>
+    <h1>Почти все запуски выглядели нормально. А заявки всё равно терялись.</h1>
+    <p class="lead">Форма заявки на сайте передаёт данные в сценарий Make: записать заявку, найти зону обслуживания, предупредить дежурного мастера о срочном вызове, остальные заявки отправить письмом в отдел продаж. В истории запусков почти всё выглядит нормально. Аудит нашёл 11&nbsp;проблем, и из-за 6&nbsp;из них о заявке никто не узнаёт или она приходит с пустыми полями.</p>
+    <p class="note demo">Демо-сценарий собран для этого кейса по образцу типичного потока заявок компании бытовых услуг. Это не сценарий клиента.</p>
+    <div class="stats">
+      <div class="stat reveal"><b>11</b><span>проблем найдено: 9 автоматической проверкой, 2 при ручном разборе</span></div>
+      <div class="stat reveal"><b>6</b><span>из них: о заявке никто не узнаёт или в уведомлении пустые поля</span></div>
+      <div class="stat reveal"><b>0</b><span>проблем находят те же автоматические проверки после исправления</span></div>
+    </div>
+  </div>
+
+  <section class="reveal">
+    <h2>Сценарий</h2>
+    <ul class="flow" aria-label="Модули сценария по порядку">
+      <li><span class="m">Webhook: форма заявки</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">Google Sheets: записать заявку</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">HTTP: индекс → зона обслуживания</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">Router: развилка</span><span class="arrow" aria-hidden="true">→</span></li>
+      <li><span class="m">Срочно: Slack дежурному мастеру</span><span class="arrow" aria-hidden="true">·</span></li>
+      <li><span class="m">Обычно: Gmail в отдел продаж</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="reveal">Что было не так и как исправлено</h2>
+    <div class="cards">
+      <article class="card reveal">
+        <span class="tag high">ВЫСОКИЙ · потерянные заявки</span>
+        <h3>Одна ошибка выключала весь сценарий</h3>
+        <p>Настройка «Allow storing of incomplete executions» (хранить незавершённые запуски) была выключена. Если Google Sheets, Slack или Gmail давали сбой, запуск останавливался с ошибкой и повторить его было уже нельзя: сайт форму заново не отправляет. Хуже того, при настройках ошибок по умолчанию Make выключает сценарий с запуском от webhook сразу после первой ошибки, и все следующие заявки пропадали, пока кто-нибудь этого не замечал.</p>
+        <p class="fix"><b>Исправление:</b> незавершённые запуски включены, а на шагах Sheets, Slack и Gmail стоят обработчики Break с автоматическим повтором. Теперь шаг со сбоем ждёт и пробует снова, а не останавливает всё.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">ВЫСОКИЙ · пустые поля</span>
+        <h3>Ошибки API принимались за ответы</h3>
+        <p>В поиске зоны по индексу (старый модуль HTTP) была выключена настройка «Evaluate all states as errors». Когда API отвечал ошибкой 401 или 500, Make шёл дальше и принимал текст ошибки за зону обслуживания, а поле «Area:» в уведомлениях оставалось пустым.</p>
+        <p class="fix"><b>Исправление:</b> переход на актуальный модуль HTTP «Make a request» с включённой настройкой «Return error if HTTP request fails» и обработчик Resume, который пишет «area lookup failed, check ZIP» (зону найти не удалось, проверьте индекс). Заявка всё равно доходит до продаж с понятной пометкой.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">ВЫСОКИЙ · безопасность</span>
+        <h3>Рабочий ключ API лежал прямо в адресе модуля</h3>
+        <p>Ключ получал каждый, к кому попадала выгрузка сценария (blueprint): фрилансер или тот, с кем поделились шаблоном.</p>
+        <p class="fix"><b>Исправление:</b> ключ перенесён в хранилище ключей Make (keychain, вход по ключу API в модуле HTTP) и в выгрузку больше не попадает, а старый ключ заменён на новый.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">ВЫСОКИЙ · пустые поля</span>
+        <h3>Два поля брали данные из шагов, которые не выполнялись</h3>
+        <p>Уведомление в Slack брало «Quote #» (номер заявки) из модуля Gmail на другом маршруте, а письмо в отдел продаж брало поле из модуля, который уже удалили. Оба поля всегда были пустыми.</p>
+        <p class="fix"><b>Исправление:</b> оба поля теперь берут номер строки Google Sheets из шага «Log request» (запись заявки), который на любом пути выполняется до развилки.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag med">СРЕДНИЙ · лишние письма и пропуски</span>
+        <h3>Продажи получали письмо на каждую услугу или ни одного</h3>
+        <p>Iterator по списку услуг передавал данные прямо в Gmail. Клиент отмечал три услуги, и приходили три почти одинаковых письма. При ручном разборе нашлось ещё: если клиент не отметил ни одной услуги, письма не было вовсе, потому что из пустого списка iterator ничего дальше не передаёт.</p>
+        <p class="fix"><b>Исправление:</b> iterator убран. Письмо перечисляет услуги через <code>join()</code>, а при пустом списке пишет «не указано»: одна заявка, всегда одно письмо.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag high">ВЫСОКИЙ · найдено при ручном разборе</span>
+        <h3>«Urgent» не совпадало с «urgent»</h3>
+        <p>Фильтры развилки сравнивали «urgent» и «standard» точно, с учётом регистра букв. Если форма присылала «Urgent» или пустое значение, не подходил ни один маршрут. Строка в таблицу уже записалась, но запасного маршрута не было, и о заявке никто не узнавал.</p>
+        <p class="fix"><b>Исправление:</b> «urgent» сравнивается без учёта регистра, а маршрут продаж стал запасным (fallback): всё, что не срочно, доходит до продаж.</p>
+      </article>
+      <article class="card reveal">
+        <span class="tag low">НИЗКИЙ · мелочи</span>
+        <h3>Настройки помельче</h3>
+        <p>Строки в Sheets записывались как простой текст, поэтому даты и числа не сортировались и не фильтровались.</p>
+        <p class="fix"><b>Исправление:</b> <code>valueInputOption: USER_ENTERED</code>.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>До и после</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th scope="col">Ситуация</th><th scope="col">До</th><th scope="col">После</th></tr></thead>
+        <tbody>
+          <tr><td>Gmail или Sheets на минуту недоступны</td><td class="bad" data-label="До">Запуск падает, сценарий выключается</td><td class="ok" data-label="После">Шаг повторяется, сценарий работает</td></tr>
+          <tr><td>API индексов отвечает ошибкой</td><td class="bad" data-label="До">Пустое поле «Area», без предупреждения</td><td class="ok" data-label="После">Заявка уходит с пометкой «check ZIP» (проверьте индекс)</td></tr>
+          <tr><td>Форма присылает «Urgent» с большой буквы</td><td class="bad" data-label="До">Ни один маршрут не подходит, никто не получает уведомления</td><td class="ok" data-label="После">Дежурный мастер получает уведомление</td></tr>
+          <tr><td>Клиент выбрал 3 услуги / ни одной</td><td class="bad" data-label="До">3 письма / ни одного</td><td class="ok" data-label="После">Всегда 1 письмо</td></tr>
+          <tr><td>Номер заявки в уведомлениях</td><td class="bad" data-label="До">Всегда пустой</td><td class="ok" data-label="После">Номер строки в таблице</td></tr>
+          <tr><td>Выгрузку сценария кому-то отправили</td><td class="bad" data-label="До">Вместе с ней уходит ключ API</td><td class="ok" data-label="После">Секретов внутри нет</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <h2>Отчёт аудита</h2>
+    <p>Сначала автоматическая проверка выгрузки сценария (blueprint): ничего не запускается, доступ к вашим аккаунтам не нужен. Потом ручной разбор логики, и каждый пункт проверяется в редакторе, прежде чем что-то менять. Отрывок:</p>
+<pre>Разбор сценария Make: Quote requests → Sheet → Sales alerts (ДО)
+7 модулей, запуск: мгновенный (webhook).
+
+1. ВЫСОКИЙ - Настройки сценария: «Allow storing of incomplete executions» выключено, а сценарий запускается от webhook. Если любой модуль падает, запуск останавливается и заявка пропадает. При настройках по умолчанию Make выключает сценарий с мгновенным запуском сразу после первой ошибки.
+2. ВЫСОКИЙ - «ZIP → service area» [3]: «Evaluate all states as errors» выключено: ответ 4xx/5xx считается успехом.
+4. ВЫСОКИЙ - «Alert on-call tech» [5]: берёт поле из «Email sales» [7], а этот модуль не стоит на пути до него. Здесь всегда пусто.
+...
+ПОСЛЕ: автоматические проверки проблем не нашли. (Ручной разбор: сделан.)</pre>
+    <div class="links">
+      <a href="../scenarios/quote-intake-BROKEN.json" download>Выгрузка до (.json)</a>
+      <a href="../scenarios/quote-intake-FIXED.json" download>Выгрузка после (.json)</a>
+      <a href="scenarios/REPORT-BEFORE.txt">Отчёт до (.txt)</a>
+      <a href="scenarios/REPORT-AFTER.txt">Отчёт после (.txt)</a>
+    </div>
+    <p class="note">Файлы сценариев написаны вручную для этого демо: они показывают, как устроено исправление, и в Make не импортировались. Настройки модулей условные. В настоящей работе каждое изменение делается и проверяется в вашем аккаунте.</p>
+  </section>
+
+  <section class="reveal">
+    <h2>Как проходит починка</h2>
+    <ol class="steps">
+      <li>Вы выгружаете сценарий: в редакторе <b>…</b> (More) → <b>Export Blueprint</b>, и присылаете файл .json. Для первого просмотра входить в ваш аккаунт не нужно.</li>
+      <li>В тот же день: понятный список того, что сломано, во что это вам обходится и что я бы изменила.</li>
+      <li>Вы соглашаетесь, я исправляю сценарий в вашем аккаунте, прогоняю тестовые заявки по каждому маршруту и показываю результат.</li>
+      <li>По желанию ежемесячная поддержка: слежу за ошибками сценария и исправляю новые, пока из-за них не потерялись заявки.</li>
+    </ol>
+  </section>
+
+  <footer>Flow Lab · починка автоматизаций в Make, n8n и Zapier · демо-кейс, 2026</footer>
+</div>
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById('theme-toggle');
+  root.classList.add('js');
+  var saved = null;
+  try { saved = localStorage.getItem('fl-theme'); } catch (e) {}
+  function apply(t) { root.setAttribute('data-theme', t); btn.textContent = btn.getAttribute(t === 'dark' ? 'data-to-light' : 'data-to-dark'); }
+  apply(saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('fl-theme', next); } catch (e) {}
+  });
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.webdriver || /[?&]static\b/.test(location.search)) {
+    els.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
