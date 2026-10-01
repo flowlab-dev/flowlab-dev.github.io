@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html data-theme="auto" lang="en">
+<html data-theme="auto" lang="ru">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Northgate Metalworks - laser cutting and forming in Ashfield</title>
-<meta content="Sheet metal laser cutting, press brake forming and welded assemblies. Send the flat size and quantity for a budgetary estimate on the spot." name="description"/>
+<title>После запуска: что входит в ежемесячную поддержку</title>
+<meta content="Что входит в ежемесячную поддержку после запуска сайта для бизнеса: контроль доступности, правки, резервные копии, проверка формы и отчёт на одну страницу раз в месяц." name="description"/>
 <meta content="light dark" name="color-scheme"/>
 <meta content="noindex" name="robots"/>
-<meta content="website" property="og:type"/>
-<meta content="Northgate Metalworks - laser cutting and forming" property="og:title"/>
-<meta content="Budgetary estimate while you type, firm quote within one business day. Mild steel, stainless and aluminium up to 6 mm." property="og:description"/>
-<meta content="en_US" property="og:locale"/>
+<meta content="article" property="og:type"/>
+<meta content="После запуска: что входит в ежемесячную поддержку" property="og:title"/>
+<meta content="Контроль доступности, час правок, еженедельная проверка формы, резервные копии и отчёт на одну страницу раз в месяц. И честный список того, что не входит." property="og:description"/>
+<meta content="ru_RU" property="og:locale"/>
 <style>
 /* Northgate Metalworks - one stylesheet, no framework, no web fonts.
    Palette and structure come from the shop: sheet grey, layout blue,
@@ -877,513 +877,125 @@ legend {
 
 </style>
 <link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1e1c'/%3E%3Cpath d='M7 24V8l18 16V8' fill='none' stroke='%23e4b200' stroke-width='3'/%3E%3C/svg%3E" rel="icon"/>
-<style>
-/* ---- v3: one scene — the bracket is cut, bent and measured (desktop only) ---- */
-.cutscene { display: none; }
-html.scenes .cutscene { display: block; height: 100vh; background: var(--panel); border-block: 1px solid var(--rule); }
-.cut-in { height: 100%; max-width: 1280px; margin: 0 auto; padding: 0 24px; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; align-items: center; }
-.cut-in h2 { font-size: clamp(30px, 3.2vw, 44px); line-height: 1.05; letter-spacing: -.02em; margin: 0 0 22px; }
-.cut-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-.cut-steps li { display: grid; grid-template-columns: 2.2em 1fr; gap: 10px; color: var(--graphite); opacity: .45; transition: opacity .3s, color .3s; }
-.cut-steps li.on { opacity: 1; color: var(--ink); }
-.cut-steps li b { font-family: var(--mono); font-weight: 600; color: var(--layout-blue); }
-.cut-art { position: relative; }
-.cut-art svg { width: 100%; height: auto; display: block; overflow: visible; }
-.cut-art .laser { fill: #ff5a2a; filter: drop-shadow(0 0 6px #ff5a2a) drop-shadow(0 0 14px #ffb347); }
-.brk { position: absolute; inset: 0; perspective: 2400px; pointer-events: none; opacity: 0; }
-.brk-body { position: absolute; transform-style: preserve-3d; }
-.brk-p { position: absolute; top: 0; height: 100%; transform-style: preserve-3d; backface-visibility: visible; }
-.cut-art .brk-p svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
-.brk-p .dw-outline { fill: url(#brk-metal-c); stroke: #3b403d; stroke-width: 1.4; }
-.brk-p.side .dw-outline { fill: url(#brk-metal-s); }
-.brk-p svg { filter: drop-shadow(0 1.5px 0 #6d736f) drop-shadow(0 12px 18px rgba(0,0,0,.14)); }
-.brk-p .dw-dim, .brk-p .dw-dim-text, .brk-p .dw-note { display: none; }
-</style>
-<script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
 <style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font:600 12px/1 inherit;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
 <body>
-<a class="skip-link" href="#top">Skip to the content</a>
+<a class="skip-link" href="#main">Перейти к содержимому</a>
 <!-- flowlab-band -->
 <style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/price-website/">Flow Lab</a>. Northgate Metalworks is invented. <span class="fl-band__more"><a href="after-launch.html">What the monthly plan covers</a></span></p>
+<p class="fl-band" role="note">Демо от <a href="/ru/work/price-website/">Flow Lab</a> по своей инициативе, не заказ клиента. Эта страница для того, кто покупает сайт; Northgate Metalworks — вымышленная компания. <span class="fl-band__more"><a href="index.html">Назад к демо-сайту</a></span></p>
 <!-- /flowlab-band -->
 <header class="masthead">
 <div class="wrap">
-<a class="wordmark" href="#top">
-<svg aria-hidden="true" focusable="false" height="30" viewbox="0 0 32 32" width="30">
+<a class="wordmark" href="index.html"><svg aria-hidden="true" focusable="false" height="30" viewbox="0 0 32 32" width="30">
 <rect fill="var(--ink)" height="32" width="32"></rect>
 <path d="M7 24V8l18 16V8" fill="none" stroke="var(--zinc)" stroke-width="3"></path>
-</svg>
-<span>Northgate Metalworks<small>Sheet metal, Ashfield</small></span>
-</a>
-<nav aria-label="Main" class="nav">
-<a href="#work">What we run</a>
-<a href="#how">How a quote happens</a>
-<a href="#answers">Straight answers</a>
-<a class="nav-quote" href="#rfq">Start an RFQ</a>
+</svg> <span>Northgate Metalworks<small>демо-сайт</small></span></a>
+<nav aria-label="Основное меню" class="nav">
+<a href="index.html#work">Услуги</a>
+<a href="index.html#rfq">Запросить расчёт</a>
 </nav>
-<div aria-label="Language" class="fl-lang" role="group"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button">
-<svg aria-hidden="true" focusable="false" height="15" viewbox="0 0 16 16" width="15">
+<div aria-label="Язык" class="fl-lang" role="group"><a href="../after-launch.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="after-launch.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-pressed="false" class="theme-toggle" id="theme-toggle" type="button"><svg aria-hidden="true" focusable="false" height="15" viewbox="0 0 16 16" width="15">
 <circle cx="8" cy="8" fill="currentColor" r="3.4"></circle>
 <path d="M8 .8v2.4M8 12.8v2.4M.8 8h2.4M12.8 8h2.4M2.9 2.9l1.7 1.7M11.4 11.4l1.7 1.7M13.1 2.9l-1.7 1.7M4.6 11.4l-1.7 1.7" stroke="currentColor" stroke-linecap="round" stroke-width="1.4"></path>
-</svg>
-<span id="theme-label">Light</span>
-</button>
+</svg> <span id="theme-label">Светлая</span></button>
 </div>
 </header>
-<main id="top">
-<section class="hero">
-<div class="wrap hero-grid">
-<div>
-<h1>Flat pattern in, finished part out.</h1>
-<p class="hero-lede">We cut, form and weld sheet metal for people who need a price before they need a meeting. Type the part in below and the estimate moves with you.</p>
-<div class="hero-actions">
-<a class="btn btn-zinc" href="#rfq">Start an RFQ</a>
-<p class="hero-call">Rather talk it through? <a href="tel:+12075550143">+1 207 555 0143</a>, weekdays 6:30 to 16:30.</p>
-</div>
-</div>
-<figure class="drawing">
-<svg aria-labelledby="dwg-title dwg-desc" class="dw-animate" id="hero-drawing" role="img" viewbox="26 22 508 318">
-<title id="dwg-title">Flat pattern of a two-bend mounting bracket</title>
-<desc id="dwg-desc">A 390 by 220 millimetre blank in 2 millimetre mild steel with four 9 millimetre holes, two corner reliefs and two bend lines marked in yellow.</desc>
-<defs>
-<marker id="arrow" markerheight="7" markerwidth="7" orient="auto" refx="9" refy="5" viewbox="0 0 10 10">
-<path d="M0 0 L10 5 L0 10 z" fill="var(--layout-blue)"></path>
-</marker>
-<marker id="arrow-back" markerheight="7" markerwidth="7" orient="auto" refx="1" refy="5" viewbox="0 0 10 10">
-<path d="M10 0 L0 5 L10 10 z" fill="var(--layout-blue)"></path>
-</marker>
-</defs>
-<path class="dw-outline" d="M80 98 L80 70 L120 70 L120 98 L430 98 L430 70 L470 70 L470 98 L470 290 L80 290 Z"></path>
-<circle class="dw-hole" cx="118" cy="140" r="9"></circle>
-<circle class="dw-hole" cx="118" cy="248" r="9"></circle>
-<circle class="dw-hole" cx="432" cy="140" r="9"></circle>
-<circle class="dw-hole" cx="432" cy="248" r="9"></circle>
-<rect class="dw-hole" height="22" rx="11" width="86" x="232" y="180"></rect>
-<line class="dw-bend" x1="168" x2="168" y1="70" y2="290"></line>
-<line class="dw-bend" x1="382" x2="382" y1="70" y2="290"></line>
-<line class="dw-dim" marker-end="url(#arrow)" marker-start="url(#arrow-back)" x1="80" x2="470" y1="326" y2="326"></line>
-<line class="dw-dim" x1="80" x2="80" y1="296" y2="332"></line>
-<line class="dw-dim" x1="470" x2="470" y1="296" y2="332"></line>
-<text class="dw-dim-text" text-anchor="middle" x="275" y="318">390.0</text>
-<line class="dw-dim" marker-end="url(#arrow)" marker-start="url(#arrow-back)" x1="46" x2="46" y1="70" y2="290"></line>
-<line class="dw-dim" x1="40" x2="76" y1="70" y2="70"></line>
-<line class="dw-dim" x1="40" x2="76" y1="290" y2="290"></line>
-<text class="dw-dim-text" text-anchor="middle" transform="rotate(-90 40 186)" x="40" y="186">220.0</text>
-<line class="dw-dim" marker-end="url(#arrow)" marker-start="url(#arrow-back)" x1="168" x2="382" y1="46" y2="46"></line>
-<text class="dw-dim-text" text-anchor="middle" x="275" y="38">214.0</text>
-<text class="dw-note" x="486" y="196">2.0 CRS</text>
-<text class="dw-note" x="486" y="214">2 bends</text>
-<text class="dw-note" x="486" y="232">90 deg</text>
-</svg>
-<figcaption>
-<span>Bracket NG-2291, flat pattern</span>
-<span>Yellow lines are bends</span>
-<span>Dimensions in mm</span>
-</figcaption>
-</figure>
+<main id="main">
+<section class="plain-head">
+<div class="wrap">
+<h1>Сайт готов в день запуска. Уже на следующее утро это не так.</h1>
+<p>Меняются цены и номер телефона, выходит обновление браузера, кто-то замечает, что форма больше не отправляется. Ежемесячная поддержка нужна, чтобы работающий сайт продолжал работать. Её можно подключить к любому сайту, но это не обязательно.</p>
 </div>
 </section>
-<div class="specbar">
-<dl>
-<div>
-<dt>Laser bed</dt>
-<dd>3000 x 1500 mm</dd>
-</div>
-<div>
-<dt>Thickness</dt>
-<dd>0.8 - 6.0 mm</dd>
-</div>
-<div>
-<dt>Press brake</dt>
-<dd>110 t, 3.1 m</dd>
-</div>
-<div>
-<dt>Standard tolerance</dt>
-<dd>+/-0.25 mm</dd>
-</div>
-<div>
-<dt>Quote turnaround</dt>
-<dd>1 business day</dd>
-</div>
-</dl>
-</div>
-<section id="work">
+<div class="shear" role="presentation"></div>
+<section>
 <div class="wrap">
 <div class="section-head">
-<h2>What we run</h2>
-<p>Four processes under one roof, so a bracket does not travel across town between operations.</p>
+<h2>Что входит в ежемесячную поддержку</h2>
+<p>Одни и те же четыре вещи каждый месяц, даже если вы о них не просите.</p>
 </div>
-<div class="cap-grid">
-<ul class="process-list">
-<li>
-<h3>Fibre laser cutting <span class="range">0.8 - 6.0 mm</span></h3>
-<p>Nitrogen for stainless and aluminium, oxygen for thicker mild steel. Nesting is our problem, not yours: send one part and we fit it into the sheet we are already running.</p>
-</li>
-<li>
-<h3>Press brake forming <span class="range">up to 3.1 m</span></h3>
-<p>Air bending with a measured bend deduction per material and thickness, so the flat pattern you get back matches the part you wanted.</p>
-</li>
-<li>
-<h3>Welding and assembly <span class="range">MIG, TIG, spot</span></h3>
-<p>Weldments up to 1.8 m on the table, fixtured when the run is worth it. Dressed and blended where the drawing says so.</p>
-</li>
-<li>
-<h3>Finishing <span class="range">powder, zinc, deburr</span></h3>
-<p>Deburring in house. Powder coat and clear zinc plate go to two plants we work with; the lead time on your quote already includes their queue.</p>
-</li>
+<div class="care-grid">
+<div class="care-block">
+<h3>Сайт работает и не тормозит</h3>
+<ul>
+<li>Проверка доступности каждые пять минут: если сайт упадёт, я узнаю раньше вас</li>
+<li>Слежу за продлением сертификата и домена, чтобы сайт никогда не встретил клиента предупреждением о безопасности</li>
+<li>Раз в месяц замеряю скорость страниц на мобильном интернете, а не только на компьютере</li>
+<li>Полная резервная копия каждую неделю, хранится три месяца, восстановление проверяю дважды в год</li>
 </ul>
-<div>
-<table class="spec-table">
-<caption>Stock we keep on the floor</caption>
-<tbody>
-<tr><th scope="row">Mild steel CRS 1008</th><td>0.8 - 6.0 mm</td></tr>
-<tr><th scope="row">Stainless 304, 2B finish</th><td>0.8 - 5.0 mm</td></tr>
-<tr><th scope="row">Aluminium 5052-H32</th><td>1.0 - 6.0 mm</td></tr>
-<tr><th scope="row">Tight tolerance option</th><td>+/-0.10 mm</td></tr>
-<tr><th scope="row">Smallest job we take</th><td>1 part, $150</td></tr>
-<tr><th scope="row">Files we read</th><td>DXF, DWG, STEP, PDF</td></tr>
-</tbody>
-</table>
-<p class="aside-note">No drawing yet? Send a dimensioned sketch and a photo. We have quoted plenty of parts that started life on the back of a delivery note.</p>
+</div>
+<div class="care-block">
+<h3>Сайт успевает за бизнесом</h3>
+<ul>
+<li>До часа правок в месяц: цены, часы работы, сотрудники, новая услуга, сезонное объявление</li>
+<li>Небольшие правки появляются на сайте в день просьбы, по будням</li>
+<li>Новые фотографии правильно уменьшаю и сжимаю, а не ставлю по 8 мегабайт</li>
+<li>Неиспользованные часы не переносятся, и я скажу, если вы ими не пользуетесь</li>
+</ul>
+</div>
+<div class="care-block">
+<h3>Заявки с формы доходят</h3>
+<ul>
+<li>Каждую неделю отправляю тестовую заявку через форму на сайте и проверяю, что она дошла</li>
+<li>Настраиваю фильтр спама, когда мусор начинает проходить</li>
+<li>С проблемами доставки разбираюсь сама вместе с почтовым сервисом, а не перекладываю их на вас</li>
+<li>Если заявка потерялась, искать её буду я, а не вы</li>
+</ul>
+</div>
+<div class="care-block">
+<h3>Вы видите, что сделано</h3>
+<ul>
+<li>Одна страница в месяц: посетители, откуда они пришли, сколько пришло заявок, какие правки сделаны</li>
+<li>Простым языком, без панели, в которой надо разбираться</li>
+<li>Одна рекомендация с ценой, и никакого давления</li>
+<li>Всё остаётся на ваше имя: файлы, домен, аккаунт хостинга</li>
+</ul>
 </div>
 </div>
-</div>
-</section>
-<div class="shear" role="presentation"></div>
-<section aria-label="The bracket from the drawing: cut, formed, measured" class="cutscene">
-<div class="cut-in">
-<div>
-<h2>From the drawing to the part.</h2>
-<ol class="cut-steps">
-<li data-s="0"><b>01</b><span>The laser cuts the 390 × 220 mm blank from 2.0 mm mild steel.</span></li>
-<li data-s="1"><b>02</b><span>Four 9 mm holes and the slot go in the same pass.</span></li>
-<li data-s="2"><b>03</b><span>The dimensions on the drawing are what the part is measured against.</span></li>
-<li data-s="3"><b>04</b><span>Two bend lines, each formed to 90° on the press brake.</span></li>
-</ol>
-</div>
-<div aria-hidden="true" class="cut-art" id="cut-art"></div>
-</div>
-</section>
-<section id="how">
-<div class="wrap">
-<div class="section-head">
-<h2>How a quote happens</h2>
-<p>Five steps, in this order, every time. The days below are what we actually hold ourselves to.</p>
-</div>
-<ol class="steps">
-<li>
-<h3>You send the part</h3>
-<p>The form below, or email with a DXF or STEP file. Quantity and finish matter more than a perfect drawing.</p>
-<p class="when num">same day</p>
-</li>
-<li>
-<h3>We read it for manufacturability</h3>
-<p>Hole size against thickness, bend reliefs, flange lengths the brake can actually reach. If something will fight the tooling, you hear about it now and not after the first article.</p>
-<p class="when num">within 1 business day</p>
-</li>
-<li>
-<h3>You get a firm quote</h3>
-<p>Unit price at your quantity, price at the next break up, lead time, and any change we suggest to the part with the money it saves.</p>
-<p class="when num">1 business day</p>
-</li>
-<li>
-<h3>First article before the run</h3>
-<p>On anything over 25 parts we cut and form one, measure it, and send you the report. The run starts when you say the part is right.</p>
-<p class="when num">2 - 3 days in</p>
-</li>
-<li>
-<h3>Production and delivery</h3>
-<p>Standard work ships in 6 business days from approval. Finishing adds 2. You get the packing list and the measured report with the parts.</p>
-<p class="when num">6 - 10 business days</p>
-</li>
-</ol>
-</div>
-</section>
-<section class="rfq" id="rfq">
-<div class="wrap">
-<div class="section-head">
-<h2>Price a part now</h2>
-<p>Fill this in and the panel keeps up with you. It is our own shop arithmetic, not a form that waits for a salesperson.</p>
-</div>
-<div class="rfq-grid">
-<form id="rfq-form" novalidate="">
-<div class="form-alert" id="form-alert" role="alert" tabindex="-1"></div>
-<fieldset>
-<legend>The part</legend>
-<div class="field">
-<label for="partName">Part name or number</label>
-<input autocomplete="off" id="partName" maxlength="60" name="partName" placeholder="Mount bracket, rev B" type="text"/>
-<p class="error" id="err-partName"></p>
-</div>
-<div class="field-row two">
-<div class="field">
-<label for="material">Material</label>
-<select id="material" name="material">
-<option selected="" value="crs">Mild steel (CRS 1008)</option>
-<option value="ss304">Stainless 304 (2B)</option>
-<option value="al5052">Aluminium 5052-H32</option>
-</select>
-<p class="error" id="err-material"></p>
-</div>
-<div class="field">
-<label for="thickness">Thickness</label>
-<select id="thickness" name="thickness"></select>
-<p class="hint" id="hint-thickness">millimetres, from stock</p>
-<p class="error" id="err-thickness"></p>
-</div>
-</div>
-<div class="field-row three">
-<div class="field">
-<label for="length">Flat length</label>
-<input autocomplete="off" id="length" inputmode="numeric" name="length" placeholder="390" type="text"/>
-<p class="hint" id="hint-length">mm, max 3000</p>
-<p class="error" id="err-length"></p>
-</div>
-<div class="field">
-<label for="width">Flat width</label>
-<input autocomplete="off" id="width" inputmode="numeric" name="width" placeholder="220" type="text"/>
-<p class="hint" id="hint-width">mm, max 1500</p>
-<p class="error" id="err-width"></p>
-</div>
-<div class="field">
-<label for="quantity">Quantity</label>
-<input autocomplete="off" id="quantity" inputmode="numeric" name="quantity" placeholder="50" type="text"/>
-<p class="error" id="err-quantity"></p>
-</div>
-</div>
-</fieldset>
-<fieldset>
-<legend>The work</legend>
-<div class="field-row two">
-<div class="field">
-<label for="bends">Bends</label>
-<input autocomplete="off" id="bends" inputmode="numeric" name="bends" placeholder="2" type="text"/>
-<p class="hint" id="hint-bends">hits on the brake, 0 if flat</p>
-<p class="error" id="err-bends"></p>
-</div>
-<div class="field">
-<label for="holes">Holes and cutouts</label>
-<input autocomplete="off" id="holes" inputmode="numeric" name="holes" placeholder="5" type="text"/>
-<p class="error" id="err-holes"></p>
-</div>
-</div>
-<div class="field-row two">
-<div class="field">
-<label for="finish">Finish</label>
-<select id="finish" name="finish">
-<option selected="" value="mill">Mill finish, deburred</option>
-<option value="powder">Powder coat, one colour</option>
-<option value="zinc">Clear zinc plate</option>
-</select>
-<p class="error" id="err-finish"></p>
-</div>
-<div class="field">
-<label for="tolerance">Tolerance</label>
-<select id="tolerance" name="tolerance">
-<option selected="" value="standard">Standard, +/-0.25 mm</option>
-<option value="tight">Tight, +/-0.10 mm</option>
-</select>
-<p class="error" id="err-tolerance"></p>
-</div>
-</div>
-<div class="field">
-<label for="neededBy">Needed by</label>
-<input id="neededBy" name="neededBy" type="date"/>
-<p class="hint" id="hint-neededBy">optional, tells us whether to price a rush</p>
-<p class="error" id="err-neededBy"></p>
-</div>
-</fieldset>
-<fieldset>
-<legend>Where to send it</legend>
-<div class="field-row two">
-<div class="field">
-<label for="contactName">Your name</label>
-<input autocomplete="name" id="contactName" maxlength="60" name="contactName" type="text"/>
-<p class="error" id="err-contactName"></p>
-</div>
-<div class="field">
-<label for="company">Company</label>
-<input autocomplete="organization" id="company" maxlength="80" name="company" type="text"/>
-<p class="hint" id="hint-company">optional</p>
-<p class="error" id="err-company"></p>
-</div>
-</div>
-<div class="field">
-<label for="email">Email</label>
-<input autocomplete="email" id="email" maxlength="254" name="email" type="email"/>
-<p class="error" id="err-email"></p>
-</div>
-<div class="field">
-<label for="notes">Anything else we should know</label>
-<textarea id="notes" maxlength="600" name="notes"></textarea>
-<p class="hint" id="hint-notes">optional, up to 600 characters</p>
-<p class="error" id="err-notes"></p>
-</div>
-</fieldset>
-<div class="form-foot">
-<button class="btn btn-zinc" type="submit">Build my RFQ</button>
-<button class="btn btn-quiet" id="fill-example" type="button">Fill the bracket above</button>
-<p>We use what you type to price the job and reply. Nothing else.</p>
-</div>
-</form>
-<aside aria-label="Budgetary estimate" class="estimate-panel">
-<div class="estimate-head">
-<h3>Budgetary estimate</h3>
-<span class="state num" id="estimate-state">waiting</span>
-</div>
-<div class="estimate-body" id="estimate-body">
-<p aria-live="polite" class="sr-only" id="estimate-announce"></p>
-<p class="estimate-empty" id="estimate-empty">Material, thickness, flat size and quantity are enough to get a number. The rest sharpens it.</p>
-<div hidden="" id="estimate-figures">
-<p class="estimate-figure num" id="estimate-range">$0 - $0</p>
-<p class="estimate-sub" id="estimate-sub">for 0 parts</p>
-<dl class="estimate-rows">
-<div><dt>Material</dt><dd class="num" id="row-material">$0</dd></div>
-<div><dt>Cutting</dt><dd class="num" id="row-laser">$0</dd></div>
-<div><dt>Forming</dt><dd class="num" id="row-forming">$0</dd></div>
-<div><dt>Deburr and checks</dt><dd class="num" id="row-hand">$0</dd></div>
-<div><dt>Finishing</dt><dd class="num" id="row-finish">$0</dd></div>
-<div><dt>Ready in</dt><dd class="num" id="row-lead">0 days</dd></div>
-</dl>
-<div class="estimate-flags" id="estimate-flags"></div>
-</div>
-</div>
-<p class="honest">These are our own feeds and speeds, run on the numbers you typed. A real quote needs the file: we confirm or correct this within one business day, and we say which it is.</p>
-</aside>
-</div>
-<div class="receipt" id="receipt" tabindex="-1">
-<div class="receipt-top">
-<div>
-<h3>Your RFQ is ready to send</h3>
-<p class="receipt-ref num" id="receipt-ref">NG-000000-AA00</p>
-</div>
-<p class="hero-call">Quote back within one business day.</p>
-</div>
-<pre id="receipt-text"></pre>
-<div class="receipt-actions">
-<a class="btn btn-zinc" href="mailto:quotes@northgatemetalworks.example" id="receipt-mail">Open in email</a>
-<button class="btn btn-quiet" id="receipt-copy" type="button">Copy the RFQ</button>
-<span class="copy-state" id="copy-state" role="status"></span>
-</div>
-<p class="receipt-note"><b>On the real site this goes straight to the shop inbox and the job board.</b> This demo page has no server behind it, so it hands the finished RFQ back to you instead of pretending to send it.</p>
+<div class="price-line">
+<p class="figure">$120 в месяц</p>
+<p>Оплата раз в месяц, отказаться можно в конце любого месяца, без обязательств. Всё сверх включённого часа я сначала оцениваю по $50 в час и не начинаю без вашего письменного «да».</p>
+<p>Если вы откажетесь от поддержки, ничего не отключится: сайт, домен и хостинг ваши и остаются вашими.</p>
 </div>
 </div>
 </section>
 <div class="shear" role="presentation"></div>
-<section id="answers">
+<section>
 <div class="wrap faq">
 <div class="section-head">
-<h2>Straight answers</h2>
-<p>Including the ones that lose us work. Better now than three weeks in.</p>
+<h2>Что не входит</h2>
+<p>Чтобы первый месяц обошёлся без сюрпризов.</p>
 </div>
 <details open="">
-<summary>What do you need before you can quote?</summary>
-<p>A DXF or STEP file, the quantity, the material and the finish. A PDF drawing works too, it just takes us an hour longer because we redraw the flat. If the part is a rectangle with holes, the form above is genuinely enough.</p>
+<summary>Второй сайт или магазин, пристроенный к этому</summary>
+<p>Это новый проект с отдельной сметой. Поддержка распространяется на тот сайт, для которого её купили.</p>
 </details>
 <details>
-<summary>What do you not do?</summary>
-<p>No castings, no forgings, no injection moulding, no machining from solid. We do not anodise in house and we do not take on painting to an automotive appearance spec. Tube laser work goes to a shop we trust and we will tell you it is going there.</p>
+<summary>Тексты с нуля</summary>
+<p>Правки готовых страниц входят. Новую страницу, которую пишем с чистого листа, я оцениваю отдельно, обычно это час-два.</p>
 </details>
 <details>
-<summary>Will you take a single part?</summary>
-<p>Yes. Setup still has to be paid for, so a one-off costs more per part than fifty, and our job minimum is $150. Prototypes that turn into production runs are most of our work.</p>
+<summary>Реклама, соцсети и SEO-продвижение</summary>
+<p>Сайт сделан так, чтобы поисковики правильно его читали, и это входит. Платная реклама или регулярный выпуск материалов — другая работа, и я скажу об этом прямо, а не выставлю за неё счёт молча.</p>
 </details>
 <details>
-<summary>How fast can you go if it is urgent?</summary>
-<p>Standard work ships in 6 business days. We can pull a job forward when the machine has room, and that carries a 25 percent surcharge which the estimate above adds for you when your date is earlier than our normal lead time. If we cannot make your date we say so the same day rather than book it and hope.</p>
-</details>
-<details>
-<summary>Who owns the drawings and the flat patterns?</summary>
-<p>You do. We keep your files to run repeat orders and we do not cut your parts for anyone else. Ask us to delete them after the job and we do.</p>
-</details>
-<details>
-<summary>The estimate on this page - how close is it?</summary>
-<p>Close enough to decide with, not close enough to order against. It uses our machine rates, cutting speeds and setup times, but it assumes a plain part. Deep flanges, close-together bends and thin webs all cost more than the arithmetic knows.</p>
+<summary>Оплата хостинга и домена</summary>
+<p>Их оплачиваете вы своему провайдеру со своего аккаунта, обычно вместе около $10 в месяц. Я не перепродаю хостинг: не хочу стоять между вами и вашим сайтом.</p>
 </details>
 </div>
 </section>
 </main>
 <footer class="site-foot">
 <div class="wrap">
-<div class="foot-grid">
-<div>
-<h2>Northgate Metalworks</h2>
-<address>
-          118 Foundry Road<br/>
-          Ashfield<br/>
-<a href="tel:+12075550143">+1 207 555 0143</a><br/>
-<a href="mailto:quotes@northgatemetalworks.example">quotes@northgatemetalworks.example</a>
-</address>
-</div>
-<div>
-<h2>Shop hours</h2>
-<ul>
-<li>Monday to Thursday, 6:30 - 16:30</li>
-<li>Friday, 6:30 - 14:00</li>
-<li>Quotes answered next business day</li>
-</ul>
-</div>
-<div>
-<h2>On this site</h2>
-<ul>
-<li><a href="#work">What we run</a></li>
-<li><a href="#how">How a quote happens</a></li>
-<li><a href="#rfq">Price a part</a></li>
-<li><a href="after-launch.html">What the monthly plan covers</a></li>
-</ul>
-</div>
-</div>
 <div class="foot-bottom">
-<p>Northgate Metalworks is an invented company built to demonstrate a business website. No real orders, clients or certifications are shown anywhere on this page.</p>
-<p>Prices in US dollars. Estimates are budgetary and are confirmed in writing before any work starts.</p>
+<p>Эта страница входит в демо для портфолио. Northgate Metalworks — вымышленная компания. Поддержка описана здесь так, как её показывают клиенту; суммы в настоящем договоре подтверждаются письменно до начала работ.</p>
+<p><a href="index.html">Назад к демо-сайту</a></p>
 </div>
 </div>
 </footer>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "LocalBusiness",
-      "name": "Northgate Metalworks",
-      "description": "Sheet metal laser cutting, press brake forming and welded assemblies.",
-      "telephone": "+1-207-555-0143",
-      "email": "quotes@northgatemetalworks.example",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "118 Foundry Road",
-        "addressLocality": "Ashfield"
-      },
-      "openingHours": ["Mo-Th 06:30-16:30", "Fr 06:30-14:00"],
-      "priceRange": "$$"
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What do you need before you can quote?",
-          "acceptedAnswer": { "@type": "Answer", "text": "A DXF or STEP file, the quantity, the material and the finish. A PDF drawing works too." }
-        },
-        {
-          "@type": "Question",
-          "name": "Will you take a single part?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Yes. A one-off costs more per part than fifty and the job minimum is 150 US dollars." }
-        },
-        {
-          "@type": "Question",
-          "name": "How fast can you go if it is urgent?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Standard work ships in 6 business days. A pulled-forward job carries a 25 percent surcharge." }
-        }
-      ]
-    }
-  ]
-}
-</script>
 <script>
 /*
  * Northgate Metalworks - budgetary estimate engine.
@@ -1406,7 +1018,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
   var MATERIALS = {
     crs: {
       id: 'crs',
-      label: 'Mild steel (CRS 1008)',
+      label: 'Низкоуглеродистая сталь (CRS 1008)',
       density: 7.85e-6,        // kg per mm^3
       pricePerKg: 1.45,        // USD, shop cost incl. current surcharges
       thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
@@ -1415,7 +1027,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
     },
     ss304: {
       id: 'ss304',
-      label: 'Stainless 304 (2B)',
+      label: 'Нержавеющая сталь 304 (2B)',
       density: 8.0e-6,
       pricePerKg: 4.30,
       thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0],
@@ -1424,7 +1036,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
     },
     al5052: {
       id: 'al5052',
-      label: 'Aluminium 5052-H32',
+      label: 'Алюминий 5052-H32',
       density: 2.68e-6,
       pricePerKg: 5.60,
       thickness: [1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
@@ -1434,14 +1046,14 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
   };
 
   var FINISHES = {
-    mill: { id: 'mill', label: 'Mill finish, deburred', perPart: 0.00, lotMinimum: 0, leadDays: 0 },
-    powder: { id: 'powder', label: 'Powder coat, one colour', perPart: 4.20, lotMinimum: 85, leadDays: 2 },
-    zinc: { id: 'zinc', label: 'Clear zinc plate', perPart: 3.10, lotMinimum: 110, leadDays: 2 }
+    mill: { id: 'mill', label: 'Без покрытия, заусенцы сняты', perPart: 0.00, lotMinimum: 0, leadDays: 0 },
+    powder: { id: 'powder', label: 'Порошковая покраска, один цвет', perPart: 4.20, lotMinimum: 85, leadDays: 2 },
+    zinc: { id: 'zinc', label: 'Цинкование, бесцветная пассивация', perPart: 3.10, lotMinimum: 110, leadDays: 2 }
   };
 
   var TOLERANCES = {
-    standard: { id: 'standard', label: 'Standard, +/-0.25 mm', formingFactor: 1.0, inspectMinPerPart: 0.15 },
-    tight: { id: 'tight', label: 'Tight, +/-0.10 mm', formingFactor: 1.18, inspectMinPerPart: 0.55 }
+    standard: { id: 'standard', label: 'Стандартный, ±0,25 мм', formingFactor: 1.0, inspectMinPerPart: 0.15 },
+    tight: { id: 'tight', label: 'Точный, ±0,10 мм', formingFactor: 1.18, inspectMinPerPart: 0.55 }
   };
 
   var SHOP = {
@@ -1558,50 +1170,50 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
     var today = dayKey(now === undefined ? Date.now() : now);
 
     var partName = String(input.partName === undefined ? '' : input.partName).trim().replace(/\s+/g, ' ');
-    if (isBlank(partName)) errors.partName = 'Name the part so we can label the quote.';
-    else if (partName.length < 2) errors.partName = 'Use at least 2 characters.';
-    else if (partName.length > 60) errors.partName = 'Keep it under 60 characters.';
+    if (isBlank(partName)) errors.partName = 'Назовите деталь, чтобы мы подписали расчёт.';
+    else if (partName.length < 2) errors.partName = 'Нужно хотя бы 2 символа.';
+    else if (partName.length > 60) errors.partName = 'Не больше 60 символов.';
     else values.partName = partName;
 
     var material = MATERIALS[String(input.material === undefined ? '' : input.material).trim()];
-    if (!material) errors.material = 'Pick a material we stock.';
+    if (!material) errors.material = 'Выберите материал из наличия.';
     else values.material = material;
 
     var thickness = toNumber(input.thickness);
-    if (isBlank(input.thickness)) errors.thickness = 'Pick a thickness.';
-    else if (Number.isNaN(thickness)) errors.thickness = 'Thickness has to be a number in millimetres.';
-    else if (!material) errors.thickness = 'Pick a material first.';
+    if (isBlank(input.thickness)) errors.thickness = 'Выберите толщину.';
+    else if (Number.isNaN(thickness)) errors.thickness = 'Толщина должна быть числом в миллиметрах.';
+    else if (!material) errors.thickness = 'Сначала выберите материал.';
     else if (material.thickness.indexOf(thickness) === -1) {
-      errors.thickness = 'We stock ' + material.label + ' in ' + material.thickness.map(function (mm) { return mm.toFixed(1); }).join(', ') + ' mm.';
+      errors.thickness = 'Материал «' + material.label + '» есть на складе толщиной ' + material.thickness.map(function (mm) { return mm.toFixed(1).replace('.', ','); }).join('; ') + ' мм.';
     } else values.thickness = thickness;
 
     ['length', 'width'].forEach(function (key) {
       var mm = toNumber(input[key]);
       var limit = key === 'length' ? SHOP.sheetMax.length : SHOP.sheetMax.width;
-      if (isBlank(input[key])) errors[key] = 'Flat size is needed to nest the part.';
-      else if (Number.isNaN(mm) || mm <= 0) errors[key] = 'Enter the flat ' + key + ' in millimetres.';
-      else if (mm < SHOP.partMin) errors[key] = 'Smallest side we nest is ' + SHOP.partMin + ' mm.';
-      else if (mm > limit) errors[key] = 'Our bed is ' + SHOP.sheetMax.length + ' x ' + SHOP.sheetMax.width + ' mm - this side is over ' + limit + ' mm.';
+      if (isBlank(input[key])) errors[key] = 'Без размеров развёртки деталь не разложить на листе.';
+      else if (Number.isNaN(mm) || mm <= 0) errors[key] = 'Укажите ' + (key === 'length' ? 'длину' : 'ширину') + ' развёртки в миллиметрах.';
+      else if (mm < SHOP.partMin) errors[key] = 'Сторона детали должна быть не меньше ' + SHOP.partMin + ' мм.';
+      else if (mm > limit) errors[key] = 'Рабочее поле лазера ' + SHOP.sheetMax.length + ' × ' + SHOP.sheetMax.width + ' мм, а эта сторона больше ' + limit + ' мм.';
       else values[key] = mm;
     });
 
     var quantity = toInteger(input.quantity);
-    if (isBlank(input.quantity)) errors.quantity = 'How many parts?';
-    else if (Number.isNaN(quantity)) errors.quantity = 'Quantity has to be a whole number.';
-    else if (quantity < 1) errors.quantity = 'One part is our minimum - and it is welcome.';
-    else if (quantity > SHOP.quantityMax) errors.quantity = 'Over ' + SHOP.quantityMax + ' parts we quote by hand. Send the drawing and we will come back the same day.';
+    if (isBlank(input.quantity)) errors.quantity = 'Сколько деталей?';
+    else if (Number.isNaN(quantity)) errors.quantity = 'Количество должно быть целым числом.';
+    else if (quantity < 1) errors.quantity = 'Минимум одна деталь, и одной мы тоже рады.';
+    else if (quantity > SHOP.quantityMax) errors.quantity = 'Больше ' + SHOP.quantityMax + ' деталей считаем вручную. Пришлите чертёж, ответим в тот же день.';
     else values.quantity = quantity;
 
     var bends = isBlank(input.bends) ? 0 : toInteger(input.bends);
-    if (Number.isNaN(bends)) errors.bends = 'Bend count has to be a whole number, 0 if the part stays flat.';
-    else if (bends < 0) errors.bends = 'Bends cannot be negative.';
-    else if (bends > SHOP.bendsMax) errors.bends = 'Over ' + SHOP.bendsMax + ' hits we quote by hand.';
+    if (Number.isNaN(bends)) errors.bends = 'Число гибов должно быть целым, 0 для плоской детали.';
+    else if (bends < 0) errors.bends = 'Число гибов не может быть отрицательным.';
+    else if (bends > SHOP.bendsMax) errors.bends = 'Больше ' + SHOP.bendsMax + ' гибов считаем вручную.';
     else values.bends = bends;
 
     var holes = isBlank(input.holes) ? 0 : toInteger(input.holes);
-    if (Number.isNaN(holes)) errors.holes = 'Holes and cutouts have to be a whole number.';
-    else if (holes < 0) errors.holes = 'Holes cannot be negative.';
-    else if (holes > SHOP.holesMax) errors.holes = 'Over ' + SHOP.holesMax + ' features we quote from the DXF instead.';
+    if (Number.isNaN(holes)) errors.holes = 'Число отверстий и вырезов должно быть целым.';
+    else if (holes < 0) errors.holes = 'Число отверстий не может быть отрицательным.';
+    else if (holes > SHOP.holesMax) errors.holes = 'Больше ' + SHOP.holesMax + ' отверстий и вырезов считаем по файлу DXF.';
     else values.holes = holes;
 
     // A part only has room for so much. Past that the arithmetic is fiction,
@@ -1609,52 +1221,52 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
     if (values.length && values.width) {
       var roomForHoles = Math.max(4, Math.floor((values.length * values.width) / SHOP.areaPerFeature));
       if (values.holes > roomForHoles) {
-        errors.holes = 'A ' + values.length + ' x ' + values.width + ' mm part has room for about ' +
-          roomForHoles + ' features. Send the DXF and we will quote from the file.';
+        errors.holes = 'На детали ' + values.length + ' × ' + values.width + ' мм поместится около ' +
+          roomForHoles + (roomForHoles % 10 === 1 && roomForHoles % 100 !== 11 ? ' отверстия' : ' отверстий') + ' и вырезов. Пришлите DXF, посчитаем по файлу.';
         delete values.holes;
       }
       var roomForBends = Math.max(1, Math.floor(Math.max(values.length, values.width) / SHOP.mmPerBend));
       if (values.bends > roomForBends) {
-        errors.bends = 'The brake needs about ' + SHOP.mmPerBend + ' mm between hits, so this part takes around ' +
-          roomForBends + '. Send the drawing and we will work it out.';
+        errors.bends = 'Листогибу нужно примерно ' + SHOP.mmPerBend + ' мм между гибами, поэтому на этой детали поместится около ' +
+          roomForBends + (roomForBends % 10 === 1 && roomForBends % 100 !== 11 ? ' гиба' : ' гибов') + '. Пришлите чертёж, разберёмся.';
         delete values.bends;
       }
     }
 
     var finish = FINISHES[String(input.finish === undefined ? 'mill' : input.finish).trim()];
-    if (!finish) errors.finish = 'Pick a finish.';
+    if (!finish) errors.finish = 'Выберите покрытие.';
     else values.finish = finish;
 
     var tolerance = TOLERANCES[String(input.tolerance === undefined ? 'standard' : input.tolerance).trim()];
-    if (!tolerance) errors.tolerance = 'Pick a tolerance.';
+    if (!tolerance) errors.tolerance = 'Выберите допуск.';
     else values.tolerance = tolerance;
 
     if (isBlank(input.neededBy)) {
       values.neededBy = null;
     } else {
       var due = parseDateOnly(input.neededBy);
-      if (due === null) errors.neededBy = 'Use the date picker, or leave it empty.';
-      else if (due < today) errors.neededBy = 'That date has passed. Pick a day from today on.';
+      if (due === null) errors.neededBy = 'Выберите дату в календаре или оставьте поле пустым.';
+      else if (due < today) errors.neededBy = 'Эта дата уже прошла. Выберите сегодняшний день или позже.';
       else values.neededBy = due;
     }
 
     var contactName = String(input.contactName === undefined ? '' : input.contactName).trim().replace(/\s+/g, ' ');
-    if (isBlank(contactName)) errors.contactName = 'Who should we reply to?';
-    else if (contactName.length < 2) errors.contactName = 'Use at least 2 characters.';
-    else if (contactName.length > 60) errors.contactName = 'Keep it under 60 characters.';
+    if (isBlank(contactName)) errors.contactName = 'Кому нам ответить?';
+    else if (contactName.length < 2) errors.contactName = 'Нужно хотя бы 2 символа.';
+    else if (contactName.length > 60) errors.contactName = 'Не больше 60 символов.';
     else values.contactName = contactName;
 
     var email = String(input.email === undefined ? '' : input.email).trim();
-    if (isBlank(email)) errors.email = 'We send the quote by email.';
-    else if (!validateEmail(email)) errors.email = 'Check the address - it needs an @ and a domain.';
+    if (isBlank(email)) errors.email = 'Расчёт мы пришлём на почту.';
+    else if (!validateEmail(email)) errors.email = 'Проверьте адрес: в нём нужны @ и домен.';
     else values.email = email;
 
     var company = String(input.company === undefined ? '' : input.company).trim().replace(/\s+/g, ' ');
-    if (company.length > 80) errors.company = 'Keep it under 80 characters.';
+    if (company.length > 80) errors.company = 'Не больше 80 символов.';
     else values.company = company;
 
     var notes = String(input.notes === undefined ? '' : input.notes).trim();
-    if (notes.length > 600) errors.notes = 'Keep notes under 600 characters - the drawing can carry the rest.';
+    if (notes.length > 600) errors.notes = 'Не больше 600 символов, остальное расскажет чертёж.';
     else values.notes = notes;
 
     return { ok: Object.keys(errors).length === 0, values: values, errors: errors };
@@ -1813,54 +1425,54 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
   /* ------------------------------------------------------------- summary */
 
   function formatDate(stamp) {
-    if (stamp === null || stamp === undefined) return 'not set';
+    if (stamp === null || stamp === undefined) return 'не указана';
     var d = new Date(stamp);
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var months = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
     return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
   }
 
   function money(n) {
-    return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0') + '\u00a0$';
   }
 
   /** One figure when the price is pinned to the minimum, a range otherwise. */
   function priceRange(result) {
-    return result.low === result.high ? money(result.low) : money(result.low) + ' - ' + money(result.high);
+    return result.low === result.high ? money(result.low) : money(result.low) + ' – ' + money(result.high);
   }
 
   /** The plain-text RFQ a buyer can paste into email or a purchase system. */
   function summaryText(values, result, ref) {
     var lines = [];
-    lines.push('REQUEST FOR QUOTE ' + ref);
-    lines.push('Northgate Metalworks - laser cutting, forming, welded assemblies');
+    lines.push('ЗАПРОС НА РАСЧЁТ ' + ref);
+    lines.push('Northgate Metalworks — лазерная резка, гибка, сварные узлы');
     lines.push('');
-    lines.push('Part:        ' + values.partName);
-    lines.push('Material:    ' + values.material.label + ', ' + values.thickness + ' mm');
-    lines.push('Flat size:   ' + values.length + ' x ' + values.width + ' mm');
-    lines.push('Quantity:    ' + values.quantity);
-    lines.push('Bends:       ' + values.bends);
-    lines.push('Holes/cuts:  ' + values.holes);
-    lines.push('Finish:      ' + values.finish.label);
-    lines.push('Tolerance:   ' + values.tolerance.label);
-    lines.push('Needed by:   ' + formatDate(values.neededBy));
+    lines.push('Деталь:      ' + values.partName);
+    lines.push('Материал:    ' + values.material.label + ', ' + String(values.thickness).replace('.', ',') + ' мм');
+    lines.push('Развёртка:   ' + values.length + ' × ' + values.width + ' мм');
+    lines.push('Количество:  ' + values.quantity);
+    lines.push('Гибы:        ' + values.bends);
+    lines.push('Отверстия:   ' + values.holes);
+    lines.push('Покрытие:    ' + values.finish.label);
+    lines.push('Допуск:      ' + values.tolerance.label);
+    lines.push('Нужно к:     ' + formatDate(values.neededBy));
     lines.push('');
-    lines.push('Budgetary estimate: ' + priceRange(result) +
-      ' for ' + result.quantity + ' (about ' + money(result.perPart) + ' each)');
-    lines.push('Estimated ready:    ' + result.leadDays + ' business days, around ' + formatDate(result.readyBy));
-    if (result.rush) lines.push('Rush:               needed ' + result.rushDaysShort + ' business day(s) sooner - rush surcharge included');
-    if (result.belowMinimum) lines.push('Note:               below our ' + money(SHOP.minimumJob) + ' job minimum, quoted at the minimum');
-    if (result.overCeiling) lines.push('Note:               a job this size is quoted by a person, not by the page');
+    lines.push('Предварительная оценка: ' + priceRange(result) +
+      ' за ' + result.quantity + ' шт. (около ' + money(result.perPart) + ' за штуку)');
+    lines.push('Срок готовности:        ' + result.leadDays + ' рабочих дней, примерно к ' + formatDate(result.readyBy));
+    if (result.rush) lines.push('Срочно:                 нужно на ' + result.rushDaysShort + ' раб. дн. раньше, наценка за срочность включена');
+    if (result.belowMinimum) lines.push('Примечание:             дешевле минимального заказа ' + money(SHOP.minimumJob) + ', поэтому посчитано по минимуму');
+    if (result.overCeiling) lines.push('Примечание:             заказ такого объёма считает человек, а не страница');
     lines.push('');
-    lines.push('Contact:     ' + values.contactName + (values.company ? ', ' + values.company : ''));
-    lines.push('Email:       ' + values.email);
+    lines.push('Контакт:     ' + values.contactName + (values.company ? ', ' + values.company : ''));
+    lines.push('Почта:       ' + values.email);
     if (values.notes) {
       lines.push('');
-      lines.push('Notes:');
+      lines.push('Примечания:');
       lines.push(values.notes);
     }
     lines.push('');
-    lines.push('This estimate comes from the numbers above, not from a drawing.');
-    lines.push('Send the DXF or STEP file in reply and we confirm within one business day.');
+    lines.push('Эта оценка посчитана по цифрам выше, а не по чертежу.');
+    lines.push('Пришлите в ответ файл DXF или STEP, и мы подтвердим расчёт в течение рабочего дня.');
     return lines.join('\n');
   }
 
@@ -1917,8 +1529,8 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
   function paintToggle() {
     if (!toggle || !themeLabel) return;
     var dark = currentTheme() === 'dark';
-    themeLabel.textContent = dark ? 'Day shift' : 'Night shift';
-    toggle.setAttribute('aria-label', dark ? 'Switch to day shift colours' : 'Switch to night shift colours');
+    themeLabel.textContent = dark ? 'День' : 'Ночь';
+    toggle.setAttribute('aria-label', dark ? 'Включить светлую тему' : 'Включить тёмную тему');
     toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
   }
 
@@ -1978,7 +1590,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
     material.thickness.forEach(function (mm) {
       var option = document.createElement('option');
       option.value = String(mm);
-      option.textContent = mm.toFixed(1) + ' mm';
+      option.textContent = mm.toFixed(1).replace('.', ',') + ' мм';
       thicknessSel.appendChild(option);
     });
     var wanted = material.thickness.indexOf(parseFloat(previous)) > -1 ? previous : '2.0';
@@ -2051,7 +1663,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
 
   function estimateInput(data) {
     var probe = Q.validate({
-      partName: data.partName || 'Unnamed part',
+      partName: data.partName || 'Деталь без названия',
       material: data.material,
       thickness: data.thickness,
       length: data.length,
@@ -2062,7 +1674,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
       finish: data.finish,
       tolerance: data.tolerance,
       neededBy: data.neededBy,
-      contactName: data.contactName || 'Not given yet',
+      contactName: data.contactName || 'Пока не указано',
       email: data.email || 'not.given@example.com'
     });
     var blocking = ['material', 'thickness', 'length', 'width', 'quantity', 'bends', 'holes', 'finish', 'tolerance', 'neededBy'];
@@ -2100,45 +1712,45 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
       emptyEl.hidden = false;
       figuresEl.hidden = true;
       emptyEl.textContent = lastBlock ||
-        'Material, thickness, flat size and quantity are enough to get a number. The rest sharpens it.';
-      stateEl.textContent = lastBlock ? 'on hold' : 'waiting';
-      announce(lastBlock ? 'The estimate is on hold. ' + lastBlock : '');
+        'Для цифры хватит материала, толщины, размеров развёртки и количества. Остальное делает расчёт точнее.';
+      stateEl.textContent = lastBlock ? 'на паузе' : 'ждём данные';
+      announce(lastBlock ? 'Оценка на паузе. ' + lastBlock : '');
       return;
     }
 
     var result = Q.estimate(values);
     emptyEl.hidden = true;
     figuresEl.hidden = false;
-    stateEl.textContent = 'live';
+    stateEl.textContent = 'считаем';
 
     setText('estimate-range', Q.priceRange(result));
-    setText('estimate-sub', 'for ' + result.quantity + (result.quantity === 1 ? ' part, ' : ' parts, ') +
-      'about ' + Q.money(result.perPart) + ' each');
+    setText('estimate-sub', 'за ' + result.quantity + (function (n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? ' деталь, ' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? ' детали, ' : ' деталей, '; })(result.quantity) +
+      'около ' + Q.money(result.perPart) + ' за штуку');
     setText('row-material', Q.money(result.breakdown.material));
     setText('row-laser', Q.money(result.breakdown.laser));
     setText('row-forming', Q.money(result.breakdown.forming));
     setText('row-hand', Q.money(result.breakdown.hand + result.breakdown.inspection));
     setText('row-finish', Q.money(result.breakdown.finishing));
-    setText('row-lead', result.leadDays + ' business days');
+    setText('row-lead', result.leadDays + ' рабочих дней');
 
     flagsEl.textContent = '';
     if (result.rush) {
-      flagsEl.appendChild(flag('Your date is ' + result.rushDaysShort + ' business day' +
-        (result.rushDaysShort === 1 ? '' : 's') + ' inside our normal lead time. A ' +
-        Math.round(Q.SHOP.rushSurcharge * 100) + ' percent rush surcharge is already in the figure above.'));
+      flagsEl.appendChild(flag('Ваша дата на ' + result.rushDaysShort + ' рабоч' +
+        (function (n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'ий день' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'их дня' : 'их дней'; })(result.rushDaysShort) + ' раньше нашего обычного срока. Наценка за срочность ' +
+        Math.round(Q.SHOP.rushSurcharge * 100) + ' % уже включена в сумму выше.'));
     }
     if (result.belowMinimum) {
-      flagsEl.appendChild(flag('This job prices below our ' + Q.money(Q.SHOP.minimumJob) +
-        ' minimum, so the minimum is what you see. Adding parts costs very little from here.'));
+      flagsEl.appendChild(flag('Заказ выходит дешевле нашего минимума ' + Q.money(Q.SHOP.minimumJob) +
+        ', поэтому показан минимум. Добавить детали теперь стоит совсем немного.'));
     }
     if (result.overCeiling) {
-      flagsEl.appendChild(flag('A job this size gets quoted by a person, not by a web page. Send the file and we will come back the same day.'));
+      flagsEl.appendChild(flag('Заказ такого объёма считает человек, а не веб-страница. Пришлите файл, ответим в тот же день.'));
     }
-    flagsEl.appendChild(flag(result.setupMinutes + ' minutes of setup is spread across the run, which is why the price per part falls as the quantity climbs.', true));
-    flagsEl.appendChild(flag('Ready around ' + Q.formatDate(result.readyBy) + ' if approved today.', true));
+    flagsEl.appendChild(flag(result.setupMinutes + ' мин наладки распределяются на всю партию, поэтому чем больше деталей, тем ниже цена за штуку.', true));
+    flagsEl.appendChild(flag('Готово примерно к ' + Q.formatDate(result.readyBy) + ', если согласуете сегодня.', true));
 
-    announce('Estimate ' + Q.priceRange(result) + ' for ' + result.quantity +
-      (result.quantity === 1 ? ' part' : ' parts') + ', ready in ' + result.leadDays + ' business days.');
+    announce('Оценка: ' + Q.priceRange(result) + ' за ' + result.quantity +
+      (function (n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? ' деталь' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? ' детали' : ' деталей'; })(result.quantity) + ', готово через ' + result.leadDays + ' рабочих дней.');
   }
 
   /* One short spoken line, and only after typing stops. */
@@ -2179,8 +1791,8 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
       showErrors(checked.errors);
       var count = Object.keys(checked.errors).length;
       alertBox.textContent = count === 1
-        ? 'One field needs fixing. The note under it says what to change.'
-        : count + ' fields need fixing. The note under each one says what to change.';
+        ? 'Одно поле нужно исправить. Подсказка под ним объясняет, что поменять.'
+        : count + (function (n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? ' поле' : a >= 2 && a <= 4 && (b < 12 || b > 14) ? ' поля' : ' полей'; })(count) + ' нужно исправить. Подсказка под каждым объясняет, что поменять.';
       alertBox.classList.add('is-on');
       var first = Q.firstErrorField(checked.errors);
       var el = first ? document.getElementById(first) : null;
@@ -2197,7 +1809,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
     receiptRef.textContent = ref;
     receiptText.textContent = text;
     receiptMail.setAttribute('href', 'mailto:quotes@northgatemetalworks.example' +
-      '?subject=' + encodeURIComponent('RFQ ' + ref + ' - ' + checked.values.partName) +
+      '?subject=' + encodeURIComponent('Запрос на расчёт ' + ref + ' - ' + checked.values.partName) +
       '&body=' + encodeURIComponent(text));
     copyState.textContent = '';
     receipt.classList.add('is-on');
@@ -2208,7 +1820,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
   copyBtn.addEventListener('click', function () {
     var text = receiptText.textContent;
     function done(ok) {
-      copyState.textContent = ok ? 'Copied.' : 'Select the text above and copy it.';
+      copyState.textContent = ok ? 'Скопировано.' : 'Выделите текст выше и скопируйте его.';
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
@@ -2236,7 +1848,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
     example.addEventListener('click', function () {
       clearAllErrors();
       var fields = {
-        partName: 'Mount bracket NG-2291',
+        partName: 'Монтажный кронштейн NG-2291',
         material: 'crs',
         length: '390',
         width: '220',
@@ -2260,78 +1872,6 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
   update();
 })();
 
-</script>
-<script>
-(function () {
-  var root = document.documentElement;
-  if (!root.classList.contains('scenes')) return;
-  var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js', 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
-  (function next(i) {
-    if (i === libs.length) return start();
-    var t = document.createElement('script'); t.src = libs[i]; t.onload = function () { next(i + 1); };
-    t.onerror = function () { root.classList.remove('scenes'); }; document.head.appendChild(t);
-  })(0);
-  function start() {
-    var src = document.getElementById('hero-drawing'); if (!src) { root.classList.remove('scenes'); return; }
-    // the same drawing as the hero, drawn again step by step
-    var svg = src.cloneNode(true);
-    svg.removeAttribute('id'); svg.classList.remove('dw-animate'); svg.removeAttribute('aria-labelledby'); svg.setAttribute('role', 'presentation');
-    [].forEach.call(svg.querySelectorAll('[id]'), function (n) { if (n.tagName !== 'marker') n.removeAttribute('id'); });
-    [].forEach.call(svg.querySelectorAll('title,desc'), function (n) { n.remove(); });
-    document.getElementById('cut-art').appendChild(svg);
-    var outline = svg.querySelector('.dw-outline'), L = outline.getTotalLength();
-    outline.style.strokeDasharray = L; outline.style.strokeDashoffset = L;
-    var laser = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); laser.setAttribute('r', 4); laser.setAttribute('class', 'laser'); svg.appendChild(laser);
-    var holes = [].slice.call(svg.querySelectorAll('.dw-hole')), bends = [].slice.call(svg.querySelectorAll('.dw-bend'));
-    var dims = [].slice.call(svg.querySelectorAll('.dw-dim, .dw-dim-text, .dw-note'));
-    var steps = [].slice.call(document.querySelectorAll('.cut-steps li'));
-    var seg = function (v, a, b) { return Math.min(1, Math.max(0, (v - a) / (b - a))); };
-    // 3D bracket: centre panel + two flanges, each an exact crop of the drawing (x 80–168 · 168–382 · 382–470, y 70–290)
-    var art = document.getElementById('cut-art'), brk = document.createElement('div'); brk.className = 'brk';
-    var body = document.createElement('div'); body.className = 'brk-body'; brk.appendChild(body); art.appendChild(brk);
-    var parts = [[80, 168, 'l'], [168, 382, 'c'], [382, 470, 'r']].map(function (r) {
-      var d = document.createElement('div'); d.className = 'brk-p' + (r[2] === 'c' ? '' : ' side');
-      var c = svg.cloneNode(true); c.removeAttribute('class'); c.setAttribute('viewBox', r[0] + ' 70 ' + (r[1] - r[0]) + ' 220'); c.setAttribute('preserveAspectRatio', 'none');
-      [].forEach.call(c.querySelectorAll('.laser'), function (n) { n.remove(); });
-      [].forEach.call(c.querySelectorAll('*'), function (n) { n.style.opacity = ''; n.style.transform = ''; n.style.strokeDasharray = ''; n.style.strokeDashoffset = ''; });
-      var g = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-      g.innerHTML = '<linearGradient id="brk-metal-' + (r[2] === 'c' ? 'c' : 's') + '" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + (r[2] === 'c' ? '#d9ddd9' : '#eceeeb') + '"/><stop offset="1" stop-color="' + (r[2] === 'c' ? '#b9bfbb' : '#cfd4d0') + '"/></linearGradient>';
-      c.insertBefore(g, c.firstChild);
-      d.appendChild(c); body.appendChild(d); return { el: d, x0: r[0], x1: r[1], side: r[2], bends: [].slice.call(c.querySelectorAll('.dw-bend')) };
-    });
-    function layoutBrk() {
-      var k = art.clientWidth / 508;                                    // drawing units → px (viewBox is 508 wide from x=26)
-      body.style.left = ((80 - 26) * k) + 'px'; body.style.top = ((70 - 22) * k) + 'px';
-      body.style.width = (390 * k) + 'px'; body.style.height = (220 * k) + 'px';
-      body.style.transformOrigin = (195 * k) + 'px ' + (110 * k) + 'px';
-      parts.forEach(function (q) { q.el.style.left = ((q.x0 - 80) * k) + 'px'; q.el.style.width = ((q.x1 - q.x0) * k) + 'px';
-        q.el.style.transformOrigin = q.side === 'l' ? '100% 50%' : q.side === 'r' ? '0% 50%' : '50% 50%'; });
-    }
-    layoutBrk(); addEventListener('resize', layoutBrk);
-    function paint(p) {
-      var c = seg(p, 0.02, 0.3);
-      outline.style.strokeDashoffset = (L * (1 - c)).toFixed(1);
-      var pt = outline.getPointAtLength(L * c); laser.setAttribute('cx', pt.x); laser.setAttribute('cy', pt.y);
-      laser.style.opacity = c > 0 && c < 1 ? 1 : 0;
-      holes.forEach(function (h, i) { var v = seg(p, 0.31 + i * 0.025, 0.36 + i * 0.025); h.style.opacity = v; h.style.transformOrigin = 'center'; h.style.transformBox = 'fill-box'; h.style.transform = 'scale(' + (0.4 + 0.6 * v) + ')'; });
-      dims.forEach(function (d) { d.style.opacity = seg(p, 0.46, 0.54) * (1 - seg(p, 0.6, 0.64)); });
-      bends.forEach(function (b, i) { b.style.opacity = seg(p, 0.58 + i * 0.02, 0.62 + i * 0.02); });
-      // the fold: flat drawing hands over to the 3D bracket, which turns and bends both flanges to 90°
-      var f = seg(p, 0.66, 0.96), e = f * f * (3 - 2 * f);
-      svg.style.opacity = (1 - seg(p, 0.64, 0.67)).toFixed(3); brk.style.opacity = seg(p, 0.64, 0.67).toFixed(3);
-      // the base tips back like a floor, the flanges stand up as walls: a U channel seen from the front and above
-      body.style.transform = 'rotateX(' + (54 * e) + 'deg) rotateZ(' + (-10 * e) + 'deg) scale(' + (1 - 0.1 * e) + ')';
-      parts.forEach(function (q) { q.bends.forEach(function (b) { b.style.opacity = (1 - seg(f, 0.85, 1)).toFixed(3); }); });
-      parts.forEach(function (q) { q.el.style.transform = q.side === 'l' ? 'rotateY(' + (90 * e) + 'deg)' : q.side === 'r' ? 'rotateY(' + (-90 * e) + 'deg)' : ''; });
-      var on = p < 0.3 ? 0 : p < 0.45 ? 1 : p < 0.6 ? 2 : 3;
-      steps.forEach(function (li, i) { li.classList.toggle('on', i <= on); });
-    }
-    paint(0);
-    var gsap = window.gsap, ST = window.ScrollTrigger; gsap.registerPlugin(ST);
-    ST.create({ trigger: '.cutscene', start: 'top top', end: '+=200%', pin: true, scrub: true, onUpdate: function (st) { paint(st.progress); } });
-    window.__st = ST;
-  }
-})();
 </script>
 </body>
 </html>
