@@ -33,7 +33,7 @@
 :root[data-theme="dark"]{--bg:#09090B;--surface:#111114;--surface-2:#18181B;--fg:#F4F4F5;--muted:#A1A1AA;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
 --accent:#8AA4FF;--accent-soft:rgba(138,164,255,.12);--inv-bg:#111114;--inv-fg:#F4F4F5;--inv-muted:#A1A1AA;--shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
 img{display:block;max-width:100%;height:auto}
@@ -295,8 +295,7 @@ h1{letter-spacing:-.04em}
   if (!root.classList.contains('scenes')) return;
   var snap = /[?&]snap/.test(location.search);
   var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
-              'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
-              'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js'];
+              'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
   (function next(i) {
     if (i === libs.length) return start();
     var s = document.createElement('script'); s.src = libs[i]; s.onload = function () { next(i + 1); };
@@ -322,12 +321,7 @@ h1{letter-spacing:-.04em}
   function start() {
     var gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
     gsap.registerPlugin(ScrollTrigger);
-    if (!snap && window.Lenis) {
-      var lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 1 });
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-      gsap.ticker.lagSmoothing(0);
-    }
+    // native scrolling: no smoothing library, the page follows the wheel and trackpad at once
     gsap.matchMedia().add('(min-width: 1024px)', function () {
       root.classList.add('scenes');
       // main screenshot: rises and grows to full size as the reader scrolls into it

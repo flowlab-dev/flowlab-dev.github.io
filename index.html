@@ -33,7 +33,7 @@
 :root[data-theme="dark"]{--bg:#09090B;--surface:#111114;--surface-2:#18181B;--fg:#F4F4F5;--muted:#A1A1AA;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
 --accent:#8AA4FF;--accent-soft:rgba(138,164,255,.12);--inv-bg:#111114;--inv-fg:#F4F4F5;--inv-muted:#A1A1AA;--shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;scroll-padding-top:72px;-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit}
 img{display:block;max-width:100%;height:auto}
@@ -350,8 +350,7 @@ h2{font-size:clamp(36px,4.8vw,64px)}
   if (!root.classList.contains('scenes')) return;          // phone / reduced motion: no scripts at all
   var snap = /[?&]snap/.test(location.search);            // screenshots: no smoothing
   var libs = ['https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js',
-              'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js',
-              'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js'];
+              'https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
   (function next(i) {
     if (i === libs.length) return start();
     var s = document.createElement('script'); s.src = libs[i]; s.onload = function () { next(i + 1); };
@@ -361,15 +360,7 @@ h2{font-size:clamp(36px,4.8vw,64px)}
   function start() {
     var gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
     gsap.registerPlugin(ScrollTrigger);
-    if (!snap && window.Lenis) {
-      var lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 1 });
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
-      gsap.ticker.lagSmoothing(0);
-      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
-        a.addEventListener('click', function (e) { var id = a.getAttribute('href'); if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); lenis.scrollTo(id, { offset: -64 }); } });
-      });
-    }
+    // native scrolling: no smoothing library, the page follows the wheel and trackpad at once
     var mm = gsap.matchMedia();
     mm.add('(min-width: 1024px)', function () {
       root.classList.add('scenes');
@@ -378,7 +369,7 @@ h2{font-size:clamp(36px,4.8vw,64px)}
 
       // 1. hero: screens slide in, then on scroll the text leaves and the three screens line up in the centre
       if (!snap) gsap.from('.stack', { y: 40, opacity: 0, duration: 1, ease: 'power3.out' });
-      var hero = gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top+=64', end: '+=70%', pin: true, scrub: true, invalidateOnRefresh: true } });
+      var hero = gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top+=64', end: '+=70%', pin: true, anticipatePin: 1, scrub: true, invalidateOnRefresh: true } });
       hero.to('.hero .wrap > div:first-child', { y: -80, opacity: 0, ease: 'power1.in', duration: 0.4 }, 0)
           .to('.stack', { xPercent: -59, y: -70, scale: 1, ease: 'power2.inOut', duration: 1 }, 0.1)
           .to('.stack .f2', { rotate: 0, x: function () { return -innerWidth * 0.26; }, y: -8, scale: 0.82, opacity: 0.9, ease: 'power2.inOut', duration: 1 }, 0.1)
@@ -389,11 +380,11 @@ h2{font-size:clamp(36px,4.8vw,64px)}
       var pad = function () { return parseFloat(getComputedStyle(document.querySelector('.hscroll .strip')).paddingLeft); };
       var dist = function () { return Math.max(0, strip.scrollWidth + 2 * pad() - root.clientWidth); };
       gsap.to(strip, { x: function () { return -dist(); }, ease: 'none',
-        scrollTrigger: { trigger: '.hscroll .strip', start: 'center center+=32', end: function () { return '+=' + dist(); }, pin: true, scrub: true, invalidateOnRefresh: true } });
+        scrollTrigger: { trigger: '.hscroll .strip', start: 'center center+=32', end: function () { return '+=' + dist(); }, pin: true, anticipatePin: 1, scrub: true, invalidateOnRefresh: true } });
 
       // 3. support: one year of the monthly plan
       var items = gsap.utils.toArray('#support .plan-card li'), month = document.querySelector('.year b');
-      ScrollTrigger.create({ trigger: '#support .plan', start: 'top top+=64', end: '+=110%', pin: true, scrub: true,
+      ScrollTrigger.create({ trigger: '#support .plan', start: 'top top+=64', end: '+=110%', pin: true, anticipatePin: 1, scrub: true,
         onUpdate: function (st) {
           month.textContent = String(Math.max(1, Math.ceil(st.progress * 12))).padStart(2, '0');
           items.forEach(function (li, i) { li.classList.toggle('on', st.progress >= (i + 0.5) / (items.length + 0.5)); });
