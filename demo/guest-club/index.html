@@ -6,6 +6,7 @@
 <title>Клуб гостя · Сосновый берег (демо)</title>
 <meta name="description" content="Программа лояльности для двух направлений с разными системами бронирования: один гость при разном написании телефона и почты, бонусы только за состоявшиеся поездки и без задвоений, уровни, промокоды и личный кабинет.">
 <meta name="color-scheme" content="light dark">
+<script>(function(){try{var t=localStorage.getItem('club-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
   :root {
     --bg: #f5f5f1; --panel: #ffffff; --ink: #17191a; --muted: #5f6567; --line: #e2e2dc; --soft: #eeeee8;
@@ -31,10 +32,17 @@
   body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--font); }
   button, input { font: inherit; color: inherit; }
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-  header.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0; }
   .brand { font-weight: 650; display: flex; gap: 10px; align-items: center; }
   .brand i { width: 22px; height: 22px; border-radius: 50%; background: var(--accent); display: inline-block; }
-  .theme { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 14px; }
+  .tools { display: flex; align-items: center; gap: 10px; }
+  .lang { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: var(--panel); }
+  .lang a { min-width: 44px; min-height: 40px; display: grid; place-items: center; padding: 0 12px; font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; }
+  .lang a[aria-current] { background: var(--accent); color: var(--accent-ink); }
+  .lang a:not([aria-current]):hover { color: var(--ink); }
+  .theme { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; min-height: 40px; min-width: 64px; padding: 0 16px; cursor: pointer; font-size: 14px; font-weight: 600; }
+  .theme:hover { border-color: var(--accent); }
+  .lang a:focus-visible, .theme:focus-visible, .step:focus-visible, .btn:focus-visible, .grow:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .hero { padding: 36px 0 20px; }
   .hero h1 { font-size: clamp(30px, 4.6vw, 50px); line-height: 1.08; letter-spacing: -.02em; margin: 0 0 16px; max-width: 20ch; }
   .hero p { font-size: 19px; color: var(--muted); max-width: 64ch; margin: 0; }
@@ -115,6 +123,7 @@
   @media (max-width: 900px) { .sim, .guests { grid-template-columns: minmax(0, 1fr); } .grid3 { grid-template-columns: 1fr; } }
   @media (max-width: 560px) {
     .wrap { padding: 0 16px; } .hero p { font-size: 17px; }
+    .brand { font-size: 15px; line-height: 1.25; } .brand i { flex: none; } .tools { gap: 8px; } .lang a { min-width: 40px; padding: 0 10px; } .theme { min-width: 0; padding: 0 12px; }
     .nums { grid-template-columns: 1fr 1fr; } .big { gap: 8px; } .big div { padding: 10px; } .big b { font-size: 19px; } .card { padding: 16px; }
     .grow { grid-template-columns: 1fr auto; } .grow .bal { display: none; }
   }
@@ -127,12 +136,15 @@
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Демо <a href="https://flowlab-dev.github.io/work/guest-club/">Flow Lab</a> по своей инициативе. «Сосновый берег» и гости вымышлены.</p>
+<p class="fl-band" role="note">Демо <a href="https://flowlab-dev.github.io/ru/work/guest-club/">Flow Lab</a> по своей инициативе. «Сосновый берег» и гости вымышлены.</p>
 <!-- /flowlab-band -->
 <div class="wrap">
   <header class="top">
     <div class="brand"><i aria-hidden="true"></i>Сосновый берег · Клуб гостя</div>
-    <button class="theme" id="theme" type="button" aria-label="Сменить тему">Тёмная</button>
+    <div class="tools">
+      <nav class="lang" aria-label="Язык"><a href="en/" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="./" hreflang="ru" lang="ru" title="Русский">RU</a></nav>
+      <button class="theme" id="theme" type="button" title="Переключить день и ночь">Ночь</button>
+    </div>
   </header>
   <div class="hero">
     <h1>Один гость, две системы бронирования, один личный кабинет.</h1>
@@ -942,9 +954,8 @@ if (typeof module !== 'undefined' && module.exports) module.exports = FEEDS; els
 
   // Тема
   var root = document.documentElement;
-  try { var saved = localStorage.getItem('club-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
   function isDark() { return root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
-  function label() { $('theme').textContent = isDark() ? 'Светлая' : 'Тёмная'; }
+  function label() { $('theme').textContent = isDark() ? 'День' : 'Ночь'; }
   $('theme').addEventListener('click', function () { var n = isDark() ? 'light' : 'dark'; root.setAttribute('data-theme', n); try { localStorage.setItem('club-theme', n); } catch (e) {} label(); });
   label();
 
@@ -1027,7 +1038,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = FEEDS; els
       '</tbody></table>' +
       '<details class="admin"><summary>Для администратора</summary><p>Карточка №' + g.id + '. Телефоны: ' + (g.phonesMasked.join(', ') || '—') + '. Почта: ' + (g.emailsMasked.join(', ') || '—') + '.' +
       (g.names.length > 1 ? ' Имена в бронях: ' + g.names.map(esc).join(', ') + '.' : '') +
-      (g.merged.length ? ' Объединена с карточкой ' + g.merged.map(function (m) { return '№' + m.from + ' (' + esc(m.reason) + ')'; }).join(', ') + '.' : '') +
+      (g.merged.length ? ' Объединена с ' + (g.merged.length > 1 ? 'карточками ' : 'карточкой ') + g.merged.map(function (m) { return '№' + m.from + ' (' + esc(m.reason.replace(/\.$/, '')) + ')'; }).join(', ') + '.' : '') +
       g.ledger.filter(function (l) { return l.adminOnly; }).map(function (l) { return ' Служебная строка журнала: ' + (l.amount >= 0 ? '+' : '−') + num(Math.abs(l.amount)) + ', ' + esc(l.note) + '.'; }).join('') + '</p></details>';
   }
 
