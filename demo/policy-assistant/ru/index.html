@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Policy assistant · Tallowby Freight (demo)</title>
-<meta name="description" content="A document assistant that answers staff questions from company PDFs, quotes the exact paragraph with page and version, uses superseded versions only for questions about the past, and says so when the documents don't cover a question.">
+<title>Ассистент по регламентам · Tallowby Freight (демо)</title>
+<meta name="description" content="Ассистент по документам: отвечает сотрудникам по PDF-регламентам компании, цитирует точный отрывок со страницей и версией, берёт заменённые версии только для вопросов о прошлом и прямо говорит, когда в документах ответа нет.">
 <meta name="color-scheme" content="light dark">
 <link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/policy-assistant/">
 <link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/policy-assistant/ru/">
@@ -163,42 +163,42 @@
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/policy-assistant/">Flow Lab</a>. Tallowby Freight is invented.</p>
+<p class="fl-band" role="note">Демо сделано <a href="https://flowlab-dev.github.io/ru/work/policy-assistant/">Flow Lab</a> без заказчика. Компания Tallowby Freight выдумана.</p>
 <!-- /flowlab-band -->
 <main>
 <div class="wrap">
   <header class="top">
-    <div class="brand"><i aria-hidden="true"></i>Tallowby Freight · Policy assistant</div>
+    <div class="brand"><i aria-hidden="true"></i>Tallowby Freight · Ассистент по регламентам</div>
     <div class="tools">
-      <div class="fl-lang" role="group" aria-label="Language"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div>
-      <button class="theme" id="theme" type="button" aria-label="Switch colour theme">Dark</button>
+      <div class="fl-lang" role="group" aria-label="Язык"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div>
+      <button class="theme" id="theme" type="button">Ночь</button>
     </div>
   </header>
 
   <div class="hero">
-    <h1>Ask the handbook. Get the paragraph, the page and the version.</h1>
-    <p>Staff ask in their own words. The assistant searches the company’s PDF policies, quotes the exact passage, links to the page, skips versions that were replaced, and says so plainly when the documents don’t cover a question.</p>
+    <h1>Спросите регламенты. Получите точный отрывок, страницу и версию.</h1>
+    <p>Сотрудники спрашивают своими словами. Ассистент ищет по PDF-регламентам компании, цитирует точный отрывок, даёт ссылку на страницу, не берёт заменённые версии и прямо говорит, если в документах ответа нет.</p>
     <div class="facts" id="facts"></div>
   </div>
 
   <div class="app">
     <aside class="panel lib">
       <details open id="libdetails">
-        <summary><h2>Documents searched <span class="caret" aria-hidden="true">▾</span></h2></summary>
+        <summary><h2>Где ищет <span class="caret" aria-hidden="true">▾</span></h2></summary>
         <div class="docs" id="docs"></div>
       </details>
-      <div class="note">Passage text, headings, page numbers, versions and status come straight from these PDFs, read by the import script.</div>
+      <div class="note">Текст отрывков, заголовки, номера страниц, версии и статус берутся прямо из этих PDF: их читает скрипт импорта.</div>
     </aside>
 
-    <section class="panel chat" aria-label="Ask a question">
-      <div class="head"><h2>Ask a question</h2></div>
+    <section class="panel chat" aria-label="Задать вопрос">
+      <div class="head"><h2>Задать вопрос</h2></div>
       <div class="log" id="log" aria-live="polite">
-        <div class="empty">Try one of these, or type your own. Casual wording is fine.</div>
+        <div class="empty">Выберите пример или напишите свой вопрос. Можно своими словами.</div>
       </div>
       <div class="chips" id="chips"></div>
       <form class="ask" id="ask" autocomplete="off">
-        <input id="q" type="text" placeholder="e.g. how much can I spend on a hotel in London?" aria-label="Your question" maxlength="300">
-        <button type="submit">Ask</button>
+        <input id="q" type="text" placeholder="например, сколько можно потратить на гостиницу в Лондоне?" aria-label="Ваш вопрос" maxlength="300">
+        <button type="submit">Спросить</button>
       </form>
     </section>
   </div>
@@ -206,53 +206,53 @@
 
 <section class="block">
   <div class="wrap reveal">
-    <h2>How it works</h2>
-    <p>Five steps, and each one can be checked on its own. In a client project the same steps can be connected to SharePoint, Google Drive or a shared folder.</p>
+    <h2>Как это работает</h2>
+    <p>Пять шагов, и каждый можно проверить отдельно. В проекте для клиента те же шаги подключаются к SharePoint, Google Диску или общей папке.</p>
     <div class="steps">
-      <div class="step panel"><h3>Read the PDFs</h3><p>Text is taken page by page. Code, version, effective date and status come from the document’s own control box.</p></div>
-      <div class="step panel"><h3>Split by section</h3><p>Numbered headings (4., 4.2) become passages. Each one keeps its page number, so a link opens the right page.</p></div>
-      <div class="step panel"><h3>Search in staff’s words</h3><p>A hand-made list of everyday words (petrol → mileage, nicked → stolen), and <span id="asks">about a thousand</span> sample questions a model wrote for the passages at import. Typos are matched to the nearest known word.</p></div>
-      <div class="step panel"><h3>Quote, don’t guess</h3><p>The answer is the passage itself. If the best match is weak, or shares too few of the question’s words, the assistant says it can’t find it.</p></div>
-      <div class="step panel"><h3>Check the version</h3><p>Superseded versions are used only when a question is about the past. When a rule changed, the old wording is shown with the date it stopped applying.</p></div>
+      <div class="step panel"><h3>Читает PDF</h3><p>Текст берётся постранично. Код, версия, дата вступления в силу и статус берутся из служебного блока самого документа.</p></div>
+      <div class="step panel"><h3>Делит на разделы</h3><p>Нумерованные заголовки (4., 4.2) становятся отрывками. У каждого остаётся номер страницы, поэтому ссылка открывает нужную страницу.</p></div>
+      <div class="step panel"><h3>Понимает слова сотрудников</h3><p>Список бытовых слов, составленный вручную (бензин → пробег, стащили → кража), и <span id="asks">около тысячи примеров</span> вопросов, которые модель написала к отрывкам при импорте. Опечатку поиск исправляет на ближайшее знакомое слово.</p></div>
+      <div class="step panel"><h3>Цитирует, а не гадает</h3><p>Ответ — сам отрывок. Если лучшее совпадение слабое или в нём мало слов из вопроса, ассистент говорит, что не нашёл.</p></div>
+      <div class="step panel"><h3>Проверяет версию</h3><p>Заменённые версии берутся, только если вопрос о прошлом. Если правило поменялось, старая формулировка показывается с датой, когда она перестала действовать.</p></div>
     </div>
-    <div class="honest panel"><b>Two ways to answer, both measured below.</b> The chat on this page is the search step alone, running in your browser: no server and no keys, so it opens offline. It is careful rather than clever. In the test below it says “I can’t find this” for <span id="refusedN">many</span> questions that do have an answer, and then lists where the answer might be. In a client project the next step is a language model that reads the five passages the search found and answers with a quote and its section. The test includes a recorded run of that step.</div>
+    <div class="honest panel"><b>Два способа ответа, оба измерены ниже.</b> Чат на этой странице — только шаг поиска, он работает в вашем браузере: без сервера и ключей, поэтому открывается и без интернета. Он скорее осторожный, чем сообразительный. В проверке ниже он говорит «не нашёл» и на вопросы, у которых ответ есть (таких <span id="refusedN">несколько</span>), и тогда перечисляет, где ответ может быть. В проекте для клиента следующим шагом идёт языковая модель: она читает пять отрывков, которые нашёл поиск, и отвечает цитатой с номером раздела. В проверку входит записанный прогон этого шага.</div>
   </div>
 </section>
 
 <section class="block">
   <div class="wrap reveal">
-    <h2>Checked, not promised</h2>
-    <p id="evalintro">40 questions written separately, in another assistant session that saw the documents but not the code, and checked to be unlike the questions used for tuning. The search was frozen before they were first run. They include traps: topics no document covers, and rules that changed between versions. The left column is the search in your browser. The right column is a recorded run of the full pipeline: for each question the same search picked five passages, and a language model answered from those five only. Every quote it gave is checked here, word for word. Every miss on both sides is listed below.</p>
+    <h2>Проверено, а не обещано</h2>
+    <p id="evalintro">40 вопросов, которые не использовались при настройке поиска. Английский набор написала отдельная сессия ассистента, которая видела документы, но не код; русский набор пересказала живым языком ещё одна отдельная сессия, тоже без доступа к коду. Русский поиск был заморожен до первого прогона этих вопросов. Среди них есть ловушки: темы, которых нет ни в одном документе, и правила, которые поменялись между версиями. Левая колонка показывает поиск в вашем браузере, правая показывает записанный прогон всей цепочки: для каждого вопроса тот же поиск выбрал пять отрывков, и языковая модель отвечала только по ним. Каждую её цитату страница проверяет здесь же, слово в слово. Все промахи с обеих сторон перечислены ниже.</p>
     <div class="tiles" id="tiles"></div>
-    <button class="run" id="run" type="button">Run the test set</button>
+    <button class="run" id="run" type="button">Запустить проверку</button>
     <div class="results panel" id="results"></div>
   </div>
 </section>
 
 <section class="block">
   <div class="wrap reveal">
-    <h2>What a real project adds</h2>
-    <p>The demo shows the part that decides whether staff trust the answers. A client project adds the rest.</p>
+    <h2>Что добавляет настоящий проект</h2>
+    <p>Демо показывает ту часть, от которой зависит, поверят ли сотрудники ответам. Проект для клиента добавляет остальное.</p>
     <div class="grid2">
-      <div class="card panel"><h3>Your sources, kept in sync</h3><p>SharePoint, Google Drive, Notion or a shared folder. A new version replaces the old one on upload, with no re-typing.</p></div>
-      <div class="card panel"><h3>Written answers with citations</h3><p>A language model writes two or three sentences from the quoted passages. If it can’t cite a passage, it doesn’t answer.</p></div>
-      <div class="card panel"><h3>Where people ask</h3><p>A page on the intranet, Slack or Teams, or Telegram. Access by role, so drivers don’t see finance-only documents.</p></div>
-      <div class="card panel"><h3>Bigger libraries</h3><p>Past a few hundred pages, search adds embeddings next to keyword ranking and re-ranks the best passages. The test set works the same way, so the gain is measured, not assumed.</p></div>
-      <div class="card panel"><h3>Scans and tables</h3><p>Scanned PDFs go through text recognition first. Tables are kept row by row, the way the London hotel limit is kept here.</p></div>
-      <div class="card panel"><h3>Monthly upkeep</h3><p>A log of what people asked and what the documents didn’t answer. The test set grows each month, and gaps go back to the document owner.</p></div>
+      <div class="card panel"><h3>Ваши источники, всегда свежие</h3><p>SharePoint, Google Диск, Notion или общая папка. Новая версия заменяет старую при загрузке, ничего не нужно перепечатывать.</p></div>
+      <div class="card panel"><h3>Ответы своими словами со ссылками</h3><p>Языковая модель пишет два-три предложения по найденным отрывкам. Если сослаться не на что, она не отвечает.</p></div>
+      <div class="card panel"><h3>Там, где спрашивают</h3><p>Страница во внутренней сети, Slack, Teams или Telegram. Доступ по ролям: водители не видят документы только для финансового отдела.</p></div>
+      <div class="card panel"><h3>Большие библиотеки</h3><p>Когда страниц больше нескольких сотен, к поиску по словам добавляется смысловой поиск (эмбеддинги) и пересортировка лучших отрывков. Набор проверки работает так же, поэтому выигрыш измеряется, а не предполагается.</p></div>
+      <div class="card panel"><h3>Сканы и таблицы</h3><p>Сканы сначала проходят распознавание текста. Таблицы сохраняются построчно, как здесь сохранён лимит на гостиницу в Лондоне.</p></div>
+      <div class="card panel"><h3>Ежемесячная поддержка</h3><p>Журнал того, о чём спрашивали и на что в документах не нашлось ответа. Набор проверки растёт каждый месяц, а пробелы уходят владельцу документа.</p></div>
     </div>
   </div>
 </section>
 </main>
 
 <footer>
-  <div class="wrap">Tallowby Freight Ltd is an invented company, and the eight policies were written for this demo. The PDFs are laid out like typical policy documents. Scans, Word files and documents without numbered headings need extra import work (OCR, layout parsing), which a client project includes.</div>
+  <div class="wrap">Tallowby Freight Ltd — выдуманная компания, восемь регламентов написаны для этого демо (английские оригиналы и их перевод на русский). PDF свёрстаны как типичные внутренние документы. Сканы, файлы Word и документы без нумерованных заголовков требуют дополнительной работы при импорте (распознавание текста, разбор вёрстки), она входит в проект для клиента.</div>
 </footer>
 
 <script>
 // The search index is large: it loads right after the first paint, so the page shows at once.
 // Scripts keep their order (async = false); a question asked before they arrive is answered when they do.
-var BOOT_SRC = ['data/index.js', 'data/questions.js', 'data/model-run.js', 'assets/rag.js', 'assets/eval.js'];
+var BOOT_SRC = ['../data/index.ru.js', '../data/questions.ru.js', '../data/model-run.ru.js', '../assets/rag-ru.js', '../assets/rag.js', '../assets/eval.js'];
 document.getElementById('ask').addEventListener('submit', function (e) { e.preventDefault(); window.__pendingAsk = true; });
 function boot(start) {
   var left = BOOT_SRC.length;
@@ -269,7 +269,8 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   var engine = RAG.makeEngine(KB);
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
-  var date = function (iso) { return new Date(iso + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }); };
+  var date = function (iso) { return new Date(iso + 'T00:00:00Z').toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).replace(' г.', ''); };
+  var plural = function (n, one, few, many) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? one : a >= 2 && a <= 4 && (b < 12 || b > 14) ? few : many; };
 
   // Theme: follows the system until the visitor picks one.
   var root = document.documentElement;
@@ -283,24 +284,26 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   });
   function label() {
     var dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-    $('theme').textContent = dark ? 'Light' : 'Dark';
+    $('theme').textContent = dark ? 'День' : 'Ночь';
+    $('theme').setAttribute('aria-label', dark ? 'День: включить светлую тему' : 'Ночь: включить тёмную тему');
   }
   label();
 
   // Library
   var nasks = KB.chunks.reduce(function (s, c) { return s + (c.asks ? c.asks.length : 0); }, 0);
-  if (nasks) $('asks').textContent = nasks.toLocaleString('en-GB');
+  if (nasks) $('asks').textContent = nasks.toLocaleString('ru-RU') + ' ' + plural(nasks, 'пример', 'примера', 'примеров');
   var pages = KB.docs.reduce(function (s, d) { return s + d.pages; }, 0);
   var cur = KB.docs.filter(function (d) { return d.status === 'current'; }).length;
-  $('facts').innerHTML = '<span><b>' + KB.docs.length + '</b> PDFs</span><span><b>' + pages + '</b> pages</span><span><b>' +
-    KB.chunks.length + '</b> passages</span><span><b>' + (KB.docs.length - cur) + '</b> superseded version, used only when you ask about the past</span>';
+  var old = KB.docs.length - cur;
+  $('facts').innerHTML = '<span><b>' + KB.docs.length + '</b> PDF</span><span><b>' + pages + '</b> ' + plural(pages, 'страница', 'страницы', 'страниц') + '</span><span><b>' +
+    KB.chunks.length + '</b> ' + plural(KB.chunks.length, 'отрывок', 'отрывка', 'отрывков') + '</span><span><b>' + old + '</b> ' + plural(old, 'заменённая версия', 'заменённые версии', 'заменённых версий') + ', только для вопросов о прошлом</span>';
   var docs = KB.docs.slice().sort(function (a, b) { return a.code === b.code ? b.version - a.version : a.code < b.code ? -1 : 1; });
   $('docs').innerHTML = docs.map(function (d) {
     var old = d.status !== 'current';
     return '<a class="doc' + (old ? ' old' : '') + '" href="' + esc(d.file) + '" target="_blank" rel="noopener">' +
       '<div class="t">' + esc(d.title) + '</div>' +
-      '<div class="m">' + esc(d.code) + ' · v' + esc(d.version) + ' · ' + d.pages + (d.pages === 1 ? ' page' : ' pages') +
-      (old ? '<span class="tag old">Superseded ' + date(d.superseded_on) + '</span>' : '<span class="tag">Current</span>') + '</div></a>';
+      '<div class="m">' + esc(d.code) + ' · v' + esc(d.version) + ' · ' + d.pages + ' ' + plural(d.pages, 'страница', 'страницы', 'страниц') +
+      (old ? '<span class="tag old">Заменён ' + date(d.superseded_on) + '</span>' : '<span class="tag">Действует</span>') + '</div></a>';
   }).join('');
   if (matchMedia('(max-width: 560px)').matches) $('libdetails').removeAttribute('open');
 
@@ -311,7 +314,7 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   $('ask').addEventListener('submit', function (e) { e.preventDefault(); var v = $('q').value.trim(); if (v) { ask(v); $('q').value = ''; } });
 
   function link(s) {
-    return '<a href="' + esc(s.file) + '#page=' + s.page + '" target="_blank" rel="noopener">page ' + s.page + '</a>';
+    return '<a href="' + esc(s.file) + '#page=' + s.page + '" target="_blank" rel="noopener">стр. ' + s.page + '</a>';
   }
   function ask(q) {
     var log = $('log');
@@ -324,22 +327,22 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
           return r.quote.indexOf(x) >= 0 ? '<mark>' + esc(x) + '</mark>' : '<span class="dim">' + esc(x) + '</span>';
         }).join('\n') + '</blockquote>' +
         '<div class="src"><span><b>' + esc(s.code) + ' ' + esc(s.title) + '</b></span><span>v' + esc(s.version) +
-        (s.status === 'superseded' ? ' <span class="tag old">superseded</span>' : '') + '</span><span>§' + esc(s.section) + ' ' + esc(s.heading) + '</span><span>' + link(s) + '</span></div>';
+        (s.status === 'superseded' ? ' <span class="tag old">заменён</span>' : '') + '</span><span>§' + esc(s.section) + ' ' + esc(s.heading) + '</span><span>' + link(s) + '</span></div>';
       if (r.changed) {
         var c = r.changed;
         html += '<div class="changed">' + (c.status === 'superseded'
-          ? '<b>Changed on ' + date(c.supersededOn) + '.</b> Version ' + esc(c.version) + ' said: <q>' + esc(c.quote) + '</q> (' + link({ file: c.file, page: c.page }) + ', no longer applies)'
-          : '<b>This is the old rule.</b> Version ' + esc(c.version) + ', in force since ' + date(c.effective) + ', says: <q>' + esc(c.quote) + '</q> (' + link({ file: c.file, page: c.page }) + ')') + '</div>';
+          ? '<b>Изменено ' + date(c.supersededOn) + '.</b> В версии ' + esc(c.version) + ' было: <q>' + esc(c.quote) + '</q> (' + link({ file: c.file, page: c.page }) + ', больше не действует)'
+          : '<b>Это старое правило.</b> Версия ' + esc(c.version) + ', действует с ' + date(c.effective) + ': <q>' + esc(c.quote) + '</q> (' + link({ file: c.file, page: c.page }) + ')') + '</div>';
       }
       if (r.others.length) {
-        html += '<div class="also">Also relevant:' + r.others.map(function (o) {
+        html += '<div class="also">Ещё по теме:' + r.others.map(function (o) {
           return '<div>' + esc(o.code) + ' v' + esc(o.version) + ' §' + esc(o.section) + ' ' + esc(o.heading) + ' · ' + link(o) + '</div>';
         }).join('') + '</div>';
       }
     } else {
-      html += '<div class="refuse"><b>I can’t find this in the documents.</b><span>' +
-        'No passage in the policies answers it closely enough to quote. Rather than guess, please ask your line manager or the policy owner.</span>' +
-        '<div class="might">Might be in: ' + engine.retrieve(q, 3).filter(function (p, i, all) {
+      html += '<div class="refuse"><b>Не нашёл этого в документах.</b><span>' +
+        'В регламентах нет отрывка, который отвечает на вопрос достаточно точно, чтобы его процитировать. Чтобы не гадать, спросите руководителя или владельца регламента.</span>' +
+        '<div class="might">Может быть здесь: ' + engine.retrieve(q, 3).filter(function (p, i, all) {
           return all.findIndex(function (o) { return o.code === p.code && o.version === p.version && o.section === p.section; }) === i;
         }).map(function (p) {
           return esc(p.code) + ' v' + esc(p.version) + ' §' + esc(p.section) + ' ' + esc(p.heading) + ' (' + link(p) + ')';
@@ -360,30 +363,30 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   function compare(res, mod) {
     var A = count(main, 'answer'), N = count(main, 'refuse');
     var rows = [
-      ['Right passage quoted, with the fact', res ? res.answers.ok + '/' + A : '…', mod ? mod.answers.ok + '/' + A : '—'],
-      ['Right passage among the three shown <small>search only; the model answers from one</small>', res ? res.answers.top3 + '/' + A : '…', '—'],
-      ['“Not in the documents” where nothing covers it', res ? res.refusals.ok + '/' + N : '…', mod ? mod.refusals.ok + '/' + N : '—'],
-      ['Wrong passage quoted', res ? res.wrong : '…', mod ? mod.wrong : '—'],
-      ['Quote not word for word <small>search copies text by code; each model quote is checked here</small>', 0, mod ? mod.notVerbatim : '—'],
-      ['Answer from a superseded version by mistake', res ? res.oldVersionLeaks : '…', mod ? mod.oldVersionLeaks : '—'],
+      ['Процитирован нужный отрывок, и в нём есть факт', res ? res.answers.ok + '/' + A : '…', mod ? mod.answers.ok + '/' + A : '—'],
+      ['Нужный отрывок среди трёх показанных <small>только поиск; модель отвечает по одному</small>', res ? res.answers.top3 + '/' + A : '…', '—'],
+      ['«В документах нет» там, где ответа действительно нет', res ? res.refusals.ok + '/' + N : '…', mod ? mod.refusals.ok + '/' + N : '—'],
+      ['Процитирован не тот отрывок', res ? res.wrong : '…', mod ? mod.wrong : '—'],
+      ['Цитата не дословная <small>поиск копирует текст кодом; каждую цитату модели страница проверяет здесь</small>', 0, mod ? mod.notVerbatim : '—'],
+      ['Ответ по заменённой версии по ошибке', res ? res.oldVersionLeaks : '…', mod ? mod.oldVersionLeaks : '—'],
     ];
-    $('tiles').innerHTML = '<table class="cmp"><thead><tr><th>' + main.length + ' unseen questions</th><th>Search in your browser<span>no model, runs now</span></th>' +
-      (MR ? '<th>Search, then ' + esc(MR.model) + '<span>reads the top 5 passages · recorded run, ' + esc(MR.date) + '</span></th>' : '') + '</tr></thead><tbody>' +
+    $('tiles').innerHTML = '<table class="cmp"><thead><tr><th>' + main.length + ' ' + plural(main.length, 'новый вопрос', 'новых вопроса', 'новых вопросов') + '</th><th>Поиск в вашем браузере<span>без модели, работает сейчас</span></th>' +
+      (MR ? '<th>Поиск, затем ' + esc(MR.model).replace(/ /g, ' ') + '<span>читает 5 лучших отрывков · записанный прогон, ' + esc(MR.date).replace(/ /g, ' ') + ' · отвечает на «ты», как в чате</span></th>' : '') + '</tr></thead><tbody>' +
       rows.map(function (r) { return '<tr><td>' + r[0] + '</td>' + cell(r[1]) + (MR ? cell(r[2]) : '') + '</tr>'; }).join('') + '</tbody></table>';
   }
   compare(null, MR ? RAGEval.evaluateRecorded(KB, main, MR.answers) : null);
   (function () {
     var r = RAGEval.evaluate(engine, KB, main);
     var refused = r.rows.filter(function (x) { return x.expect === 'answer' && x.got === 'refuse'; }).length;
-    $('refusedN').textContent = refused + ' of ' + r.answers.total;
+    $('refusedN').textContent = refused + ' из ' + r.answers.total;
   })();
   function table(res, mod) {
     var m = mod ? new Map(mod.rows.map(function (r) { return [r.id, r]; })) : null;
-    return '<table><thead><tr><th>Question</th><th>Search in your browser</th>' + (m ? '<th>Search, then model (recorded)</th>' : '') + '</tr></thead><tbody>' +
+    return '<table><thead><tr><th>Вопрос</th><th>Поиск в вашем браузере</th>' + (m ? '<th>Поиск, затем модель (запись, на «ты»)</th>' : '') + '</tr></thead><tbody>' +
       res.rows.map(function (r) {
         var x = m && m.get(r.id);
         var c = function (y) {
-          var a = y.rec, more = a && a.kind === 'answer' ? '<details class="said"><summary>What it said</summary><q>' + esc(a.quote) + '</q><div>' + esc(a.answer) + '</div></details>' : '';
+          var a = y.rec, more = a && a.kind === 'answer' ? '<details class="said"><summary>Что ответила</summary><q>' + esc(a.quote) + '</q><div>' + esc(a.answer) + '</div></details>' : '';
           return '<td><span class="' + (y.ok ? 'ok' : 'bad') + '">' + (y.ok ? '✓' : '✗') + '</span> ' + esc(y.note) + more + '</td>';
         };
         return '<tr><td>' + esc(r.q) + '</td>' + c(r) + (x ? c(x) : '') + '</tr>';
@@ -394,12 +397,12 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
     var mod = MR ? RAGEval.evaluateRecorded(KB, main, MR.answers) : null;
     var tun = SETS.unseen.length && SETS.tuning.length ? RAGEval.evaluate(engine, KB, SETS.tuning) : null;
     compare(res, mod);
-    $('run').textContent = 'Run again';
-    $('results').innerHTML = '<h3 class="rh">Every question, both ways</h3><div class="scroll">' + table(res, mod) + '</div>' +
-      (tun ? '<h3 class="rh">For comparison: search in your browser on the ' + tun.total + ' questions used while tuning it</h3><p class="rp">Right passage quoted: ' +
-        tun.answers.ok + '/' + tun.answers.total + ' · among three shown: ' + tun.answers.top3 + '/' + tun.answers.total +
-        ' · “not in the documents” where nothing covers it: ' + tun.refusals.ok + '/' + tun.refusals.total + ' · wrong passage: ' + tun.wrong + '</p>' +
-        '<details><summary>Show all ' + tun.total + '</summary><div class="scroll">' + table(tun, null) + '</div></details>' : '');
+    $('run').textContent = 'Запустить ещё раз';
+    $('results').innerHTML = '<h3 class="rh">Каждый вопрос, обоими способами</h3><div class="scroll">' + table(res, mod) + '</div>' +
+      (tun ? '<h3 class="rh">Для сравнения: поиск в браузере на ' + tun.total + ' вопросах, по которым его настраивали</h3><p class="rp">Нужный отрывок процитирован: ' +
+        tun.answers.ok + '/' + tun.answers.total + ' · среди трёх показанных: ' + tun.answers.top3 + '/' + tun.answers.total +
+        ' · «в документах нет», где ответа нет: ' + tun.refusals.ok + '/' + tun.refusals.total + ' · не тот отрывок: ' + tun.wrong + '</p>' +
+        '<details><summary>Показать все ' + tun.total + '</summary><div class="scroll">' + table(tun, null) + '</div></details>' : '');
     $('results').classList.add('on');
   });
 
