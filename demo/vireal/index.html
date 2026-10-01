@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vireal Aero — видеть свет · демо FlowLab</title>
+<meta name="description" content="Демо-концепт страницы продукта: 3D-модель очков, которую поворачивает прокрутка. Сделано FlowLab с Claude Code.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vireal Aero — видеть свет">
+<meta property="og:description" content="Демо страницы продукта: 3D-модель очков поворачивается и разбирается на детали при прокрутке. FlowLab с Claude Code.">
+<meta property="og:image" content="https://flowlab-dev.github.io/demo/vireal/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235b3fd9'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='17' fill='white' text-anchor='middle'%3EV%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+<link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+<script>
+  // тема и язык — до первой отрисовки, чтобы не мигало
+  (function () {
+    var d = document.documentElement, t = null, l = null;
+    try { t = localStorage.getItem('vireal-theme'); l = localStorage.getItem('vireal-lang'); } catch (e) {}
+    var q = new URLSearchParams(location.search);
+    t = q.get('theme') || t; l = q.get('lang') || l;
+    if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    if (l !== 'ru' && l !== 'en') l = (navigator.language || 'ru').slice(0, 2) === 'ru' ? 'ru' : 'en';
+    d.dataset.theme = t; d.lang = l;
+  })();
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "./assets/vendor/three/three.module.min.js",
+  "three/addons/": "./assets/vendor/three/addons/"
+} }
+</script>
+</head>
+<body>
+<a class="skip" href="#lens" data-i18n="skip">Перейти к содержанию</a>
+
+<header class="nav" id="nav">
+  <div class="nav__in">
+    <a class="brand" href="#top" aria-label="Vireal">VIREAL</a>
+    <nav class="nav__links" aria-label="Разделы" data-i18n-aria="sections">
+      <a href="#lens" data-i18n="nav.lens">Линзы</a>
+      <a href="#build" data-i18n="nav.build">Конструкция</a>
+      <a href="#colors" data-i18n="nav.colors">Цвета</a>
+      <a href="#specs" data-i18n="nav.specs">Характеристики</a>
+    </nav>
+    <div class="nav__tools">
+      <button class="tool" id="lang" type="button" aria-label="EN — switch to English" data-i18n-aria="langAria"><span data-i18n="langBtn">EN</span></button>
+      <button class="tool" id="theme" type="button" aria-label="Светлая тема" data-i18n-aria="themeAria">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<canvas id="stage" role="img" aria-label="3D-модель очков Vireal Aero: прокрутка поворачивает её" data-i18n-aria="stageAria"></canvas>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <div class="hero__copy">
+      <p class="eyebrow" data-anim>Vireal Aero</p>
+      <h1 class="display" data-i18n="hero.title">Видеть свет.</h1>
+      <p class="lead" data-i18n="hero.lead">Тонкая металлическая оправа и линзы, которые переливаются, как мыльный пузырь.</p>
+      <div class="cta" data-anim>
+        <a class="btn" href="#colors" data-i18n="hero.cta">Выбрать цвет</a>
+        <a class="link" href="#specs" data-i18n="hero.more">Характеристики <span aria-hidden="true">›</span></a>
+      </div>
+    </div>
+    <img class="fallback" id="fallback" src="assets/aero-poster.webp" alt="" width="800" height="329" fetchpriority="high">
+  </section>
+
+  <section class="chapter chapter--lens" id="lens" aria-labelledby="lens-h">
+    <div class="sticky">
+      <div class="chapter__copy">
+        <p class="eyebrow" data-i18n="lens.eyebrow">Линзы</p>
+        <h2 class="h1" id="lens-h"><span data-i18n="lens.t1">Цвет, который</span> <span class="grad" data-i18n="lens.t2">живёт.</span></h2>
+        <ol class="beats">
+          <li data-beat="0" data-i18n="lens.b1">Напыление тоньше мыльной плёнки разбирает свет на оттенки.</li>
+          <li data-beat="1" data-i18n="lens.b2">Повернёте голову — цвет перетечёт из фиолетового в бирюзовый.</li>
+          <li data-beat="2" data-i18n="lens.b3">А глаза защищены полностью: фильтр UV400.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter chapter--build" id="build" aria-labelledby="build-h">
+    <div class="sticky">
+      <div class="chapter__copy chapter__copy--top">
+        <p class="eyebrow" data-i18n="build.eyebrow">Конструкция</p>
+        <h2 class="h1" id="build-h" data-i18n="build.title">Собраны точно.</h2>
+      </div>
+      <ul class="callouts">
+        <li data-beat="0"><b data-i18n="build.c1b">5 звеньев</b><span data-i18n="build.c1">в каждом шарнире</span></li>
+        <li data-beat="1"><b data-i18n="build.c2b">0,8 мм</b><span data-i18n="build.c2">металла в&nbsp;дужке</span></li>
+        <li data-beat="2"><b data-i18n="build.c3b">21 г</b><span data-i18n="build.c3">весь вес очков</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="colors" id="colors" aria-labelledby="colors-h">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="colors.eyebrow">Цвета</p>
+      <h2 class="h1" id="colors-h" data-i18n="colors.title">Ваш оттенок.</h2>
+      <div class="pickers">
+        <fieldset class="picker">
+          <legend data-i18n="colors.frame">Оправа</legend>
+          <div class="swatches" role="radiogroup">
+            <button type="button" role="radio" aria-checked="true" data-frame="silver" style="--sw:#d9d9de"><i></i><span data-i18n="colors.silver">Серебро</span></button>
+            <button type="button" role="radio" aria-checked="false" data-frame="graphite" style="--sw:#3a3a3f"><i></i><span data-i18n="colors.graphite">Графит</span></button>
+            <button type="button" role="radio" aria-checked="false" data-frame="gold" style="--sw:#d8b77a"><i></i><span data-i18n="colors.gold">Золото</span></button>
+          </div>
+        </fieldset>
+        <fieldset class="picker">
+          <legend data-i18n="colors.lens">Линзы</legend>
+          <div class="swatches" role="radiogroup">
+            <button type="button" role="radio" aria-checked="true" data-lens="iris" style="--sw:conic-gradient(#7b5cff,#3f8cff,#32d1c2,#7b5cff)"><i></i><span data-i18n="colors.iris">Ирис</span></button>
+            <button type="button" role="radio" aria-checked="false" data-lens="ocean" style="--sw:conic-gradient(#1b5cff,#2fb7ff,#7be0c8,#1b5cff)"><i></i><span data-i18n="colors.ocean">Океан</span></button>
+            <button type="button" role="radio" aria-checked="false" data-lens="amber" style="--sw:conic-gradient(#ff9a3c,#ffcf6b,#d9612b,#ff9a3c)"><i></i><span data-i18n="colors.amber">Янтарь</span></button>
+          </div>
+        </fieldset>
+      </div>
+      <p class="pick-note" aria-live="polite" id="pick-note"></p>
+    </div>
+  </section>
+
+  <section class="specs" id="specs" aria-labelledby="specs-h">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="specs.eyebrow">Характеристики</p>
+      <h2 class="h1" id="specs-h" data-i18n="specs.title">Всё главное — в цифрах.</h2>
+      <dl class="grid">
+        <div><dt data-i18n="specs.w">Вес</dt><dd><span data-count="21">21</span> <small data-i18n="u.g">г</small></dd></div>
+        <div><dt data-i18n="specs.uv">Защита</dt><dd>UV400</dd></div>
+        <div><dt data-i18n="specs.t">Толщина дужки</dt><dd><span data-count="0.8" data-dec="1">0,8</span> <small data-i18n="u.mm">мм</small></dd></div>
+        <div><dt data-i18n="specs.h">Звеньев в шарнире</dt><dd>5</dd></div>
+        <div><dt data-i18n="specs.f">Цвета оправы</dt><dd>3</dd></div>
+        <div><dt data-i18n="specs.l">Покрытия линз</dt><dd>3</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="final" id="final" aria-labelledby="final-h">
+    <div class="wrap">
+      <h2 class="h1" id="final-h" data-i18n="final.title">Такую страницу можно сделать для вашего продукта.</h2>
+      <p class="lead" data-i18n="final.lead">Её сделала студия FlowLab с Claude Code: настоящая 3D-модель, анимация по прокрутке, два языка и две темы.</p>
+      <div class="cta">
+        <a class="btn" href="https://flowlab-dev.github.io/" data-i18n="final.cta">Написать FlowLab</a>
+        <a class="link" href="https://flowlab-dev.github.io/work/" data-i18n="final.more">Другие работы <span aria-hidden="true">›</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p data-i18n="foot.demo">Концепт-демо: бренд Vireal, продукт и характеристики вымышлены.</p>
+    <p data-i18n-html="foot.model">3D-модель: <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SunglassesKhronos">Sunglasses Khronos</a> (Khronos Group; Eric Chadwick, Darmstadt Graphics Group), <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Изменена: заменены логотипы на дужках и материалы.</p>
+  </div>
+</footer>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/vendor/lenis.min.js" defer></script>
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>
