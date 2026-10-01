@@ -30,7 +30,16 @@ br.m{display:none}
 .nav{display:flex;gap:60px;padding:10px;margin-right:20px}
 .nav a{font:500 18px/23px var(--dm);color:#fff;text-decoration:none}
 .nav a:hover{color:var(--teal)}
-.burger{display:none}
+.burger{display:none;order:3}
+/* М-42: day / night switch next to the menu (the header always sits on the hero photo, so it stays white) */
+.nav{margin-left:auto}
+.top__tools{display:flex;align-items:center;gap:10px;color:#fff;margin-left:4px}
+.theme{display:inline-grid;place-items:center;width:40px;height:40px;padding:0;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(0,0,0,.18);color:#fff;cursor:pointer}
+.theme:hover{border-color:#fff}
+.theme svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.theme .moon{display:none}
+:root[data-theme=dark] .theme .sun{display:none}
+:root[data-theme=dark] .theme .moon{display:block}
 
 /* ---------- hero (0–942) ---------- */
 .hero{position:relative;height:942px;color:#fff;overflow:hidden}
@@ -99,9 +108,10 @@ br.m{display:none}
 .arrow--prev{left:-60px}.arrow--prev::after{left:14px;transform:rotate(-135deg)}
 .arrow--next{right:-60px}
 .arrow:disabled{background:#E1E1E1;cursor:default}
-.dots{display:flex;justify-content:center;gap:8px;margin-top:51px}
-.dots button{width:12px;height:12px;border-radius:50%;border:0;padding:0;background:var(--star-off);cursor:pointer}
-.dots button[aria-current=true]{background:var(--teal)}
+.dots{display:flex;justify-content:center;gap:0;margin-top:45px}
+.dots button{display:grid;place-items:center;width:24px;height:24px;border:0;padding:0;background:none;cursor:pointer}
+.dots button::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--star-off)}
+.dots button[aria-current=true]::before{background:var(--teal)}
 
 /* ---------- blog (2511–3272) ---------- */
 .blog{padding:0 0 87px}
@@ -149,7 +159,7 @@ br.m{display:none}
 .who{font:400 18px/20px var(--rob);color:#AAAAAA;margin-top:26px}
 .who b{display:block;font-weight:700;color:var(--ink)}
 .stories .arrow{top:180px}
-.stories .dots{margin-top:52px}
+.stories .dots{margin-top:46px}
 
 /* ---------- footer (5363–5829) ---------- */
 .foot{position:relative;background:var(--grey-bg);height:466px;padding-top:63px}
@@ -249,7 +259,7 @@ br.m{display:none}
   .price{font-size:18px;line-height:18px;margin-top:13px}
   .city .stars{display:none}
   .dest .arrow{display:none}
-  .dots{margin-top:20px}
+  .dots{margin-top:14px}
   .blog{background:#EDEDED;padding:30px 0 30px}
   .blog .h2{margin-top:3px}
   .blog__grid{margin-top:20px;gap:50px}
@@ -280,7 +290,7 @@ br.m{display:none}
   .who{margin-top:21px}
   .stories .arrow{top:184px;width:40px;height:40px}
   .stories .arrow--prev{left:-12px}.stories .arrow--next{right:-12px}
-  .stories .dots{margin-top:24px}
+  .stories .dots{margin-top:18px}
   .foot{background:var(--deep);padding:30px 0 45px;color:#fff}
   .foot__grid{grid-template-columns:1fr 1fr;gap:0 20px;padding:0}
   .help{grid-column:span 2;text-align:center;color:#fff;font-size:16px;padding:0}
@@ -300,3 +310,39 @@ br.m{display:none}
   .logo--foot img{width:21px;height:21px}
   .logo--foot span{font-size:20px;line-height:20px}
 }
+
+/* ---------- М-42: night theme (set before first paint by the script in <head>) ---------- */
+:root[data-theme=light]{color-scheme:light}
+:root[data-theme=dark]{color-scheme:dark;--ink:#E6ECEB;--muted:#9DB0AD;--grey-bg:#131D1C;--star-off:#3A4846}
+:root[data-theme=dark] body{background:#0C1413}
+:root[data-theme=dark] .post__text,
+:root[data-theme=dark] .col h2{color:var(--ink)}
+:root[data-theme=dark] .stars--big b{color:var(--teal)}
+:root[data-theme=dark] .arrow:disabled{background:#2A3634}
+:root[data-theme=dark] .foot__bottom{border-top-color:#25312F}
+:root[data-theme=dark] .credit{background:#0C1413;color:#9DB0AD}
+:root[data-theme=dark] .credit a{color:var(--teal)}
+@media (max-width:1180px){.nav{gap:28px;margin-right:0}}
+/* tablet: menu + EN/RU + theme no longer fit one line, so the menu folds into the burger already here */
+@media (max-width:900px){
+  .burger{display:flex;flex-direction:column;justify-content:center;gap:6px;width:40px;height:40px;background:none;border:0;padding:8px 7px;cursor:pointer;margin-right:-8px}
+  .burger span{display:block;height:3px;border-radius:2px;background:#fff;transition:transform .2s,opacity .2s}
+  .burger[aria-expanded=true] span:nth-child(1){transform:translateY(9px) rotate(45deg)}
+  .burger[aria-expanded=true] span:nth-child(2){opacity:0}
+  .burger[aria-expanded=true] span:nth-child(3){transform:translateY(-9px) rotate(-45deg)}
+  .nav{position:absolute;top:90px;left:20px;right:20px;margin:0;flex-direction:column;gap:0;padding:8px 0;background:rgba(7,61,55,.97);border-radius:12px;display:none}
+  .nav.open{display:flex}
+  .nav a{padding:12px 20px}
+  .top__tools{margin-left:auto;margin-right:6px}
+}
+@media (max-width:600px){
+  .top__tools{margin-left:auto;margin-right:6px}
+  :root[data-theme=dark] .blog{background:#111B1A}
+  :root[data-theme=dark] .deals{background:transparent}
+}
+
+/* RU: DM Sans, DM Serif Display and Public Sans have no Cyrillic, so the Russian copy uses the already loaded Roboto and Playfair Display */
+html[lang=ru]{--dm:Roboto,system-ui,sans-serif}
+html[lang=ru] .city h3{font-family:var(--play);font-weight:700}
+html[lang=ru] .foot__bottom p{font-family:var(--rob)}
+@media (max-width:600px){html[lang=ru] .hero h1{font-size:36px;line-height:40px}html[lang=ru] .hero__text p{font-size:18px;line-height:27px;margin-top:20px}}

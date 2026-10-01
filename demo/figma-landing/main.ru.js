@@ -6,7 +6,7 @@
   burger.addEventListener('click', function () {
     var open = burger.getAttribute('aria-expanded') !== 'true';
     burger.setAttribute('aria-expanded', String(open));
-    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
     nav.classList.toggle('open', open);
   });
   nav.addEventListener('click', function (e) {
@@ -20,7 +20,7 @@
     var step = function () { return items.length > 1 ? items[1].offsetLeft - items[0].offsetLeft : track.clientWidth; };
     var dots = items.map(function (_, i) {
       var b = document.createElement('button');
-      b.type = 'button'; b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+      b.type = 'button'; b.setAttribute('aria-label', 'Перейти к слайду ' + (i + 1));
       b.addEventListener('click', function () { track.scrollTo({ left: i * step(), behavior: 'smooth' }); });
       dotsBox.appendChild(b); return b;
     });
@@ -41,7 +41,7 @@
   });
 
   // Date fields: typed MM / DD / YYYY or picked from the native calendar
-  function fmt(v) { var p = v.split('-'); return p.length === 3 ? p[1] + ' / ' + p[2] + ' / ' + p[0] : ''; }
+  function fmt(v) { var p = v.split('-'); return p.length === 3 ? p[2] + ' / ' + p[1] + ' / ' + p[0] : ''; }
   document.querySelectorAll('.field--date').forEach(function (f) {
     var text = f.querySelector('input[name]'), picker = f.querySelector('.picker');
     f.querySelector('.cal').addEventListener('click', function () {
@@ -59,7 +59,7 @@
 
   // Search form: demo only, nothing is sent
   var form = document.getElementById('plan'), msg = form.querySelector('.plan__msg');
-  function toDate(v) { var m = /^(\d{2}) \/ (\d{2}) \/ (\d{4})$/.exec(v); return m ? new Date(+m[3], m[1] - 1, +m[2]) : null; }
+  function toDate(v) { var m = /^(\d{2}) \/ (\d{2}) \/ (\d{4})$/.exec(v); return m ? new Date(+m[3], m[2] - 1, +m[1]) : null; }
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var bad = [];
@@ -70,9 +70,9 @@
       if (!ok) bad.push(i);
     });
     var a = toDate(form.checkin.value), b = toDate(form.checkout.value);
-    if (!bad.length && a && b && b <= a) { form.checkout.setAttribute('aria-invalid', 'true'); bad.push(form.checkout); msg.textContent = 'Check-out must be after check-in.'; }
-    else if (bad.length) msg.textContent = 'Please fill in the highlighted fields.';
-    else msg.textContent = 'Demo site: in a real build this search opens your booking system. Nothing was sent.';
+    if (!bad.length && a && b && b <= a) { form.checkout.setAttribute('aria-invalid', 'true'); bad.push(form.checkout); msg.textContent = 'Дата выезда должна быть позже даты заезда.'; }
+    else if (bad.length) msg.textContent = 'Заполните отмеченные поля.';
+    else msg.textContent = 'Это демо-сайт: в настоящей сборке поиск открыл бы вашу систему бронирования. Ничего не отправлено.';
     if (bad.length) bad[0].focus();
   });
   form.querySelectorAll('input[name]').forEach(function (i) {

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>QuirvaleTravel — добро пожаловать в мир необычных путешествий</title>
+<meta content="QuirvaleTravel (вымышленный бренд): туры, направления и выгодные предложения для путешественников. Демо: лендинг по макету Figma, свёрстанный Flow Lab на HTML/CSS." name="description"/>
+<link href="https://flowlab-dev.github.io/demo/figma-landing/ru/" rel="canonical"/>
+<link href="https://flowlab-dev.github.io/demo/figma-landing/" hreflang="en" rel="alternate"/>
+<link href="https://flowlab-dev.github.io/demo/figma-landing/ru/" hreflang="ru" rel="alternate"/>
+<link href="https://flowlab-dev.github.io/demo/figma-landing/" hreflang="x-default" rel="alternate"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=DM+Serif+Display&amp;family=Playfair+Display:wght@600;700&amp;family=Public+Sans&amp;family=Roboto:wght@300;400;500;600;700;900&amp;family=Ultra&amp;display=swap" rel="stylesheet"/>
+<script>try{var q=location.search.match(/[?&]theme=(light|dark)/),t=q?q[1]:localStorage.getItem('fl-theme');if(q)localStorage.setItem('fl-theme',t);document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}</script>
+<link href="../styles.css" rel="stylesheet"/>
+<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font:600 12px/1 inherit;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
+<body>
+<a class="skip" href="#main">Перейти к содержимому</a>
+<!-- flowlab-band -->
+<style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
+.fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
+.fl-band__more{white-space:nowrap}</style>
+<p class="fl-band" role="note">Демо <a href="/ru/work/figma-landing/">Flow Lab</a> по собственной инициативе, не на заказ. Бренд QuirvaleTravel вымышлен, макет Kunturi Design (CC BY 4.0).</p>
+<!-- /flowlab-band -->
+<header class="top" id="top">
+<div class="wrap top__row"><a aria-label="QuirvaleTravel, на главную" class="logo" href="#top"><img alt="" height="39" src="../img/logo-mark.svg" width="33"/><span><b>Quirvale</b>Travel</span></a> <button aria-controls="nav" aria-expanded="false" aria-label="Открыть меню" class="burger" type="button"><span></span><span></span><span></span></button> <nav aria-label="Основное меню" class="nav" id="nav"> <a href="#top">Главная</a><a href="#tours">Туры</a><a href="#blog">Блог</a><a href="#deals">Скидки</a><a href="#contact">Контакты</a> </nav> <div class="top__tools"><div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Тёмная тема" aria-pressed="false" class="theme" type="button"><svg aria-hidden="true" class="sun" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg><svg aria-hidden="true" class="moon" viewbox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button></div></div>
+</header>
+<main id="main">
+<section class="hero">
+<img alt="" class="hero__img" fetchpriority="high" height="900" src="../img/hero.jpg" width="1600"/>
+<div class="wrap hero__text">
+<h1>Добро <br class="m"/>пожаловать <br/>в мир необычных <br class="m"/>путешествий</h1>
+<p>Ищете яркие приключения, незабываемые впечатления и места, от которых захватывает дух? Вы по адресу!</p>
+</div>
+<form class="plan" id="plan" novalidate="">
+<h2>Спланируйте поездку</h2>
+<div class="wrap plan__row">
+<label class="field"><span>Направление*</span><input autocomplete="off" name="destination" placeholder="Куда едете?" required=""/></label>
+<label class="field"><span>Сколько человек*</span><input inputmode="numeric" name="pax" pattern="[1-9][0-9]?" placeholder="Число гостей" required=""/></label>
+<label class="field field--date"><span>Дата заезда*</span><input inputmode="numeric" name="checkin" pattern="\d{2} / \d{2} / \d{4}" placeholder="ДД / ММ / ГГГГ" required=""/><button aria-label="Выбрать дату заезда" class="cal" type="button"><img alt="" height="24" src="../img/calendar.svg" width="19"/></button><input aria-hidden="true" class="picker" tabindex="-1" type="date"/></label>
+<label class="field field--date"><span>Дата выезда*</span><input inputmode="numeric" name="checkout" pattern="\d{2} / \d{2} / \d{4}" placeholder="ДД / ММ / ГГГГ" required=""/><button aria-label="Выбрать дату выезда" class="cal" type="button"><img alt="" height="24" src="../img/calendar.svg" width="19"/></button><input aria-hidden="true" class="picker" tabindex="-1" type="date"/></label>
+<button class="btn" type="submit">НАЙТИ</button>
+</div>
+<p aria-live="polite" class="plan__msg wrap" role="status"></p>
+</form>
+</section>
+<section class="features" id="tours">
+<div class="wrap">
+<p class="eyebrow">Виды туров</p>
+<h2 class="h2 h2--feat">Приключения и активный отдых</h2>
+<p class="lead">Суровые горы и густые джунгли: путешествия, которые проверят вас на прочность и запомнятся надолго. Шагните в неизвестность, примите вызов природы и проживите своё приключение.</p>
+<ul class="tours">
+<li><img alt="" height="105" src="../img/camping.svg" width="98"/><h3>Кемпинг</h3><p>13 мест на природе: палатки, автодома, домики, отдых под открытым небом</p></li>
+<li><img alt="" height="91" src="../img/trekking.svg" width="85"/><h3>Треккинг</h3><p>Захватывающие пейзажи, тайные тропы, отдалённые деревни, красота природы</p></li>
+<li><img alt="" height="89" src="../img/campfire.svg" width="79"/><h3>У костра</h3><p>7 необычных мест, маршмеллоу на костре, единение с природой</p></li>
+<li><img alt="" height="85" src="../img/map.svg" width="85"/><h3>Познавательные туры</h3><p>25 разных направлений, исторические города, скрытые жемчужины, особый колорит</p></li>
+</ul>
+</div>
+</section>
+<section class="dest" id="destinations">
+<div class="wrap">
+<p class="eyebrow">Куда поехать</p>
+<h2 class="h2">Популярные направления</h2>
+<p class="lead">Мы собрали места, которые стоит увидеть своими глазами. <br class="d"/>От знаменитых городов до нетронутых уголков природы: направления, после которых снова захочется в дорогу.</p>
+<div class="slider" data-slider="">
+<button aria-label="Предыдущее направление" class="arrow arrow--prev" type="button"></button>
+<ul class="track dest__track">
+<li class="city"><img alt="Пирамида Хафра в Гизе под Каиром" loading="lazy" src="../img/dest-cairo.jpg"/><div class="city__info"><h3>Каир</h3><p class="country"><img alt="" height="21" src="../img/flag-eg.svg" width="32"/>ЕГИПЕТ</p><p class="price">Цены от <b>105 €</b></p><p aria-label="Оценка 4 из 5" class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+<li class="city"><img alt="Триумфальная арка, Париж" loading="lazy" src="../img/dest-paris.jpg"/><div class="city__info"><h3>Париж</h3><p class="country"><img alt="" height="21" src="../img/flag-fr.svg" width="32"/>ФРАНЦИЯ</p><p class="price">Цены от <b>95 €</b></p><p aria-label="Оценка 4 из 5" class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+<li class="city"><img alt="Колизей, Рим" loading="lazy" src="../img/dest-rome.jpg"/><div class="city__info"><h3>Рим</h3><p class="country"><img alt="" height="21" src="../img/flag-it.svg" width="32"/>ИТАЛИЯ</p><p class="price">Цены от <b>75 €</b></p><p aria-label="Оценка 4 из 5" class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+<li class="city"><img alt="Карусель ночью у Королевского дворца, Мадрид" loading="lazy" src="../img/dest-madrid.jpg"/><div class="city__info"><h3>Мадрид</h3><p class="country"><img alt="" height="25" src="../img/flag-es.svg" width="32"/>ИСПАНИЯ</p><p class="price">Цены от <b>87 €</b></p><p aria-label="Оценка 4 из 5" class="stars"><i></i><i></i><i></i><i></i><i class="off"></i></p></div></li>
+</ul>
+<button aria-label="Следующее направление" class="arrow arrow--next" type="button"></button>
+<div aria-hidden="true" class="dots"></div>
+</div>
+</div>
+</section>
+<section class="blog" id="blog">
+<div class="wrap">
+<p class="eyebrow">Путевые заметки</p>
+<h2 class="h2">Новости и блог</h2>
+<div class="blog__grid">
+<article class="post">
+<img alt="Коридор из ворот тории, Киото" loading="lazy" src="../img/blog-kyoto.jpg"/>
+<p class="post__tag">Азия</p>
+<h3>Очарование Киото</h3>
+<p class="post__text">Отправляйтесь с нами в виртуальное путешествие по одному из самых притягательных городов Японии, <b>Киото</b>. В новой статье мы погрузим вас в завораживающий мир древних храмов, тихих садов и вековых традиций, без которых не было бы этой культурной жемчужины.</p>
+<a class="more" href="#blog">Читать статью</a>
+</article>
+<div class="posts">
+<article class="mini"><img alt="" loading="lazy" src="../img/blog-asia.jpg"/><div><h3>Загадочная Юго-Восточная Азия: путешествие по древним храмам и густым джунглям</h3><time datetime="2023-09-19">19 СЕНТ. 2023</time></div></article>
+<article class="mini"><img alt="" loading="lazy" src="../img/blog-machu-picchu.jpg"/><div><h3>Большие приключения от Мачу-Пикчу до лесов Амазонии: природа и культурные богатства Южной Америки</h3><time datetime="2023-05-10">10 МАЯ 2023</time></div></article>
+<article class="mini"><img alt="" loading="lazy" src="../img/blog-europe.jpg"/><div><h3>В погоне за закатами: самые романтичные города Европы, где старинное очарование встречается с современной элегантностью</h3><time datetime="2023-07-20">20 ИЮЛЯ 2023</time></div></article>
+<article class="mini"><img alt="" loading="lazy" src="../img/blog-south-america.jpg"/><div><h3>Вдали от туристических троп: скрытые жемчужины Южной Америки, от глухих деревень до нетронутой дикой природы</h3><time datetime="2023-06-15">15 ИЮНЯ 2023</time></div></article>
+<a class="more" href="#blog">Все статьи</a>
+</div>
+</div>
+</div>
+</section>
+<section class="deals" id="deals">
+<div class="wrap">
+<p class="eyebrow">Спецпредложения</p>
+<h2 class="h2">Лучшие цены и скидки</h2>
+<ul class="deals__grid">
+<li class="deal deal--wide"><img alt="Пьяцца Навона после дождя, Рим" loading="lazy" src="../img/deal-navona.jpg"/><div><h3>Palazzo Verbena — ИТАЛИЯ</h3><p><b>149 €</b> <span>минимальная цена</span></p></div></li>
+<li class="deal"><img alt="Бассейн курорта с пальмами на закате" loading="lazy" src="../img/deal-kelvara.jpg"/><div><h3>Kelvara Inn — ШРИ-ЛАНКА</h3><p><b>99 €</b> <span>минимальная цена</span></p></div></li>
+<li class="deal"><img alt="Современное здание с балконами" loading="lazy" src="../img/deal-madrid.jpg"/><div><h3>Casa Linterna — МАДРИД</h3><p><b>89 €</b> <span>минимальная цена</span></p></div></li>
+<li class="deal"><img alt="Паром Star Ferry в гавани Виктория, Гонконг" loading="lazy" src="../img/deal-hongkong.jpg"/><div><h3>Harbour Lantern — ГОНКОНГ</h3><p><b>89 €</b> <span>минимальная цена</span></p></div></li>
+<li class="deal"><img alt="Мечеть шейха Зайда ночью, Абу-Даби" loading="lazy" src="../img/deal-abudhabi.jpg"/><div><h3>Dunevale Hotel — АБУ-ДАБИ</h3><p><b>109 €</b> <span>минимальная цена</span></p></div></li>
+</ul>
+</div>
+</section>
+<section class="stories" id="stories">
+<div class="wrap">
+<h2 class="h2">Истории довольных клиентов</h2>
+<p class="stories__note">Примеры отзывов из макета: имена и цитаты выдуманы.</p>
+<div class="slider" data-slider="">
+<button aria-label="Предыдущий отзыв" class="arrow arrow--prev" type="button"></button>
+<ul class="track stories__track">
+<li class="story"><span aria-hidden="true" class="avatar">ИР</span><blockquote>«Сара живёт здесь и глубоко связана с этим краем. Когда-то она сама принимала гостей, поэтому прекрасно понимает, как важно, чтобы кто-то взял на себя каждую мелочь и всё прошло гладко для всех».</blockquote><p aria-label="Оценка 5 из 5" class="stars stars--big"><i></i><i></i><i></i><i></i><i></i><b>5/5</b></p><p class="who"><b>Изабель Роуз</b>Менеджер</p></li>
+<li class="story"><span aria-hidden="true" class="avatar avatar--navy">ОМ</span><blockquote>«Лиам родился и вырос в этих местах и чувствует их как никто. Он и сам принимал гостей, поэтому знает, как нужен человек, который позаботится обо всех мелких, но важных деталях, чтобы каждый момент запомнился».</blockquote><p aria-label="Оценка 4 из 5" class="stars stars--big"><i></i><i></i><i></i><i></i><i class="off"></i><b>4/5</b></p><p class="who"><b>Оливер Митчелл</b>Ландшафтный архитектор</p></li>
+</ul>
+<button aria-label="Следующий отзыв" class="arrow arrow--next" type="button"></button>
+<div aria-hidden="true" class="dots"></div>
+</div>
+</div>
+</section>
+</main>
+<footer class="foot" id="contact">
+<div class="wrap foot__grid">
+<div class="help">
+<h2>Нужна помощь?</h2>
+<p>Звоните круглосуточно, поможем с любым вопросом<br/><a class="big" href="tel:+00123456789">+00 123 456 789</a></p>
+<p>Пишите в службу поддержки<br/><a class="big" href="mailto:support@domain.com">support@domain.com</a></p>
+<p>Мы в соцсетях</p>
+<p aria-hidden="true" class="social"><img alt="" height="24" src="../img/facebook.svg" width="24"/><img alt="" height="24" src="../img/instagram.svg" width="24"/><img alt="" height="22" src="../img/x.svg" width="22"/><img alt="" height="24" src="../img/youtube.svg" width="24"/></p>
+</div>
+<div class="col c1"><h2>Компания</h2><ul><li>О нас</li><li>Отзывы</li><li>Бонусы</li><li>Работа у нас</li><li>Наша команда</li><li>Блог</li></ul></div>
+<div class="col c2"><h2>Поддержка</h2><ul><li>Личный кабинет</li><li>Вопросы и ответы</li><li>Правовая информация</li><li>Контакты</li><li>Партнёрам</li><li>Конфиденциальность</li></ul></div>
+<div class="col c3"><h2>Сервисы</h2><ul><li>Сообщество</li><li>Инвесторам</li><li>Бонусная программа</li><li>Баллы Плюс</li><li>Партнёры</li><li>Разместить отель</li></ul></div>
+<div class="col c4"><h2>Города</h2><ul><li>Рим</li><li>Мадрид</li><li>Нью-Йорк</li><li>Гонконг</li><li>Париж</li><li>Токио</li></ul></div>
+</div>
+<div class="wrap foot__bottom">
+<p>© Kunturi Design, 2023</p>
+<a aria-label="QuirvaleTravel, на главную" class="logo logo--foot" href="#top"><img alt="" height="34" src="../img/logo-mark.svg" width="33"/><span><b>Quirvale</b>Travel</span></a>
+</div>
+</footer>
+<aside class="credit">Дизайн: <a href="https://www.figma.com/community/file/1286274973743014138">Kunturi Design</a> (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>), вёрстка: <a href="/ru/">Flow Lab</a>. Демо по бесплатному файлу из Figma Community «Travel Landing Page DESKTOP + MOBILE». QuirvaleTravel и названия отелей вымышлены, форма не отправляет данные.<br/>Фото: Openverse / Wikimedia Commons, CC0 / общественное достояние / CC BY — <a href="../img/CREDITS.txt">см. источники</a>. Иконка: Font Awesome Free (person-walking-luggage), <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</aside>
+<script src="../main.ru.js"></script>
+</body>
+</html>
