@@ -1,355 +1,297 @@
 <!DOCTYPE html>
 <html lang="ru" translate="no">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="notranslate" name="google"/>
-<title>Пекарня «Кедр»: демо бота заказов</title>
-<link href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;rect width='32' height='32' rx='7' fill='%237b3f2b'/&gt;&lt;path d='M7 10.5a3.5 3.5 0 0 1 3.5-3.5h11A3.5 3.5 0 0 1 25 10.5v7a3.5 3.5 0 0 1-3.5 3.5H14l-5 4v-4.3A3.5 3.5 0 0 1 7 17.5z' fill='white'/&gt;&lt;/svg&gt;" rel="icon"/>
-<meta content="Telegram-бот, который круглосуточно принимает заказы пекарни. Рабочее демо: тот же движок диалога, что у живого бота, прямо в браузере." name="description"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>Пекарня «Кедр»: демо бота заказов в WhatsApp</title>
+<meta name="description" content="Бот заказов в WhatsApp прямо в браузере: кнопки, списки, уведомления владельцу. На странице работает настоящий код бота, пекарня вымышленная.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Пекарня «Кедр»: демо бота заказов в WhatsApp">
+<meta property="og:description" content="Бот заказов в WhatsApp прямо в браузере: кнопки, списки, уведомления владельцу. На странице работает настоящий код бота, пекарня вымышленная.">
+<meta property="og:url" content="https://flowlab-dev.github.io/demo/whatsapp-bot/ru/">
+<meta property="og:image" content="https://flowlab-dev.github.io/img/work/whatsapp-bot-1.webp">
+<meta name="twitter:card" content="summary_large_image">
+<script>(function(){try{var q=new URLSearchParams(location.search).get('theme'),s=localStorage.getItem('fl-theme');var t=q==='dark'||q==='light'?q:s==='dark'||s==='light'?s:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;}catch(e){}})();</script>
+<link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/whatsapp-bot/">
+<link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/whatsapp-bot/ru/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237b3f2b'/%3E%3Cpath d='M8 9.5A3.5 3.5 0 0 1 11.5 6h9A3.5 3.5 0 0 1 24 9.5v7a3.5 3.5 0 0 1-3.5 3.5H15l-5 4v-4.2A3.5 3.5 0 0 1 8 16.5z' fill='%23fff'/%3E%3C/svg%3E">
 <style>
 :root {
   color-scheme: light;
-  --bg: #f7f3ec;
-  --panel: #fffdfa;
-  --panel-2: #f1ebe1;
-  --ink: #241d16;
-  --ink-soft: #5d5245;
-  --line: #e2d8c9;
-  --accent: #7b3f2b;
-  --accent-soft: #f0e0d6;
-  --good: #2f6b45;
-  --warn: #8a6516;
-  --chat-bg: #e9e0d2;
-  --bubble-bot: #fffdfa;
-  --bubble-me: #d7ead9;
-  --shadow: 0 1px 2px rgba(36,29,22,.06), 0 8px 24px rgba(36,29,22,.07);
-  --radius: 14px;
+  --bg: #f7f3ec; --panel: #fffdfa; --panel-2: #f1ebe1; --ink: #241d16; --ink-soft: #5d5245; --line: #e2d8c9;
+  --accent: #7b3f2b; --accent-ink: #fff; --accent-soft: #f0e0d6; --good: #2f6b45;
+  --shadow: 0 1px 2px rgba(36,29,22,.06), 0 10px 30px rgba(36,29,22,.08);
+  /* the chat itself */
+  --wa-head: #1e5b4c; --wa-head-ink: #fff; --wa-wall: #efe7dd; --wa-bot: #ffffff; --wa-me: #d9fdd3; --wa-ink: #111b21;
+  --wa-soft: #667781; --wa-btn: #00715f; --wa-line: #e9edef; --wa-bar: #f0f2f5; --wa-field: #ffffff; --wa-send: #00715f; --wa-me-time: #53646d;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #17130f;
-  --panel: #211b16;
-  --panel-2: #2b231c;
-  --ink: #f2e9df;
-  --ink-soft: #b7a996;
-  --line: #3a3027;
-  --accent: #e9a583;
-  --accent-soft: #3a2a21;
-  --good: #7dc79a;
-  --warn: #e0bc72;
-  --chat-bg: #1d1814;
-  --bubble-bot: #2b231c;
-  --bubble-me: #33452f;
-  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px rgba(0,0,0,.35);
+  --bg: #17130f; --panel: #211b16; --panel-2: #2b231c; --ink: #f2e9df; --ink-soft: #b7a996; --line: #3a3027;
+  --accent: #e9a583; --accent-ink: #241d16; --accent-soft: #3a2a21; --good: #7dc79a;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+  --wa-head: #202c33; --wa-head-ink: #e9edef; --wa-wall: #0b141a; --wa-bot: #202c33; --wa-me: #005c4b; --wa-ink: #e9edef;
+  --wa-soft: #8696a0; --wa-btn: #53bdeb; --wa-line: #2a3942; --wa-bar: #1f2c33; --wa-field: #2a3942; --wa-send: #008069; --wa-me-time: #b3d1c9;
 }
 * { box-sizing: border-box; }
-[hidden] { display: none !important; }  /* beats the grid/flex rules below */
-html, body { margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: var(--accent); }
-h1, h2, h3 { line-height: 1.2; margin: 0 0 12px; letter-spacing: -.01em; }
-h1 { font-size: clamp(28px, 4.2vw, 44px); }
-h2 { font-size: clamp(22px, 2.8vw, 30px); }
-h3 { font-size: 18px; }
-p { margin: 0 0 14px; }
-.muted { color: var(--ink-soft); }
-.small { font-size: 14px; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.skip, .sr { position: absolute; left: -9999px; }
+.sr { width: 1px; height: 1px; overflow: hidden; }
+.skip:focus { left: 16px; top: 8px; z-index: 10; background: var(--panel); padding: 8px 12px; border-radius: 8px; }
 
-header.top {
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--panel) 88%, transparent);
-  position: sticky; top: 0; z-index: 20; backdrop-filter: blur(8px);
-}
-.top-inner { display: flex; align-items: center; gap: 12px; padding-top: 12px; padding-bottom: 12px; }  /* keep the side padding from .wrap */
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 700; }
-.logo-mark {
-  width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
-  background: var(--accent); color: #fff; font-size: 17px;
-}
-.top-spacer { flex: 1; }
-button, .btn {
-  font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--line);
-  background: var(--panel); color: var(--ink); padding: 8px 14px; transition: .15s;
-}
-button:hover { border-color: var(--accent); }
-#theme-toggle { flex: none; white-space: nowrap; min-height: 44px; }  /* one line in both languages - a wrapped label made the bar twice as tall */
-button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
-:root[data-theme="dark"] .btn-primary { color: #17130f; }  /* the dark accent is light - dark text on it */
-.btn-primary:hover { filter: brightness(1.08); }
+/* header */
+.top { border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 88%, transparent); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(10px); }
+.top .wrap { display: flex; align-items: center; gap: 10px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 700; margin-right: auto; min-width: 0; }
+.brand .mark { width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
+.brand small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fl-lang { display: inline-flex; align-items: center; height: 40px; padding: 3px; gap: 2px; flex: none; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+.fl-lang a { display: grid; place-items: center; min-width: 38px; height: 100%; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-decoration: none; color: inherit; opacity: .62; transition: opacity .2s, background-color .2s; }
+.fl-lang a[aria-current] { opacity: 1; background: color-mix(in srgb, currentColor 14%, transparent); }
+.fl-lang a:not([aria-current]):hover { opacity: 1; }
+.pill-btn { height: 40px; display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); background: transparent; color: var(--ink); font-size: 14px; font-weight: 600; flex: none; transition: background-color .2s; }
+.pill-btn:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+.pill-btn svg { width: 16px; height: 16px; }
 
-.hero { padding: 40px 0 8px; }
-.hero p.lead { font-size: 18px; max-width: 62ch; color: var(--ink-soft); }
-.tagline { display: inline-block; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
-.note {
-  border: 1px solid var(--line); border-left: 4px solid var(--warn);
-  background: var(--panel); border-radius: 10px; padding: 12px 16px; margin: 18px 0 8px;
-  font-size: 14px; color: var(--ink-soft);
-}
-.note b { color: var(--ink); }
+/* hero */
+/* only top and bottom: the side gutters come from .wrap */
+.hero { padding-top: 36px; padding-bottom: 24px; }
+.eyebrow { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+h1 { font-size: clamp(30px, 4.6vw, 50px); line-height: 1.08; letter-spacing: -.02em; margin: 0 0 14px; max-width: 24ch; text-wrap: balance; }
+.lead { font-size: clamp(17px, 1.6vw, 19px); color: var(--ink-soft); max-width: 76ch; margin: 0 0 14px; }
+.note { font-size: 14px; color: var(--ink-soft); display: flex; gap: 8px; align-items: flex-start; max-width: 70ch; margin: 0; }
+.note svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--accent); }
 
-section { padding: 34px 0; border-top: 1px solid var(--line); margin-top: 28px; }
-section:first-of-type { border-top: 0; margin-top: 0; }
-.sec-head { max-width: 70ch; margin-bottom: 20px; }
+/* layout */
+.stage { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 32px; align-items: start; padding-bottom: 56px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); }
+.card + .card { margin-top: 16px; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.card-head h2 { font-size: 16px; margin: 0; letter-spacing: 0; }
+.card-head .count { min-width: 28px; height: 24px; padding: 0 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 700; display: grid; place-items: center; }
+.card-body { padding: 14px 18px; }
+.sub { font-size: 14px; color: var(--ink-soft); margin: 0 0 10px; }
 
-.split { display: grid; grid-template-columns: minmax(300px, 380px) 1fr; gap: 24px; align-items: start; }
-/* Grid and flex children default to min-width:auto, so one wide table pushes the whole
-   page sideways on a phone. This is the fix for that, not a decoration. */
-.split > *, .cols > *, .card, .phone { min-width: 0; }
+/* phone */
+.phone { background: #10100f; border-radius: 40px; padding: 10px; box-shadow: 0 30px 60px rgba(36,29,22,.22); }
+:root[data-theme="dark"] .phone { background: #000; box-shadow: 0 0 0 1px #2b231c, 0 30px 60px rgba(0,0,0,.5); }
+.screen { position: relative; height: clamp(460px, calc(100svh - 420px), 640px); border-radius: 31px; overflow: hidden; display: flex; flex-direction: column; background: var(--wa-wall); color: var(--wa-ink); }
+.wa-top { background: var(--wa-head); color: var(--wa-head-ink); display: flex; align-items: center; gap: 10px; padding: 16px 14px 12px; flex: none; }
+.wa-av { width: 38px; height: 38px; border-radius: 50%; background: #f0e0d6; color: #7b3f2b; display: grid; place-items: center; font-weight: 800; flex: none; }
+.wa-top b { display: block; font-size: 16px; line-height: 1.2; }
+.wa-top small { font-size: 12.5px; opacity: .8; }
+.msgs { flex: 1; overflow-y: auto; padding: 12px 10px 8px; display: flex; flex-direction: column; gap: 6px; overscroll-behavior: contain; scrollbar-width: thin; }
+.day { align-self: center; font-size: 12px; background: var(--wa-bot); color: var(--wa-soft); padding: 4px 10px; border-radius: 8px; margin: 2px 0 6px; box-shadow: 0 1px .5px rgba(11,20,26,.13); }
+.b { max-width: 86%; padding: 6px 9px 7px; border-radius: 8px; font-size: 14.5px; line-height: 1.42; box-shadow: 0 1px .5px rgba(11,20,26,.13); overflow-wrap: anywhere; position: relative; }
+.b.bot { background: var(--wa-bot); align-self: flex-start; border-top-left-radius: 2px; }
+.b.me { background: var(--wa-me); align-self: flex-end; border-top-right-radius: 2px; }
+.b .t { white-space: pre-wrap; }
+.b.me time { color: var(--wa-me-time); }
+.b time { float: right; font-size: 11px; color: var(--wa-soft); margin: 6px 0 -3px 10px; line-height: 1; }
+.b.enter { animation: pop .22s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes pop { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
+.replies { display: grid; gap: 4px; align-self: flex-start; width: min(86%, 300px); margin-top: -2px; }
+.replies button, .list-open { background: var(--wa-bot); color: var(--wa-btn); border: 0; border-radius: 8px; min-height: 40px; padding: 8px 10px; font-size: 14.5px; font-weight: 600; box-shadow: 0 1px .5px rgba(11,20,26,.13); display: flex; align-items: center; justify-content: center; gap: 6px; transition: filter .15s; }
+.replies button:hover, .list-open:hover { filter: brightness(.97); }
+.list-open { width: 100%; margin: 8px -9px -7px; width: calc(100% + 18px); border-radius: 0 0 8px 8px; border-top: 1px solid var(--wa-line); box-shadow: none; }
+.list-open svg { width: 18px; height: 18px; }
+.typing { align-self: flex-start; background: var(--wa-bot); border-radius: 8px; padding: 10px 12px; display: flex; gap: 4px; box-shadow: 0 1px .5px rgba(11,20,26,.13); }
+.typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--wa-soft); animation: blink 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .3; } 40% { opacity: 1; } }
+.bar { flex: none; display: flex; gap: 8px; padding: 8px; background: var(--wa-bar); align-items: center; }
+.bar input { flex: 1; min-width: 0; height: 44px; border: 0; border-radius: 22px; padding: 0 16px; font: inherit; font-size: 16px; background: var(--wa-field); color: var(--wa-ink); }
+.bar input::placeholder { color: var(--wa-soft); }
+.bar input:focus-visible { outline: 2px solid var(--wa-send); outline-offset: 0; }
+.send { width: 44px; height: 44px; flex: none; border: 0; border-radius: 50%; background: var(--wa-send); color: #fff; display: grid; place-items: center; }
+.send svg { width: 20px; height: 20px; }
 
-/* phone ------------------------------------------------------------------ */
-.phone {
-  border: 1px solid var(--line); border-radius: 26px; background: var(--panel);
-  box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column;
-  height: 640px;
-}
-.phone-bar {
-  display: flex; align-items: center; gap: 10px; padding: 12px 14px;
-  border-bottom: 1px solid var(--line); background: var(--panel-2);
-}
-.avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 15px; }
-.phone-title { font-weight: 600; font-size: 15px; }
-.phone-sub { font-size: 12px; color: var(--good); }
-.chat:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-.chat {
-  flex: 1; overflow-y: auto; padding: 14px; background: var(--chat-bg);
-  display: flex; flex-direction: column; gap: 8px; scroll-behavior: smooth;
-}
-.msg { max-width: 86%; padding: 9px 12px; border-radius: 14px; font-size: 14.5px; white-space: pre-wrap; word-wrap: break-word; box-shadow: 0 1px 1px rgba(0,0,0,.08); }
-.msg.bot { background: var(--bubble-bot); border-bottom-left-radius: 5px; align-self: flex-start; }
-.msg.me { background: var(--bubble-me); border-bottom-right-radius: 5px; align-self: flex-end; }
-.msg b { font-weight: 600; }
-.keys { display: flex; flex-direction: column; gap: 6px; align-self: flex-start; width: 86%; margin-bottom: 4px; }
-.keys .row { display: flex; gap: 6px; }
-.keys button {
-  flex: 1; font-size: 13.5px; padding: 8px 10px; border-radius: 10px;
-  background: var(--bubble-bot); border: 1px solid var(--line); text-align: center;
-}
-.composer { display: flex; gap: 8px; padding: 10px; border-top: 1px solid var(--line); background: var(--panel); }
-.composer input { flex: 1; font: inherit; font-size: 14px; padding: 9px 12px; border-radius: 20px; border: 1px solid var(--line); background: var(--panel-2); color: var(--ink); }
-.composer input:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+/* list sheet inside the phone */
+.sheet-veil { position: absolute; inset: 0; background: rgba(11,20,26,.42); display: flex; align-items: flex-end; z-index: 3; animation: fade .18s both; }
+@keyframes fade { from { opacity: 0; } }
+.sheet { width: 100%; max-height: 82%; background: var(--wa-bot); border-radius: 18px 18px 0 0; display: flex; flex-direction: column; animation: up .24s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes up { from { transform: translateY(30px); opacity: .4; } }
+.sheet-head { display: flex; align-items: center; gap: 8px; padding: 10px 8px 6px; }
+.sheet-head b { flex: 1; text-align: center; font-size: 16px; margin-right: 44px; }
+.icon-btn { width: 44px; height: 44px; border: 0; background: transparent; color: var(--wa-soft); border-radius: 50%; display: grid; place-items: center; }
+.icon-btn svg { width: 20px; height: 20px; }
+.sheet-sec { font-size: 13px; color: var(--wa-soft); padding: 4px 18px 6px; }
+.rows { overflow-y: auto; padding: 0 6px; }
+.rows label { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; min-height: 48px; }
+.rows label:hover { background: color-mix(in srgb, var(--wa-ink) 5%, transparent); }
+.rows label > span { flex: 1; min-width: 0; }
+.rows b { display: block; font-weight: 500; font-size: 15px; }
+.rows small { display: block; font-size: 13px; color: var(--wa-soft); line-height: 1.35; }
+.rows input { width: 20px; height: 20px; accent-color: var(--wa-send); flex: none; margin: 0; }
+.sheet-send { margin: 8px 14px 14px; height: 46px; border: 0; border-radius: 23px; background: var(--wa-send); color: #fff; font-weight: 700; font-size: 15px; }
+.sheet-send:disabled { opacity: .45; cursor: default; }
 
-/* owner side ------------------------------------------------------------- */
-.card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); box-shadow: var(--shadow); }
-.card-head { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
-.card-head h3 { margin: 0; }
-.card-body { padding: 16px; }
-.pill { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-.owner-feed { display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto; }
-.owner-msg { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--panel-2); font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; }
-.owner-msg.question { border-left: 3px solid var(--warn); }
-.empty { color: var(--ink-soft); font-size: 14px; font-style: italic; }
+/* try chips under the phone */
+.try { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 16px; }
+.try > span { font-size: 14px; color: var(--ink-soft); margin-right: 2px; }
+.chip { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font-size: 14px; transition: border-color .2s, background-color .2s; }
+.chip:hover { border-color: var(--accent); }
+.chip.ghost { background: transparent; display: inline-flex; align-items: center; gap: 6px; }
+.chip svg { width: 15px; height: 15px; }
 
+/* owner side */
+.feed { display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; }
+.alert { background: var(--panel-2); border-radius: 10px; padding: 10px 12px; font-size: 14px; white-space: pre-wrap; overflow-wrap: anywhere; border-left: 3px solid var(--good); }
+.alert.q { border-left-color: var(--accent); }
+.alert .reply-btn { margin-top: 8px; min-height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.alert .reply-btn:hover { border-color: var(--accent); }
+.alert .reply-btn svg { width: 14px; height: 14px; }
+.reply-form { display: flex; gap: 6px; margin-top: 8px; white-space: normal; }
+.reply-form input { flex: 1; min-width: 0; height: 40px; border: 1px solid var(--line); border-radius: 10px; padding: 0 10px; font: inherit; font-size: 15px; background: var(--panel); color: var(--ink); }
+.reply-form button { height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; }
+.alert .done { margin-top: 6px; font-size: 13px; color: var(--good); font-weight: 600; white-space: normal; }
+.alert.enter { animation: pop .3s cubic-bezier(.2,.8,.2,1) both; }
+.empty { color: var(--ink-soft); font-size: 14px; }
+.table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
-th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); font-weight: 600; }
-td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.table-scroll { overflow-x: auto; }
+td.num, th.num { text-align: right; white-space: nowrap; }
+td .s { color: var(--ink-soft); font-size: 13px; }
+pre { margin: 0; max-height: 260px; overflow: auto; background: var(--panel-2); border-radius: 10px; padding: 12px; font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
 
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0 22px; }
-.stat { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); padding: 14px 16px; }
-.stat .v { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.stat .k { font-size: 13px; color: var(--ink-soft); }
+/* how */
+.how { padding-top: 8px; padding-bottom: 56px; }
+.how h2 { font-size: clamp(24px, 3vw, 34px); letter-spacing: -.015em; margin: 0 0 22px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.feat { padding: 20px; }
+.feat .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin-bottom: 14px; }
+.feat .ic svg { width: 20px; height: 20px; }
+.feat h3 { font-size: 17px; margin: 0 0 6px; }
+.feat p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
 
-.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px; }
-details.transcript { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); margin-bottom: 8px; }
-details.transcript > summary { cursor: pointer; padding: 10px 14px; font-size: 14.5px; display: flex; gap: 10px; align-items: center; }
-details.transcript > summary::marker { color: var(--accent); }
-.transcript-body { padding: 4px 14px 14px; display: flex; flex-direction: column; gap: 6px; background: var(--chat-bg); }
-.tag { font-size: 12px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
-.tag.ok { background: color-mix(in srgb, var(--good) 18%, transparent); color: var(--good); }
-.tag.none { background: var(--panel-2); color: var(--ink-soft); }
+/* cta + footer */
+.cta { padding: 32px; display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 40px; }
+.cta h2 { margin: 0 0 4px; font-size: 22px; }
+.cta p { margin: 0; color: var(--ink-soft); }
+.cta-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn { min-height: 46px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; font-weight: 700; text-decoration: none; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.line { border: 1px solid var(--line); color: var(--ink); }
+footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14px; color: var(--ink-soft); }
 
-.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-ul.plain { margin: 0 0 14px; padding-left: 18px; }
-ul.plain li { margin-bottom: 7px; }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; background: var(--panel-2); padding: 1px 5px; border-radius: 5px; }
-footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--ink-soft); font-size: 14px; }
-
-@media (max-width: 900px) {
-  .split { grid-template-columns: 1fr; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .phone { height: 560px; }
+@media (max-width: 960px) {
+  .stage { grid-template-columns: minmax(0, 1fr); }
+  .phone-col { max-width: 440px; width: 100%; margin: 0 auto; }
+  .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 420px) {
-  .top-inner .pill { display: none; }  /* the title alone fits the top bar on a phone */
-  .top-inner { gap: 8px; }
-  .logo { min-width: 0; line-height: 1.2; }
-  #theme-toggle { padding: 8px 10px; }
-  .stats { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .stat .v { font-size: 22px; }
-  .keys { width: 100%; }
-  .msg { max-width: 92%; }
+@media (max-width: 560px) {
+  .hero { padding-top: 28px; padding-bottom: 20px; }
+  th, td { padding: 8px 6px; font-size: 13px; }
+  .card-body { padding: 12px 14px; }
+  .brand small { display: none; }
+  .pill-btn .lbl { display: none; }
+  .pill-btn { width: 40px; padding: 0; justify-content: center; }
+  .phone { padding: 6px; border-radius: 30px; }
+  .screen { height: min(600px, 74svh); border-radius: 25px; }
+  .grid4 { grid-template-columns: 1fr; }
+  .cta { padding: 22px; }
 }
-@media (prefers-reduced-motion: reduce) { .chat { scroll-behavior: auto; } * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
 </style>
-<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:600;line-height:1;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
+</head>
 <body>
-<!-- flowlab-band -->
-<style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
-.fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
-.fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
-.fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Демо сделано <a href="/ru/work/telegram-orders/">Flow Lab</a> без заказчика. Пекарня «Кедр» выдумана.</p>
-<!-- /flowlab-band -->
+<a class="skip" href="#chat-input">Перейти к чату</a>
 <header class="top">
-<div class="wrap top-inner">
-<div class="logo"><span aria-hidden="true" class="logo-mark">🥐</span> Пекарня «Кедр»</div>
-<span class="pill">демо бота заказов</span>
-<div class="top-spacer"></div>
-<div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Переключить дневную и ночную тему" id="theme-toggle" type="button">🌙 Ночь</button>
-</div>
+  <div class="wrap">
+    <a class="brand" href="https://flowlab-dev.github.io/ru/work/whatsapp-bot/" aria-label="Flow Lab · Назад к кейсу">
+      <span class="mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
+      <span>Flow Lab<small>Назад к кейсу</small></span>
+    </a>
+    <div class="fl-lang" role="group" aria-label="Язык"><a href="../" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="./" hreflang="ru" lang="ru" title="Русский">RU</a></div>
+    <button class="pill-btn" id="theme" type="button" aria-label="Переключить день и ночь"><span id="theme-ic" aria-hidden="true"></span><span class="lbl" id="theme-lbl"></span></button>
+  </div>
 </header>
-<main class="wrap">
-<div class="hero">
-<span class="tagline">Telegram-бот · принимает заказы, пока вы спите</span>
-<h1>Пекарня закрыта. А заказ всё равно принят.</h1>
-<p class="lead">В 01:39 покупатель открывает Telegram, выбирает торт, сразу видит настоящую цену и ближайшее возможное время выдачи и оставляет телефон. Утром владелец находит готовый заказ, а не пропущенное сообщение. Всё на этой странице работает на том же движке диалога, что и живой бот. Нажимайте кнопки и смотрите.</p>
-<div class="note"><b>Это мой собственный демо-проект.</b> Пекарня «Кедр», её меню и ночь ниже выдуманы, данных клиентов здесь нет. Телефон на странице — окно в стиле Telegram: в нём прямо в браузере работает движок бота, это не сам Telegram. Тот же файл движка ведёт живого бота через Telegram Bot API.</div>
-</div>
-<section id="try">
-<div class="sec-head">
-<h2>Закажите что-нибудь</h2>
-<p class="muted">Нажимайте кнопки или пишите сами. Бот понимает <code>25.09</code>, <code>25 сентября</code>, <code>завтра</code>, обычные числа и прямо говорит, если что-то не получится.</p>
-</div>
-<div class="split">
-<div>
-<div class="phone">
-<div class="phone-bar">
-<div aria-hidden="true" class="avatar">🥐</div>
-<div>
-<div class="phone-title">Пекарня «Кедр»</div>
-<div class="phone-sub">бот · в сети</div>
-</div>
-</div>
-<div aria-label="Чат с ботом заказов" aria-live="polite" class="chat" id="chat" tabindex="0"></div>
-<form autocomplete="off" class="composer" id="composer">
-<input aria-label="Написать боту" id="input" placeholder="Сообщение" type="text"/>
-<button class="btn-primary" type="submit">Отправить</button>
-</form>
-</div>
-<div class="controls" style="margin-top:12px">
-<button id="restart" type="button">↺ Начать заново</button>
-<span class="small muted">Всё работает прямо на странице: без сети и ключей, данные никуда не уходят.</span>
-</div>
-</div>
-<div>
-<div class="card" style="margin-bottom:16px">
-<div class="card-head"><h3>Что видит владелец на телефоне</h3><span class="pill" id="owner-count">0</span></div>
-<div class="card-body">
-<div class="owner-feed" id="owner-feed"><div class="empty">Пока пусто. Оформите заказ в чате, и он сразу появится здесь.</div></div>
-</div>
-</div>
-<div class="card">
-<div class="card-head"><h3>Так заказы сохраняются</h3></div>
-<div class="card-body">
-<div class="table-scroll">
-<table id="live-orders">
-<thead><tr><th>Заказ</th><th>Что</th><th>Когда</th><th>Получение</th><th class="num">Сумма</th></tr></thead>
-<tbody><tr><td class="empty" colspan="5">Заказов пока нет.</td></tr></tbody>
-</table>
-</div>
-<p class="small muted" style="margin:12px 0 0">Живой бот пишет ту же запись в <code>orders.json</code>. А может писать в Google Таблицу или CRM пекарни: для этого меняется один небольшой файл.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="night">
-<div class="sec-head">
-<h2>Повтор одной ночи</h2>
-<p class="muted" id="night-intro">Нажмите кнопку: движок прямо в вашем браузере обработает заранее придуманную ночь покупателей. Это одна сентябрьская ночь, выдуманная, как и всё демо. Все цифры ниже посчитаны из этого прогона, а не вписаны руками.</p>
-</div>
-<div class="controls">
-<button class="btn-primary" id="run-night" type="button">▶ Запустить ночь</button>
-<span class="small muted" id="night-state">Ещё не запускали.</span>
-</div>
-<div class="stats" hidden="" id="night-stats">
-<div class="stat"><div class="v" id="s-orders">-</div><div class="k">заказов принято</div></div>
-<div class="stat"><div class="v" id="s-revenue">-</div><div class="k">сумма заказов за ночь</div></div>
-<div class="stat"><div class="v" id="s-questions">-</div><div class="k">вопросов передано пекарне</div></div>
-<div class="stat"><div class="v" id="s-chats">-</div><div class="k">чатов обработано</div></div>
-</div>
-<div class="split" hidden="" id="night-result">
-<div class="card">
-<div class="card-head"><h3>Утренний итог для владельца</h3></div>
-<div class="card-body"><div class="owner-msg" id="night-summary"></div></div>
-</div>
-<div class="card">
-<div class="card-head"><h3>Заказы за ночь</h3></div>
-<div class="card-body">
-<div class="table-scroll">
-<table id="night-orders">
-<thead><tr><th>Заказ</th><th>Что</th><th>Когда</th><th>Получение</th><th class="num">Сумма</th></tr></thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-<div hidden="" id="night-transcripts" style="margin-top:20px">
-<h3>Все чаты этой ночи</h3>
-<p class="small muted">Откройте любой, в том числе те, что не закончились заказом. Бота, который справляется только с послушными покупателями, нельзя выпускать к людям.</p>
-<div id="transcript-list"></div>
-</div>
-</section>
-<section id="how">
-<div class="sec-head">
-<h2>Как это устроено</h2>
-</div>
-<div class="cols">
-<div class="card"><div class="card-body">
-<h3>Один движок, два входа</h3>
-<p class="small">Диалог — чистый конечный автомат: он получает текущее состояние и одно событие и возвращает следующее состояние и ответ. Живой бот подаёт в него сообщения из Telegram, эта страница подаёт ваши нажатия. Отдельной версии для демо нет: тест падает, если копия на странице расходится с исходными файлами. Русская и английская версии работают на одном движке, меняется только языковой пакет: фразы, меню и цены в рублях.</p>
-</div></div>
-<div class="card"><div class="card-body">
-<h3>Сделан, чтобы пережить ночь</h3>
-<p class="small">Если ответ потерялся, Telegram присылает сообщение повторно, поэтому бот запоминает номер каждого и не обрабатывает дважды. Сбои сети и лимиты Telegram бот переживает повторными попытками с растущей паузой. Кнопки из старых сообщений он узнаёт и вежливо отвечает, а не портит не до конца оформленный заказ. Заказ записывается на диск до того, как покупатель видит «Готово».</p>
-</div></div>
-<div class="card"><div class="card-body">
-<h3>Без сторонних пакетов, без ключей в коде</h3>
-<p class="small">Бот написан на чистом Node.js, без npm-зависимостей, которые нужно проверять и обновлять. Токен лежит в файле <code>.env</code>, который не попадает в репозиторий, и никогда не печатается в журнале. Хостинг оформляется на аккаунт пекарни, так что данные остаются под её контролем.</p>
-</div></div>
-</div>
-</section>
-<section id="support">
-<div class="sec-head">
-<h2>Что входит в месяц поддержки</h2>
-<p class="muted">Бот не плакат: меняется меню, цены, сам Telegram. Ежемесячная поддержка держит его в рабочем состоянии:</p>
-</div>
-<div class="cols">
-<div class="card"><div class="card-body">
-<ul class="plain small">
-<li>Меню, цены, сроки и зоны доставки обновляются, как только пекарня их меняет.</li>
-<li>Присмотр за ботом: если он перестанет отвечать, я узнаю раньше покупателей.</li>
-<li>Изменения Telegram API учитываются до того, как что-то сломают.</li>
-</ul>
-</div></div>
-<div class="card"><div class="card-body">
-<ul class="plain small">
-<li>Небольшие доработки по мере того, как становится ясно, о чём спрашивают покупатели: новые товары, вопросы, время выдачи.</li>
-<li>Отчёт раз в месяц: сколько заказов принял бот и где покупатели бросали заказ.</li>
-<li>Резервные копии заказов и выгрузка в то, чем пекарня ведёт учёт.</li>
-</ul>
-</div></div>
-</div>
-</section>
+
+<main id="main">
+  <section class="hero wrap">
+    <span class="eyebrow">Живое демо · WhatsApp</span>
+    <h1>Бот заказов в WhatsApp работает прямо здесь</h1>
+    <p class="lead">Нажимайте кнопки или пишите, как клиент. Все ответы пишет настоящий код бота по правилам WhatsApp: до 3 кнопок, список до 10 строк, а если вариантов больше — меню с номерами.</p>
+    <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Пекарня «Кедр» вымышленная, настоящий номер WhatsApp не подключён. Всё, что вы пишете, остаётся на этой странице.</span></p>
+  </section>
+
+  <section class="stage wrap" aria-label="Бот заказов в WhatsApp работает прямо здесь">
+    <div class="phone-col">
+      <div class="phone">
+        <div class="screen" id="screen">
+          <div class="wa-top">
+            <div class="wa-av" aria-hidden="true">К</div>
+            <div><b>Пекарня «Кедр»</b><small>бот заказов</small></div>
+          </div>
+          <div class="msgs" id="msgs" role="log" aria-live="polite" aria-label="Чат с ботом заказов пекарни" tabindex="0"></div>
+          <form class="bar" id="bar" autocomplete="off">
+            <input id="chat-input" type="text" placeholder="Сообщение" aria-label="Написать боту" maxlength="300">
+            <button class="send" type="submit" aria-label="Отправить"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.4 20.4 21 12 3.4 3.6 3.4 10.2 15 12 3.4 13.8z"/></svg></button>
+          </form>
+        </div>
+      </div>
+      <div class="try">
+        <span>Попробуйте:</span>
+        <button class="chip" type="button" data-say="Привет">Привет</button>
+        <button class="chip" type="button" data-say="А хлеб без глютена есть?">А хлеб без глютена есть?</button>
+        <button class="chip" type="button" id="photo">Отправить фото</button>
+        <button class="chip ghost" type="button" id="restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Начать заново</button>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="card">
+        <div class="card-head"><h2>WhatsApp владельца</h2><span class="count"><span id="owner-count">0</span><span class="sr"> Уведомления</span></span></div>
+        <div class="card-body"><div class="feed" id="feed" aria-live="polite"></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Заказы</h2></div>
+        <div class="card-body table-wrap">
+          <table id="orders"><thead><tr><th>№</th><th>Что</th><th>Когда</th><th>Как</th><th class="num">Сумма</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h2>Что получает WhatsApp</h2></div>
+        <div class="card-body"><p class="sub">Тело запроса к WhatsApp Cloud API для последнего сообщения бота.</p><pre id="json" tabindex="0" aria-label="Что получает WhatsApp"></pre></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how wrap">
+    <h2 class="reveal">Что меняется в WhatsApp</h2>
+    <div class="grid4">
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div><h3>Кнопки и списки</h3><p>До 3 коротких вариантов бот показывает кнопками, до 10 — списком. Если вариантов больше, он их нумерует, и ответ «3» работает как нажатие.</p></div>
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><h3>«Привет» открывает меню</h3><p>В WhatsApp разговор начинают с приветствия, а не с /start. Настоящий вопрос бот передаёт человеку, а не отвечает заготовкой.</p></div>
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Проверка каждого сообщения</h3><p>Каждое сообщение от Meta бот сверяет по подписи, а если сообщение пришло дважды, отвечает на него один раз.</p></div>
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div><h3>Фото и голосовые</h3><p>На них бот вежливо отвечает текстом, и заказ продолжается с того же шага.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="card cta reveal">
+      <div><h2>Хотите такого бота для своего дела?</h2><p>Аккаунт WhatsApp Business и номер остаются вашими. Сначала бесплатная оценка.</p></div>
+      <div class="cta-links"><a class="btn primary" href="https://flowlab-dev.github.io/ru/work/whatsapp-bot/#contact">Написать мне</a><a class="btn line" href="https://flowlab-dev.github.io/demo/telegram-orders/ru/">Тот же бот в Telegram</a></div>
+    </div>
+  </section>
 </main>
-<footer>
-<div class="wrap">
-<p><b>Честно о демо.</b> Пекарня «Кедр» выдумана для этого демо. Покупателей, меню, адреса и ночь выше написала я, данных настоящих клиентов здесь нет. Цифры получаются из прогона движка на этой выдуманной ночи, прямо на странице, у вас на глазах.</p>
-<p class="small">Демо-проект для портфолио · этот же код запускает живого бота, как только добавлен токен от @BotFather.</p>
-</div>
-</footer>
+<footer><div class="wrap">Пекарня «Кедр» и её клиенты вымышленные. Демо я сделала сама, это не заказ клиента. Flow Lab · Луна.</div></footer>
+
 <script>
-// ---- ENGINE:START (generated by demo/build-embedded.js - do not edit by hand) ----
+"use strict";
+// ---- ENGINE (generated by whatsapp/demo/build.mjs from engine/*.js - do not edit by hand) ----
 // ---- engine/ru/catalog.js ----
 // Пекарня «Кедр» - меню, цены и правила пекарни. Русский языковой пакет.
 // Та же схема, что engine/catalog.js: те же id, те же поля, только тексты и цены в рублях.
@@ -2086,230 +2028,352 @@ function tapNth(chat, { like, index }) {
   if (!button) throw new Error(`No button #${index} matching "${like}"`);
   return chat.tap(button.text);
 }
-// ---- ENGINE:END ----
+// ---- WHATSAPP CONVERTER (whatsapp/convert.js, same file the live channel uses) ----
+const WA = (() => {
+  // The same engine replies, reshaped for WhatsApp Cloud API limits:
+  //   reply buttons: at most 3, title <= 20 characters;
+  //   list message: at most 10 rows, row title <= 24, description <= 72, button label <= 20;
+  //   interactive body <= 1024 characters, plain text <= 4096.
+  // Anything that does not fit becomes a numbered menu in plain text. The order of the choices is remembered
+  // per customer for every menu, so typing "3" works like pressing the third button or list row
+  // (except where the choices are numbers themselves, such as a quantity).
+
+  const ENTITIES = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'" };
+
+  /** Telegram-style HTML from the engine → WhatsApp formatting (*bold*, _italic_). */
+  function toWhatsAppText(html) {
+    return String(html)
+      .replace(/<b>([\s\S]*?)<\/b>/g, '*$1*')
+      .replace(/<i>([\s\S]*?)<\/i>/g, '_$1_')
+      .replace(/<a [^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g, '$2 ($1)')
+      .replace(/<[^>]+>/g, '')
+      .replace(/&(amp|lt|gt|quot|#39);/g, (m) => ENTITIES[m]);
+  }
+
+  const cut = (s, n) => (s.length <= n ? s : s.slice(0, n - 1) + '…');
+
+  /** "Bread boxes - next-morning bread, 12 hours notice" → title "Bread boxes", description the rest. */
+  function listRow(b) {
+    if (b.text.length <= 24) return { id: b.data, title: b.text };
+    // English labels separate the detail with " - ", Russian ones with " · ".
+    const sep = [' - ', ' · '].map((s) => [s, b.text.indexOf(s)]).filter(([, at]) => at > 0).sort((x, y) => x[1] - y[1])[0];
+    if (sep) return { id: b.data, title: cut(b.text.slice(0, sep[1]), 24), description: cut(b.text.slice(sep[1] + sep[0].length), 72) };
+    return { id: b.data, title: cut(b.text, 24), description: cut(b.text, 72) };
+  }
+
+  // The few words the channel adds itself (list button, list header, numbered-menu hint), per language.
+  const WORDS = {
+    en: { choose: 'Choose', options: 'Options', number: 'Reply with a number.' },
+    ru: { choose: 'Выбрать', options: 'Варианты', number: 'Ответьте цифрой.' },
+  };
+
+  // A greeting on its own opens the menu; anything longer is a real message. Trailing ")", "!", emoji are allowed.
+  const GREETING = new RegExp('^(hi+|hello|hey|hiya|howdy|yo|(hi|hello|hey) there|good (morning|afternoon|evening|day)|start|menu|'
+    + 'привет(ик|ствую)?|здравствуй(те)?|добр(ый|ого) (день|дня|вечер|вечера|времени суток)|доброе утро|доброго утра|хай|салют|начать|меню)'
+    + '[\\s!.,)(:\\p{Extended_Pictographic}\\u{1F3FB}-\\u{1F3FF}\\u200d\\uFE0F]*$', 'iu');
+
+  /** The remembered order of a menu, unless its choices are numbers already ("1", "2" … for a quantity). */
+  const numbered = (buttons) => (buttons.some((b) => /^\d+$/.test(b.text.trim())) ? null
+    : buttons.map((b, i) => ({ n: i + 1, data: b.data, text: b.text })));
+
+  /**
+   * One engine "send" action → { payloads, options }.
+   * payloads: WhatsApp message objects (without messaging_product / to - the API layer adds them).
+   * options: [{ n, data, text }] - the menu's order, so a typed number works like a tap - or null.
+   */
+  function toWhatsApp(action, lang = 'en') {
+    const words = WORDS[lang] || WORDS.en;
+    const text = toWhatsAppText(action.text || '');
+    const buttons = ((action.keyboard && action.keyboard.rows) || []).flat();
+    if (!buttons.length) return { payloads: [{ type: 'text', text: { body: cut(text, 4096) } }], options: null };
+
+    const body = cut(text, 1024);
+    if (buttons.length <= 3 && buttons.every((b) => b.text.length <= 20)) {
+      return {
+        payloads: [{ type: 'interactive', interactive: { type: 'button', body: { text: body },
+          action: { buttons: buttons.map((b) => ({ type: 'reply', reply: { id: b.data, title: b.text } })) } } }],
+        options: numbered(buttons),
+      };
+    }
+    if (buttons.length <= 10) {
+      return {
+        payloads: [{ type: 'interactive', interactive: { type: 'list', body: { text: body },
+          action: { button: words.choose, sections: [{ title: words.options, rows: buttons.map((b) => listRow(b)) }] } } }],
+        options: numbered(buttons),
+      };
+    }
+    const options = buttons.map((b, i) => ({ n: i + 1, data: b.data, text: b.text }));
+    const menu = options.map((o) => `${o.n}. ${o.text}`).join('\n');
+    return { payloads: [{ type: 'text', text: { body: cut(`${text}\n\n${menu}\n\n${words.number}`, 4096) } }], options };
+  }
+
+  /** One incoming WhatsApp message → engine event. `options` is the numbered menu last shown to this customer. */
+  function toEvent(message, options) {
+    if (!message) return null;
+    if (message.type === 'interactive') {
+      const reply = message.interactive.button_reply || message.interactive.list_reply;
+      return reply ? { type: 'callback', data: reply.id } : null;
+    }
+    if (message.type === 'reaction') return null;                                                  // a 👍 on a message is not a reply
+    if (message.type === 'button') return { type: 'callback', data: message.button.payload };   // template quick replies
+    if (message.type !== 'text') return { type: 'unsupported' };                                  // photos, voice, stickers...
+    const body = message.text.body.trim();
+    if (GREETING.test(body)) return { type: 'command', name: 'start' };   // WhatsApp chats start with "Hi", not /start
+    const command = body.match(/^\/([a-z_]+)/i);
+    if (command) return { type: 'command', name: command[1].toLowerCase() };
+    if (options && /^\d{1,2}$/.test(body)) {
+      const hit = options.find((o) => o.n === Number(body));
+      if (hit) return { type: 'callback', data: hit.data };
+    }
+    return { type: 'text', text: body };
+  }
+
+  return { toWhatsApp, toEvent, toWhatsAppText };
+})();
+// ---- END GENERATED ----
 </script>
 <script>
 "use strict";
-(function () {
-  var $ = function (id) { return document.getElementById(id); };
+(() => {
+  const S = {"title":"Пекарня «Кедр»: демо бота заказов в WhatsApp","desc":"Бот заказов в WhatsApp прямо в браузере: кнопки, списки, уведомления владельцу. На странице работает настоящий код бота, пекарня вымышленная.","skip":"Перейти к чату","back":"Назад к кейсу","langAria":"Язык","themeAria":"Переключить день и ночь","themeDay":"День","themeNight":"Ночь","eyebrow":"Живое демо · WhatsApp","h1":"Бот заказов в WhatsApp работает прямо здесь","lead":"Нажимайте кнопки или пишите, как клиент. Все ответы пишет настоящий код бота по правилам WhatsApp: до 3 кнопок, список до 10 строк, а если вариантов больше — меню с номерами.","note":"Пекарня «Кедр» вымышленная, настоящий номер WhatsApp не подключён. Всё, что вы пишете, остаётся на этой странице.","avatar":"К","chatName":"Пекарня «Кедр»","chatSub":"бот заказов","chatAria":"Чат с ботом заказов пекарни","customer":"Саша","inputPh":"Сообщение","inputAria":"Написать боту","sendAria":"Отправить","tryLabel":"Попробуйте:","chipHi":"Привет","chipQ":"А хлеб без глютена есть?","chipPhoto":"Отправить фото","photo":"📷 Фото","restart":"Начать заново","send":"Отправить","close":"Закрыть","ownerH":"WhatsApp владельца","ownerCountAria":"Уведомления","ownerEmpty":"Пока пусто. Оформите заказ или задайте вопрос в чате, и уведомление появится здесь. Отсюда же можно ответить.","replyBtn":"Ответить","replyAria":"Ответ покупателю","replyPh":"Ваш ответ","replyDraft":"Да, по пятницам печём хлеб без глютена. Отложить для вас буханку?","ordersH":"Заказы","ordersEmpty":"Заказов пока нет.","colNo":"№","colItem":"Что","colWhen":"Когда","colHow":"Как","colTotal":"Сумма","pickup":"самовывоз","delivery":"доставка","jsonH":"Что получает WhatsApp","jsonSub":"Тело запроса к WhatsApp Cloud API для последнего сообщения бота.","howH":"Что меняется в WhatsApp","f1h":"Кнопки и списки","f1p":"До 3 коротких вариантов бот показывает кнопками, до 10 — списком. Если вариантов больше, он их нумерует, и ответ «3» работает как нажатие.","f2h":"«Привет» открывает меню","f2p":"В WhatsApp разговор начинают с приветствия, а не с /start. Настоящий вопрос бот передаёт человеку, а не отвечает заготовкой.","f3h":"Проверка каждого сообщения","f3p":"Каждое сообщение от Meta бот сверяет по подписи, а если сообщение пришло дважды, отвечает на него один раз.","f4h":"Фото и голосовые","f4p":"На них бот вежливо отвечает текстом, и заказ продолжается с того же шага.","ctaH":"Хотите такого бота для своего дела?","ctaP":"Аккаунт WhatsApp Business и номер остаются вашими. Сначала бесплатная оценка.","ctaBtn":"Написать мне","tgBtn":"Тот же бот в Telegram","foot":"Пекарня «Кедр» и её клиенты вымышленные. Демо я сделала сама, это не заказ клиента. Flow Lab · Луна."};
+  const LANG = document.documentElement.lang;
+  const $ = (id) => document.getElementById(id);
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // WhatsApp formatting the bot sends (*bold*, _italic_) shown the way the app shows it.
+  const waHtml = (t) => esc(t).replace(/\*([^*\n]+)\*/g, '<b>$1</b>').replace(/(^|[\s(])_([^_\n]+)_(?=$|[\s).,!?])/g, '$1<i>$2</i>');
 
-  /* ---------------------------------------------------------------- theme */
-  var params = new URLSearchParams(location.search);
-  var root = document.documentElement;
-  function setTheme(name) {
-    root.setAttribute('data-theme', name);
-    $('theme-toggle').textContent = name === 'dark' ? '☀️ День' : '🌙 Ночь';
+  /* theme: ?theme=dark|light, otherwise the system setting, remembered per visitor */
+  const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  function setTheme(name, save) {
+    root.dataset.theme = name;
+    // The button names the theme it switches to.
+    $('theme-ic').innerHTML = name === 'dark' ? ICON_SUN : ICON_MOON;
+    $('theme-lbl').textContent = name === 'dark' ? S.themeDay : S.themeNight;
+    if (save) { try { localStorage.setItem('fl-theme', name); } catch (e) { /* private mode */ } }
   }
-  var wantedTheme = params.get('theme');
-  setTheme(wantedTheme === 'dark' || wantedTheme === 'light' ? wantedTheme
-    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-  $('theme-toggle').addEventListener('click', function () {
-    setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-  });
+  const asked = new URLSearchParams(location.search).get('theme');
+  let saved = null; try { saved = localStorage.getItem('fl-theme'); } catch (e) { /* private mode */ }
+  setTheme(asked === 'dark' || asked === 'light' ? asked : saved === 'dark' || saved === 'light' ? saved
+    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'), false);
+  $('theme').addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
 
-  /* ------------------------------------------------------------ live chat */
-  // The clock is pinned so the demo shows the same days every time it is opened.
-  var DEMO_NOW = NIGHT_START + 105 * 60 * 1000;
-  var chat = null;
-  var shown = 0;
-  // The greeting fits the chat window, so the first paint does not scroll it: a scroll during load
-  // makes Chrome stop measuring the largest paint, and phone Lighthouse then reports no LCP at all.
-  var firstPaint = true;
+  /* the chat: engine + converter, exactly as the live channel wires them */
+  const START = NIGHT_START + 105 * 60 * 1000;   // the same pinned evening as the Telegram demo
+  const TO = '15550001234';                      // a fictional customer number
+  let session, menus, now, sequence, orders, alerts, lastBody, busy = false, timer = null;
+  const msgs = $('msgs');
 
-  function newChat() {
-    chat = createChat({ now: DEMO_NOW, firstName: 'Саша', username: 'sam_bakes', chatId: 7, sequence: 1 });
-    shown = 0;
-    $('chat').innerHTML = '';
-    renderOwner();
-    renderLiveOrders();
-    chat.start();
-    draw();
+  const clock = (ts) => new Date(ts).toISOString().slice(11, 16);
+  const wrap = (p) => Object.assign({ messaging_product: 'whatsapp', recipient_type: 'individual', to: TO }, p);   // as whatsapp/server.js sends it
+
+  function reset() {
+    clearTimeout(timer); busy = false;   // a reply still "typing" belongs to the old chat
+    session = newSession(); menus = null; now = START; sequence = 1; orders = []; alerts = []; lastBody = null;
+    msgs.innerHTML = '<div class="day">' + esc(humanDate(isoDate(START)).replace(/^./, (c) => c.toUpperCase())) + '</div>';
+    $('feed').innerHTML = '';
+    closeSheet(); renderSide();
   }
 
-  function draw() {
-    var box = $('chat');
-    var old = box.querySelector('.keys');
-    if (old) old.remove();
+  function bubble(cls, html, animate) {
+    const d = document.createElement('div');
+    d.className = 'b ' + cls + (animate && !reduce ? ' enter' : '');
+    d.innerHTML = '<span class="t">' + html + '</span><time>' + clock(now) + '</time>';
+    msgs.appendChild(d);
+    return d;
+  }
 
-    for (; shown < chat.messages.length; shown += 1) {
-      var m = chat.messages[shown];
-      var bubble = document.createElement('div');
-      bubble.className = 'msg ' + (m.from === 'bot' ? 'bot' : 'me');
-      // Bot text is already HTML-escaped by the engine before <b> is added.
-      if (m.from === 'bot') bubble.innerHTML = m.text;
-      else bubble.textContent = m.text;
-      box.appendChild(bubble);
-    }
-
-    var keyboard = chat.keyboard();
-    if (keyboard) {
-      var pad = document.createElement('div');
-      pad.className = 'keys';
-      keyboard.rows.forEach(function (row) {
-        var line = document.createElement('div');
-        line.className = 'row';
-        row.forEach(function (b) {
-          var button = document.createElement('button');
-          button.type = 'button';
-          button.textContent = b.text;
-          button.addEventListener('click', function () { chat.tap(b.text); draw(); });
-          line.appendChild(button);
-        });
-        pad.appendChild(line);
+  function drawPayload(p, animate) {
+    if (p.type === 'text') { bubble('bot', waHtml(p.text.body), animate); return; }
+    const it = p.interactive;
+    const d = bubble('bot', waHtml(it.body.text), animate);
+    if (it.type === 'button') {
+      const box = document.createElement('div');
+      box.className = 'replies';
+      it.action.buttons.forEach((b) => {
+        const btn = document.createElement('button');
+        btn.type = 'button'; btn.textContent = b.reply.title;
+        btn.addEventListener('click', () => customer({ type: 'interactive', interactive: { type: 'button_reply', button_reply: { id: b.reply.id, title: b.reply.title } } }, esc(b.reply.title)));
+        box.appendChild(btn);
       });
-      box.appendChild(pad);
+      msgs.appendChild(box);
+    } else {
+      const btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'list-open';
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>' + esc(it.action.button);
+      btn.addEventListener('click', () => openSheet(it, btn));
+      d.appendChild(btn);
     }
-    if (!firstPaint) box.scrollTop = box.scrollHeight;
-    firstPaint = false;
-    renderOwner();
-    renderLiveOrders();
   }
 
-  function renderOwner() {
-    var feed = $('owner-feed');
-    $('owner-count').textContent = String(chat.ownerMessages.length);
-    if (chat.ownerMessages.length === 0) {
-      feed.innerHTML = '<div class="empty">Пока пусто. Оформите заказ в чате, и он сразу появится здесь.</div>';
-      return;
-    }
-    feed.innerHTML = '';
-    chat.ownerMessages.slice().reverse().forEach(function (m) {
-      var div = document.createElement('div');
-      div.className = 'owner-msg' + (m.kind === 'question' ? ' question' : '');
-      div.innerHTML = m.text;
-      feed.appendChild(div);
+  function scrollDown() { msgs.scrollTop = msgs.scrollHeight; }
+
+  // One customer message → engine → WhatsApp payloads, the same path as whatsapp/server.js.
+  function customer(message, labelHtml) {
+    if (busy) return;
+    closeSheet();
+    now += 20 * 1000;
+    if (labelHtml) bubble('me', labelHtml, true);
+    scrollDown();
+    const event = WA.toEvent(message, menus);
+    if (!event) return;
+    const result = handle(session, event, { now, chatId: 'wa:' + TO, firstName: S.customer, username: null, sequence });
+    session = result.session;
+    const out = [];
+    result.actions.forEach((a) => {
+      if (a.type === 'send') { const w = WA.toWhatsApp(a, LANG); menus = w.options; out.push(...w.payloads); }
+      else if (a.type === 'save_order') { orders.push(a.order); sequence += 1; }
+      else if (a.type === 'owner') alerts.push({ kind: a.kind, text: WA.toWhatsAppText(a.text), at: now });
     });
+    if (out.length) lastBody = out.map(wrap);
+    // A short "typing" pause, so the reply reads as a reply.
+    busy = true;
+    const dots = document.createElement('div');
+    dots.className = 'typing'; dots.setAttribute('aria-hidden', 'true'); dots.innerHTML = '<i></i><i></i><i></i>';
+    msgs.appendChild(dots); scrollDown();
+    timer = setTimeout(() => {
+      dots.remove(); busy = false;
+      now += 3 * 1000;
+      out.forEach((p) => drawPayload(p, true));
+      renderSide(); scrollDown();
+    }, reduce ? 120 : 520);
   }
 
-  function orderRow(o) {
-    var tr = document.createElement('tr');
-    tr.innerHTML =
-      '<td>' + o.number + '</td>' +
-      '<td>' + esc(o.item.label) + ' × ' + o.item.qty + '</td>' +
-      '<td>' + o.handover.dateLabel + '<br><span class="small muted">' + esc(o.handover.slotLabel) + '</span></td>' +
-      '<td>' + (o.handover.method === 'delivery'
-        ? '🚚 ' + esc(o.handover.address)
-        : '🏠 самовывоз') + '</td>' +
-      '<td class="num">' + money(o.totals.totalCents) + '</td>';
-    return tr;
+  /* the list menu sheet */
+  let sheetFrom = null;
+  function openSheet(it, from) {
+    closeSheet();
+    sheetFrom = from;
+    const veil = document.createElement('div');
+    veil.className = 'sheet-veil'; veil.id = 'veil';
+    const rows = it.action.sections[0].rows;
+    veil.innerHTML = '<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-t">' +
+      '<div class="sheet-head"><button class="icon-btn" type="button" id="sheet-x" aria-label="' + esc(S.close) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button><b id="sheet-t">' + esc(it.action.button) + '</b></div>' +
+      '<div class="sheet-sec">' + esc(it.action.sections[0].title) + '</div>' +
+      '<div class="rows">' + rows.map((r, i) => '<label><span><b>' + esc(r.title) + '</b>' + (r.description ? '<small>' + esc(r.description) + '</small>' : '') + '</span><input type="radio" name="row" value="' + i + '"></label>').join('') + '</div>' +
+      '<button class="sheet-send" type="button" id="sheet-send" disabled>' + esc(S.send) + '</button></div>';
+    $('screen').appendChild(veil);
+    const send = $('sheet-send');
+    veil.querySelectorAll('input').forEach((r) => r.addEventListener('change', () => { send.disabled = false; }));
+    send.addEventListener('click', () => {
+      const picked = veil.querySelector('input:checked');
+      if (!picked) return;
+      const row = rows[Number(picked.value)];
+      sheetFrom = null;
+      customer({ type: 'interactive', interactive: { type: 'list_reply', list_reply: { id: row.id, title: row.title } } }, esc(row.title));
+      // With a mouse the next move is typing; on a phone the keyboard would cover the answer, so focus the chat.
+      (window.matchMedia('(pointer: fine)').matches ? $('chat-input') : msgs).focus({ preventScroll: true });
+    });
+    $('sheet-x').addEventListener('click', () => closeSheet(true));
+    veil.addEventListener('click', (e) => { if (e.target === veil) closeSheet(true); });
+    veil.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { e.preventDefault(); closeSheet(true); }
+      if (e.key === 'Tab') {   // keep focus inside the sheet; the radios are one tab stop, Send counts once enabled
+        const x = $('sheet-x'), active = document.activeElement;
+        const radio = veil.querySelector('input:checked') || veil.querySelector('input');
+        const atEnd = send.disabled ? active.tagName === 'INPUT' : active === send;
+        if (e.shiftKey && active === x) { e.preventDefault(); (send.disabled ? radio : send).focus(); }
+        else if (!e.shiftKey && atEnd) { e.preventDefault(); x.focus(); }
+      }
+    });
+    (veil.querySelector('input') || $('sheet-x')).focus({ preventScroll: true });
+  }
+  function closeSheet(returnFocus) {
+    const veil = $('veil');
+    if (veil) veil.remove();
+    if (returnFocus && sheetFrom && sheetFrom.isConnected) sheetFrom.focus({ preventScroll: true });
+    sheetFrom = null;
   }
 
-  function renderLiveOrders() {
-    var body = $('live-orders').querySelector('tbody');
-    body.innerHTML = '';
-    if (chat.orders.length === 0) {
-      body.innerHTML = '<tr><td colspan="5" class="empty">Заказов пока нет.</td></tr>';
-      return;
+  /* the owner's side */
+  function renderSide() {
+    const feed = $('feed');
+    $('owner-count').textContent = String(alerts.length);
+    if (!alerts.length) feed.innerHTML = '<div class="empty">' + esc(S.ownerEmpty) + '</div>';
+    else {
+      const empty = feed.querySelector('.empty');
+      if (empty) empty.remove();
+      // Only new alerts are added (newest on top), so a screen reader hears each one once.
+      alerts.forEach((a) => { if (!a.node) { a.node = alertNode(a); feed.prepend(a.node); } });
     }
-    chat.orders.forEach(function (o) { body.appendChild(orderRow(o)); });
+    const body = $('orders').querySelector('tbody');
+    body.innerHTML = orders.length ? orders.map((o) =>
+      '<tr><td>' + esc(o.number) + '</td><td>' + esc(o.item.label) + ' × ' + o.item.qty + '</td>' +
+      '<td>' + esc(o.handover.dateLabel) + '<br><span class="s">' + esc(o.handover.slotLabel) + '</span></td>' +
+      '<td>' + (o.handover.method === 'delivery' ? esc(S.delivery) + '<br><span class="s">' + esc(o.handover.address) + '</span>' : esc(S.pickup)) + '</td>' +
+      '<td class="num">' + money(o.totals.totalCents) + '</td></tr>').join('')
+      : '<tr><td colspan="5" class="empty">' + esc(S.ordersEmpty) + '</td></tr>';
+    $('json').textContent = lastBody ? JSON.stringify(lastBody.length === 1 ? lastBody[0] : lastBody, null, 2) : '';
   }
 
-  $('composer').addEventListener('submit', function (e) {
+  // One alert in the owner's WhatsApp. "Reply" does what replying to the alert does on the live bot:
+  // the text goes to the customer's chat as a message from the bakery (whatsapp/server.js, relayOwnerReply).
+  function alertNode(a) {
+    const d = document.createElement('div');
+    d.className = 'alert' + (a.kind === 'question' ? ' q' : '') + (reduce ? '' : ' enter');
+    d.innerHTML = '<div>' + waHtml(a.text) + '</div>';
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'reply-btn';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>' + esc(S.replyBtn);
+    btn.addEventListener('click', () => {
+      const form = document.createElement('form');
+      form.className = 'reply-form';
+      form.innerHTML = '<input type="text" maxlength="500" autocomplete="off" aria-label="' + esc(S.replyAria) + '" placeholder="' + esc(S.replyPh) + '"><button type="submit">' + esc(S.send) + '</button>';
+      btn.replaceWith(form);
+      const input = form.querySelector('input');
+      input.value = S.replyDraft; input.focus({ preventScroll: true }); input.select();
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const v = input.value.trim();
+        if (!v || busy) return;
+        now += 40 * 1000;
+        const p = { type: 'text', text: { body: WA.toWhatsAppText(T.ownerReply(v)) } };
+        lastBody = [wrap(p)];
+        drawPayload(p, true); scrollDown();
+        const ok = document.createElement('div');
+        ok.className = 'done'; ok.textContent = T.REPLY_DELIVERED;
+        form.replaceWith(ok);
+        renderSide();
+      });
+    });
+    d.appendChild(btn);
+    return d;
+  }
+
+  $('bar').addEventListener('submit', (e) => {
     e.preventDefault();
-    var value = $('input').value.trim();
-    if (!value) return;
-    $('input').value = '';
-    if (value.charAt(0) === '/') chat.command(value.slice(1).split(/\s/)[0].toLowerCase());
-    else chat.type(value);
-    draw();
+    const v = $('chat-input').value.trim();
+    if (!v || busy) return;
+    $('chat-input').value = '';
+    customer({ type: 'text', text: { body: v } }, esc(v));
   });
-  $('restart').addEventListener('click', newChat);
+  document.querySelectorAll('[data-say]').forEach((b) => b.addEventListener('click', () => customer({ type: 'text', text: { body: b.dataset.say } }, esc(b.dataset.say))));
+  $('photo').addEventListener('click', () => customer({ type: 'image', image: { id: 'demo' } }, esc(S.photo)));
+  $('restart').addEventListener('click', () => { reset(); first(); });
 
-  /* ----------------------------------------------------------- the night */
-  function renderNight() {
-    var night = runNight();
-
-    $('s-orders').textContent = String(night.orders.length);
-    $('s-revenue').textContent = money(night.revenueCents);
-    $('s-questions').textContent = String(night.questions);
-    $('s-chats').textContent = String(night.chats.length);
-    $('night-stats').hidden = false;
-    $('night-result').hidden = false;
-    $('night-transcripts').hidden = false;
-    $('night-state').textContent = 'Ночь прокручена только что, прямо на этой странице.';
-
-    $('night-summary').innerHTML = nightSummary(night.orders, night.questions, night.start, night.end);
-    // The sentence is written from the run itself, so it cannot drift from it.
-    $('night-intro').textContent = night.chats.length + (night.chats.length % 10 === 1 && night.chats.length % 100 !== 11 ? ' человек написал' : night.chats.length % 10 >= 2 && night.chats.length % 10 <= 4 && (night.chats.length % 100 < 12 || night.chats.length % 100 > 14) ? ' человека написали' : ' человек написали') + ' в пекарню с '
-      + humanTime(night.start) + ' до ' + humanTime(night.end)
-      + '. Это одна сентябрьская ночь, выдуманная, как и всё демо. Все цифры ниже посчитаны из этого прогона только что, на этой странице.';
-
-    var body = $('night-orders').querySelector('tbody');
-    body.innerHTML = '';
-    night.orders.forEach(function (o) { body.appendChild(orderRow(o)); });
-
-    var list = $('transcript-list');
-    list.innerHTML = '';
-    night.chats.forEach(function (entry) {
-      var placed = entry.chat.orders.length > 0;
-      var asked = entry.chat.ownerMessages.some(function (m) { return m.kind === 'question'; });
-      var box = document.createElement('details');
-      box.className = 'transcript';
-      var head = document.createElement('summary');
-      head.innerHTML = '<b>' + humanTime(entry.chat.messages.length ? night.start + entry.scenario.at : night.start) + '</b> ' +
-        esc(entry.scenario.title) +
-        ' <span class="tag ' + (placed ? 'ok' : 'none') + '">' +
-        (placed ? money(entry.chat.orders[0].totals.totalCents) : (asked ? 'вопрос' : 'без заказа')) + '</span>';
-      box.appendChild(head);
-      var inner = document.createElement('div');
-      inner.className = 'transcript-body';
-      entry.chat.messages.forEach(function (m) {
-        var bubble = document.createElement('div');
-        bubble.className = 'msg ' + (m.from === 'bot' ? 'bot' : 'me');
-        if (m.from === 'bot') bubble.innerHTML = m.text;
-        else bubble.textContent = m.text;
-        inner.appendChild(bubble);
-      });
-      box.appendChild(inner);
-      list.appendChild(box);
-    });
+  // The chat opens the way a WhatsApp chat does: the customer says hello. Drawn without the
+  // typing pause and without scrolling, so the first paint is final.
+  function first() {
+    now += 20 * 1000;
+    bubble('me', esc(S.chipHi), false);
+    const result = handle(session, WA.toEvent({ type: 'text', text: { body: S.chipHi } }, null), { now, chatId: 'wa:' + TO, firstName: S.customer, username: null, sequence });
+    session = result.session;
+    const out = [];
+    result.actions.forEach((a) => { if (a.type === 'send') { const w = WA.toWhatsApp(a, LANG); menus = w.options; out.push(...w.payloads); } });
+    lastBody = out.map(wrap);
+    out.forEach((p) => drawPayload(p, false));
+    renderSide();
   }
+  reset(); first();
 
-  $('run-night').addEventListener('click', renderNight);
-
-  /* ------------------------------------------------- address-bar switches */
-  newChat();
-  if (params.get('play')) {
-    var scenario = scenarioById(params.get('play'));
-    if (scenario) {
-      chat = createChat({
-        now: NIGHT_START + scenario.at,
-        firstName: scenario.customer.firstName,
-        username: scenario.customer.username,
-        chatId: 7, sequence: 1,
-      });
-      shown = 0;
-      $('chat').innerHTML = '';
-      playScenario(chat, scenario, params.get('stop') ? Number(params.get('stop')) : undefined);
-      draw();
-    }
-  }
-  if (params.get('night') === '1') renderNight();
-  if (params.get('open')) {
-    var wanted = params.get('open');
-    setTimeout(function () {
-      var items = document.querySelectorAll('#transcript-list details');
-      if (wanted === 'all') items.forEach(function (d) { d.open = true; });
-      else if (items[Number(wanted)]) items[Number(wanted)].open = true;
-    }, 0);
-  }
-  // ?only=try|night|how|support shows one section on its own - used for the screenshots
-  // in the case study, so each picture is the section itself and not a scroll position.
-  var only = params.get('only');
-  if (only) {
-    document.querySelectorAll('main > section').forEach(function (node) {
-      if (node.id !== only) node.hidden = true;
-    });
-    var hero = document.querySelector('.hero');
-    if (hero) hero.hidden = true;
-  }
-  if (location.hash) {
-    try {
-      var target = document.querySelector(location.hash);
-      if (target) target.scrollIntoView();
-    } catch (error) { /* "#1" and friends are not valid selectors - not worth an error */ }
-  }
-}());
+  /* gentle reveal of the sections below the demo */
+  const io = 'IntersectionObserver' in window && !reduce ? new IntersectionObserver((list) => {
+    list.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' }) : null;
+  document.querySelectorAll('.reveal').forEach((n) => (io ? io.observe(n) : n.classList.add('in')));
+})();
 </script>
 </body>
 </html>
