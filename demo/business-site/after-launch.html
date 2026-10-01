@@ -278,6 +278,30 @@ a:hover { text-decoration-thickness: 2px; }
   .nav .nav-quote { margin-left: auto; padding: 0.5rem 0.75rem; }
 }
 
+/* М-42: on a narrow phone the head is exactly two rows. Top row: wordmark,
+   EN / RU and an icon-only theme switch (its word stays for screen readers).
+   Second row: the three section links on one line; the RFQ button already
+   sits right below in the hero, so the head drops its copy. */
+@media (max-width: 30rem) {
+  .masthead .wrap { column-gap: 0.5rem; }
+  .wordmark { flex: 1 1 0; min-width: 0; gap: 0.5rem; font-size: 0.98rem; }
+  .theme-toggle { padding: 0; justify-content: center; }
+  .theme-toggle #theme-label {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+  }
+  .nav {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    column-gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { white-space: nowrap; font-size: 0.82rem; padding-inline: 0; }
+  .nav .nav-quote { display: none; }
+}
+
 /* --------------------------------------------------------------- shear */
 
 .shear {
