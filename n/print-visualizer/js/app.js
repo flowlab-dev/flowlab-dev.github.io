@@ -41,7 +41,7 @@ const GLOWS = ['#ffe7b8', '#ffffff', '#cfe3ff', '#ffc9a3'];
 // bathroom → type 'tile' or 'glass' · office → 'metal' or 'glass' · commercial → 'metal' or 'backlit'.
 const SCENES = [
   {
-    id: 'kitchen', name: { en: 'Kitchen backsplash', ru: 'Кухонный фартук' }, src: 'rooms/kitchen-tiles.jpg',
+    id: 'kitchen', name: { en: 'Backsplash', ru: 'Кухонный фартук' }, src: 'rooms/kitchen-tiles.jpg',
     lightMatch: { colour: 1.45, strength: 0.95 }, // white tiles: the warm under-cabinet light is the light's own colour
     occluders: [rect(180, 464, 213, 514), rect(728, 464, 759, 514), rect(867, 466, 899, 516)],
     // polished granite: wash out the old tiles' reflection, mirror the new print in it
@@ -108,7 +108,7 @@ const SCENES = [
     }],
   },
   {
-    id: 'glass-block', name: { en: 'Glass block wall', ru: 'Стена из стеклоблоков' }, src: 'rooms/glass-block.jpg',
+    id: 'glass-block', name: { en: 'Glass block wall', ru: 'Стекло\u00adблоки' }, src: 'rooms/glass-block.jpg',
     lightMatch: { colour: 0, strength: 0.7 },
     surfaceThrough: 0.55, // real wavy glass and reflections show through the ink
     occluders: [],
@@ -536,7 +536,8 @@ function syncLayers() {
   });
   const add = document.createElement('button');
   add.type = 'button'; add.className = 'chip add';
-  add.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>${t('chip.add')}`;
+  add.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="lbl">${t('chip.add')}</span>`;
+  add.setAttribute('aria-label', t('chip.add'));
   add.addEventListener('click', addPrint);
   box.append(add);
 }
