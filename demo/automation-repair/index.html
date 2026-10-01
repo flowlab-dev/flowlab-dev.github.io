@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google" content="notranslate">
-<title>Broken n8n Order Intake — Repair Report</title>
+<title>Broken n8n Order Intake: Repair Report</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23a6432a'/><circle cx='9' cy='16' r='3.2' fill='white'/><circle cx='23' cy='10' r='3.2' fill='white'/><circle cx='23' cy='22' r='3.2' fill='white'/><path d='M12 15l8-4M12 17l8 4' stroke='white' stroke-width='2.2' stroke-linecap='round'/></svg>">
-<meta name="description" content="A broken n8n order-intake automation, the root cause of each failure, and the repaired workflow — both versions replayed over the same shift so the difference can be counted.">
+<meta name="description" content="A broken n8n order-intake automation, the root cause of each failure, and the repaired workflow. Both versions are replayed over the same shift so the difference can be counted.">
 <style>
 /* Palewood repair report — light and dark, phone first. */
 
@@ -476,16 +476,16 @@ html.shift-done .col .end { opacity: 1; }
 <main class="wrap">
 
   <div class="hero">
-    <p class="eyebrow">n8n · Zapier · Make — repair work</p>
-    <h1>An order-intake automation that lost one order in eight — and said nothing</h1>
+    <p class="eyebrow">n8n · Zapier · Make: repair work</p>
+    <h1>An order-intake automation that lost one order in eight and said nothing</h1>
     <p class="lede">
       A small ceramics studio ran orders from their shop into Google Sheets, a confirmation email and
       a Slack channel. It worked for months, then started dropping orders and sending some customers
       two confirmations. Nobody noticed until a customer asked where their mug was.
     </p>
     <p class="lede">
-      This page is the repair: what was broken, why, and what the fix changed — with both versions of
-      the workflow replayed over the same shift so the difference is counted, not claimed.
+      This page is the repair: what was broken, why, and what the fix changed. Both versions of
+      the workflow are replayed over the same shift, so the difference is counted, not claimed.
     </p>
     <p class="note">
       <strong>Self-initiated demo.</strong> Palewood Ceramics is an invented company; the orders,
@@ -500,7 +500,7 @@ html.shift-done .col .end { opacity: 1; }
     <div class="complaints">
       <div class="complaint">
         <p class="quote">“Some orders just never show up in the sheet.”</p>
-        <p>No pattern she could see — a few every day, always discovered from the customer’s side.</p>
+        <p>No pattern she could see: a few every day, always discovered from the customer’s side.</p>
       </div>
       <div class="complaint">
         <p class="quote">“A few customers got the same confirmation twice.”</p>
@@ -530,7 +530,7 @@ html.shift-done .col .end { opacity: 1; }
   <section id="compare">
     <h2>Replay the same shift through both versions</h2>
     <p class="sub">
-      One five-hour shift: 120 orders, 60 scheduled runs, and the same interruptions in both runs —
+      One five-hour shift: 120 orders, 60 scheduled runs, and the same interruptions in both runs:
       a seven-minute shop-host restart, one rate limit and one bad gateway from the shop API, two
       Gmail quota blocks, three orders the shop published seven to nine minutes late, four customers
       who corrected their order a few minutes after placing it, one order without a surname, one
@@ -540,20 +540,20 @@ html.shift-done .col .end { opacity: 1; }
 
     <div class="run-bar">
       <button class="btn" id="run-button" type="button">Run both versions</button>
-      <span class="run-status" id="run-status">Nothing has run yet — the numbers below are filled in by the run.</span>
+      <span class="run-status" id="run-status">Nothing has run yet. The numbers below are filled in by the run.</span>
     </div>
 
     <div class="compare">
       <div class="panel bad-panel">
         <div class="panel-title">
-          <h3>Before — “Order intake v3”</h3>
+          <h3>Before: “Order intake v3”</h3>
           <span class="panel-file">order-intake-BROKEN.json</span>
         </div>
         <div id="metrics-broken"></div>
       </div>
       <div class="panel good-panel">
         <div class="panel-title">
-          <h3>After — “Order intake v4”</h3>
+          <h3>After: “Order intake v4”</h3>
           <span class="panel-file">order-intake-FIXED.json</span>
         </div>
         <div id="metrics-fixed"></div>
@@ -567,7 +567,7 @@ html.shift-done .col .end { opacity: 1; }
     <h2>What was broken, and why</h2>
     <p class="sub">
       Six defects. The “before” and “after” snippets are read out of the two workflow files on this
-      page — not retyped — so they cannot drift from what actually runs.
+      page (not retyped), so they cannot drift from what actually runs.
     </p>
     <div id="defects"></div>
   </section>
@@ -576,7 +576,7 @@ html.shift-done .col .end { opacity: 1; }
     <h2>Run log</h2>
     <p class="sub">
       Every scheduled run of the shift, as n8n would list its executions. In the broken version the
-      failures are the rows in red — and none of them produced a message to anyone.
+      failures are the rows in red, and none of them produced a message to anyone.
     </p>
     <div class="log-controls">
       <button class="pill" id="log-broken" type="button" aria-pressed="true">Before (v3)</button>
@@ -600,8 +600,8 @@ html.shift-done .col .end { opacity: 1; }
     <h2>How this page runs the workflows</h2>
     <p class="sub">So that nothing here has to be taken on trust.</p>
     <ul class="plain">
-      <li><strong>The two JSON files are written in n8n’s export format</strong> — node types,
-        typeVersions, resource locators, retry settings and error outputs — and are meant to be loaded
+      <li><strong>The two JSON files are written in n8n’s export format</strong> (node types,
+        typeVersions, resource locators, retry settings and error outputs) and are meant to be loaded
         with <em>Workflows → Import from file</em>. To be exact about it: they were written for this
         demo and have not been opened inside a running n8n instance, so treat the canvas as untested
         and the logic as tested. The nodes, the expressions and the JavaScript inside the Code nodes
@@ -611,17 +611,17 @@ html.shift-done .col .end { opacity: 1; }
         actually runs the JavaScript stored in the Code nodes. The shop API, Google Sheets, Gmail and
         Slack are local mocks with scripted outages.</li>
       <li><strong>Both versions get the identical shift.</strong> Same orders, same timestamps, same
-        outages, same virtual clock — so retrying two seconds apart cannot escape a seven-minute outage.</li>
+        outages, same virtual clock, so retrying two seconds apart cannot escape a seven-minute outage.</li>
       <li><strong>It is not n8n itself.</strong> The runner covers the nine node types these workflows
-        use — Schedule Trigger, Error Trigger, HTTP Request, Code, Split Out, IF, Google Sheets, Gmail
-        and Slack — and does not reproduce n8n’s queue mode, concurrency or its UI.</li>
+        use (Schedule Trigger, Error Trigger, HTTP Request, Code, Split Out, IF, Google Sheets, Gmail
+        and Slack) and does not reproduce n8n’s queue mode, concurrency or its UI.</li>
       <li><strong>One n8n quirk to know before testing it there:</strong> the cursor and the memory of
         handled orders live in the workflow’s static data, which n8n keeps for production executions of
         an active workflow, not for manual runs from the editor. Pressing “Execute workflow” by hand
         will therefore look as if the cursor never moves.</li>
       <li><strong>One difference worth naming:</strong> the runner retries the item that failed. n8n
         retries the whole node, which can repeat items that already succeeded. For a node with a side
-        effect — sending email — the production build therefore loops over orders one at a time, so a
+        effect (sending email), the production build therefore loops over orders one at a time, so a
         retry cannot email anyone twice. That loop is the next step recommended in the written repair report (available on request),
         not something this replay pretends to prove.</li>
       <li><strong>The numbers in the panels come from the run you just triggered</strong>, not from
@@ -639,7 +639,7 @@ html.shift-done .col .end { opacity: 1; }
         <li><strong>Keeping up with the services.</strong> Shop, Google and Slack change their APIs and
           their limits; an automation nobody maintains fails quietly in the middle of a busy week.</li>
         <li><strong>Small changes as the business changes.</strong> A new product type, a second
-          sheet, an extra notification — included, within the agreed monthly hours.</li>
+          sheet, an extra notification: all included, within the agreed monthly hours.</li>
         <li><strong>A short monthly note:</strong> how many orders went through, what failed and what I
           changed. One page, no jargon.</li>
       </ul>
@@ -805,21 +805,21 @@ html.shift-done .col .end { opacity: 1; }
           from: Date.parse('2026-09-15T08:50:00.000Z'),
           to: Date.parse('2026-09-15T08:57:00.000Z'),
           status: 503,
-          message: 'Service Unavailable — shop host restarting',
+          message: 'Service Unavailable: shop host restarting',
           label: 'Shop hosting restarted (7 minutes)'
         },
         {
           from: Date.parse('2026-09-15T09:35:00.000Z'),
           to: Date.parse('2026-09-15T09:35:04.000Z'),
           status: 429,
-          message: 'Too Many Requests — shop API rate limit',
+          message: 'Too Many Requests: shop API rate limit',
           label: 'Shop API rate limit (4 seconds)'
         },
         {
           from: Date.parse('2026-09-15T11:20:00.000Z'),
           to: Date.parse('2026-09-15T11:20:03.000Z'),
           status: 502,
-          message: 'Bad Gateway — shop API hiccup',
+          message: 'Bad Gateway: shop API hiccup',
           label: 'Shop API hiccup (3 seconds)'
         }
       ],
@@ -2904,7 +2904,7 @@ html.shift-done .col .end { opacity: 1; }
       title: 'A short outage threw away a whole run',
       symptom: 'Orders vanished in small groups, always around the time the shop’s host had a hiccup.',
       cause: 'The HTTP node had no retry and no error branch, so any non-200 from the shop stopped the '
-        + 'execution. The next run asked only for the last five minutes — the orders from the failed '
+        + 'execution. The next run asked only for the last five minutes, so the orders from the failed '
         + 'window were never requested again. Eleven of the fourteen lost orders went this way.',
       fix: 'Three attempts two seconds apart, and an error output that alerts the team instead of killing the run.',
       before: function () {
@@ -2932,8 +2932,8 @@ html.shift-done .col .end { opacity: 1; }
       cause: 'The shop publishes an order to its API a few seconds to a few minutes after it is written. '
         + 'A fixed window that starts at “now minus five minutes” misses anything published late; widening '
         + 'the window by 40 seconds re-reads whatever falls into the overlap and duplicates it.',
-      fix: 'A cursor stored in the workflow’s own data, deliberately overlapped by ten minutes — more '
-        + 'than the worst publishing delay this shop shows — so late publications are read again. What '
+      fix: 'A cursor stored in the workflow’s own data, deliberately overlapped by ten minutes (more '
+        + 'than the worst publishing delay this shop shows), so late publications are read again. What '
         + 'the overlap repeats is dropped by D5. The cursor moves only after an order has been stored, '
         + 'so a crash cannot skip past it.',
       before: function () {
@@ -2949,7 +2949,7 @@ html.shift-done .col .end { opacity: 1; }
     {
       tag: 'D3',
       title: 'The shop API key was sitting in the workflow',
-      symptom: 'Not a failure the owner could see — but the key travelled in every export, every backup '
+      symptom: 'Not a failure the owner could see, but the key travelled in every export, every backup '
         + 'and every screenshot of the workflow.',
       cause: 'The key was a plain query parameter on the HTTP node instead of an n8n credential.',
       fix: 'Header auth through a credential. The workflow no longer contains the key, so it can be '
@@ -2970,7 +2970,7 @@ html.shift-done .col .end { opacity: 1; }
       symptom: 'Every few days an entire run failed, taking all the orders in that window with it.',
       cause: 'The Code node ran once over the whole batch and read fields that are optional at checkout '
         + '(<code>last_name</code>, <code>phone</code>). One missing value threw a TypeError and the '
-        + 'batch — good orders included — never reached the sheet.',
+        + 'batch, good orders included, never reached the sheet.',
       fix: 'The node runs per item with safe defaults, and anything genuinely unusable is flagged for a '
         + 'human instead of being dropped: it goes to a “Needs review” tab with a Slack message, and no '
         + 'email is sent to a broken address.',
@@ -2986,14 +2986,14 @@ html.shift-done .col .end { opacity: 1; }
     {
       tag: 'D5',
       title: 'Nothing checked whether an order had already been handled',
-      symptom: 'Duplicate rows in the sheet and duplicate confirmation emails — six customers in a '
+      symptom: 'Duplicate rows in the sheet and duplicate confirmation emails: six customers in a '
         + 'single shift, several of them people who had simply corrected their delivery address.',
       cause: 'The workflow trusted the time window to deliver every order exactly once and appended '
         + 'blindly. Any overlap, any manual re-run and any edit by the customer produced a second row '
         + 'and a second email.',
       fix: 'The workflow now remembers which orders it has stored, together with the timestamp it '
         + 'stored. An identical repeat is dropped; the same order with a newer timestamp is treated as '
-        + 'an update — the existing row is rewritten (Append or Update, matched on the order id), the '
+        + 'an update: the existing row is rewritten (Append or Update, matched on the order id), the '
         + 'team is told what changed, and the customer is not emailed twice. The memory is written only '
         + 'after the row exists, and entries older than three days are forgotten so it cannot grow for ever.',
       before: function () {
@@ -3015,11 +3015,11 @@ html.shift-done .col .end { opacity: 1; }
       title: 'When it broke, nobody was told',
       symptom: '“Sometimes Slack goes quiet for an hour.” The automation had stopped and waited for '
         + 'someone to open n8n and look.',
-      cause: 'A failing Gmail call stopped the run, so the Slack notification after it never happened — '
-        + 'the one place the team would have noticed. No error workflow was configured either.',
+      cause: 'A failing Gmail call stopped the run, so the Slack notification after it never happened, '
+        + 'and Slack was the one place the team would have noticed. No error workflow was configured either.',
       fix: 'Email failures retry, then leave through an error output that alerts the team; the order '
-        + 'itself is already stored. Everything that needs a person — an unreachable shop, an order '
-        + 'with no usable email, a row that could not be written, a bounced confirmation — goes to one '
+        + 'itself is already stored. Everything that needs a person (an unreachable shop, an order '
+        + 'with no usable email, a row that could not be written, a bounced confirmation) goes to one '
         + '#ops-alerts channel. On top of that, an error workflow turns any remaining crash into a '
         + 'Slack message naming the node and the execution.',
       before: function () {
@@ -3076,8 +3076,8 @@ html.shift-done .col .end { opacity: 1; }
 
       var pair = document.createElement('div');
       pair.className = 'code-pair';
-      pair.appendChild(codeBlock('before', 'Before — v3', defect.before()));
-      pair.appendChild(codeBlock('after', 'After — v4', defect.after()));
+      pair.appendChild(codeBlock('before', 'Before: v3', defect.before()));
+      pair.appendChild(codeBlock('after', 'After: v4', defect.after()));
       card.appendChild(pair);
 
       container.appendChild(card);
@@ -3101,12 +3101,12 @@ html.shift-done .col .end { opacity: 1; }
   function describeRun(entry, which) {
     if (entry.status === 'error') {
       var text = 'Run stopped at “' + entry.lastNode + '”: ' + entry.error;
-      if (entry.silent) text += ' — no message to anyone.';
+      if (entry.silent) text += '. No message to anyone.';
       return text;
     }
     if (entry.alerts > 0) {
       return entry.ordersSaved + ' saved, ' + entry.alerts + ' alert' + (entry.alerts > 1 ? 's' : '')
-        + ' raised — the problem was handled and reported.';
+        + ' raised; the problem was handled and reported.';
     }
     if (entry.ordersSaved === 0 && entry.ordersParked === 0) {
       return which === 'broken' ? 'No new orders in this window.' : 'No new orders in this window.';
@@ -3197,7 +3197,7 @@ html.shift-done .col .end { opacity: 1; }
       renderHeadline();
       renderLog();
 
-      status.textContent = 'Done in ' + took + ' ms — 120 orders, 60 runs, both versions, same shift.';
+      status.textContent = 'Done in ' + took + ' ms: 120 orders, 60 runs, both versions, same shift.';
       button.disabled = false;
       button.textContent = 'Run again';
 
