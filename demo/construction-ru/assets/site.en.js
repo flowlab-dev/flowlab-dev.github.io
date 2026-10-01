@@ -1,5 +1,5 @@
 // Page behaviour. Everything works without JS too (the form posts to send.php and redirects).
-import { calcNumber, calcSummary, calcTotal, formatRub, validateLead } from './logic.js';
+import { calcNumber, calcSummary, calcTotal, formatRub, validateLead } from './logic.en.js';
 
 const $ = (s, root = document) => root.querySelector(s);
 const $$ = (s, root = document) => [...root.querySelectorAll(s)];
@@ -40,10 +40,10 @@ for (const form of $$('form.calc')) {
   $('[data-calc-send]', form).addEventListener('click', () => {
     const lead = $('form.lead-form');
     if (!lead) return;
-    const text = `Итог: ${out.textContent} — ${calcSummary(spec, values())}`;
+    const text = `Total: ${out.textContent} — ${calcSummary(spec, values())}`;
     lead.elements.calc.value = text;
     const note = $('.calc-note', lead);
-    note.textContent = 'К заявке приложен расчёт: ' + text;
+    note.textContent = 'Estimate attached to your request: ' + text;
     note.hidden = false;
     (lead.closest('section') || lead).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     setTimeout(() => lead.querySelector('input:not([type=hidden])')?.focus({ preventScroll: true }), reduce ? 0 : 500);
@@ -90,11 +90,11 @@ for (const form of $$('form.lead-form')) {
       form.elements.js.value = '1';
       form.elements.calc.value = '';
       $('.calc-note', form).hidden = true;
-      status.textContent = 'Это демо: заявка никуда не ушла. На настоящем сайте она сохраняется на хостинге, приходит на почту и в Telegram.';
+      status.textContent = 'This is a demo, so your request wasn’t sent anywhere. On a live site it’s saved on the hosting server and delivered to email and Telegram.';
       return;
     }
     btn.disabled = true;
-    status.textContent = 'Отправляем…';
+    status.textContent = 'Sending…';
     try {
       const res = await fetch(form.getAttribute('action'), { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
       const body = await res.json().catch(() => ({}));
@@ -102,13 +102,13 @@ for (const form of $$('form.lead-form')) {
         form.reset();
         form.elements.js.value = '1';
         $('.calc-note', form).hidden = true;
-        status.textContent = '✅ Заявка отправлена. Скоро свяжемся с вами.';
+        status.textContent = '✅ Request sent. We’ll be in touch soon.';
         const m = $('meta[name=metrika]');
         if (m && window.ym) window.ym(Number(m.content), 'reachGoal', m.dataset.goal || 'lead');
       } else if (body.errors) { showErrors(body.errors); status.textContent = ''; }
-      else status.textContent = body.error || 'Не получилось отправить. Позвоните нам — номер вверху страницы.';
+      else status.textContent = body.error || 'Couldn’t send your request. Please call us; the number is at the top of the page.';
     } catch {
-      status.textContent = 'Нет связи. Проверьте интернет и попробуйте ещё раз или позвоните нам.';
+      status.textContent = 'No connection. Check your internet and try again, or give us a call.';
     } finally { btn.disabled = false; }
   });
 }
@@ -120,7 +120,7 @@ for (const sec of $$('.gallery')) {
   const dlg = $('dialog.lightbox', root);
   const im = $('img', dlg), cap = $('.lb-cap', dlg);
   let i = 0, x0 = null;
-  const show = (n) => { i = (n + list.length) % list.length; im.src = list[i].src; im.alt = list[i].alt; cap.textContent = `${list[i].cap || list[i].alt} · ${i + 1} из ${list.length}`; };
+  const show = (n) => { i = (n + list.length) % list.length; im.src = list[i].src; im.alt = list[i].alt; cap.textContent = `${list[i].cap || list[i].alt} · ${i + 1} of ${list.length}`; };
   $$('.shot', sec).forEach((b) => b.addEventListener('click', () => { show(Number(b.dataset.i)); dlg.showModal(); }));
   $('.lb-close', dlg).onclick = () => dlg.close();
   $('.lb-prev', dlg).onclick = () => show(i - 1);
@@ -134,7 +134,7 @@ for (const sec of $$('.gallery')) {
 // ── map loads only on click: no third-party requests before the visitor asks ──
 for (const box of $$('.map[data-src]')) {
   $('button', box).addEventListener('click', () => {
-    const f = Object.assign(document.createElement('iframe'), { src: box.dataset.src, title: 'Карта', loading: 'lazy', allowFullscreen: true });
+    const f = Object.assign(document.createElement('iframe'), { src: box.dataset.src, title: 'Map', loading: 'lazy', allowFullscreen: true });
     box.replaceChildren(f);
   });
 }
