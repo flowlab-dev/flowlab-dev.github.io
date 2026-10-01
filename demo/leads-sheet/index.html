@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>Ash &amp; Oak Kitchens - leads to Google Sheets demo</title>
+<meta name="description" content="Send a test lead and watch it land in a Google Sheet with a Telegram alert, then run the night: repeat leads move aside and a morning report arrives. The page runs the real Apps Script code; the workshop is invented.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ash &amp; Oak Kitchens - leads to Google Sheets demo">
+<meta property="og:description" content="Send a test lead and watch it land in a Google Sheet with a Telegram alert, then run the night: repeat leads move aside and a morning report arrives. The page runs the real Apps Script code; the workshop is invented.">
+<meta property="og:url" content="https://flowlab-dev.github.io/demo/leads-sheet/">
+<meta property="og:image" content="https://flowlab-dev.github.io/img/work/leads-sheet-1.webp">
+<meta name="twitter:card" content="summary_large_image">
+<script>(function(){try{var q=new URLSearchParams(location.search).get('theme'),s=localStorage.getItem('fl-theme');var t=q==='dark'||q==='light'?q:s==='dark'||s==='light'?s:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=t;}catch(e){}})();</script>
+<link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/leads-sheet/">
+<link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/leads-sheet/ru/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237b3f2b'/%3E%3Cpath d='M9 8h14v16H9zM9 13h14M9 18h14M15 8v16' fill='none' stroke='%23fff' stroke-width='2'/%3E%3C/svg%3E">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f7f3ec; --panel: #fffdfa; --panel-2: #f1ebe1; --ink: #241d16; --ink-soft: #5d5245; --line: #e2d8c9;
+  --accent: #7b3f2b; --accent-ink: #fff; --accent-soft: #f0e0d6; --good: #2f6b45; --bad: #a3311f;
+  --shadow: 0 1px 2px rgba(36,29,22,.06), 0 10px 30px rgba(36,29,22,.08);
+  --field: #ffffff; --field-line: #9a8b76;
+  /* the spreadsheet */
+  --sh-bg: #ffffff; --sh-ink: #1f1f1f; --sh-soft: #5f6368; --sh-grid: #e1e3e1; --sh-head: #f8f9fa; --sh-green: #137333; --sh-fresh: #e6f4ea; --sh-tab: #f1f3f4;
+  /* telegram */
+  --tg-head: #3d6a91; --tg-head-ink: #fff; --tg-wall: #dde6ec; --tg-bubble: #ffffff; --tg-ink: #000; --tg-soft: #4f6273; --tg-link: #1f6fb5;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #17130f; --panel: #211b16; --panel-2: #2b231c; --ink: #f2e9df; --ink-soft: #b7a996; --line: #3a3027;
+  --accent: #e9a583; --accent-ink: #241d16; --accent-soft: #3a2a21; --good: #7dc79a; --bad: #f29a8a;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 32px rgba(0,0,0,.35);
+  --field: #1b1611; --field-line: #7a6b5a;
+  --sh-bg: #1e1f20; --sh-ink: #e3e3e3; --sh-soft: #a8abb0; --sh-grid: #3c4043; --sh-head: #28292a; --sh-green: #6dd58c; --sh-fresh: #1f3a2a; --sh-tab: #2a2b2c;
+  --tg-head: #17212b; --tg-head-ink: #f5f5f5; --tg-wall: #0e1621; --tg-bubble: #182533; --tg-ink: #f5f5f5; --tg-soft: #8b9aa7; --tg-link: #6ab3f3;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 8px; z-index: 10; background: var(--panel); padding: 8px 12px; border-radius: 8px; }
+
+/* header */
+.top { border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bg) 88%, transparent); position: sticky; top: 0; z-index: 5; backdrop-filter: blur(10px); }
+.top .wrap { display: flex; align-items: center; gap: 10px; height: 64px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 700; margin-right: auto; min-width: 0; }
+.brand .mark { width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
+.brand small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fl-lang { display: inline-flex; align-items: center; height: 40px; padding: 3px; gap: 2px; flex: none; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); }
+.fl-lang a { display: grid; place-items: center; min-width: 38px; height: 100%; padding: 0 8px; border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-decoration: none; color: inherit; opacity: .62; transition: opacity .2s, background-color .2s; }
+.fl-lang a[aria-current] { opacity: 1; background: color-mix(in srgb, currentColor 14%, transparent); }
+.fl-lang a:not([aria-current]):hover { opacity: 1; }
+.pill-btn { height: 40px; display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); background: transparent; color: var(--ink); font-size: 14px; font-weight: 600; flex: none; transition: background-color .2s; }
+.pill-btn:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
+.pill-btn svg { width: 16px; height: 16px; }
+
+/* hero (only top and bottom padding: the side gutters come from .wrap) */
+.hero { padding-top: 36px; padding-bottom: 24px; }
+.eyebrow { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+h1 { font-size: clamp(30px, 4.6vw, 50px); line-height: 1.08; letter-spacing: -.02em; margin: 0 0 14px; max-width: 22ch; text-wrap: balance; }
+.lead { font-size: clamp(17px, 1.6vw, 19px); color: var(--ink-soft); max-width: 76ch; margin: 0 0 14px; }
+.note { font-size: 14px; color: var(--ink-soft); display: flex; gap: 8px; align-items: flex-start; max-width: 70ch; margin: 0; }
+.note svg { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--accent); }
+
+/* layout */
+.stage { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 28px; align-items: start; padding-bottom: 56px; }
+.col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow); min-width: 0; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.card-head h2 { font-size: 16px; margin: 0; }
+.card-body { padding: 16px 18px; }
+.sub { font-size: 14px; color: var(--ink-soft); margin: 0 0 12px; }
+
+/* the workshop's website form */
+.site-top { display: flex; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+.site-mark { width: 38px; height: 38px; border-radius: 10px; background: #3d4a3a; color: #f4efe6; display: grid; place-items: center; font-weight: 800; font-family: Georgia, "Times New Roman", serif; font-size: 19px; flex: none; }
+.site-top b { display: block; font-size: 16px; line-height: 1.2; }
+.site-top small { color: var(--ink-soft); font-size: 13px; }
+.form h3 { margin: 0 0 12px; font-size: 18px; }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.field input, .field textarea, .field select { width: 100%; min-height: 44px; border: 1px solid var(--field-line); border-radius: 10px; padding: 9px 12px; font: inherit; font-size: 16px; background: var(--field); color: var(--ink); }
+.field textarea { min-height: 64px; resize: vertical; }
+.field input[aria-invalid="true"] { border-color: var(--bad); }
+.field .err { color: var(--bad); font-size: 14px; margin: 4px 0 0; }
+.row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.btn-send { width: 100%; min-height: 48px; border: 0; border-radius: 12px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 16px; transition: filter .15s; }
+.btn-send:hover { filter: brightness(1.06); }
+.result { margin-top: 12px; padding: 10px 12px; border-radius: 10px; background: var(--panel-2); font-size: 14px; }
+.result b { display: block; }
+.result.ok b { color: var(--good); }
+.result.bad b { color: var(--bad); }
+.result code { font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: var(--ink-soft); overflow-wrap: anywhere; }
+.result.enter { animation: pop .25s cubic-bezier(.2,.8,.2,1) both; }
+.try { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+.try > span { font-size: 14px; color: var(--ink-soft); width: 100%; }
+.chip { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--field-line); background: var(--panel); color: var(--ink); font-size: 14px; transition: border-color .2s; }
+.chip:hover:not(:disabled) { border-color: var(--accent); }
+.chip:disabled { opacity: .5; cursor: not-allowed; }
+.switch { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); cursor: pointer; }
+.switch input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--accent); flex: none; }
+.switch b { display: block; font-size: 14px; }
+.switch small { display: block; font-size: 13px; color: var(--ink-soft); }
+
+/* the spreadsheet */
+.sheet { overflow: hidden; }
+.sh-bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.sh-ic { width: 28px; height: 28px; flex: none; }
+.sh-bar b { font-size: 15px; display: block; line-height: 1.2; }
+.sh-bar small { font-size: 12.5px; color: var(--ink-soft); }
+.sh-bar .menu { margin-left: auto; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 6px; background: var(--panel-2); color: var(--ink-soft); white-space: nowrap; }
+.grid-wrap { overflow: auto; max-height: 360px; background: var(--sh-bg); color: var(--sh-ink); scrollbar-width: thin; }
+.grid { border-collapse: separate; border-spacing: 0; font: 12.5px/1.35 Arial, "Helvetica Neue", sans-serif; min-width: 100%; }
+.grid th, .grid td { border-right: 1px solid var(--sh-grid); border-bottom: 1px solid var(--sh-grid); padding: 5px 7px; white-space: nowrap; max-width: 180px; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.grid thead th { position: sticky; top: 0; z-index: 1; background: var(--sh-head); color: var(--sh-soft); font-weight: 400; text-align: center; font-size: 12px; }
+.grid .rn { position: sticky; left: 0; background: var(--sh-head); color: var(--sh-soft); text-align: center; min-width: 40px; width: 40px; font-size: 12px; }
+.grid thead .rn { z-index: 2; }
+.grid tr.h td { font-weight: 700; background: var(--sh-bg); }
+.grid tr.fresh td { background: var(--sh-fresh); transition: background-color 1.6s ease 1.2s; }
+.grid tr.fresh.fade td { background: var(--sh-bg); }
+.grid td.empty-cell { color: var(--sh-soft); font-style: italic; }
+.tabs { display: flex; gap: 2px; padding: 0 8px; background: var(--sh-tab); border-top: 1px solid var(--sh-grid); overflow-x: auto; scrollbar-width: none; }
+.tab { position: relative; min-height: 44px; padding: 0 14px; border: 0; background: transparent; color: var(--sh-soft); font-size: 14px; font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 6px; border-bottom: 3px solid transparent; }
+.tab[aria-selected="true"] { color: var(--sh-green); border-bottom-color: var(--sh-green); background: var(--sh-bg); }
+.tab .n { font-size: 12px; font-weight: 700; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: color-mix(in srgb, currentColor 14%, transparent); display: grid; place-items: center; }
+.tab .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.sh-note { font-size: 13px; color: var(--ink-soft); padding: 10px 16px; border-top: 1px solid var(--line); margin: 0; display: flex; gap: 8px; align-items: flex-start; }
+.sh-note svg { flex: none; width: 16px; height: 16px; margin-top: 2px; }
+
+/* telegram */
+.tg { overflow: hidden; }
+.tg-top { background: var(--tg-head); color: var(--tg-head-ink); display: flex; align-items: center; gap: 10px; padding: 12px 16px; }
+.tg-av { width: 36px; height: 36px; border-radius: 50%; background: #e9a583; color: #241d16; display: grid; place-items: center; flex: none; }
+.tg-av svg { width: 18px; height: 18px; }
+.tg-top b { display: block; font-size: 15px; line-height: 1.2; }
+.tg-top small { font-size: 12.5px; }
+.tg-wall { background: var(--tg-wall); color: var(--tg-ink); padding: 12px; display: flex; flex-direction: column; gap: 8px; height: 320px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.tg-b { align-self: flex-start; max-width: 92%; background: var(--tg-bubble); border-radius: 12px 12px 12px 4px; padding: 7px 10px 6px; font-size: 14.5px; line-height: 1.42; white-space: pre-wrap; overflow-wrap: anywhere; box-shadow: 0 1px 1px rgba(0,0,0,.12); }
+.tg-b time { float: right; font-size: 11px; color: var(--tg-soft); margin: 6px 0 -2px 10px; }
+.tg-b .lnk { color: var(--tg-link); text-decoration: underline; background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+.tg-b.enter { animation: pop .25s cubic-bezier(.2,.8,.2,1) both; }
+.tg-empty { margin: auto; text-align: center; font-size: 14px; color: var(--tg-soft); max-width: 30ch; }
+@keyframes pop { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
+
+/* night + mail */
+.night-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn-night { min-height: 46px; padding: 0 18px; border-radius: 999px; border: 0; background: var(--ink); color: var(--bg); font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
+.btn-night svg { width: 18px; height: 18px; }
+.btn-ghost { min-height: 46px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+.btn-ghost svg { width: 16px; height: 16px; }
+.night-done { font-size: 14px; color: var(--good); font-weight: 600; margin: 12px 0 0; }
+.mail { margin-top: 14px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.mail dl { margin: 0; padding: 10px 14px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; font-size: 14px; background: var(--panel-2); }
+.mail dt { color: var(--ink-soft); }
+.mail dd { margin: 0; overflow-wrap: anywhere; }
+.mail pre { margin: 0; padding: 12px 14px; font: 14px/1.6 inherit; font-family: inherit; white-space: pre-wrap; overflow-wrap: anywhere; }
+.mail.enter { animation: pop .3s cubic-bezier(.2,.8,.2,1) both; }
+
+/* how */
+.how { padding-top: 8px; padding-bottom: 56px; }
+.how h2 { font-size: clamp(24px, 3vw, 34px); letter-spacing: -.015em; margin: 0 0 22px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.feat { padding: 20px; }
+.feat .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; margin-bottom: 14px; }
+.feat .ic svg { width: 20px; height: 20px; }
+.feat h3 { font-size: 17px; margin: 0 0 6px; }
+.feat p { margin: 0; color: var(--ink-soft); font-size: 15px; }
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* cta + footer */
+.cta { padding: 32px; display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 40px; }
+.cta h2 { margin: 0 0 4px; font-size: 22px; }
+.cta p { margin: 0; color: var(--ink-soft); max-width: 60ch; }
+.cta-links { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn { min-height: 46px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 999px; font-weight: 700; text-decoration: none; }
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn.line { border: 1px solid var(--line); color: var(--ink); }
+.law { font-size: 14px; color: var(--ink-soft); max-width: 80ch; margin: 0 0 24px; }
+.law:empty { display: none; }
+footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14px; color: var(--ink-soft); }
+
+@media (max-width: 1180px) {
+  .duo { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 960px) {
+  .stage { grid-template-columns: minmax(0, 1fr); }
+  .col, .duo { display: contents; }
+  #c-form { order: 1; } #c-sheet { order: 2; } #c-tg { order: 3; } #c-night { order: 4; }
+  .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 560px) {
+  .hero { padding-top: 28px; padding-bottom: 20px; }
+  .card-body { padding: 14px; }
+  .brand small { display: none; }
+  .pill-btn .lbl { display: none; }
+  .pill-btn { width: 40px; padding: 0; justify-content: center; }
+  .row2 { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .sh-bar .menu { display: none; }
+  .grid-wrap { max-height: 320px; }
+  .grid4 { grid-template-columns: 1fr; }
+  .cta { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#f-name">Skip to the form</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="https://flowlab-dev.github.io/work/leads-sheet/" aria-label="Flow Lab · Back to the case study">
+      <span class="mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></span>
+      <span>Flow Lab<small>Back to the case study</small></span>
+    </a>
+    <div class="fl-lang" role="group" aria-label="Language"><a aria-current="page" href="./" hreflang="en" lang="en" title="English">EN</a><a href="ru/" hreflang="ru" lang="ru" title="Русский">RU</a></div>
+    <button class="pill-btn" id="theme" type="button" aria-label="Switch between day and night"><span id="theme-ic" aria-hidden="true"></span><span class="lbl" id="theme-lbl"></span></button>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap">
+    <span class="eyebrow">Live demo · Google Sheets + Telegram</span>
+    <h1>Every lead in one sheet, with an alert in Telegram</h1>
+    <p class="lead">Fill in the website form the way a customer would. The real Apps Script code from this project writes the row and sends the alert. At night it moves repeat leads aside, and in the morning it mails a report.</p>
+    <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Ash &amp; Oak Kitchens and every contact here are invented. Nothing leaves this page: Google and Telegram are simulated in your browser.</span></p>
+  </section>
+
+  <section class="stage wrap" aria-label="Every lead in one sheet, with an alert in Telegram">
+    <div class="col">
+      <div class="card" id="c-form">
+        <div class="site-top"><span class="site-mark" aria-hidden="true">A</span><div><b>Ash &amp; Oak Kitchens</b><small>Custom kitchens and closets</small></div></div>
+        <div class="card-body">
+          <form class="form" id="form" novalidate autocomplete="off">
+            <h3>Book a free in-home measurement</h3>
+            <div class="row2">
+              <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" maxlength="80"><p class="err" id="e-name" hidden></p></div>
+              <div class="field"><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" inputmode="tel" maxlength="30"><p class="err" id="e-phone" hidden></p></div>
+            </div>
+            <div class="row2">
+              <div class="field"><label for="f-email">E-mail (optional)</label><input id="f-email" name="email" type="email" maxlength="80"></div>
+              <div class="field"><label for="f-src">Came from</label><select id="f-src" name="source"><option>website</option><option>google</option><option>instagram</option></select></div>
+            </div>
+            <div class="field"><label for="f-msg">What do you need?</label><textarea id="f-msg" name="message" maxlength="400"></textarea></div>
+            <div class="hp" aria-hidden="true"><label>Website <input id="f-web" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <button class="btn-send" type="submit">Send request</button>
+            <div id="result" role="status" aria-live="polite"></div>
+          </form>
+          <div class="try">
+            <span>Fill in a sample:</span>
+            <button class="chip" type="button" data-sample="new">New customer</button>
+            <button class="chip" type="button" data-sample="again" disabled>Same customer again</button>
+            <button class="chip" type="button" data-sample="bot">A spam bot</button>
+            <button class="chip" type="button" data-sample="nophone">No phone</button>
+          </div>
+          <label class="switch"><input type="checkbox" id="tg-down"><span><b>Telegram is down</b><small>Alerts fail from now on, and the lead still lands in the sheet.</small></span></label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col">
+      <div class="card sheet" id="c-sheet">
+        <div class="sh-bar">
+          <svg class="sh-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="#0f9d58" d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path fill="#87ceac" d="M14.5 2v5.5H20z"/><path fill="#fff" d="M7 10.5h10v7H7zm1.4 1.4v1.4h3v-1.4zm4.2 0v1.4h3v-1.4zm-4.2 2.8v1.4h3v-1.4zm4.2 0v1.4h3v-1.4z"/></svg>
+          <div><b>Ash &amp; Oak Kitchens · leads</b><small>Google Sheet</small></div>
+          <span class="menu">Flow Lab ▾</span>
+        </div>
+        <div class="grid-wrap" id="grid-wrap" role="tabpanel" aria-labelledby="tab-0" tabindex="0"><table class="grid" id="grid"></table></div>
+        <div class="tabs" role="tablist" aria-label="Sheets" id="tabs"></div>
+        <p class="sh-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>The bot token and the form key are not on this sheet: they live in Script Properties.</span></p>
+      </div>
+
+      <div class="duo">
+        <div class="card tg" id="c-tg">
+          <div class="tg-top">
+            <span class="tg-av" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+            <div><b>Leads bot</b><small>The owner's Telegram</small></div>
+          </div>
+          <div class="tg-wall" id="tg" role="log" aria-live="polite" aria-label="The owner's Telegram" tabindex="0"></div>
+        </div>
+        <div class="card" id="c-night">
+        <div class="card-head"><h2>At night and in the morning</h2></div>
+        <div class="card-body">
+          <p class="sub">At 3:00 the script moves repeat leads to “Duplicates”, noting the row they repeat. At 9:00 it mails the owner yesterday's leads by source.</p>
+          <div class="night-row">
+            <button class="btn-night" type="button" id="night"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>Run the night</button>
+            <button class="btn-ghost" type="button" id="restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Start over</button>
+          </div>
+          <div id="night-out" aria-live="polite"></div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how wrap">
+    <h2 class="reveal">What the code does</h2>
+    <div class="grid4">
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><h3>Any form, one sheet</h3><p>A website, Tilda or n8n send the lead with a secret key, and a linked Google Form works too. Fields are matched by name, in English or Russian.</p></div>
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><h3>Leads don't get lost</h3><p>Telegram gets three tries. If it is still down, the lead stays in the sheet and the Log says which alert did not go out.</p></div>
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Clean data</h3><p>Phone numbers come to one format, a hidden field stops bots, and text like =FORMULA() can't run in a cell.</p></div>
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg></div><h3>Nothing is deleted</h3><p>Repeat leads move to their own sheet with the row they repeat, so the owner can move them back.</p></div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <p class="law"></p>
+    <div class="card cta reveal">
+      <div><h2>Want this for your leads?</h2><p>It runs in your own Google account: no server and no hosting bill. The free estimate comes first.</p></div>
+      <div class="cta-links"><a class="btn primary" href="https://flowlab-dev.github.io/work/leads-sheet/#contact">Write to me</a><a class="btn line" href="https://flowlab-dev.github.io/work/leads-sheet/">Back to the case study</a></div>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap">Ash &amp; Oak Kitchens and its customers are invented. I built this demo myself; it is not a client project. Flow Lab · Luna.</div></footer>
+
+<script>
+"use strict";
+// ---- APPS SCRIPT (generated by demo-page/build.mjs from _НАБОРЫ/google-таблицы/src - do not edit by hand) ----
+// The same files that go into the client's spreadsheet. Only Google's services are swapped for the stand-ins below.
+function makeKit(G) {
+  const { SpreadsheetApp, PropertiesService, LockService, ScriptApp, UrlFetchApp, MailApp, ContentService, Utilities, Date } = G;
+  // ---- Core.js ----
+  /**
+   * Flow Lab — Google Sheets automations (Apps Script). Core: language, settings, secrets, log, menu, setup.
+   * Settings (not secret) live on the settings sheet (column A — key, B — value), so the owner edits them himself.
+   * Secrets (Telegram token, webhook secret, API tokens) live ONLY in Script Properties — never in cells.
+   */
+
+  var LANG = 'en';   // 'en' — English sheet names, settings, alerts and report; set once, before the first «setup»
+
+  var WORDS = {
+    ru: {
+      sheets: { settings: 'Настройки', leads: 'Заявки', dupes: 'Дубли', import: 'Импорт', log: 'Журнал' },
+      set: { tz: 'Часовой пояс', country: 'Код страны', fields: 'Поля заявки', required: 'Обязательные поля', dupeBy: 'Дубли по полям',
+        dupeDays: 'Дубли за дней', reportTo: 'Отчёт на почту', reportSum: 'Отчёт: сумма по полю', importUrl: 'Импорт: адрес',
+        importKey: 'Импорт: ключ', importFields: 'Импорт: поля', importList: 'Импорт: путь к списку' },
+      defaults: { tz: 'Europe/Moscow', country: '7', fields: 'Имя, Телефон, Email, Сообщение, Источник', required: 'Имя, Телефон',
+        dupeBy: 'Телефон, Email', dupeDays: '1', reportTo: '', reportSum: '', importUrl: '', importKey: 'id', importFields: '', importList: '' },
+      f: { date: 'Дата', name: 'Имя', phone: 'Телефон', email: 'Email', message: 'Сообщение', source: 'Источник', dupeOf: 'Дубль строки',
+        param: 'Параметр', value: 'Значение', time: 'Время', what: 'Что', details: 'Подробности', key: 'Ключ', updated: 'Обновлено' },
+      menu: { setup: '1. Настроить таблицу и расписание', importNow: 'Импорт сейчас', dupes: 'Найти дубли', report: 'Отчёт сейчас', tg: 'Проверить Telegram' },
+      src: { site: 'сайт', form: 'Google Форма', none: 'без источника', all: 'все' },
+      log: { setup: 'setup', setupDone: 'листы и расписание готовы', lead: 'заявка', busy: 'таблица занята, заявка не записана: ',
+        tg: 'telegram', tgFail: function (n) { return 'заявка №' + n + ' не отправлена в Telegram (заявка в таблице есть)'; },
+        tgOk: 'проверка: доставлено', tgBad: 'проверка: НЕ доставлено — проверьте TELEGRAM_TOKEN / TELEGRAM_CHAT_ID и нажмите /start в боте',
+        dupes: 'дубли', dupesBusy: 'таблица занята — попробую в следующий раз', dupesNone: 'дублей нет',
+        dupesMoved: function (n, sheet) { return 'перенесено в «' + sheet + '»: ' + n; },
+        report: 'отчёт', reportNoTo: 'не задан адрес — пропуск', reportSent: function (to, n) { return 'отправлен на ' + to + ': ' + n + ' заявок'; },
+        imp: 'импорт', impNoUrl: 'не задан адрес — пропуск', impFetch: 'ошибка загрузки: ', impParse: 'не удалось разобрать ответ: ',
+        impNoList: function (p) { return 'по пути «' + (p || '(корень)') + '» нет списка'; },
+        impDone: function (n, a, c, s) { return 'записей ' + n + ': новых ' + a + ', изменено ' + c + (s ? ', без ключа ' + s : ''); } },
+      err: { phone: 'Проверьте телефон', missing: 'Не заполнено: ' },
+      tg: { lead: function (n) { return '🔔 <b>Заявка №' + n + '</b>'; }, open: 'Открыть таблицу',
+        test: function (name) { return '✅ Проверка связи из таблицы «' + name + '»'; } },
+      report: { subject: function (day, n) { return 'Заявки за ' + day + ': ' + n; }, total: function (day, n) { return 'Заявок за ' + day + ': ' + n; },
+        sum: function (col, v) { return 'Сумма «' + col + '»: ' + v; }, sheet: 'Таблица: ' },
+    },
+    en: {
+      sheets: { settings: 'Settings', leads: 'Leads', dupes: 'Duplicates', import: 'Import', log: 'Log' },
+      set: { tz: 'Time zone', country: 'Country code', fields: 'Lead fields', required: 'Required fields', dupeBy: 'Duplicates by',
+        dupeDays: 'Duplicates within days', reportTo: 'Report to e-mail', reportSum: 'Report: sum of column', importUrl: 'Import: URL',
+        importKey: 'Import: key', importFields: 'Import: columns', importList: 'Import: list path' },
+      defaults: { tz: 'America/New_York', country: '1', fields: 'Name, Phone, Email, Message, Source', required: 'Name, Phone',
+        dupeBy: 'Phone, Email', dupeDays: '1', reportTo: '', reportSum: '', importUrl: '', importKey: 'id', importFields: '', importList: '' },
+      f: { date: 'Date', name: 'Name', phone: 'Phone', email: 'Email', message: 'Message', source: 'Source', dupeOf: 'Duplicate of row',
+        param: 'Setting', value: 'Value', time: 'Time', what: 'What', details: 'Details', key: 'Key', updated: 'Updated' },
+      menu: { setup: '1. Set up the sheet and schedule', importNow: 'Import now', dupes: 'Find duplicates', report: 'Report now', tg: 'Test Telegram' },
+      src: { site: 'website', form: 'Google Form', none: 'no source', all: 'all' },
+      log: { setup: 'setup', setupDone: 'sheets and schedule ready', lead: 'lead', busy: 'sheet busy, lead not written: ',
+        tg: 'telegram', tgFail: function (n) { return 'lead #' + n + ' not sent to Telegram (the lead is in the sheet)'; },
+        tgOk: 'test: delivered', tgBad: 'test: NOT delivered — check TELEGRAM_TOKEN / TELEGRAM_CHAT_ID and press /start in the bot',
+        dupes: 'duplicates', dupesBusy: 'sheet busy — will try next time', dupesNone: 'no duplicates',
+        dupesMoved: function (n, sheet) { return 'moved to “' + sheet + '”: ' + n; },
+        report: 'report', reportNoTo: 'no e-mail set — skipped', reportSent: function (to, n) { return 'sent to ' + to + ': ' + n + ' leads'; },
+        imp: 'import', impNoUrl: 'no URL set — skipped', impFetch: 'download failed: ', impParse: 'could not read the response: ',
+        impNoList: function (p) { return 'no list at “' + (p || '(root)') + '”'; },
+        impDone: function (n, a, c, s) { return n + ' records: ' + a + ' new, ' + c + ' changed' + (s ? ', ' + s + ' without a key' : ''); } },
+      err: { phone: 'Please check the phone number', missing: 'Missing: ' },
+      tg: { lead: function (n) { return '🔔 <b>Lead #' + n + '</b>'; }, open: 'Open the sheet',
+        test: function (name) { return '✅ Connection test from the sheet “' + name + '”'; } },
+      report: { subject: function (day, n) { return 'Leads on ' + day + ': ' + n; }, total: function (day, n) { return 'Leads on ' + day + ': ' + n; },
+        sum: function (col, v) { return 'Total “' + col + '”: ' + v; }, sheet: 'Sheet: ' },
+    },
+  };
+
+  var W = WORDS[LANG] || WORDS.ru;
+  var SHEETS = W.sheets;
+
+  function onOpen() {
+    SpreadsheetApp.getUi().createMenu('Flow Lab')
+      .addItem(W.menu.setup, 'setup')
+      .addItem(W.menu.importNow, 'runImport')
+      .addItem(W.menu.dupes, 'moveDuplicates')
+      .addItem(W.menu.report, 'sendReport')
+      .addItem(W.menu.tg, 'testTelegram')
+      .addToUi();
+  }
+
+  /** Creates the sheets and daily triggers. Safe to run again: nothing is duplicated or erased. */
+  function setup() {
+    var ss = SpreadsheetApp.getActive();
+    var st = sheet_(SHEETS.settings, [W.f.param, W.f.value]);
+    var have = {};
+    st.getDataRange().getValues().forEach(function (r) { have[r[0]] = true; });
+    Object.keys(W.set).forEach(function (id) { if (!have[W.set[id]]) st.appendRow([W.set[id], W.defaults[id]]); });
+    sheet_(SHEETS.leads, [W.f.date].concat(listSetting_('fields')));
+    sheet_(SHEETS.dupes, [W.f.date].concat(listSetting_('fields')).concat([W.f.dupeOf]));
+    sheet_(SHEETS.log, [W.f.time, W.f.what, W.f.details]);
+    ScriptApp.getProjectTriggers().forEach(function (t) {
+      if (['runImport', 'sendReport', 'moveDuplicates'].indexOf(t.getHandlerFunction()) >= 0) ScriptApp.deleteTrigger(t);
+    });
+    var tz = setting_('tz') || W.defaults.tz;   // 3:00 and 9:00 by the clock in the settings, not the project's time zone
+    if (setting_('importUrl')) ScriptApp.newTrigger('runImport').timeBased().everyHours(1).create();
+    ScriptApp.newTrigger('moveDuplicates').timeBased().everyDays(1).atHour(3).inTimezone(tz).create();
+    if (setting_('reportTo')) ScriptApp.newTrigger('sendReport').timeBased().everyDays(1).atHour(9).inTimezone(tz).create();
+    log_(W.log.setup, W.log.setupDone);
+    return ss.getName();
+  }
+
+  function sheet_(name, header) {
+    var ss = SpreadsheetApp.getActive();
+    var sh = ss.getSheetByName(name) || ss.insertSheet(name);
+    if (sh.getLastRow() === 0 && header) { sh.appendRow(header); sh.setFrozenRows(1); sh.getRange(1, 1, 1, header.length).setFontWeight('bold'); }
+    return sh;
+  }
+
+  /** A setting by its id (tz, fields, reportTo…): the value from the settings sheet, or the default for this language. */
+  function setting_(id) {
+    var key = W.set[id];
+    var sh = SpreadsheetApp.getActive().getSheetByName(SHEETS.settings);
+    if (sh) {
+      var rows = sh.getDataRange().getValues();
+      for (var i = 0; i < rows.length; i++) if (String(rows[i][0]).trim() === key) return String(rows[i][1]).trim();
+    }
+    return W.defaults[id] !== undefined ? W.defaults[id] : '';
+  }
+
+  function listSetting_(id) {
+    return setting_(id).split(',').map(function (s) { return s.trim(); }).filter(String);
+  }
+
+  function secret_(key) { return PropertiesService.getScriptProperties().getProperty(key) || ''; }
+
+  /** Log sheet keeps the last 2000 rows so it never slows the spreadsheet down. */
+  function log_(what, details) {
+    var sh = sheet_(SHEETS.log, [W.f.time, W.f.what, W.f.details]);
+    sh.appendRow([now_(), what, String(details || '').slice(0, 1000)]);
+    var extra = sh.getLastRow() - 2001;
+    if (extra > 0) sh.deleteRows(2, extra);
+  }
+
+  function now_() { return Utilities.formatDate(new Date(), setting_('tz') || W.defaults.tz, 'yyyy-MM-dd HH:mm:ss'); }
+
+  /**
+   * One phone format for the sheet: +<country><number>, 11–15 digits. Empty string if it is not a phone.
+   * Written with «+» or «00» — taken as international. Otherwise the country code from settings is added:
+   * 7 — the Russian rules (8 900… / 900… → +7900…); any other — a 10-digit national number gets the code (US: 415… → +1415…).
+   * `cc` may be passed in by loops, so the settings sheet is read once.
+   */
+  function normPhone_(v, cc) {
+    var s = String(v || '').trim(), d = s.replace(/\D/g, '');
+    cc = String(cc || setting_('country') || W.defaults.country).replace(/\D/g, '');
+    if (/^\+/.test(s)) { /* already international */ }
+    else if (/^00/.test(s)) d = d.slice(2);
+    else if (cc === '7') {
+      if (d.length === 11 && d[0] === '8') d = '7' + d.slice(1);
+      else if (d.length === 10 && '3489'.indexOf(d[0]) >= 0) d = '7' + d;
+    }
+    else if (d.length === 10 && d[0] !== '0') d = cc + d;
+    if (d.length < 11 || d.length > 15 || (d[0] === '7' && d.length !== 11)) return '';
+    return '+' + d;
+  }
+
+  /** Text that starts with = + - @ must not become a formula in the sheet (injection from a web form). */
+  function safe_(v) {
+    if (typeof v !== 'string') return v;
+    if (/^[=+\-@]/.test(v) && !/^\+?\d[\d\s()-]*$/.test(v)) return "'" + v;
+    return v;
+  }
+
+  // ---- Import.js ----
+  /**
+   * Scheduled import into the import sheet from any JSON API or CSV link (CRM, accounting, marketplace, Google Contacts via n8n…).
+   * Upsert by key: new records are appended, changed ones updated in place, nothing is deleted.
+   * Settings (names as on the settings sheet, RU / EN): «Импорт: адрес» / Import: URL; «Импорт: ключ» / Import: key (field with a unique id);
+   * «Импорт: поля» / Import: columns («Column=path», e.g. «Name=name, Price=price.amount»); «Импорт: путь к списку» / Import: list path
+   * (where the array is inside JSON, e.g. «data.items»). Token (if the API needs one) — Script Property IMPORT_TOKEN.
+   */
+
+  function runImport() {
+    var url = setting_('importUrl');
+    if (!url) { log_(W.log.imp, W.log.impNoUrl); return { ok: false, error: 'no url' }; }
+    var resp = fetchWithRetry_(url);
+    if (!resp.ok) { log_(W.log.imp, W.log.impFetch + resp.error); return resp; }
+
+    var records;
+    try { records = parseRecords_(resp.text, resp.type, setting_('importList')); }
+    catch (err) { log_(W.log.imp, W.log.impParse + err.message); return { ok: false, error: 'parse' }; }
+
+    var keyPath = setting_('importKey') || 'id';
+    var map = importFields_(records, keyPath);
+    var cols = map.map(function (m) { return m[0]; });
+    var header = [W.f.key].concat(cols).concat([W.f.updated]);
+    var sh = sheet_(SHEETS.import, header);
+    var values = sh.getDataRange().getValues();
+    if (values[0].join('|') !== header.join('|')) {         // columns changed in settings — rewrite the header only
+      sh.getRange(1, 1, 1, header.length).setValues([header]);
+      values = sh.getDataRange().getValues();
+    }
+    var index = {};
+    for (var i = 1; i < values.length; i++) index[String(values[i][0])] = i + 1;
+
+    var stamp = now_(), added = 0, changed = 0, skipped = 0, appendRows = [], seenNow = {};
+    records.forEach(function (rec) {
+      var key = get_(rec, keyPath);
+      if (key === '' || key === undefined || key === null) { skipped++; return; }
+      if (seenNow[String(key)]) return;                       // the same key twice in one response: the first one wins
+      seenNow[String(key)] = true;
+      var cells = map.map(function (m) { return safe_(cellValue_(get_(rec, m[1]))); });
+      var at = index[String(key)];
+      if (!at) { appendRows.push([String(key)].concat(cells).concat([stamp])); added++; return; }
+      var old = values[at - 1].slice(1, 1 + cells.length).map(String);
+      if (old.join('\u0001') !== cells.map(String).join('\u0001')) {
+        sh.getRange(at, 1, 1, header.length).setValues([[String(key)].concat(cells).concat([stamp])]);
+        changed++;
+      }
+    });
+    if (appendRows.length) sh.getRange(sh.getLastRow() + 1, 1, appendRows.length, header.length).setValues(appendRows);
+    log_(W.log.imp, W.log.impDone(records.length, added, changed, skipped));
+    return { ok: true, added: added, changed: changed, skipped: skipped };
+  }
+
+  function fetchWithRetry_(url) {
+    var token = secret_('IMPORT_TOKEN');
+    var opts = { muteHttpExceptions: true, followRedirects: true, headers: token ? { Authorization: 'Bearer ' + token } : {} };
+    var wait = 2000, last = '';
+    for (var attempt = 0; attempt < 4; attempt++) {
+      try {
+        var r = UrlFetchApp.fetch(url, opts);
+        var code = r.getResponseCode();
+        if (code === 200) return { ok: true, text: r.getContentText('UTF-8'), type: String((r.getHeaders() || {})['Content-Type'] || '') };
+        last = 'HTTP ' + code;
+        if (code !== 429 && code < 500) break;
+      } catch (err) { last = err.message; }
+      Utilities.sleep(wait); wait *= 2;
+    }
+    return { ok: false, error: last };
+  }
+
+  function parseRecords_(text, type, listPath) {
+    var t = String(text).replace(/^﻿/, '');
+    if (/csv|text\/plain/.test(type) || !/^\s*[\[{]/.test(t)) {
+      var rows = Utilities.parseCsv(t, t.split('\n')[0].indexOf(';') >= 0 ? ';' : ',');
+      var head = rows.shift().map(function (h) { return String(h).trim(); });
+      return rows.filter(function (r) { return r.join('').trim(); }).map(function (r) {
+        var o = {}; head.forEach(function (h, i) { o[h] = r[i]; }); return o;
+      });
+    }
+    var data = JSON.parse(t);
+    var list = listPath ? get_(data, listPath) : data;
+    if (!Array.isArray(list)) throw new Error(W.log.impNoList(listPath));
+    return list;
+  }
+
+  /** «Название=name, Цена=price.amount» → [[column, path]]; empty setting → all top-level fields of the first record. */
+  function importFields_(records, keyPath) {
+    var spec = listSetting_('importFields');
+    if (!spec.length) return Object.keys(records[0] || {}).filter(function (k) { return k !== keyPath; }).map(function (k) { return [k, k]; });
+    return spec.map(function (s) { var p = s.split('='); return p.length > 1 ? [p[0].trim(), p[1].trim()] : [p[0].trim(), p[0].trim()]; });
+  }
+
+  function get_(obj, path) {
+    return String(path).split('.').reduce(function (o, k) { return o === undefined || o === null ? undefined : o[k]; }, obj);
+  }
+
+  function cellValue_(v) {
+    if (v === undefined || v === null) return '';
+    if (typeof v === 'object') return JSON.stringify(v);
+    return v;
+  }
+
+  // ---- Leads.js ----
+  /**
+   * Leads → the leads sheet + Telegram. Two entry points:
+   *  1) doPost — the script published as a web app: any site, Tilda webhook, n8n/Make can POST (form or JSON).
+   *     Every request must carry ?key=<WEBHOOK_SECRET> (Script Properties) — otherwise anyone could fill the sheet.
+   *  2) onFormSubmit — a Google Form linked to this spreadsheet (installable trigger «On form submit»).
+   */
+
+  function doPost(e) {
+    var p = (e && e.parameter) || {};
+    if (!secret_('WEBHOOK_SECRET') || p.key !== secret_('WEBHOOK_SECRET')) return json_({ ok: false, error: 'forbidden' });
+    var data = {};
+    Object.keys(p).forEach(function (k) { if (k !== 'key') data[k] = p[k]; });
+    if (e.postData && /json/.test(e.postData.type || '')) {
+      try { var body = JSON.parse(e.postData.contents); Object.keys(body).forEach(function (k) { data[k] = body[k]; }); }
+      catch (err) { return json_({ ok: false, error: 'bad json' }); }
+    }
+    if (data.website) return json_({ ok: true });                 // honeypot from the site form: bot, drop quietly
+    var res = addLead_(data, data.source || data[W.f.source] || W.src.site);
+    return json_(res);
+  }
+
+  function onFormSubmit(e) {
+    var nv = (e && e.namedValues) || {};
+    var data = {};
+    Object.keys(nv).forEach(function (k) { data[k] = [].concat(nv[k]).join(', '); });
+    return addLead_(data, W.src.form);
+  }
+
+  /** What a form may call each standard column, in either language. */
+  var SYNONYMS = { name: ['name', 'имя', 'fio', 'фио', 'full name'], phone: ['phone', 'телефон', 'tel'], email: ['email', 'e-mail', 'mail', 'почта'],
+    message: ['message', 'сообщение', 'comment', 'комментарий', 'text'], source: ['source', 'источник', 'utm_source'] };
+
+  /** Maps incoming keys to the sheet columns (case-insensitive, EN/RU synonyms), validates, appends under a lock. */
+  function addLead_(data, source) {
+    var fields = listSetting_('fields');
+    var lower = {};
+    Object.keys(data).forEach(function (k) { lower[String(k).trim().toLowerCase()] = data[k]; });
+    var role = {};
+    Object.keys(SYNONYMS).forEach(function (r) { role[W.f[r].toLowerCase()] = r; });
+    var row = {};
+    fields.forEach(function (f) {
+      var key = f.toLowerCase();
+      var v = lower[key];
+      (SYNONYMS[role[key]] || []).forEach(function (s) { if (v === undefined || v === '') v = lower[s]; });
+      row[f] = String(v === undefined ? '' : v).trim().slice(0, 2000);
+    });
+    if (fields.indexOf(W.f.source) >= 0 && !row[W.f.source]) row[W.f.source] = source;
+    if (row[W.f.phone] !== undefined && row[W.f.phone]) {
+      var ph = normPhone_(row[W.f.phone]);
+      if (!ph) return { ok: false, error: W.err.phone };
+      row[W.f.phone] = ph;
+    }
+    var missing = listSetting_('required').filter(function (f) { return !row[f]; });
+    if (missing.length) return { ok: false, error: W.err.missing + missing.join(', ') };
+
+    var lock = LockService.getScriptLock();
+    if (!lock.tryLock(20000)) { log_(W.log.lead, W.log.busy + JSON.stringify(row)); return { ok: false, error: 'busy' }; }
+    var n;
+    try {
+      var sh = sheet_(SHEETS.leads, [W.f.date].concat(fields));
+      // The lead number keeps growing after the night moves repeats away, so two leads never share a number.
+      var props = PropertiesService.getScriptProperties();
+      n = Math.max(Number(props.getProperty('LEAD_N')) || 0, sh.getLastRow() - 1) + 1;
+      // «'» keeps the phone as text: otherwise Sheets reads +14155550103 as a number and drops the «+».
+      sh.appendRow([now_()].concat(fields.map(function (f) { return f === W.f.phone && row[f] ? "'" + row[f] : safe_(row[f]); })));
+      props.setProperty('LEAD_N', String(n));
+    } finally { lock.releaseLock(); }
+    notifyLead_(n, row, fields);
+    return { ok: true, n: n };
+  }
+
+  function notifyLead_(n, row, fields) {
+    var lines = fields.filter(function (f) { return row[f]; }).map(function (f) { return '<b>' + esc_(f) + ':</b> ' + esc_(row[f]); });
+    var url = SpreadsheetApp.getActive().getUrl();
+    var ok = telegram_(W.tg.lead(n) + '\n' + lines.join('\n') + '\n<a href="' + url + '">' + W.tg.open + '</a>');
+    if (!ok) log_(W.log.tg, W.log.tgFail(n));
+  }
+
+  /** Telegram with retries on 429/5xx; the token and chats come from Script Properties. */
+  function telegram_(text) {
+    var token = secret_('TELEGRAM_TOKEN'), chats = secret_('TELEGRAM_CHAT_ID');
+    if (!token || !chats) return false;
+    var ok = true;
+    chats.split(',').map(function (s) { return s.trim(); }).filter(String).forEach(function (chat) {
+      var sent = false;
+      for (var attempt = 0; attempt < 3 && !sent; attempt++) {
+        var r = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+          method: 'post', muteHttpExceptions: true,
+          payload: { chat_id: chat, text: text.slice(0, 4000), parse_mode: 'HTML', disable_web_page_preview: 'true' } });
+        var code = r.getResponseCode();
+        if (code === 200) sent = true;
+        else if (code === 429 || code >= 500) Utilities.sleep(1000 * (attempt + 1));
+        else break;   // wrong token or chat — retrying will not help
+      }
+      ok = ok && sent;
+    });
+    return ok;
+  }
+
+  function testTelegram() {
+    var ok = telegram_(W.tg.test(SpreadsheetApp.getActive().getName()));
+    log_(W.log.tg, ok ? W.log.tgOk : W.log.tgBad);
+    return ok;
+  }
+
+  function esc_(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function json_(obj) { return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON); }
+
+  // ---- Tidy.js ----
+  /**
+   * Duplicates and the daily report.
+   * moveDuplicates: rows of the leads sheet that repeat an earlier row by phone or e-mail within N days are MOVED to the
+   * duplicates sheet (with the number of the original row) — never deleted, the owner can move them back.
+   * sendReport: yesterday's leads by source (+ sum of a numeric column, if set) — to the e-mail from settings.
+   */
+
+  function moveDuplicates() {
+    var sh = SpreadsheetApp.getActive().getSheetByName(SHEETS.leads);
+    if (!sh || sh.getLastRow() < 3) return { moved: 0 };
+    var lock = LockService.getScriptLock();
+    if (!lock.tryLock(30000)) { log_(W.log.dupes, W.log.dupesBusy); return { moved: 0 }; }
+    try {
+      var values = sh.getDataRange().getValues();
+      var head = values[0].map(String);
+      var by = listSetting_('dupeBy').map(function (f) { return head.indexOf(f); }).filter(function (i) { return i >= 0; });
+      var days = Number(setting_('dupeDays')) || 1;
+      var cc = setting_('country');
+      var seen = {}, dupes = [];
+      for (var r = 1; r < values.length; r++) {
+        var t = parseDate_(values[r][0]);
+        var isDupe = false;
+        by.forEach(function (c) {
+          var v = String(values[r][c]).trim().toLowerCase();
+          if (head[c] === W.f.phone) v = normPhone_(v, cc) || v;
+          if (!v) return;
+          var k = c + '|' + v, prev = seen[k];
+          if (prev && (!t || !prev.t || t - prev.t <= days * 86400000)) { isDupe = isDupe || prev.row; }
+          else seen[k] = { row: r + 1, t: t };
+        });
+        if (isDupe) dupes.push({ row: r + 1, of: isDupe });
+      }
+      if (!dupes.length) { log_(W.log.dupes, W.log.dupesNone); return { moved: 0 }; }
+      var target = sheet_(SHEETS.dupes, head.concat([W.f.dupeOf]));
+      // The original's row number as it will be after the repeats above it are removed.
+      var after = function (row) { return row - dupes.filter(function (x) { return x.row < row; }).length; };
+      target.getRange(target.getLastRow() + 1, 1, dupes.length, head.length + 1)
+        .setValues(dupes.map(function (d) { return values[d.row - 1].concat([after(d.of)]); }));
+      dupes.slice().reverse().forEach(function (d) { sh.deleteRow(d.row); });   // bottom-up keeps row numbers valid
+      log_(W.log.dupes, W.log.dupesMoved(dupes.length, SHEETS.dupes));
+      return { moved: dupes.length };
+    } finally { lock.releaseLock(); }
+  }
+
+  function sendReport(dayOverride) {
+    var to = setting_('reportTo');
+    if (!to) { log_(W.log.report, W.log.reportNoTo); return { sent: false }; }
+    var tz = setting_('tz') || W.defaults.tz;
+    var day = typeof dayOverride === 'string' ? dayOverride
+      : Utilities.formatDate(new Date(Date.now() - 86400000), tz, 'yyyy-MM-dd');
+    var sh = SpreadsheetApp.getActive().getSheetByName(SHEETS.leads);
+    var values = sh ? sh.getDataRange().getValues() : [[]];
+    var head = values[0].map(String);
+    var src = head.indexOf(W.f.source), sumCol = head.indexOf(setting_('reportSum'));
+    var total = 0, bySrc = {}, sum = 0;
+    for (var r = 1; r < values.length; r++) {
+      var at = values[r][0];   // Sheets turns «2026-09-25 10:01:00» into a Date
+      if ((Object.prototype.toString.call(at) === '[object Date]' ? Utilities.formatDate(at, tz, 'yyyy-MM-dd') : String(at).slice(0, 10)) !== day) continue;
+      total++;
+      var s = src >= 0 ? String(values[r][src] || W.src.none) : W.src.all;
+      bySrc[s] = (bySrc[s] || 0) + 1;
+      if (sumCol >= 0) sum += amount_(values[r][sumCol]);
+    }
+    var lines = [W.report.total(day, total)];
+    Object.keys(bySrc).sort(function (a, b) { return bySrc[b] - bySrc[a]; }).forEach(function (s) { lines.push('• ' + s + ': ' + bySrc[s]); });
+    if (sumCol >= 0) lines.push(W.report.sum(head[sumCol], Math.round(sum * 100) / 100));
+    lines.push('', W.report.sheet + SpreadsheetApp.getActive().getUrl());
+    MailApp.sendEmail(to, W.report.subject(day, total), lines.join('\n'));
+    log_(W.log.report, W.log.reportSent(to, total));
+    return { sent: true, total: total, bySrc: bySrc, sum: sum };
+  }
+
+  /** «1 000 ₽», «2500,50», «$1,250.50», «€1.250,50» → a number. A lone comma is decimal («12,5»), unless it groups thousands in English («1,250»). */
+  function amount_(v) {
+    if (typeof v === 'number') return v;
+    var s = String(v).replace(/[^\d.,-]/g, '');
+    var dot = s.lastIndexOf('.'), comma = s.lastIndexOf(',');
+    if (dot >= 0 && comma >= 0) s = dot > comma ? s.replace(/,/g, '') : s.replace(/\./g, '').replace(',', '.');
+    else if (comma >= 0) s = LANG === 'en' && /^-?\d{1,3}(,\d{3})+$/.test(s) ? s.replace(/,/g, '') : s.replace(',', '.');
+    return Number(s) || 0;
+  }
+
+  function parseDate_(v) {
+    if (v instanceof Date) return v.getTime();
+    var m = String(v).match(/^(\d{4})-(\d\d)-(\d\d)[ T](\d\d):(\d\d)/);
+    return m ? Date.UTC(+m[1], +m[2] - 1, +m[3], +m[4], +m[5]) : 0;
+  }
+
+  setup();
+  return { doPost, moveDuplicates, sendReport, SHEETS, W };
+}
+// ---- END GENERATED ----
+
+/** Google's services, the way the kit's tests fake them: sheets are arrays, mail and Telegram calls are recorded. */
+function makeGoogle(opts) {
+  const sheets = new Map();
+  const out = { mails: [], sleeps: 0 };
+  const mkSheet = (name) => {
+    const rows = [];
+    const sh = {
+      rows, getName: () => name,
+      getLastRow: () => rows.length,
+      appendRow: (r) => { rows.push([...r]); },
+      setFrozenRows() {},
+      deleteRow: (n) => { rows.splice(n - 1, 1); },
+      deleteRows: (n, k) => { rows.splice(n - 1, k); },
+      getDataRange: () => ({ getValues: () => (rows.length ? rows.map((r) => [...r]) : [[]]) }),
+      getRange: (r, c, nr = 1, nc = 1) => ({
+        setValues: (vals) => { for (let i = 0; i < nr; i++) { rows[r - 1 + i] = rows[r - 1 + i] || []; for (let j = 0; j < nc; j++) rows[r - 1 + i][c - 1 + j] = vals[i][j]; } },
+        setFontWeight() { return this; },
+      }),
+    };
+    sheets.set(name, sh);
+    return sh;
+  };
+  const ss = { getSheetByName: (n) => sheets.get(n) || null, insertSheet: mkSheet, getName: () => opts.file, getUrl: () => 'https://docs.google.com/spreadsheets/d/demo' };
+  const triggers = [];
+  const trig = (fn) => { const t = { getHandlerFunction: () => fn }; const c = { timeBased: () => c, everyHours: () => c, everyDays: () => c, atHour: () => c, inTimezone: () => c, create: () => { triggers.push(t); return t; } }; return c; };
+  const clock = { t: opts.now };
+  class FakeDate extends Date { constructor(...a) { super(...(a.length ? a : [clock.t])); } static now() { return clock.t; } }
+  return {
+    sheets, out, clock,
+    SpreadsheetApp: { getActive: () => ss, getUi: () => ({ createMenu: () => { const m = { addItem: () => m, addToUi: () => {} }; return m; } }) },
+    PropertiesService: { getScriptProperties: () => ({ getProperty: (k) => opts.props[k] ?? null, setProperty: (k, v) => { opts.props[k] = String(v); } }) },
+    LockService: { getScriptLock: () => ({ tryLock: () => true, releaseLock() {} }) },
+    ScriptApp: { getProjectTriggers: () => [...triggers], deleteTrigger: (t) => triggers.splice(triggers.indexOf(t), 1), newTrigger: trig },
+    UrlFetchApp: { fetch: (url, o) => { const r = opts.fetch(url, o); return { getResponseCode: () => r.code, getContentText: () => r.body || '', getHeaders: () => ({}) }; } },
+    MailApp: { sendEmail: (to, subject, body) => out.mails.push({ to, subject, body }) },
+    ContentService: { MimeType: { JSON: 'json' }, createTextOutput: (s) => ({ content: s, setMimeType() { return this; } }) },
+    Utilities: {
+      sleep: () => { out.sleeps++; },          // Telegram's retry pauses take no time here
+      parseCsv: () => [],
+      formatDate: (d, tz, fmt) => {
+        const p = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' }).formatToParts(d).map((x) => [x.type, x.value]));
+        return fmt.replace('yyyy', p.year).replace('MM', p.month).replace('dd', p.day).replace('HH', p.hour).replace('mm', p.minute).replace('ss', p.second);
+      },
+    },
+    Date: FakeDate,
+  };
+}
+</script>
+<script>
+"use strict";
+(() => {
+  const S = {"title":"Ash & Oak Kitchens - leads to Google Sheets demo","desc":"Send a test lead and watch it land in a Google Sheet with a Telegram alert, then run the night: repeat leads move aside and a morning report arrives. The page runs the real Apps Script code; the workshop is invented.","skip":"Skip to the form","back":"Back to the case study","langAria":"Language","themeAria":"Switch between day and night","themeDay":"Day","themeNight":"Night","eyebrow":"Live demo · Google Sheets + Telegram","h1":"Every lead in one sheet, with an alert in Telegram","lead":"Fill in the website form the way a customer would. The real Apps Script code from this project writes the row and sends the alert. At night it moves repeat leads aside, and in the morning it mails a report.","note":"Ash & Oak Kitchens and every contact here are invented. Nothing leaves this page: Google and Telegram are simulated in your browser.","siteMark":"A","siteName":"Ash & Oak Kitchens","siteSub":"Custom kitchens and closets","formH":"Book a free in-home measurement","lblName":"Name","lblPhone":"Phone","lblEmail":"E-mail (optional)","lblMsg":"What do you need?","lblSrc":"Came from","src1":"website","src2":"google","src3":"instagram","btnSend":"Send request","fill":"Fill in a sample:","sNew":"New customer","sAgain":"Same customer again","sBot":"A spam bot","sNoPhone":"No phone","tgDown":"Telegram is down","tgDownHint":"Alerts fail from now on, and the lead still lands in the sheet.","ok":"Thanks! Request #{n} is in.","spam":"The form said “thanks”, but nothing was written: a hidden field caught the bot.","whatOk":"doPost → row {row} on “{sheet}” → Telegram alert","whatTgFail":"doPost → row {row} on “{sheet}” → Telegram did not answer 3 times → a line on “{log}”","whatRefused":"doPost refused the request, nothing was written","sheetH":"Google Sheet","sheetFile":"Ash & Oak Kitchens · leads","tabsAria":"Sheets","secretNote":"The bot token and the form key are not on this sheet: they live in Script Properties.","tgH":"The owner's Telegram","tgBot":"Leads bot","tgEmpty":"No alerts yet. Send the form and the alert shows up here.","nightH":"At night and in the morning","nightP":"At 3:00 the script moves repeat leads to “Duplicates”, noting the row they repeat. At 9:00 it mails the owner yesterday's leads by source.","nightBtn":"Run the night","nightDone":"Night of {day}: {moved} moved to “{sheet}”, report sent.","mailFrom":"From","mailTo":"To","mailSubj":"Subject","mailSender":"Your Google account, via the script","mailOwner":"owner@ashoak.example","restart":"Start over","againMsg":"One more thing: I also need an island","howH":"What the code does","f1h":"Any form, one sheet","f1p":"A website, Tilda or n8n send the lead with a secret key, and a linked Google Form works too. Fields are matched by name, in English or Russian.","f2h":"Leads don't get lost","f2p":"Telegram gets three tries. If it is still down, the lead stays in the sheet and the Log says which alert did not go out.","f3h":"Clean data","f3p":"Phone numbers come to one format, a hidden field stops bots, and text like =FORMULA() can't run in a cell.","f4h":"Nothing is deleted","f4p":"Repeat leads move to their own sheet with the row they repeat, so the owner can move them back.","ctaH":"Want this for your leads?","ctaP":"It runs in your own Google account: no server and no hosting bill. The free estimate comes first.","ctaBtn":"Write to me","law":"","foot":"Ash & Oak Kitchens and its customers are invented. I built this demo myself; it is not a client project. Flow Lab · Luna.","samples":{"new":[{"name":"Dana Wells","phone":"(415) 555-0101","email":"dana@mail.example","message":"Corner kitchen, about 10 ft. When can you come to measure?","source":"website"},{"name":"Mike Chen","phone":"415-555-0102","email":"","message":"How much is a quartz countertop, 8 ft?","source":"google"},{"name":"Maria Green","phone":"4155550103","email":"maria@mail.example","message":"Built-in closet for the hallway, 6 ft","source":"instagram"},{"name":"Ian Brooks","phone":"+1 415 555 0104","email":"","message":"New fronts for an old kitchen","source":"google"},{"name":"Sofia Park","phone":"(415) 555-0105","email":"sofia@mail.example","message":"Kitchen for a new condo, budget about $15,000","source":"website"}],"bot":{"name":"Best SEO offer","phone":"(415) 555-0199","email":"","message":"Cheap backlinks, 1000 per day!!!","source":"website"},"nophone":{"name":"Just looking","phone":"","email":"look@mail.example","message":"Do you do bathrooms?","source":"instagram"}}};
+  const LANG = document.documentElement.lang;
+  const $ = (id) => document.getElementById(id);
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fill = (t, v) => t.replace(/\{(\w+)\}/g, (m, k) => (k in v ? v[k] : m));
+
+  /* theme: ?theme=dark|light, otherwise the system setting, remembered per visitor */
+  const ICON_MOON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  const ICON_SUN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  function setTheme(name, save) {
+    root.dataset.theme = name;
+    // The button names the theme it switches to.
+    $('theme-ic').innerHTML = name === 'dark' ? ICON_SUN : ICON_MOON;
+    $('theme-lbl').textContent = name === 'dark' ? S.themeDay : S.themeNight;
+    if (save) { try { localStorage.setItem('fl-theme', name); } catch (e) { /* private mode */ } }
+  }
+  const asked = new URLSearchParams(location.search).get('theme');
+  let saved = null; try { saved = localStorage.getItem('fl-theme'); } catch (e) { /* private mode */ }
+  setTheme(asked === 'dark' || asked === 'light' ? asked : saved === 'dark' || saved === 'light' ? saved
+    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'), false);
+  $('theme').addEventListener('click', () => setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
+
+  /* the clock: a pinned Friday in the workshop's own time zone, so the page looks the same for everyone */
+  const OFFSET = LANG === 'ru' ? 3 : -4;                       // Moscow UTC+3 · New York (summer) UTC-4
+  const at = (day, h, m) => Date.UTC(2026, 8, 25 + day, h, m) - OFFSET * 3600000;
+  const localHour = (t) => new Date(t + OFFSET * 3600000).getUTCHours();
+  const hm = (t) => new Date(t + OFFSET * 3600000).toISOString().slice(11, 16);
+  const isoDay = (day) => new Date(Date.UTC(2026, 8, 25 + day)).toISOString().slice(0, 10);
+
+  let G, K, day, sampleAt, lastLead, prevLen, fresh, tab, tgCount;
+
+  function reset() {
+    day = 0; sampleAt = 0; lastLead = null; tgCount = 0;
+    document.querySelector('[data-sample="again"]').disabled = true;   // a repeat needs a first lead
+    G = makeGoogle({ file: S.sheetFile, now: at(0, 9, 14), props: { TELEGRAM_TOKEN: 'demo', TELEGRAM_CHAT_ID: 'owner', WEBHOOK_SECRET: 'demo-key' }, fetch: telegram });
+    K = makeKit(G);
+    // the owner's address for the morning report, typed into the settings sheet as the owner would
+    G.sheets.get(K.SHEETS.settings).rows.find((r) => r[0] === K.W.set.reportTo)[1] = S.mailOwner;
+    $('tg').innerHTML = '<p class="tg-empty">' + esc(S.tgEmpty) + '</p>';
+    $('result').innerHTML = ''; $('night-out').innerHTML = '';
+    $('form').reset(); clearErrors();
+    tab = K.SHEETS.leads; fresh = {}; prevLen = lengths();
+    renderTabs(); renderGrid();
+  }
+
+  /* Telegram's API, as the kit calls it: the alert lands in the owner's chat, or fails while the switch is on */
+  function telegram(url, o) {
+    if (!/api\.telegram\.org/.test(url)) return { code: 404 };
+    if ($('tg-down').checked) return { code: 502 };
+    tgMessage(o.payload.text);
+    return { code: 200, body: '{"ok":true}' };
+  }
+
+  // The alert is Telegram HTML (<b>, <a>). It is parsed, never injected: only text, bold and the link survive.
+  function tgMessage(html) {
+    const wall = $('tg');
+    if (!tgCount) wall.innerHTML = '';
+    tgCount++;
+    const b = document.createElement('div');
+    b.className = 'tg-b' + (reduce ? '' : ' enter');
+    const doc = new DOMParser().parseFromString('<div>' + html + '</div>', 'text/html');
+    const walk = (node, into) => node.childNodes.forEach((n) => {
+      if (n.nodeType === 3) into.appendChild(document.createTextNode(n.nodeValue));
+      else if (n.nodeName === 'B') { const s = document.createElement('b'); walk(n, s); into.appendChild(s); }
+      else if (n.nodeName === 'A') {
+        const s = document.createElement('button');
+        s.type = 'button'; s.className = 'lnk'; s.textContent = n.textContent;
+        s.addEventListener('click', () => { selectTab(K.SHEETS.leads, true); $('c-sheet').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
+        into.appendChild(s);
+      } else into.appendChild(document.createTextNode(n.textContent));
+    });
+    walk(doc.body.firstChild, b);
+    const t = document.createElement('time'); t.textContent = hm(G.clock.t);
+    b.appendChild(t);
+    wall.appendChild(b);
+    wall.scrollTop = wall.scrollHeight;
+  }
+
+  /* the spreadsheet view */
+  const order = () => [K.SHEETS.leads, K.SHEETS.dupes, K.SHEETS.log, K.SHEETS.settings];
+  const rowsOf = (name) => (G.sheets.get(name) || { rows: [] }).rows;
+  const lengths = () => Object.fromEntries(order().map((n) => [n, rowsOf(n).length]));
+  const letter = (i) => String.fromCharCode(65 + i);
+
+  function renderTabs() {
+    const box = $('tabs');
+    box.innerHTML = '';
+    order().forEach((name, i) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'tab'; b.id = 'tab-' + i;
+      b.setAttribute('role', 'tab'); b.setAttribute('aria-controls', 'grid-wrap');
+      b.setAttribute('aria-selected', String(name === tab)); b.tabIndex = name === tab ? 0 : -1;
+      const n = Math.max(0, rowsOf(name).length - 1);
+      b.innerHTML = esc(name) + (name !== K.SHEETS.settings ? '<span class="n">' + n + '</span>' : '') + (fresh[name] && name !== tab ? '<span class="dot" aria-hidden="true"></span>' : '');
+      b.addEventListener('click', () => selectTab(name, false));
+      b.addEventListener('keydown', (e) => {
+        const k = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (!k) return;
+        e.preventDefault();
+        const next = order()[(i + k + order().length) % order().length];
+        selectTab(next, false); $('tab-' + order().indexOf(next)).focus();
+      });
+      box.appendChild(b);
+    });
+    $('grid-wrap').setAttribute('aria-labelledby', 'tab-' + order().indexOf(tab));
+  }
+
+  function selectTab(name, keepFresh) {
+    tab = name;
+    renderTabs(); renderGrid(keepFresh);
+  }
+
+  function renderGrid() {
+    const rows = rowsOf(tab);
+    const width = Math.max(3, ...rows.map((r) => r.length));
+    const from = fresh[tab] != null ? fresh[tab] : Infinity;
+    let html = '<thead><tr><th class="rn" aria-hidden="true"></th>' + Array.from({ length: width }, (_, i) => '<th scope="col">' + letter(i) + '</th>').join('') + '</tr></thead><tbody>';
+    const shown = Math.max(rows.length, 8);   // a few empty rows, so it reads as a sheet
+    for (let r = 0; r < shown; r++) {
+      const row = rows[r] || [];
+      const cls = (r === 0 ? 'h' : '') + (r >= from && r < rows.length ? ' fresh' : '');
+      html += '<tr class="' + cls.trim() + '"><th class="rn" scope="row">' + (r + 1) + '</th>' +
+        Array.from({ length: width }, (_, c) => { const v = row[c] == null ? '' : String(row[c]).replace(/^'/, ''); return '<td title="' + esc(v) + '">' + esc(v) + '</td>'; }).join('') + '</tr>';
+    }
+    $('grid').innerHTML = html + '</tbody>';
+    if (fresh[tab] != null) {
+      delete fresh[tab];
+      const all = $('grid').querySelectorAll('tr.fresh'), last = all[all.length - 1];
+      if (last) { const w = $('grid-wrap'); w.scrollTop = Math.max(0, last.offsetTop - w.clientHeight + last.offsetHeight + 4); }
+      requestAnimationFrame(() => requestAnimationFrame(() => $('grid').querySelectorAll('tr.fresh').forEach((tr) => tr.classList.add('fade'))));
+    }
+  }
+
+  // After every action: which sheets got new rows, so the view can light them up.
+  function afterAction(goto) {
+    const now = lengths();
+    order().forEach((n) => { if (now[n] > prevLen[n]) fresh[n] = Math.max(1, prevLen[n]); });
+    prevLen = now;
+    tab = goto || tab;
+    renderTabs(); renderGrid();
+  }
+
+  /* the form */
+  const fields = { name: $('f-name'), phone: $('f-phone'), email: $('f-email'), message: $('f-msg'), source: $('f-src') };
+  function clearErrors() {
+    ['name', 'phone'].forEach((k) => { const e = $('e-' + k); e.hidden = true; e.textContent = ''; fields[k].removeAttribute('aria-invalid'); fields[k].removeAttribute('aria-describedby'); });
+  }
+  function fieldError(k, text) {
+    const e = $('e-' + k); e.textContent = text; e.hidden = false;
+    fields[k].setAttribute('aria-invalid', 'true'); fields[k].setAttribute('aria-describedby', 'e-' + k);
+  }
+  function put(s, bot) {
+    fields.name.value = s.name; fields.phone.value = s.phone; fields.email.value = s.email || ''; fields.message.value = s.message;
+    fields.source.value = s.source; $('f-web').value = bot ? 'http://spam.example' : '';
+    clearErrors(); $('result').innerHTML = ''; $('result').className = '';
+  }
+  // "Same customer again": the last customer, the phone typed another way, a new message.
+  function again() {
+    const base = lastLead || S.samples.new[0];
+    const d = base.phone.replace(/\D/g, '').slice(-10);
+    const phone = LANG === 'ru' ? '+7 ' + d.slice(0, 3) + ' ' + d.slice(3, 6) + '-' + d.slice(6, 8) + '-' + d.slice(8)
+      : '1-' + d.slice(0, 3) + '-' + d.slice(3, 6) + '-' + d.slice(6);
+    return { name: base.name.split(' ')[0], phone, email: '', message: S.againMsg, source: base.source };
+  }
+  document.querySelectorAll('[data-sample]').forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.sample;
+    if (k === 'new') { put(S.samples.new[sampleAt % S.samples.new.length]); sampleAt++; }
+    else if (k === 'again') put(again());
+    else if (k === 'bot') put(S.samples.bot, true);
+    else put(S.samples.nophone);
+    $('form').querySelector('.btn-send').focus({ preventScroll: true });
+  }));
+
+  $('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    clearErrors();
+    // Leads come in through the day; late in the evening they come closer together.
+    G.clock.t += (localHour(G.clock.t) < 19 ? 47 : 6) * 60000;
+    const v = { name: fields.name.value, phone: fields.phone.value, email: fields.email.value, message: fields.message.value, source: fields.source.value };
+    const parameter = { key: 'demo-key', name: v.name, phone: v.phone, email: v.email, message: v.message, utm_source: v.source };
+    if ($('f-web').value) parameter.website = $('f-web').value;
+    const logBefore = rowsOf(K.SHEETS.log).length;
+    const res = JSON.parse(K.doPost({ parameter }).content);   // exactly what the web app answers the site
+    const box = $('result');
+    if (parameter.website) {
+      box.className = 'result ok' + (reduce ? '' : ' enter');
+      box.innerHTML = '<b>' + esc(S.spam) + '</b>';
+      $('f-web').value = '';
+      afterAction();
+      return;
+    }
+    if (!res.ok) {
+      const err = String(res.error || '');
+      if (err === K.W.err.phone) fieldError('phone', err);
+      else if (err.indexOf(K.W.err.missing) === 0) {
+        err.slice(K.W.err.missing.length).split(', ').forEach((f) => {
+          if (f === K.W.f.name) fieldError('name', err); else if (f === K.W.f.phone) fieldError('phone', err);
+        });
+      }
+      box.className = 'result bad' + (reduce ? '' : ' enter');
+      box.innerHTML = '<b>' + esc(err) + '</b><code>' + esc(S.whatRefused) + '</code>';
+      const first = fields.name.getAttribute('aria-invalid') ? fields.name : fields.phone;
+      first.focus();
+      afterAction();
+      return;
+    }
+    lastLead = v; document.querySelector('[data-sample="again"]').disabled = false;
+    const failed = rowsOf(K.SHEETS.log).length > logBefore;
+    box.className = 'result ok' + (reduce ? '' : ' enter');
+    box.innerHTML = '<b>' + esc(fill(S.ok, { n: res.n })) + '</b><code>' +
+      esc(fill(failed ? S.whatTgFail : S.whatOk, { row: res.n + 1, sheet: K.SHEETS.leads, log: K.SHEETS.log })) + '</code>';
+    const src = fields.source.value;
+    $('form').reset(); fields.source.value = src;
+    afterAction(K.SHEETS.leads);
+  });
+
+  /* the night: 3:00 duplicates, 9:00 the report, as the kit's triggers run them */
+  $('night').addEventListener('click', () => {
+    G.clock.t = at(day + 1, 3, 0);
+    const moved = K.moveDuplicates().moved;
+    G.clock.t = at(day + 1, 9, 0);
+    const mailsBefore = G.out.mails.length;
+    K.sendReport();
+    const mail = G.out.mails[mailsBefore];
+    const done = fill(S.nightDone, { day: LANG === 'ru' ? isoDay(day).slice(8) + '.' + isoDay(day).slice(5, 7) : isoDay(day), moved, sheet: K.SHEETS.dupes });
+    day += 1;
+    G.clock.t = at(day, 9, 14);
+    let html = '<p class="night-done">' + esc(done) + '</p>';
+    if (mail) {
+      html += '<div class="mail' + (reduce ? '' : ' enter') + '"><dl><dt>' + esc(S.mailFrom) + '</dt><dd>' + esc(S.mailSender) + '</dd><dt>' + esc(S.mailTo) +
+        '</dt><dd>' + esc(mail.to) + '</dd><dt>' + esc(S.mailSubj) + '</dt><dd><b>' + esc(mail.subject) + '</b></dd></dl><pre>' + esc(mail.body) + '</pre></div>';
+    }
+    $('night-out').innerHTML = html;
+    afterAction(moved ? K.SHEETS.dupes : tab);
+  });
+  $('restart').addEventListener('click', () => { $('tg-down').checked = false; reset(); });
+
+  reset();
+
+  /* gentle reveal of the sections below the demo */
+  const io = 'IntersectionObserver' in window && !reduce ? new IntersectionObserver((list) => {
+    list.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' }) : null;
+  document.querySelectorAll('.reveal').forEach((n) => (io ? io.observe(n) : n.classList.add('in')));
+})();
+</script>
+</body>
+</html>
