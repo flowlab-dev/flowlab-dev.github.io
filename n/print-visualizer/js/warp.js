@@ -96,6 +96,9 @@ function initGL() {
   glCanvas = document.createElement('canvas');
   gl = glCanvas.getContext('webgl2', { premultipliedAlpha: true, preserveDrawingBuffer: true, antialias: true });
   if (!gl) { glFailed = true; return false; }
+  // phones drop the GPU context under memory pressure: then a print would come out empty.
+  // Fall back to the 2D mesh for good instead of drawing nothing.
+  glCanvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); gl = null; glFailed = true; });
   const vs = `#version 300 es
   in vec2 pos; uniform vec2 size;
   void main() { gl_Position = vec4(pos.x / size.x * 2.0 - 1.0, 1.0 - pos.y / size.y * 2.0, 0.0, 1.0); }`;
@@ -138,8 +141,15 @@ function textureFor(img) {
   return tex;
 }
 
+export function releaseTexture(img) {
+  const t = glTextures.get(img);
+  if (t && gl) gl.deleteTexture(t.tex);
+  glTextures.delete(img);
+}
+
 function drawQuadGL(ctx, img, p) {
   if (!initGL()) return false;
+  if (gl.isContextLost()) { gl = null; glFailed = true; return false; }
   const m = ctx.getTransform();
   const d = p.map((q) => ({ x: m.a * q.x + m.c * q.y + m.e, y: m.b * q.x + m.d * q.y + m.f }));
   const xs = d.map((q) => q.x), ys = d.map((q) => q.y);

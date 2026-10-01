@@ -804,6 +804,7 @@ $('#roomFile').addEventListener('change', async (e) => {
   const w = W * 0.36, h = w * (24 / 36);
   const custom = {
     id: 'custom', nameKey: 'room.custom', occluders: [],
+    lightMatch: { soft: true, strength: 1 }, // unknown wall under the print: take only the room's broad light
     prints: () => [{ type: 'glass', design: 'coast', widthIn: 36, heightIn: 24, layout: 'mural',
       corners: rect(W / 2 - w / 2, H * 0.4 - h / 2, W / 2 + w / 2, H * 0.4 + h / 2) }],
   };

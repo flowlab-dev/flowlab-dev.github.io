@@ -1,5 +1,5 @@
 // Scene renderer: room photo + printed products + room lighting, all in image pixel space.
-import { drawQuad, quadPath, squareToQuad, applyH } from './warp.js';
+import { drawQuad, quadPath, squareToQuad, applyH, releaseTexture } from './warp.js';
 import { renderDesign, getDesign } from './art.js';
 import { applyMetal, drawDoors, drawGlassBlocks, METAL_SIZE } from './surfaces.js';
 
@@ -39,6 +39,11 @@ export function buildTexture(print) {
   const src = sourceOf(print);
   const ppi = c.width / print.widthIn;
   const tilePx = print.type === 'tile' && print.tileIn > 0 ? print.tileIn * ppi : 0;
+  if (print.type === 'tile' || print.type === 'cabinet' || (print.upload && print.type !== 'metal')) {
+    // tile and doors are white under the ink, glass is printed with a white backing layer: a transparent
+    // PNG must not let the old wall through (on metal the clear areas stay bare metal, as when printed)
+    ctx.fillStyle = '#fbfaf7'; ctx.fillRect(0, 0, c.width, c.height);
+  }
 
   if (isRepeat(print)) {
     const cell = tilePx || (print.type === 'glassblock' ? (print.blockIn || 8) * ppi : 8 * ppi); // one motif per tile (or per 8" when printed as one sheet)
@@ -68,7 +73,7 @@ export function buildTexture(print) {
   if (print.type === 'glassblock') drawGlassBlocks(c, ppi, print);
   if (texCache.size > 8) {
     const k = texCache.keys().next().value;
-    const old = texCache.get(k); old.width = old.height = 0; // free memory right away (iOS canvas limit)
+    const old = texCache.get(k); releaseTexture(old); old.width = old.height = 0; // free memory right away (iOS canvas limit)
     if (old.sheen) old.sheen.width = old.sheen.height = 0;
     texCache.delete(k);
   }
@@ -108,6 +113,39 @@ function shadeMap(photo, colour = 0) {
   s.putImageData(d, 0, 0);
   byPhoto.set(colour, small);
   return small;
+}
+
+// The visitor's own photo: we don't know what is on the wall under the print (a dark backsplash, cabinets,
+// a fridge), so the full shade map would print those shapes into the artwork. Keep only the room's broad
+// light falloff (a window on one side, a dim corner): average the photo down to a few cells, then soften
+// the range so the darkest part of the room dims the print by at most a third.
+function softShadeMap(photo) {
+  const byPhoto = shadeCache.get(photo) || new Map();
+  shadeCache.set(photo, byPhoto);
+  if (byPhoto.has('soft')) return byPhoto.get('soft');
+  const k = 8 / Math.max(photo.width, photo.height);
+  const mid = mk(photo.width * k * 8, photo.height * k * 8);
+  const m = mid.getContext('2d'); m.imageSmoothingQuality = 'high';
+  m.drawImage(photo, 0, 0, mid.width, mid.height);
+  const tiny = mk(photo.width * k, photo.height * k);
+  const t = tiny.getContext('2d'); t.imageSmoothingQuality = 'high';
+  t.drawImage(mid, 0, 0, tiny.width, tiny.height);
+  const d = t.getImageData(0, 0, tiny.width, tiny.height);
+  const lums = [];
+  for (let i = 0; i < d.data.length; i += 4) lums.push(0.3 * d.data[i] + 0.59 * d.data[i + 1] + 0.11 * d.data[i + 2]);
+  const top = Math.max(40, [...lums].sort((a, b) => a - b)[Math.floor(lums.length * 0.9)]);
+  lums.forEach((l, j) => {
+    const v = Math.round(255 * (1 - 0.32 * (1 - Math.min(1, l / top))));
+    d.data[j * 4] = d.data[j * 4 + 1] = d.data[j * 4 + 2] = v; d.data[j * 4 + 3] = 255;
+  });
+  t.putImageData(d, 0, 0);
+  const out = mk(photo.width / 4, photo.height / 4);
+  const o = out.getContext('2d'); o.imageSmoothingQuality = 'high';
+  o.filter = `blur(${Math.round(out.width / 16)}px)`;
+  o.drawImage(tiny, -1, -1, out.width + 2, out.height + 2);
+  mid.width = mid.height = tiny.width = tiny.height = 0;
+  byPhoto.set('soft', out);
+  return out;
 }
 
 function lightColor(light) {
@@ -157,8 +195,9 @@ function drawPrintBody(ctx, print, photo, opts) {
       ctx.save();
       quadPath(ctx, q); ctx.clip();
       ctx.globalCompositeOperation = 'multiply';
-      ctx.globalAlpha = opts.lightMatch?.strength ?? 0.8;
-      ctx.drawImage(shadeMap(photo, opts.lightMatch?.colour ?? 0), 0, 0, photo.width, photo.height);
+      const lm = opts.lightMatch;
+      ctx.globalAlpha = lm?.strength ?? 0.8;
+      ctx.drawImage(lm?.soft ? softShadeMap(photo) : shadeMap(photo, lm?.colour ?? 0), 0, 0, photo.width, photo.height);
       ctx.restore();
     }
     if (opts.through) {
