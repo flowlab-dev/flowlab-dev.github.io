@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product · MONO demo store</title>
+<meta name="description" content="Product page of the MONO demo store: sizes, colors and a Storefront API cart on Shopify mock data.">
+<meta name="robots" content="noindex">
+<link rel="preload" as="font" href="assets/inter-latin-var.woff2" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://mock.shop" crossorigin>
+<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<p class="demo">Demo store<span class="long"> by Flow Lab</span> · Shopify mock data<span class="long"> from <a href="https://mock.shop" rel="noopener">mock.shop</a> · nothing is sold here</span></p>
+<header>
+  <a class="logo" href="./">MONO</a>
+  <nav aria-label="Collections">
+    <a href="./#shop">Men</a><a href="./#shop">Women</a><a href="./#shop">Shoes</a><a href="./#shop">Accessories</a>
+  </nav>
+  <button class="cart-btn" type="button" data-open-cart>Cart <b data-count>0</b><span class="sr"> items, open cart</span></button>
+</header>
+
+<main class="pdp" data-pdp>
+  <div class="gallery-wrap"><div class="gallery" data-gallery><div class="ph"></div><div class="ph"></div><div class="ph"></div></div><span class="count" data-count-img aria-hidden="true"></span></div>
+  <div class="info">
+    <a class="back" href="./#shop">← All products</a>
+    <h1 data-title>Loading…</h1>
+    <p class="price" data-price>&nbsp;</p>
+    <form data-form>
+      <div data-options></div>
+      <p class="stock" data-stock aria-live="polite"></p>
+      <button class="btn btn-ink" type="submit" data-add disabled>Add to cart</button>
+    </form>
+    <div class="desc" data-desc></div>
+  </div>
+</main>
+
+<footer><span>MONO is a demo built by Flow Lab with Claude Code. Products, prices and checkout are Shopify mock data.</span><a href="https://flowlab-dev.github.io" rel="noopener">flowlab-dev.github.io</a></footer>
+
+<div class="scrim" data-close-cart></div>
+<aside class="drawer" aria-label="Cart" aria-hidden="true" inert data-drawer>
+  <header><h2>Your cart</h2><button class="x" type="button" data-close-cart aria-label="Close cart">×</button></header>
+  <div class="lines" data-lines></div>
+  <div class="sum"><div class="row"><span>Subtotal</span><span data-subtotal>—</span></div><small>Demo checkout on Shopify mock data. Nothing is charged.</small><a class="btn btn-ink" data-checkout href="#" aria-disabled="true">Checkout</a></div>
+</aside>
+<div class="buybar" data-buybar aria-hidden="true"><span class="bp" data-bp></span><button class="btn btn-ink" type="button" data-buy tabindex="-1">Add to cart</button></div>
+<div class="toast" role="status" data-toast></div>
+<script src="assets/app.js" defer></script>
+</body>
+</html>
