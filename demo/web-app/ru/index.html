@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Northgate job board - internal tool demo</title>
-<meta content="Portfolio demo: the job board of an invented sheet-metal shop. Quotes, released work, laser, brake, finishing and inspection on one screen, with office and shop-floor roles, filters, weekly totals and CSV export." name="description"/>
+<title>Доска заказов Northgate: демо внутреннего инструмента</title>
+<meta content="Демо для портфолио: доска заказов выдуманного цеха листового металла. Расчёты, запуск в работу, лазер, гибка, отделка и контроль на одном экране; роли офиса и цеха, фильтры, итоги недели и выгрузка в CSV." name="description"/>
 <meta content="noindex" name="robots"/>
 <meta content="light dark" name="color-scheme"/>
 <style>
@@ -311,96 +311,90 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 <link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1e1c'/%3E%3Cpath d='M7 24V8l18 16V8' fill='none' stroke='%23e4b200' stroke-width='3'/%3E%3C/svg%3E" rel="icon"/>
 <style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:600;line-height:1;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
 <body>
-<a class="skip-link" href="#board">Skip to the jobs</a>
+<a class="skip-link" href="#board">К заказам</a>
 <!-- flowlab-band -->
 <style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/shop-floor-board/">Flow Lab</a>. Northgate Metalworks is invented; jobs are saved only in your browser. <span class="fl-band__more"><a href="../business-site/">The public website these quotes come from</a></span></p>
+<p class="fl-band" role="note">Демо сделано <a href="/ru/work/shop-floor-board/">Flow Lab</a> без заказчика. Цех Northgate Metalworks выдуман, заказы хранятся только в вашем браузере. <span class="fl-band__more"><a href="../../business-site/">Сайт, с которого приходят эти заявки</a></span></p>
 <!-- /flowlab-band -->
 <header class="appbar">
 <div class="wrap appbar-row">
-<span class="wordmark">
-<svg aria-hidden="true" focusable="false" height="28" viewbox="0 0 32 32" width="28">
+<span class="wordmark"><svg aria-hidden="true" focusable="false" height="28" viewbox="0 0 32 32" width="28">
 <rect fill="var(--ink)" height="32" width="32"></rect>
 <path d="M7 24V8l18 16V8" fill="none" stroke="var(--zinc)" stroke-width="3"></path>
-</svg>
-<span>Job board<small>Northgate Metalworks</small></span>
-</span>
+</svg> <span>Доска заказов<small>Northgate Metalworks</small></span></span>
 <fieldset class="roles">
-<legend>Working as</legend>
-<label><input checked="" name="role" type="radio" value="office"/> <span>Office</span></label>
-<label><input name="role" type="radio" value="floor"/> <span>Shop floor</span></label>
+<legend>Роль</legend>
+<label><input checked="" name="role" type="radio" value="office"/> <span>Офис</span></label>
+<label><input name="role" type="radio" value="floor"/> <span>Цех</span></label>
 </fieldset>
-<div aria-label="Language" class="fl-lang" role="group"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme-toggle" id="theme-toggle" type="button">
-<svg aria-hidden="true" focusable="false" height="15" viewbox="0 0 16 16" width="15">
+<div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme-toggle" id="theme-toggle" type="button"><svg aria-hidden="true" focusable="false" height="15" viewbox="0 0 16 16" width="15">
 <circle cx="8" cy="8" fill="currentColor" r="3.4"></circle>
 <path d="M8 .8v2.4M8 12.8v2.4M.8 8h2.4M12.8 8h2.4M2.9 2.9l1.7 1.7M11.4 11.4l1.7 1.7M13.1 2.9l-1.7 1.7M4.6 11.4l-1.7 1.7" stroke="currentColor" stroke-linecap="round" stroke-width="1.4"></path>
-</svg>
-<span id="theme-label">Night shift</span>
-</button>
+</svg> <span id="theme-label">Ночная смена</span></button>
 </div>
 </header>
 <main id="top">
 <section aria-labelledby="week-title" class="week wrap">
-<h1 class="week-title" id="week-title">Week of <span id="week-start">-</span></h1>
-<p class="week-line" id="week-line">Counting the week…</p>
+<h1 class="week-title" id="week-title">Неделя с <span id="week-start">-</span></h1>
+<p class="week-line" id="week-line">Считаем неделю…</p>
 <p class="role-note" id="role-note"></p>
 <p class="notice" hidden="" id="notice"></p>
 </section>
-<section aria-label="Find jobs" class="controls wrap">
+<section aria-label="Поиск заказов" class="controls wrap">
 <div class="search">
-<label for="q">Search</label>
-<input autocomplete="off" id="q" placeholder="Job number, customer or part" spellcheck="false" type="search"/>
+<label for="q">Поиск</label>
+<input autocomplete="off" id="q" placeholder="Номер, клиент или деталь" spellcheck="false" type="search"/>
 </div>
 <div class="field">
-<label for="group">Show</label>
+<label for="group">Показать</label>
 <select id="group">
-<option value="open">Open work</option>
-<option value="quotes">Quotes only</option>
-<option value="floor">On the floor</option>
-<option value="done">Shipped and not accepted</option>
-<option value="all">Everything</option>
+<option value="open">В работе</option>
+<option value="quotes">Только расчёты</option>
+<option value="floor">В цехе</option>
+<option value="done">Отгрузки и отказы</option>
+<option value="all">Всё</option>
 </select>
 </div>
 <div class="field">
-<label for="material">Material</label>
-<select id="material"><option value="all">Any material</option></select>
+<label for="material">Материал</label>
+<select id="material"><option value="all">Любой материал</option></select>
 </div>
 <div class="field">
-<label for="owner">Owner</label>
-<select id="owner"><option value="all">Anyone</option></select>
+<label for="owner">Ответственный</label>
+<select id="owner"><option value="all">Любой</option></select>
 </div>
 <fieldset class="flags">
-<legend>Only</legend>
-<label><input checked="" name="flag" type="radio" value=""/> <span>All</span></label>
-<label><input name="flag" type="radio" value="late"/> <span>Late</span></label>
-<label><input name="flag" type="radio" value="soon"/> <span>Due in 2 working days</span></label>
-<label><input name="flag" type="radio" value="hold"/> <span>On hold</span></label>
-<label><input name="flag" type="radio" value="rush"/> <span>Rush</span></label>
+<legend>Только</legend>
+<label><input checked="" name="flag" type="radio" value=""/> <span>Все</span></label>
+<label><input name="flag" type="radio" value="late"/> <span>Опаздывают</span></label>
+<label><input name="flag" type="radio" value="soon"/> <span>Срок до 2 раб. дн.</span></label>
+<label><input name="flag" type="radio" value="hold"/> <span>На паузе</span></label>
+<label><input name="flag" type="radio" value="rush"/> <span>Срочные</span></label>
 </fieldset>
 </section>
 <div class="resultbar wrap">
-<p><span aria-live="polite" id="result-count"></span> <span class="scroll-hint" hidden="" id="scroll-hint">More stages to the right: scroll the board sideways.</span></p>
+<p><span aria-live="polite" id="result-count"></span> <span class="scroll-hint" hidden="" id="scroll-hint">Справа ещё этапы: прокрутите доску вбок.</span></p>
 <div class="resultbar-actions">
 <fieldset class="views">
-<legend class="visually-hidden">View</legend>
-<label><input checked="" name="view" type="radio" value="board"/> <span>Board</span></label>
-<label><input name="view" type="radio" value="list"/> <span>List</span></label>
+<legend class="visually-hidden">Вид</legend>
+<label><input checked="" name="view" type="radio" value="board"/> <span>Доска</span></label>
+<label><input name="view" type="radio" value="list"/> <span>Список</span></label>
 </fieldset>
-<button class="btn" id="export" type="button">Download CSV</button>
+<button class="btn" id="export" type="button">Скачать CSV</button>
 </div>
 </div>
-<section aria-label="Jobs" class="board-area" id="board" tabindex="-1"></section>
+<section aria-label="Заказы" class="board-area" id="board" tabindex="-1"></section>
 <footer class="foot wrap">
-<p>Everything on this page runs in your browser: no server, no account. Prices come from the same estimate engine as the <a href="../business-site/">Northgate website</a>, so a quote on the board is the quote the customer saw.</p>
-<p><button class="linkish" id="reset" type="button">Start the demo board again</button> <span class="muted">(clears what you changed here)</span></p>
+<p>Всё на этой странице работает в вашем браузере, без сервера и без входа. Цены считает тот же калькулятор, что и на <a href="../../business-site/">сайте Northgate</a>, поэтому расчёт на доске совпадает с тем, что видел клиент.</p>
+<p><button class="linkish" id="reset" type="button">Начать доску заново</button> <span class="muted">(ваши изменения сотрутся)</span></p>
 </footer>
 </main>
 <dialog aria-labelledby="t-title" id="traveller">
 <form class="t-close-row" method="dialog">
-<button aria-label="Close the traveller" class="t-close" value="close">Close</button>
+<button aria-label="Закрыть маршрутную карту" class="t-close" value="close">Закрыть</button>
 </form>
 <div id="traveller-body"></div>
 </dialog>
@@ -427,7 +421,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   var MATERIALS = {
     crs: {
       id: 'crs',
-      label: 'Mild steel (CRS 1008)',
+      label: 'Сталь (CRS 1008)',
       density: 7.85e-6,        // kg per mm^3
       pricePerKg: 1.45,        // USD, shop cost incl. current surcharges
       thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
@@ -436,7 +430,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     },
     ss304: {
       id: 'ss304',
-      label: 'Stainless 304 (2B)',
+      label: 'Нержавеющая сталь 304 (2B)',
       density: 8.0e-6,
       pricePerKg: 4.30,
       thickness: [0.8, 1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0],
@@ -445,7 +439,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     },
     al5052: {
       id: 'al5052',
-      label: 'Aluminium 5052-H32',
+      label: 'Алюминий 5052-H32',
       density: 2.68e-6,
       pricePerKg: 5.60,
       thickness: [1.0, 1.2, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 6.0],
@@ -455,9 +449,9 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   };
 
   var FINISHES = {
-    mill: { id: 'mill', label: 'Mill finish, deburred', perPart: 0.00, lotMinimum: 0, leadDays: 0 },
-    powder: { id: 'powder', label: 'Powder coat, one colour', perPart: 4.20, lotMinimum: 85, leadDays: 2 },
-    zinc: { id: 'zinc', label: 'Clear zinc plate', perPart: 3.10, lotMinimum: 110, leadDays: 2 }
+    mill: { id: 'mill', label: 'Без покрытия, кромки зачищены', perPart: 0.00, lotMinimum: 0, leadDays: 0 },
+    powder: { id: 'powder', label: 'Порошковая покраска, один цвет', perPart: 4.20, lotMinimum: 85, leadDays: 2 },
+    zinc: { id: 'zinc', label: 'Прозрачное цинкование', perPart: 3.10, lotMinimum: 110, leadDays: 2 }
   };
 
   var TOLERANCES = {
@@ -836,12 +830,12 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   function formatDate(stamp) {
     if (stamp === null || stamp === undefined) return 'not set';
     var d = new Date(stamp);
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var months = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
     return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();
   }
 
   function money(n) {
-    return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return '$' + n.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '\u00a0');
   }
 
   /** One figure when the price is pinned to the minimum, a range otherwise. */
@@ -856,8 +850,8 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     lines.push('Northgate Metalworks - laser cutting, forming, welded assemblies');
     lines.push('');
     lines.push('Part:        ' + values.partName);
-    lines.push('Material:    ' + values.material.label + ', ' + values.thickness + ' mm');
-    lines.push('Flat size:   ' + values.length + ' x ' + values.width + ' mm');
+    lines.push('Material:    ' + values.material.label + ', ' + values.thickness + ' мм');
+    lines.push('Flat size:   ' + values.length + ' x ' + values.width + ' мм');
     lines.push('Quantity:    ' + values.quantity);
     lines.push('Bends:       ' + values.bends);
     lines.push('Holes/cuts:  ' + values.holes);
@@ -937,32 +931,32 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   // INTO this stage; the floor never touches quotes, the office never signs off
   // an operation it did not watch.
   var STAGES = [
-    { id: 'rfq', label: 'Quote requested', short: 'Requested', group: 'quotes', by: null },
-    { id: 'quoted', label: 'Quote sent', short: 'Quoted', group: 'quotes', by: 'office' },
-    { id: 'released', label: 'Released to the floor', short: 'Released', group: 'floor', by: 'office' },
-    { id: 'cutting', label: 'Laser cutting', short: 'Cutting', group: 'floor', by: 'floor' },
-    { id: 'forming', label: 'Press brake', short: 'Forming', group: 'floor', by: 'floor' },
-    { id: 'finishing', label: 'Finishing', short: 'Finishing', group: 'floor', by: 'floor' },
-    { id: 'inspection', label: 'Inspection', short: 'Inspection', group: 'floor', by: 'floor' },
-    { id: 'shipped', label: 'Shipped', short: 'Shipped', group: 'done', by: 'floor' },
-    { id: 'lost', label: 'Quote not accepted', short: 'Not accepted', group: 'done', by: 'office' }
+    { id: 'rfq', label: 'Запрос расчёта', short: 'Запрос', group: 'quotes', by: null },
+    { id: 'quoted', label: 'Расчёт отправлен', short: 'Расчёт', group: 'quotes', by: 'office' },
+    { id: 'released', label: 'Передан в цех', short: 'В цехе', group: 'floor', by: 'office' },
+    { id: 'cutting', label: 'Лазерная резка', short: 'Резка', group: 'floor', by: 'floor' },
+    { id: 'forming', label: 'Гибка', short: 'Гибка', group: 'floor', by: 'floor' },
+    { id: 'finishing', label: 'Отделка', short: 'Отделка', group: 'floor', by: 'floor' },
+    { id: 'inspection', label: 'Контроль', short: 'Контроль', group: 'floor', by: 'floor' },
+    { id: 'shipped', label: 'Отгружен', short: 'Отгружен', group: 'done', by: 'floor' },
+    { id: 'lost', label: 'Расчёт не принят', short: 'Не принят', group: 'done', by: 'office' }
   ];
   var STAGE = {};
   STAGES.forEach(function (s, i) { s.index = i; STAGE[s.id] = s; });
 
   var ROLES = {
-    office: { id: 'office', label: 'Office', seesMoney: true },
-    floor: { id: 'floor', label: 'Shop floor', seesMoney: false }
+    office: { id: 'office', label: 'Офис', seesMoney: true },
+    floor: { id: 'floor', label: 'Цех', seesMoney: false }
   };
 
   var PEOPLE = [
-    { id: 'dana', name: 'Dana', desk: 'estimating' },
-    { id: 'marco', name: 'Marco', desk: 'estimating' },
-    { id: 'priya', name: 'Priya', desk: 'laser' },
-    { id: 'tom', name: 'Tom', desk: 'press brake' }
+    { id: 'dana', name: 'Дана', desk: 'расчёты' },
+    { id: 'marco', name: 'Марко', desk: 'расчёты' },
+    { id: 'priya', name: 'Прия', desk: 'лазер' },
+    { id: 'tom', name: 'Том', desk: 'гибка' }
   ];
 
-  var HOLD_REASONS = ['Waiting on material', 'Waiting on customer drawing', 'Machine down', 'Quality check failed'];
+  var HOLD_REASONS = ['Ждём материал', 'Ждём чертёж клиента', 'Станок стоит', 'Не прошёл контроль'];
 
   /**
    * A job's own route through the shop. A flat part skips the brake and a
@@ -1041,9 +1035,9 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
    * caller's copy is left alone, so a refused move can never half-happen.
    */
   function move(job, to, role, now) {
-    if (!STAGE[to]) throw new Error('Unknown stage: ' + to);
+    if (!STAGE[to]) throw new Error('Неизвестный этап: ' + to);
     if (!canMove(job, to, role)) {
-      throw new Error(ROLES[role] ? ROLES[role].label + ' cannot move ' + job.id + ' from ' + STAGE[job.stage].short + ' to ' + STAGE[to].short : 'Unknown role: ' + role);
+      throw new Error(ROLES[role] ? ROLES[role].label + ' не может перевести ' + job.id + ' с этапа ' + STAGE[job.stage].short + ' на этап ' + STAGE[to].short : 'Неизвестная роль: ' + role);
     }
     var next = clone(job);
     var day = today(now);
@@ -1062,12 +1056,12 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   }
 
   function setHold(job, reason, role, now) {
-    if (!ROLES[role]) throw new Error('Unknown role: ' + role);
-    if (!isOpen(job)) throw new Error(job.id + ' is closed - nothing to hold.');
-    if (role === 'floor' && STAGE[job.stage].group !== 'floor') throw new Error('The shop floor holds only work that is on the floor.');
+    if (!ROLES[role]) throw new Error('Неизвестная роль: ' + role);
+    if (!isOpen(job)) throw new Error(job.id + ' закрыт, ставить на паузу нечего.');
+    if (role === 'floor' && STAGE[job.stage].group !== 'floor') throw new Error('Цех ставит на паузу только заказы, которые уже в цехе.');
     var next = clone(job);
     if (reason) {
-      if (HOLD_REASONS.indexOf(reason) === -1) throw new Error('Pick a reason from the list.');
+      if (HOLD_REASONS.indexOf(reason) === -1) throw new Error('Выберите причину из списка.');
       next.hold = { reason: reason, since: today(now) };
       next.history.push({ at: now, hold: reason, role: role });
     } else {
@@ -1080,8 +1074,8 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 
   /** Only the office hands work to people; a name outside the list is refused. */
   function assign(job, personId, role, now) {
-    if (role !== 'office') throw new Error('Only the office assigns jobs.');
-    if (personId !== null && !PEOPLE.some(function (p) { return p.id === personId; })) throw new Error('Unknown person: ' + personId);
+    if (role !== 'office') throw new Error('Назначать ответственных может только офис.');
+    if (personId !== null && !PEOPLE.some(function (p) { return p.id === personId; })) throw new Error('Неизвестный сотрудник: ' + personId);
     var next = clone(job);
     next.owner = personId;
     next.history.push({ at: now, owner: personId, role: role });
@@ -1101,14 +1095,14 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     var onFloor = STAGE[job.stage].group === 'floor';
     if (onFloor && job.due !== null && job.due < t) {
       var days = Q.businessDaysBetween(job.due, t);
-      return { kind: 'late', days: days, text: days === 1 ? 'Late by 1 working day' : 'Late by ' + days + ' working days' };
+      return { kind: 'late', days: days, text: days === 1 ? 'Опаздывает на 1 раб. дн.' : 'Опаздывает на ' + days + ' раб. дн.' };
     }
     if (job.stage === 'rfq') {
       var waiting = Q.businessDaysBetween(job.requestedOn, t);
-      if (waiting >= 2) return { kind: 'waiting', days: waiting, text: 'Quote owed for ' + waiting + ' working days' };
+      if (waiting >= 2) return { kind: 'waiting', days: waiting, text: 'Ждёт расчёта ' + waiting + ' раб. дн.' };
     }
     if (!onFloor && job.neededBy !== null && job.neededBy < t) {
-      return { kind: 'passed', days: Q.businessDaysBetween(job.neededBy, t), text: "Customer's date has passed" };
+      return { kind: 'passed', days: Q.businessDaysBetween(job.neededBy, t), text: "Срок клиента прошёл" };
     }
     return null;
   }
@@ -1122,7 +1116,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 
   function personName(id) {
     for (var i = 0; i < PEOPLE.length; i++) if (PEOPLE[i].id === id) return PEOPLE[i].name;
-    return 'Unassigned';
+    return 'Ответственный снят';
   }
 
   function matches(job, filters, now) {
@@ -1219,16 +1213,16 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 
   /** The export the role is allowed to see: the floor copy carries no money. */
   function toCSV(jobs, role, now) {
-    if (!ROLES[role]) throw new Error('Unknown role: ' + role);
+    if (!ROLES[role]) throw new Error('Неизвестная роль: ' + role);
     var money = ROLES[role].seesMoney;
-    var head = ['Job', 'Customer', 'Part', 'Material', 'Thickness mm', 'Quantity', 'Stage', 'Owner', 'Requested', 'Due', 'Late working days', 'On hold'];
-    if (money) head.push('Price USD');
+    var head = ['Заказ', 'Клиент', 'Деталь', 'Материал', 'Толщина, мм', 'Количество', 'Этап', 'Ответственный', 'Запрос', 'Срок', 'Опоздание, раб. дн.', 'На паузе'];
+    if (money) head.push('Цена, USD');
     var lines = [head.join(',')];
     jobs.forEach(function (j) {
       var l = lateness(j, now);
       var row = [
         csvCell(j.id, true), csvCell(j.customer, true), csvCell(j.part, true),
-        csvCell(Q.MATERIALS[j.material].label, true), csvCell(j.thickness.toFixed(1)), csvCell(j.quantity),
+        csvCell(Q.MATERIALS[j.material].label, true), csvCell(j.thickness.toFixed(1).replace('.', ',')), csvCell(j.quantity),
         csvCell(STAGE[j.stage].label, true), csvCell(personName(j.owner), true),
         csvCell(isoDay(j.requestedOn)), csvCell(isoDay(j.due)),
         csvCell(l && l.kind === 'late' ? l.days : 0), csvCell(j.hold ? j.hold.reason : '', true)
@@ -1251,10 +1245,10 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     ['Linden Street Bikes', 'Mia Kowalski'], ['Ashfield Community Theatre', 'Tess Harlow']
   ];
   var PARTS = [
-    ['Motor mounting bracket', 2, 4], ['Electrical enclosure lid', 4, 6], ['Conveyor side guard', 2, 12],
-    ['Cable tray section', 3, 18], ['Shelf support plate', 1, 4], ['Sign backing panel', 0, 8],
-    ['Pump base plate', 0, 6], ['Handrail post flange', 0, 4], ['Vent louvre panel', 2, 40],
-    ['Battery tray', 4, 8], ['Hinge reinforcement', 1, 2], ['Robot gripper finger', 2, 3]
+    ['Кронштейн двигателя', 2, 4], ['Крышка электрошкафа', 4, 6], ['Боковое ограждение конвейера', 2, 12],
+    ['Секция кабельного лотка', 3, 18], ['Опорная пластина полки', 1, 4], ['Основа вывески', 0, 8],
+    ['Опорная плита насоса', 0, 6], ['Фланец стойки поручня', 0, 4], ['Жалюзийная решётка', 2, 40],
+    ['Лоток аккумулятора', 4, 8], ['Усилитель петли', 1, 2], ['Палец захвата робота', 2, 3]
   ];
   var SIZES = [[180, 90], [320, 240], [640, 180], [1200, 150], [260, 260], [900, 600], [420, 300], [150, 150]];
   var QTYS = [10, 25, 40, 60, 120, 250, 400, 15, 80, 200];
@@ -1278,7 +1272,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     // on that day, never a bare day key, or west of UTC it prices yesterday.
     var at = momentOn(requestedOn, 9);
     var checked = Q.validate(input, at);
-    if (!checked.ok) throw new Error('Seed RFQ does not pass the website form: ' + JSON.stringify(checked.errors));
+    if (!checked.ok) throw new Error('Стартовая заявка не проходит форму сайта: ' + JSON.stringify(checked.errors));
     var v = checked.values;
     var est = Q.estimate(v, at);
     return {
@@ -1393,7 +1387,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 
   /* ------------------------------------------------------------- storage */
 
-  var STORE_KEY = 'ng-board-v2';
+  var STORE_KEY = 'ng-board-v2-ru';
   var DAY_FIELDS = ['requestedOn', 'neededBy', 'due', 'quotedOn', 'releasedOn', 'shippedOn', 'closedOn'];
 
   function isDay(v) { return v === null || (typeof v === 'number' && isFinite(v)); }
@@ -1551,18 +1545,18 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       state.meta = { seededOn: got.seededOn, touched: got.touched };
       if (got.shiftedWeeks) {
         B.save(store || noStore, state.jobs, state.meta);
-        showNotice('The dates on your board moved forward ' + (got.shiftedWeeks === 1 ? 'one week' : got.shiftedWeeks + ' weeks') + ' so the demo stays current. Your changes are kept.');
+        showNotice('Даты на доске сдвинуты вперёд на ' + (got.shiftedWeeks === 1 ? 'неделю' : got.shiftedWeeks + ' нед.') + ', чтобы демо не устаревало. Ваши изменения сохранены.');
       }
       return;
     }
-    if (got.problem === 'damaged') startBoard('The saved board could not be read, so a fresh demo board was loaded.');
-    else if (got.problem === 'unavailable') startBoard('This browser is not saving site data, so changes last until you close the page.');
+    if (got.problem === 'damaged') startBoard('Сохранённую доску не удалось прочитать, поэтому загружена новая демо-доска.');
+    else if (got.problem === 'unavailable') startBoard('Этот браузер не сохраняет данные сайтов, поэтому изменения пропадут, когда вы закроете страницу.');
     else startBoard('');
   })();
 
   function persist() {
     state.meta.touched = true;
-    if (!B.save(store || noStore, state.jobs, state.meta) && store) showNotice('Your last change could not be saved in this browser. It stays on screen until you close the page.');
+    if (!B.save(store || noStore, state.jobs, state.meta) && store) showNotice('Последнее изменение не сохранилось в этом браузере. Оно останется на экране до закрытия страницы.');
   }
 
   /* ---------------------------------------------------------------- words */
@@ -1573,40 +1567,44 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     });
   }
 
-  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MONTHS = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+  var WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
   function shortDay(day) {
     var d = new Date(day);
     return WEEKDAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()];
   }
-  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
-  function wholeMoney(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+  var RU_F = { job: ['заказ', 'заказа', 'заказов'], bend: ['гиб', 'гиба', 'гибов'], hole: ['отверстие', 'отверстия', 'отверстий'] };
+  function plural(n, one, many) {
+    var f = RU_F[one] || (one + '|' + many).split('|'), a = n % 100, b = n % 10;
+    return n + '\u00a0' + (a > 10 && a < 20 ? f[2] : b === 1 ? f[0] : b >= 2 && b <= 4 ? f[1] : f[2]);
+  }
+  function wholeMoney(n) { return '$' + Math.round(n).toLocaleString('ru-RU'); }
 
   var MOVE_LABEL = {
-    quoted: 'Mark the quote as sent',
-    released: 'Customer accepted: release to the floor',
-    lost: 'Customer declined',
-    cutting: 'Start laser cutting',
-    forming: 'Cutting done: send to the press brake',
-    finishing: 'Send to finishing',
-    inspection: 'Send to inspection',
-    shipped: 'Passed inspection: ship it'
+    quoted: 'Отметить: расчёт отправлен',
+    released: 'Клиент согласен: передать в цех',
+    lost: 'Клиент отказался',
+    cutting: 'Начать лазерную резку',
+    forming: 'Резка готова: на гибку',
+    finishing: 'Передать на отделку',
+    inspection: 'Передать на контроль',
+    shipped: 'Контроль пройден: отгрузить'
   };
 
-  var MATERIAL_SHORT = { crs: 'Mild steel', ss304: 'Stainless 304', al5052: 'Aluminium 5052' };
+  var MATERIAL_SHORT = { crs: 'Сталь', ss304: 'Нерж. 304', al5052: 'Алюм. 5052' };
 
   function spec(j) {
-    return j.quantity + ' × ' + MATERIAL_SHORT[j.material] + ' ' + j.thickness.toFixed(1) + ' mm';
+    return j.quantity + ' × ' + MATERIAL_SHORT[j.material] + ' ' + j.thickness.toFixed(1).replace('.', ',') + ' мм';
   }
 
   function dueWords(j) {
     var l = B.lateness(j, NOW);
     if (l) return { text: l.text, kind: l.kind };
-    if (j.stage === 'shipped') return { text: 'Shipped ' + shortDay(j.shippedOn), kind: 'done' };
-    if (j.stage === 'lost') return { text: 'Declined ' + shortDay(j.closedOn), kind: 'done' };
-    if (j.due === null) return { text: 'No date asked for', kind: '' };
-    if (j.due === TODAY) return { text: 'Due today', kind: 'soon' };
-    return { text: (j.stage === 'rfq' || j.stage === 'quoted' ? 'Wanted by ' : 'Due ') + shortDay(j.due), kind: B.dueSoon(j, NOW) ? 'soon' : '' };
+    if (j.stage === 'shipped') return { text: 'Отгружен ' + shortDay(j.shippedOn), kind: 'done' };
+    if (j.stage === 'lost') return { text: 'Отказ ' + shortDay(j.closedOn), kind: 'done' };
+    if (j.due === null) return { text: 'Без срока', kind: '' };
+    if (j.due === TODAY) return { text: 'Срок сегодня', kind: 'soon' };
+    return { text: (j.stage === 'rfq' || j.stage === 'quoted' ? 'Нужно к ' : 'Срок ') + shortDay(j.due), kind: B.dueSoon(j, NOW) ? 'soon' : '' };
   }
 
   /* ----------------------------------------------------------------- theme */
@@ -1614,8 +1612,8 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   var root = document.documentElement;
   function setTheme(name, remember) {
     root.setAttribute('data-theme', name);
-    $('theme-label').textContent = name === 'dark' ? 'Day shift' : 'Night shift';
-    $('theme-toggle').setAttribute('aria-label', name === 'dark' ? 'Switch to the light theme' : 'Switch to the dark theme');
+    $('theme-label').textContent = name === 'dark' ? 'Дневная смена' : 'Ночная смена';
+    $('theme-toggle').setAttribute('aria-label', name === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему');
     if (remember) { try { localStorage.setItem('ng-theme', name); } catch (e) { /* not saved: fine */ } }
   }
   (function () {
@@ -1634,21 +1632,21 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   function renderWeek() {
     var t = B.weekTotals(state.jobs, NOW);
     var money = B.ROLES[state.role].seesMoney;
-    $('week-start').textContent = shortDay(t.weekStart).replace(/^\w+ /, '');
+    $('week-start').textContent = shortDay(t.weekStart).replace(/^\S+ /, '');
     var parts = [];
-    parts.push(plural(t.requested, 'request came in', 'requests came in'));
-    parts.push(plural(t.quoted, 'quote went out', 'quotes went out') + (money && t.quoted ? ' worth ' + wholeMoney(t.quotedValue) : ''));
-    parts.push(plural(t.released, 'job was released', 'jobs were released') + (money && t.released ? ' (' + wholeMoney(t.releasedValue) + ')' : ''));
-    parts.push(plural(t.shipped, 'job shipped', 'jobs shipped'));
-    var html = 'This week ' + esc(parts.slice(0, -1).join(', ')) + ' and ' + esc(parts[parts.length - 1]) + '.';
+    parts.push(plural(t.requested, 'заявка|заявки', 'заявок'));
+    parts.push(plural(t.quoted, 'расчёт отправлен|расчёта отправлено', 'расчётов отправлено') + (money && t.quoted ? ' на ' + wholeMoney(t.quotedValue) : ''));
+    parts.push(plural(t.released, 'заказ запущен в работу|заказа запущено в работу', 'заказов запущено в работу') + (money && t.released ? ' (' + wholeMoney(t.releasedValue) + ')' : ''));
+    parts.push(plural(t.shipped, 'заказ отгружен|заказа отгружено', 'заказов отгружено'));
+    var html = 'За неделю: ' + esc(parts.slice(0, -1).join(', ')) + ' и ' + esc(parts[parts.length - 1]) + '.';
     var trouble = [];
-    if (t.late) trouble.push('<button type="button" class="inline-filter" data-flag="late">' + esc(plural(t.late, 'job is late', 'jobs are late')) + '</button>');
-    if (t.onHold) trouble.push('<button type="button" class="inline-filter" data-flag="hold">' + esc(plural(t.onHold, 'job is on hold', 'jobs are on hold')) + '</button>');
-    html += trouble.length ? ' Right now ' + trouble.join(' and ') + '.' : ' Nothing is late and nothing is on hold.';
+    if (t.late) trouble.push('<button type="button" class="inline-filter" data-flag="late">' + esc(plural(t.late, 'заказ опаздывает|заказа опаздывают', 'заказов опаздывают')) + '</button>');
+    if (t.onHold) trouble.push('<button type="button" class="inline-filter" data-flag="hold">' + esc(plural(t.onHold, 'заказ на паузе|заказа на паузе', 'заказов на паузе')) + '</button>');
+    html += trouble.length ? ' Сейчас ' + trouble.join(' и ') + '.' : ' Опозданий нет, на паузе ничего нет.';
     $('week-line').innerHTML = html;
     $('role-note').textContent = state.role === 'office'
-      ? 'Office view: you send quotes, release accepted work and assign people. The floor moves jobs through the shop.'
-      : 'Shop floor view: you move jobs through your stations and can put one on hold. Prices stay in the office.';
+      ? 'Вид офиса: вы отправляете расчёты, запускаете принятые заказы и назначаете людей. По этапам цеха заказы двигает цех.'
+      : 'Вид цеха: вы двигаете заказы по своим участкам и можете поставить заказ на паузу. Цены видит только офис.';
   }
 
   $('week-line').addEventListener('click', function (e) {
@@ -1678,7 +1676,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     });
     var none = document.createElement('option');
     none.value = 'none';
-    none.textContent = 'Nobody yet';
+    none.textContent = 'Пока никто';
     $('owner').appendChild(none);
   })();
 
@@ -1742,7 +1740,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       var cls = at === -1 ? '' : i < at ? 'done' : i === at ? (j.stage === 'shipped' ? 'done' : 'now') : '';
       return '<span class="dot ' + cls + '" title="' + esc(B.STAGE[step].label) + '"></span>';
     });
-    var label = at === -1 ? (j.stage === 'released' ? 'Waiting for the laser' : '') : 'Step ' + (at + 1) + ' of ' + r.length;
+    var label = at === -1 ? (j.stage === 'released' ? 'Ждёт лазер' : '') : 'Этап ' + (at + 1) + ' из ' + r.length;
     return '<span class="track" aria-hidden="true">' + cells.join('') + '</span>' + (label ? '<span class="track-label">' + esc(label) + '</span>' : '');
   }
 
@@ -1750,8 +1748,8 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     var money = B.ROLES[state.role].seesMoney;
     var due = dueWords(j);
     var tags = '';
-    if (j.rush && B.isOpen(j)) tags += '<span class="tag tag-rush">Rush</span>';
-    if (j.hold) tags += '<span class="tag tag-hold">On hold: ' + esc(j.hold.reason.toLowerCase()) + '</span>';
+    if (j.rush && B.isOpen(j)) tags += '<span class="tag tag-rush">Срочно</span>';
+    if (j.hold) tags += '<span class="tag tag-hold">На паузе: ' + esc(j.hold.reason.toLowerCase()) + '</span>';
     var floorStage = B.STAGE[j.stage].group === 'floor' || j.stage === 'shipped';
     return '<button type="button" class="card mat-' + j.material + (j.id === state.lastMoved ? ' just-moved' : '') + '" data-job="' + esc(j.id) + '">' +
       '<span class="card-top"><span class="job-no">' + esc(j.id) + '</span>' + (money ? '<span class="price">' + esc(wholeMoney(j.price)) + '</span>' : '') + '</span>' +
@@ -1771,7 +1769,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       var inCol = jobs.filter(function (j) { return j.stage === stage; });
       html += '<section class="column" aria-labelledby="col-' + stage + '">' +
         '<h2 class="column-head" id="col-' + stage + '"><span>' + esc(B.STAGE[stage].label) + '</span><span class="count">' + inCol.length + '</span></h2>' +
-        (inCol.length ? '<div class="stack">' + inCol.map(card).join('') + '</div>' : '<p class="column-empty">No jobs here</p>') +
+        (inCol.length ? '<div class="stack">' + inCol.map(card).join('') + '</div>' : '<p class="column-empty">Здесь пусто</p>') +
         '</section>';
     });
     return html + '</div>';
@@ -1784,15 +1782,15 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       return '<tr>' +
         '<th scope="row"><button type="button" class="linkish job-no" data-job="' + esc(j.id) + '">' + esc(j.id) + '</button></th>' +
         '<td>' + esc(j.customer) + '<span class="sub">' + esc(j.part) + '</span></td>' +
-        '<td>' + esc(B.STAGE[j.stage].short) + (j.hold ? '<span class="sub hold-text">On hold</span>' : '') + '</td>' +
+        '<td>' + esc(B.STAGE[j.stage].short) + (j.hold ? '<span class="sub hold-text">На паузе</span>' : '') + '</td>' +
         '<td class="due ' + due.kind + '">' + esc(due.text) + '</td>' +
         '<td>' + esc(B.personName(j.owner)) + '</td>' +
         (money ? '<td class="num">' + esc(wholeMoney(j.price)) + '</td>' : '') +
         '</tr>';
     }).join('');
     return '<div class="table-wrap"><table class="jobs">' +
-      '<caption class="visually-hidden">Jobs, open work first by promise date</caption>' +
-      '<thead><tr><th scope="col">Job</th><th scope="col">Customer and part</th><th scope="col">Stage</th><th scope="col">Promise</th><th scope="col">Owner</th>' + (money ? '<th scope="col" class="num">Price</th>' : '') + '</tr></thead>' +
+      '<caption class="visually-hidden">Заказы: сначала те, что в работе, по сроку</caption>' +
+      '<thead><tr><th scope="col">Заказ</th><th scope="col">Клиент и деталь</th><th scope="col">Этап</th><th scope="col">Срок</th><th scope="col">Ответственный</th>' + (money ? '<th scope="col" class="num">Цена</th>' : '') + '</tr></thead>' +
       '<tbody>' + rows + '</tbody></table></div>';
   }
 
@@ -1801,10 +1799,10 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     var jobs = B.filterJobs(state.jobs, state.filters, NOW);
     var total = state.jobs.length;
     var filtered = state.filters.q || state.filters.material !== 'all' || state.filters.owner !== 'all' || state.filters.flag;
-    $('result-count').textContent = plural(jobs.length, 'job', 'jobs') + ' shown' + (filtered ? ' (filters on)' : '') + ' of ' + total;
+    $('result-count').textContent = plural(jobs.length, 'job', 'jobs') + ' из ' + total + (filtered ? ' (с фильтрами)' : '');
     var area = $('board');
     if (!jobs.length) {
-      area.innerHTML = '<div class="empty wrap"><p>No jobs match these filters.</p><button type="button" class="btn" id="clear">Show all open work</button></div>';
+      area.innerHTML = '<div class="empty wrap"><p>Под эти фильтры заказов нет.</p><button type="button" class="btn" id="clear">Показать всё, что в работе</button></div>';
       $('clear').addEventListener('click', function () {
         state.filters = { q: '', group: 'open', material: 'all', owner: 'all', flag: '' };
         syncControls();
@@ -1869,11 +1867,11 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   });
 
   function historyLine(h) {
-    var who = h.role === 'web' ? 'Website form' : B.ROLES[h.role].label;
+    var who = h.role === 'web' ? 'Форма на сайте' : B.ROLES[h.role].label;
     var what;
-    if ('stage' in h) what = h.stage === 'rfq' ? 'Quote requested on the website' : 'Moved to ' + B.STAGE[h.stage].label.toLowerCase();
-    else if ('hold' in h) what = h.hold ? 'Put on hold: ' + h.hold.toLowerCase() : 'Taken off hold';
-    else what = h.owner ? 'Assigned to ' + B.personName(h.owner) : 'Unassigned';
+    if ('stage' in h) what = h.stage === 'rfq' ? 'Расчёт запрошен на сайте' : 'Этап: ' + B.STAGE[h.stage].label.toLowerCase();
+    else if ('hold' in h) what = h.hold ? 'На паузе: ' + h.hold.toLowerCase() : 'Снят с паузы';
+    else what = h.owner ? 'Ответственный: ' + B.personName(h.owner) : 'Ответственный снят';
     var d = new Date(h.at);
     var time = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
     return '<li><span class="h-when">' + esc(shortDay(dayOf(h.at))) + ', ' + time + '</span> <span class="h-what">' + esc(what) + '</span> <span class="h-who">' + esc(who) + '</span></li>';
@@ -1893,7 +1891,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       var status = at === -1 ? (B.STAGE[j.stage].group === 'quotes' || j.stage === 'lost' ? 'later' : 'next') : i < at ? 'done' : i === at ? (step === 'shipped' ? 'done' : 'now') : 'later';
       if (at === -1 && j.stage === 'released' && i > 0) status = 'later';
       var when = doneOn[step] ? shortDay(dayOf(doneOn[step])) : '';
-      var word = { done: 'Done', now: 'Here now', next: 'Next', later: '' }[status];
+      var word = { done: 'Готово', now: 'Сейчас здесь', next: 'Дальше', later: '' }[status];
       return '<li class="step ' + status + '"><span class="step-name">' + esc(B.STAGE[step].label) + '</span><span class="step-state">' + esc([word, when].filter(Boolean).join(', ')) + '</span></li>';
     }).join('');
 
@@ -1904,50 +1902,50 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
         return '<button type="button" class="btn ' + (to === 'lost' ? 'btn-quiet' : 'btn-primary') + '" data-move="' + to + '">' + esc(MOVE_LABEL[to]) + '</button>';
       }).join('');
       if (!moves.length && !j.hold) {
-        var whoMoves = B.nextStages(j, state.role === 'office' ? 'floor' : 'office').length ? (state.role === 'office' ? 'The shop floor moves this job next.' : 'The office moves this job next.') : '';
+        var whoMoves = B.nextStages(j, state.role === 'office' ? 'floor' : 'office').length ? (state.role === 'office' ? 'Дальше этот заказ двигает цех.' : 'Дальше этот заказ двигает офис.') : '';
         if (whoMoves) actions += '<p class="t-hint">' + esc(whoMoves) + '</p>';
       }
       var mayHold = state.role === 'office' || B.STAGE[j.stage].group === 'floor';
       if (!mayHold) {
-        if (j.hold) actions += '<p class="t-hint">On hold since ' + esc(shortDay(j.hold.since)) + ': ' + esc(j.hold.reason.toLowerCase()) + '. The office lifts this hold.</p>';
+        if (j.hold) actions += '<p class="t-hint">На паузе с ' + esc(shortDay(j.hold.since)) + ': ' + esc(j.hold.reason.toLowerCase()) + '. Снять паузу может офис.</p>';
       } else if (j.hold) {
-        actions += '<p class="t-hint">On hold since ' + esc(shortDay(j.hold.since)) + ': ' + esc(j.hold.reason.toLowerCase()) + '. Take it off hold to move it.</p>' +
-          '<button type="button" class="btn" data-unhold>Take off hold</button>';
+        actions += '<p class="t-hint">На паузе с ' + esc(shortDay(j.hold.since)) + ': ' + esc(j.hold.reason.toLowerCase()) + '. Чтобы двигать заказ, снимите паузу.</p>' +
+          '<button type="button" class="btn" data-unhold>Снять с паузы</button>';
       } else {
-        actions += '<div class="t-inline"><label for="hold-reason">Hold reason</label><select id="hold-reason">' +
+        actions += '<div class="t-inline"><label for="hold-reason">Причина паузы</label><select id="hold-reason">' +
           B.HOLD_REASONS.map(function (h) { return '<option>' + esc(h) + '</option>'; }).join('') +
-          '</select><button type="button" class="btn" data-hold>Put on hold</button></div>';
+          '</select><button type="button" class="btn" data-hold>Поставить на паузу</button></div>';
       }
       if (state.role === 'office') {
-        actions += '<div class="t-inline"><label for="assign">Owner</label><select id="assign"><option value="">Nobody yet</option>' +
+        actions += '<div class="t-inline"><label for="assign">Ответственный</label><select id="assign"><option value="">Пока никто</option>' +
           B.PEOPLE.map(function (p) { return '<option value="' + p.id + '"' + (p.id === j.owner ? ' selected' : '') + '>' + esc(p.name + ' (' + p.desk + ')') + '</option>'; }).join('') +
           '</select></div>';
       }
     } else {
-      actions = '<p class="t-hint">This job is closed. Nothing more to do here.</p>';
+      actions = '<p class="t-hint">Заказ закрыт, делать здесь больше нечего.</p>';
     }
 
     $('traveller-body').innerHTML =
       '<header class="t-head">' +
-        '<p class="t-kicker">Traveller</p>' +
+        '<p class="t-kicker">Маршрутная карта</p>' +
         '<h2 id="t-title" class="job-no t-no">' + esc(j.id) + '</h2>' +
         '<p class="t-customer">' + esc(j.customer) + ', ' + esc(j.contact) + '</p>' +
       '</header>' +
       '<dl class="t-facts">' +
-        '<div><dt>Part</dt><dd>' + esc(j.part) + '</dd></div>' +
-        '<div><dt>Material</dt><dd>' + esc(Q.MATERIALS[j.material].label + ', ' + j.thickness.toFixed(1) + ' mm') + '</dd></div>' +
-        '<div><dt>Flat size</dt><dd class="num">' + esc(j.length + ' × ' + j.width + ' mm') + '</dd></div>' +
-        '<div><dt>Quantity</dt><dd class="num">' + esc(j.quantity) + '</dd></div>' +
-        '<div><dt>Bends and holes</dt><dd>' + esc((j.bends ? plural(j.bends, 'bend', 'bends') : 'Flat, no bends') + ', ' + plural(j.holes, 'hole', 'holes')) + '</dd></div>' +
-        '<div><dt>Finish</dt><dd>' + esc(Q.FINISHES[j.finish].label) + (j.tolerance === 'tight' ? ', tight tolerance' : '') + '</dd></div>' +
-        '<div><dt>Stage</dt><dd>' + esc(B.STAGE[j.stage].label) + '</dd></div>' +
-        '<div><dt>Promise</dt><dd class="due ' + due.kind + '">' + esc(due.text) + '</dd></div>' +
-        '<div><dt>Owner</dt><dd>' + esc(B.personName(j.owner)) + '</dd></div>' +
-        (money ? '<div><dt>' + (j.stage === 'rfq' ? 'Website estimate' : 'Quoted price') + '</dt><dd class="num">' + esc(Q.money(j.price)) + (j.rush ? ' <span class="tag tag-rush">Rush</span>' : '') + '</dd></div>' : '') +
+        '<div><dt>Деталь</dt><dd>' + esc(j.part) + '</dd></div>' +
+        '<div><dt>Материал</dt><dd>' + esc(Q.MATERIALS[j.material].label + ', ' + j.thickness.toFixed(1).replace('.', ',') + ' мм') + '</dd></div>' +
+        '<div><dt>Развёртка</dt><dd class="num">' + esc(j.length + ' × ' + j.width + ' мм') + '</dd></div>' +
+        '<div><dt>Количество</dt><dd class="num">' + esc(j.quantity) + '</dd></div>' +
+        '<div><dt>Гибы и отверстия</dt><dd>' + esc((j.bends ? plural(j.bends, 'bend', 'bends') : 'Плоская, без гибов') + ', ' + plural(j.holes, 'hole', 'holes')) + '</dd></div>' +
+        '<div><dt>Отделка</dt><dd>' + esc(Q.FINISHES[j.finish].label) + (j.tolerance === 'tight' ? ', точный допуск' : '') + '</dd></div>' +
+        '<div><dt>Этап</dt><dd>' + esc(B.STAGE[j.stage].label) + '</dd></div>' +
+        '<div><dt>Срок</dt><dd class="due ' + due.kind + '">' + esc(due.text) + '</dd></div>' +
+        '<div><dt>Ответственный</dt><dd>' + esc(B.personName(j.owner)) + '</dd></div>' +
+        (money ? '<div><dt>' + (j.stage === 'rfq' ? 'Оценка с сайта' : 'Цена в расчёте') + '</dt><dd class="num">' + esc(Q.money(j.price)) + (j.rush ? ' <span class="tag tag-rush">Срочно</span>' : '') + '</dd></div>' : '') +
       '</dl>' +
-      '<section class="t-route" aria-labelledby="t-route-title"><h3 id="t-route-title">Route through the shop</h3><ol class="steps">' + steps + '</ol></section>' +
-      '<section class="t-actions" aria-label="What you can do">' + actions + '</section>' +
-      '<section class="t-history" aria-labelledby="t-history-title"><h3 id="t-history-title">History</h3><ol class="history">' + j.history.slice().reverse().map(historyLine).join('') + '</ol></section>';
+      '<section class="t-route" aria-labelledby="t-route-title"><h3 id="t-route-title">Маршрут по цеху</h3><ol class="steps">' + steps + '</ol></section>' +
+      '<section class="t-actions" aria-label="Что можно сделать">' + actions + '</section>' +
+      '<section class="t-history" aria-labelledby="t-history-title"><h3 id="t-history-title">История</h3><ol class="history">' + j.history.slice().reverse().map(historyLine).join('') + '</ol></section>';
   }
 
   function replaceJob(next, message) {
@@ -1975,15 +1973,15 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     try {
       if (moveBtn) {
         var to = moveBtn.getAttribute('data-move');
-        replaceJob(B.move(j, to, state.role, clock()), j.id + ' moved to ' + B.STAGE[to].label.toLowerCase() + '.');
+        replaceJob(B.move(j, to, state.role, clock()), j.id + ', этап: ' + B.STAGE[to].label.toLowerCase() + '.');
         var nextBtn = dialog.querySelector('.t-actions .btn-primary') || dialog.querySelector('.t-close');
         nextBtn.focus();
       } else if (e.target.closest('[data-hold]')) {
         var reason = $('hold-reason').value;
-        replaceJob(B.setHold(j, reason, state.role, clock()), j.id + ' is on hold: ' + reason.toLowerCase() + '.');
+        replaceJob(B.setHold(j, reason, state.role, clock()), j.id + ' на паузе: ' + reason.toLowerCase() + '.');
         dialog.querySelector('[data-unhold]').focus();
       } else if (e.target.closest('[data-unhold]')) {
-        replaceJob(B.setHold(j, null, state.role, clock()), j.id + ' is off hold.');
+        replaceJob(B.setHold(j, null, state.role, clock()), j.id + ' снят с паузы.');
         (dialog.querySelector('.t-actions .btn-primary') || dialog.querySelector('[data-hold]')).focus();
       }
     } catch (err) {
@@ -1996,7 +1994,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     if (e.target.id !== 'assign') return;
     var j = findJob(state.openId);
     var who = e.target.value || null;
-    replaceJob(B.assign(j, who, state.role, clock()), j.id + (who ? ' assigned to ' + B.personName(who) : ' unassigned') + '.');
+    replaceJob(B.assign(j, who, state.role, clock()), j.id + (who ? ': ответственный ' + B.personName(who) : ': ответственный снят') + '.');
     $('assign').focus();
   });
 
@@ -2013,14 +2011,14 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     a.click();
     a.remove();
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    $('announce').textContent = 'Downloaded ' + plural(jobs.length, 'job', 'jobs') + ' as CSV' + (B.ROLES[state.role].seesMoney ? '.' : ', without prices.');
+    $('announce').textContent = 'Скачано в CSV: ' + plural(jobs.length, 'job', 'jobs') + (B.ROLES[state.role].seesMoney ? '.' : ', без цен.');
   });
 
   $('reset').addEventListener('click', function () {
-    if (!window.confirm('Start the demo board again? Changes you made here will be replaced by the original ' + B.seed(NOW).length + ' jobs.')) return;
+    if (!window.confirm('Начать доску заново? Ваши изменения пропадут, вернутся исходные ' + plural(B.seed(NOW).length, 'job', 'jobs') + '.')) return;
     startBoard('');
     render();
-    $('announce').textContent = 'The demo board is back to its starting jobs.';
+    $('announce').textContent = 'Демо-доска вернулась к исходным заказам.';
   });
 
   /* ------------------------------------------------------------------ go */
