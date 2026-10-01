@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" translate="no">
+<html lang="ru" translate="no">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="notranslate" name="google"/>
-<title>Cedarline Bakehouse - order bot demo</title>
+<title>Пекарня «Кедр»: демо бота заказов</title>
 <link href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;rect width='32' height='32' rx='7' fill='%237b3f2b'/&gt;&lt;path d='M7 10.5a3.5 3.5 0 0 1 3.5-3.5h11A3.5 3.5 0 0 1 25 10.5v7a3.5 3.5 0 0 1-3.5 3.5H14l-5 4v-4.3A3.5 3.5 0 0 1 7 17.5z' fill='white'/&gt;&lt;/svg&gt;" rel="icon"/>
-<meta content="A Telegram bot that takes bakery orders around the clock. Working demo: the same dialog engine that will run the live bot, replayed in the browser." name="description"/>
+<meta content="Telegram-бот, который круглосуточно принимает заказы пекарни. Рабочее демо: тот же движок диалога, что у живого бота, прямо в браузере." name="description"/>
 <style>
 :root {
   color-scheme: light;
@@ -197,36 +197,27 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/telegram-orders/">Flow Lab</a>. Cedarline Bakehouse is invented.</p>
+<p class="fl-band" role="note">Демо сделано <a href="/ru/work/telegram-orders/">Flow Lab</a> без заказчика. Пекарня «Кедр» выдумана.</p>
 <!-- /flowlab-band -->
 <header class="top">
 <div class="wrap top-inner">
-<div class="logo"><span aria-hidden="true" class="logo-mark">🥐</span> Cedarline Bakehouse</div>
-<span class="pill">order bot demo</span>
+<div class="logo"><span aria-hidden="true" class="logo-mark">🥐</span> Пекарня «Кедр»</div>
+<span class="pill">демо бота заказов</span>
 <div class="top-spacer"></div>
-<div aria-label="Language" class="fl-lang" role="group"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Switch between day and night" id="theme-toggle" type="button">🌙 Night</button>
+<div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Переключить дневную и ночную тему" id="theme-toggle" type="button">🌙 Ночь</button>
 </div>
 </header>
 <main class="wrap">
 <div class="hero">
-<span class="tagline">Telegram bot · takes orders while you sleep</span>
-<h1>The bakery is closed. The order still gets taken.</h1>
-<p class="lead">
-      A customer opens Telegram at 01:39, picks a cake, gets a real price and a real pickup slot,
-      and leaves a phone number. The owner wakes up to a finished order, not a missed message.
-      Everything on this page runs the same dialog engine that will drive the live bot - press the buttons and see.
-    </p>
-<div class="note">
-<b>This is my own demo project.</b> Cedarline Bakehouse, its menu and the night below are invented -
-      no client's data is shown here. The phone on this page is a Telegram-style window running the bot's engine in your browser,
-      not Telegram itself; the same engine file is built to drive the live bot through the Telegram Bot API.
-    </div>
+<span class="tagline">Telegram-бот · принимает заказы, пока вы спите</span>
+<h1>Пекарня закрыта. А заказ всё равно принят.</h1>
+<p class="lead">В 01:39 покупатель открывает Telegram, выбирает торт, сразу видит настоящую цену и ближайшее возможное время выдачи и оставляет телефон. Утром владелец находит готовый заказ, а не пропущенное сообщение. Всё на этой странице работает на том же движке диалога, что и живой бот. Нажимайте кнопки и смотрите.</p>
+<div class="note"><b>Это мой собственный демо-проект.</b> Пекарня «Кедр», её меню и ночь ниже выдуманы, данных клиентов здесь нет. Телефон на странице — окно в стиле Telegram: в нём прямо в браузере работает движок бота, это не сам Telegram. Тот же файл движка ведёт живого бота через Telegram Bot API.</div>
 </div>
 <section id="try">
 <div class="sec-head">
-<h2>Order something</h2>
-<p class="muted">Tap the buttons, or type - the bot understands <code>25.09</code>, <code>25 Sep</code>, <code>tomorrow</code>,
-      plain numbers, and it says so plainly when something will not work.</p>
+<h2>Закажите что-нибудь</h2>
+<p class="muted">Нажимайте кнопки или пишите сами. Бот понимает <code>25.09</code>, <code>25 сентября</code>, <code>завтра</code>, обычные числа и прямо говорит, если что-то не получится.</p>
 </div>
 <div class="split">
 <div>
@@ -234,41 +225,38 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 <div class="phone-bar">
 <div aria-hidden="true" class="avatar">🥐</div>
 <div>
-<div class="phone-title">Cedarline Bakehouse</div>
-<div class="phone-sub">bot · online</div>
+<div class="phone-title">Пекарня «Кедр»</div>
+<div class="phone-sub">бот · в сети</div>
 </div>
 </div>
-<div aria-label="Chat with the order bot" aria-live="polite" class="chat" id="chat" tabindex="0"></div>
+<div aria-label="Чат с ботом заказов" aria-live="polite" class="chat" id="chat" tabindex="0"></div>
 <form autocomplete="off" class="composer" id="composer">
-<input aria-label="Write a message to the bot" id="input" placeholder="Write a message" type="text"/>
-<button class="btn-primary" type="submit">Send</button>
+<input aria-label="Написать боту" id="input" placeholder="Сообщение" type="text"/>
+<button class="btn-primary" type="submit">Отправить</button>
 </form>
 </div>
 <div class="controls" style="margin-top:12px">
-<button id="restart" type="button">↺ Start over</button>
-<span class="small muted">Nothing leaves this page - no network, no keys.</span>
+<button id="restart" type="button">↺ Начать заново</button>
+<span class="small muted">Всё работает прямо на странице: без сети и ключей, данные никуда не уходят.</span>
 </div>
 </div>
 <div>
 <div class="card" style="margin-bottom:16px">
-<div class="card-head"><h3>What the owner's phone shows</h3><span class="pill" id="owner-count">0</span></div>
+<div class="card-head"><h3>Что видит владелец на телефоне</h3><span class="pill" id="owner-count">0</span></div>
 <div class="card-body">
-<div class="owner-feed" id="owner-feed"><div class="empty">Nothing yet - finish an order in the chat and it appears here instantly.</div></div>
+<div class="owner-feed" id="owner-feed"><div class="empty">Пока пусто. Оформите заказ в чате, и он сразу появится здесь.</div></div>
 </div>
 </div>
 <div class="card">
-<div class="card-head"><h3>Orders as they are stored</h3></div>
+<div class="card-head"><h3>Так заказы сохраняются</h3></div>
 <div class="card-body">
 <div class="table-scroll">
 <table id="live-orders">
-<thead><tr><th>Order</th><th>Item</th><th>Ready</th><th>Handover</th><th class="num">Total</th></tr></thead>
-<tbody><tr><td class="empty" colspan="5">No orders yet.</td></tr></tbody>
+<thead><tr><th>Заказ</th><th>Что</th><th>Когда</th><th>Получение</th><th class="num">Сумма</th></tr></thead>
+<tbody><tr><td class="empty" colspan="5">Заказов пока нет.</td></tr></tbody>
 </table>
 </div>
-<p class="small muted" style="margin:12px 0 0">
-              In the live bot this same record is written to <code>orders.json</code> - or to the shop's spreadsheet or CRM,
-              which is one small file to swap.
-            </p>
+<p class="small muted" style="margin:12px 0 0">Живой бот пишет ту же запись в <code>orders.json</code>. А может писать в Google Таблицу или CRM пекарни: для этого меняется один небольшой файл.</p>
 </div>
 </div>
 </div>
@@ -276,32 +264,30 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 </section>
 <section id="night">
 <div class="sec-head">
-<h2>One night, replayed</h2>
-<p class="muted" id="night-intro">Press the button: a written night of customers - one September night, invented like
-      the rest of this demo - is handled by the engine here, in your browser. Every number below is counted from that run,
-      not typed in by hand.</p>
+<h2>Повтор одной ночи</h2>
+<p class="muted" id="night-intro">Нажмите кнопку: движок прямо в вашем браузере обработает заранее придуманную ночь покупателей. Это одна сентябрьская ночь, выдуманная, как и всё демо. Все цифры ниже посчитаны из этого прогона, а не вписаны руками.</p>
 </div>
 <div class="controls">
-<button class="btn-primary" id="run-night" type="button">▶ Run the night</button>
-<span class="small muted" id="night-state">Not run yet.</span>
+<button class="btn-primary" id="run-night" type="button">▶ Запустить ночь</button>
+<span class="small muted" id="night-state">Ещё не запускали.</span>
 </div>
 <div class="stats" hidden="" id="night-stats">
-<div class="stat"><div class="v" id="s-orders">-</div><div class="k">orders taken</div></div>
-<div class="stat"><div class="v" id="s-revenue">-</div><div class="k">booked overnight</div></div>
-<div class="stat"><div class="v" id="s-questions">-</div><div class="k">passed to a human</div></div>
-<div class="stat"><div class="v" id="s-chats">-</div><div class="k">chats handled</div></div>
+<div class="stat"><div class="v" id="s-orders">-</div><div class="k">заказов принято</div></div>
+<div class="stat"><div class="v" id="s-revenue">-</div><div class="k">сумма заказов за ночь</div></div>
+<div class="stat"><div class="v" id="s-questions">-</div><div class="k">вопросов передано пекарне</div></div>
+<div class="stat"><div class="v" id="s-chats">-</div><div class="k">чатов обработано</div></div>
 </div>
 <div class="split" hidden="" id="night-result">
 <div class="card">
-<div class="card-head"><h3>The summary waiting when the ovens go on</h3></div>
+<div class="card-head"><h3>Утренний итог для владельца</h3></div>
 <div class="card-body"><div class="owner-msg" id="night-summary"></div></div>
 </div>
 <div class="card">
-<div class="card-head"><h3>The night's orders</h3></div>
+<div class="card-head"><h3>Заказы за ночь</h3></div>
 <div class="card-body">
 <div class="table-scroll">
 <table id="night-orders">
-<thead><tr><th>Order</th><th>Item</th><th>Ready</th><th>Handover</th><th class="num">Total</th></tr></thead>
+<thead><tr><th>Заказ</th><th>Что</th><th>Когда</th><th>Получение</th><th class="num">Сумма</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>
@@ -309,55 +295,48 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 </div>
 </div>
 <div hidden="" id="night-transcripts" style="margin-top:20px">
-<h3>Every chat from that night</h3>
-<p class="small muted">Open any of them - including the ones that did not end in an order. A bot that only works when
-      the customer behaves is not worth putting in front of customers.</p>
+<h3>Все чаты этой ночи</h3>
+<p class="small muted">Откройте любой, в том числе те, что не закончились заказом. Бота, который справляется только с послушными покупателями, нельзя выпускать к людям.</p>
 <div id="transcript-list"></div>
 </div>
 </section>
 <section id="how">
 <div class="sec-head">
-<h2>How it is built</h2>
+<h2>Как это устроено</h2>
 </div>
 <div class="cols">
 <div class="card"><div class="card-body">
-<h3>One engine, two front doors</h3>
-<p class="small">The dialog is a pure state machine: it takes the current state and one event, and returns the next
-        state plus what to send. The live bot feeds it Telegram updates; this page feeds it your clicks. There is no second
-        version written for the demo - a test fails if the copy on this page drifts from the source files.</p>
+<h3>Один движок, два входа</h3>
+<p class="small">Диалог — чистый конечный автомат: он получает текущее состояние и одно событие и возвращает следующее состояние и ответ. Живой бот подаёт в него сообщения из Telegram, эта страница подаёт ваши нажатия. Отдельной версии для демо нет: тест падает, если копия на странице расходится с исходными файлами. Русская и английская версии работают на одном движке, меняется только языковой пакет: фразы, меню и цены в рублях.</p>
 </div></div>
 <div class="card"><div class="card-body">
-<h3>Built to survive the night</h3>
-<p class="small">Telegram re-sends an update when an answer is lost, so every update id is remembered and never served
-        twice. Network errors and rate limits are retried with growing pauses. Buttons from older messages are recognised and
-        answered politely instead of corrupting a half-finished order. Orders are written to disk before the customer is told "booked".</p>
+<h3>Сделан, чтобы пережить ночь</h3>
+<p class="small">Если ответ потерялся, Telegram присылает сообщение повторно, поэтому бот запоминает номер каждого и не обрабатывает дважды. Сбои сети и лимиты Telegram бот переживает повторными попытками с растущей паузой. Кнопки из старых сообщений он узнаёт и вежливо отвечает, а не портит не до конца оформленный заказ. Заказ записывается на диск до того, как покупатель видит «Готово».</p>
 </div></div>
 <div class="card"><div class="card-body">
-<h3>No packages, no keys in code</h3>
-<p class="small">The bot is plain Node.js - no npm dependencies to audit or update. The token lives in a
-        <code>.env</code> file that never enters the repository, and the log lines never print it. Hosting runs on the shop's own
-        account, so the shop keeps control of its data.</p>
+<h3>Без сторонних пакетов, без ключей в коде</h3>
+<p class="small">Бот написан на чистом Node.js, без npm-зависимостей, которые нужно проверять и обновлять. Токен лежит в файле <code>.env</code>, который не попадает в репозиторий, и никогда не печатается в журнале. Хостинг оформляется на аккаунт пекарни, так что данные остаются под её контролем.</p>
 </div></div>
 </div>
 </section>
 <section id="support">
 <div class="sec-head">
-<h2>What a month of support covers</h2>
-<p class="muted">A bot is not a poster - the menu changes, prices change, Telegram changes. The monthly part keeps it working:</p>
+<h2>Что входит в месяц поддержки</h2>
+<p class="muted">Бот не плакат: меняется меню, цены, сам Telegram. Ежемесячная поддержка держит его в рабочем состоянии:</p>
 </div>
 <div class="cols">
 <div class="card"><div class="card-body">
 <ul class="plain small">
-<li>Menu, prices, lead times and delivery zones updated whenever the shop changes them.</li>
-<li>The bot watched: if it stops answering, I hear about it before the customers do.</li>
-<li>Telegram API changes handled before they break anything.</li>
+<li>Меню, цены, сроки и зоны доставки обновляются, как только пекарня их меняет.</li>
+<li>Присмотр за ботом: если он перестанет отвечать, я узнаю раньше покупателей.</li>
+<li>Изменения Telegram API учитываются до того, как что-то сломают.</li>
 </ul>
 </div></div>
 <div class="card"><div class="card-body">
 <ul class="plain small">
-<li>Small additions as the shop learns what customers ask for - new items, new questions, a new slot.</li>
-<li>Monthly note: how many orders the bot took and where people dropped out.</li>
-<li>Backups of the order file, and export to whatever the shop uses for bookkeeping.</li>
+<li>Небольшие доработки по мере того, как становится ясно, о чём спрашивают покупатели: новые товары, вопросы, время выдачи.</li>
+<li>Отчёт раз в месяц: сколько заказов принял бот и где покупатели бросали заказ.</li>
+<li>Резервные копии заказов и выгрузка в то, чем пекарня ведёт учёт.</li>
 </ul>
 </div></div>
 </div>
@@ -365,119 +344,122 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 </main>
 <footer>
 <div class="wrap">
-<p><b>Honest notes.</b> Cedarline Bakehouse is invented for this demo. The customers, the menu, the addresses and the
-    night above are written by me - no real client's data appears here. The figures come from running the engine on that
-    invented night, in this page, while you watch.</p>
-<p class="small">Demo project for my portfolio · the same code is what runs the live bot once a token from @BotFather is added.</p>
+<p><b>Честно о демо.</b> Пекарня «Кедр» выдумана для этого демо. Покупателей, меню, адреса и ночь выше написала я, данных настоящих клиентов здесь нет. Цифры получаются из прогона движка на этой выдуманной ночи, прямо на странице, у вас на глазах.</p>
+<p class="small">Демо-проект для портфолио · этот же код запускает живого бота, как только добавлен токен от @BotFather.</p>
 </div>
 </footer>
 <script>
 // ---- ENGINE:START (generated by demo/build-embedded.js - do not edit by hand) ----
-// ---- engine/catalog.js ----
-// Cedarline Bakehouse - menu, prices and shop rules.
-// Everything the owner would change month to month lives in this one file:
-// prices, lead times, delivery zones and opening days. No logic here, only data
-// (lookups are in lookup.js), so a second language is a second copy of this file: engine/ru/catalog.js.
+// ---- engine/ru/catalog.js ----
+// Пекарня «Кедр» - меню, цены и правила пекарни. Русский языковой пакет.
+// Та же схема, что engine/catalog.js: те же id, те же поля, только тексты и цены в рублях.
+// Цены хранятся в копейках (поле priceCents), как в английской версии - в центах.
+// Чтобы живой бот заговорил по-русски, этот файл и engine/ru/text.js кладутся на место
+// engine/catalog.js и engine/text.js. Демо-страница demo/ru/ собирается из них сама.
 
 const SHOP = {
-  name: 'Cedarline Bakehouse',
-  // Start of every order number: CED-2309-014.
-  orderPrefix: 'CED',
-  currency: 'USD',
-  symbol: '$',
-  timezoneLabel: 'shop local time',
-  // 0 = Sunday ... 6 = Saturday. The bakehouse is closed on Mondays.
+  name: 'Пекарня «Кедр»',
+  // В середине фразы: «Это бот пекарни «Кедр»».
+  nameOf: 'пекарни «Кедр»',
+  // Начало номера заказа: KDR-2409-001.
+  orderPrefix: 'KDR',
+  locale: 'ru',
+  currency: 'RUB',
+  symbol: '₽',
+  timezoneLabel: 'по времени пекарни',
+  // 0 = воскресенье ... 6 = суббота. По понедельникам пекарня закрыта.
   closedWeekdays: [1],
   pickup: { from: '08:00', to: '18:00' },
-  // Orders below this total cannot be delivered - the bot offers pickup instead.
-  deliveryMinimumCents: 2500,
-  // How far ahead an order may be placed.
+  // Заказ меньше этой суммы не доставляем - бот предлагает самовывоз.
+  deliveryMinimumCents: 170000,
+  // На сколько дней вперёд можно заказать.
   maxDaysAhead: 60,
-  // Where a customer is sent when the answer needs a person and the shop is closed.
-  humanHandoff: '@cedarline_orders',
+  // Куда направить человека, если нужен живой ответ, а пекарня закрыта.
+  humanHandoff: '@kedr_orders',
 };
 
-// Pickup and delivery windows. The ids are what orders store; the titles are what customers read.
+// Окна выдачи и доставки. В заказе хранится id, человек видит title.
 const SLOTS = [
-  { id: 'am', title: 'Morning 08:00-12:00', start: '08:00' },
-  { id: 'pm', title: 'Afternoon 12:00-18:00', start: '12:00' },
+  // Время первым: так подпись читается и на кнопке, и в середине фразы («пт, 25 сентября, 08:00–12:00, утро»).
+  { id: 'am', title: '08:00–12:00, утро', start: '08:00' },
+  { id: 'pm', title: '12:00–18:00, день', start: '12:00' },
 ];
 
 const CATEGORIES = [
-  { id: 'cake', title: 'Celebration cakes', leadHours: 48, note: 'baked to order, 48 hours notice' },
-  { id: 'platter', title: 'Office platters', leadHours: 24, note: 'for meetings and events, 24 hours notice' },
-  { id: 'bread', title: 'Bread boxes', leadHours: 12, note: 'next-morning bread, 12 hours notice' },
+  { id: 'cake', title: 'Торты на праздник', leadHours: 48, note: 'печём под заказ, нужно 48 часов' },
+  { id: 'platter', title: 'Сеты в офис', leadHours: 24, note: 'для встреч и праздников, нужно 24 часа' },
+  { id: 'bread', title: 'Хлеб к утру', leadHours: 12, note: 'свежий хлеб, нужно 12 часов' },
 ];
 
-// priceCents is per unit. Items with variants take their price from the variant.
+// priceCents - цена за штуку в копейках. У товаров с вариантами цена берётся из варианта.
 const ITEMS = [
   {
-    id: 'vanilla', categoryId: 'cake', title: 'Classic vanilla layer cake',
-    description: 'Vanilla sponge, mascarpone cream, seasonal fruit.',
+    id: 'vanilla', categoryId: 'cake', title: 'Ванильный бисквитный торт',
+    description: 'Ванильный бисквит, крем на маскарпоне, сезонные ягоды.',
     maxQty: 3, allowsInscription: true,
     variants: [
-      { id: '6', title: '6 servings', priceCents: 4200 },
-      { id: '10', title: '10 servings', priceCents: 6400 },
-      { id: '16', title: '16 servings', priceCents: 9200 },
+      { id: '6', title: '6 порций', priceCents: 290000 },
+      { id: '10', title: '10 порций', priceCents: 440000 },
+      { id: '16', title: '16 порций', priceCents: 630000 },
     ],
   },
   {
-    id: 'chocolate', categoryId: 'cake', title: 'Dark chocolate fudge cake',
-    description: '70% chocolate, salted caramel layer.',
+    id: 'chocolate', categoryId: 'cake', title: 'Шоколадный торт с солёной карамелью',
+    description: 'Шоколад 70 %, прослойка солёной карамели.',
     maxQty: 3, allowsInscription: true,
     variants: [
-      { id: '6', title: '6 servings', priceCents: 4600 },
-      { id: '10', title: '10 servings', priceCents: 7000 },
-      { id: '16', title: '16 servings', priceCents: 9900 },
+      { id: '6', title: '6 порций', priceCents: 320000 },
+      { id: '10', title: '10 порций', priceCents: 480000 },
+      { id: '16', title: '16 порций', priceCents: 680000 },
     ],
   },
   {
-    id: 'lemon', categoryId: 'cake', title: 'Lemon & elderflower cake',
-    description: 'Lemon curd, elderflower syrup, white chocolate shards.',
+    id: 'lemon', categoryId: 'cake', title: 'Лимонный торт с бузиной',
+    description: 'Лимонный курд, сироп из цветов бузины, стружка белого шоколада.',
     maxQty: 3, allowsInscription: true,
     variants: [
-      { id: '6', title: '6 servings', priceCents: 4800 },
-      { id: '10', title: '10 servings', priceCents: 7400 },
-      { id: '16', title: '16 servings', priceCents: 10400 },
+      { id: '6', title: '6 порций', priceCents: 330000 },
+      { id: '10', title: '10 порций', priceCents: 510000 },
+      { id: '16', title: '16 порций', priceCents: 720000 },
     ],
   },
   {
-    id: 'pastry', categoryId: 'platter', title: 'Morning pastry platter',
-    description: '12 pieces: croissants, pain au chocolat, cinnamon knots.',
-    priceCents: 3800, maxQty: 10,
+    id: 'pastry', categoryId: 'platter', title: 'Сет утренней выпечки',
+    description: '12 штук: круассаны, булочки с шоколадом, улитки с корицей.',
+    priceCents: 260000, maxQty: 10,
   },
   {
-    id: 'sandwich', categoryId: 'platter', title: 'Sandwich & focaccia platter',
-    description: '10 portions, half of them vegetarian.',
-    priceCents: 5400, maxQty: 10,
+    id: 'sandwich', categoryId: 'platter', title: 'Сет сэндвичей и фокаччи',
+    description: '10 порций, половина из них вегетарианские.',
+    priceCents: 370000, maxQty: 10,
   },
   {
-    id: 'cookie', categoryId: 'platter', title: 'Cookie box',
-    description: '24 pieces, four kinds.',
-    priceCents: 3200, maxQty: 10,
+    id: 'cookie', categoryId: 'platter', title: 'Коробка печенья',
+    description: '24 штуки, четыре вида.',
+    priceCents: 220000, maxQty: 10,
   },
   {
-    id: 'sourdough', categoryId: 'bread', title: 'Sourdough duo',
-    description: 'Two 900 g country loaves.',
-    priceCents: 1400, maxQty: 12,
+    id: 'sourdough', categoryId: 'bread', title: 'Два хлеба на закваске',
+    description: 'Два деревенских хлеба по 900 г.',
+    priceCents: 95000, maxQty: 12,
   },
   {
-    id: 'rye', categoryId: 'bread', title: 'Seeded rye loaf',
-    description: 'Sunflower, flax and pumpkin seeds.',
-    priceCents: 900, maxQty: 12,
+    id: 'rye', categoryId: 'bread', title: 'Ржаной хлеб с семечками',
+    description: 'Семечки подсолнечника, льна и тыквы.',
+    priceCents: 60000, maxQty: 12,
   },
   {
-    id: 'brioche', categoryId: 'bread', title: 'Brioche buns (6)',
-    description: 'Soft burger-size buns, baked the same morning.',
-    priceCents: 1100, maxQty: 12,
+    id: 'brioche', categoryId: 'bread', title: 'Булочки бриошь, 6 штук',
+    description: 'Мягкие, для бургеров, печём утром в день выдачи.',
+    priceCents: 75000, maxQty: 12,
   },
 ];
 
 const ZONES = [
-  { id: 'pickup', title: 'I will pick it up', cardTitle: 'Pickup at the bakehouse', feeCents: 0, pickup: true },
-  { id: 'a', title: 'Delivery - city centre (up to 5 km)', cardTitle: 'Delivery, city centre (up to 5 km)', feeCents: 600 },
-  { id: 'b', title: 'Delivery - outer districts (5-12 km)', cardTitle: 'Delivery, outer districts (5-12 km)', feeCents: 1100 },
-  { id: 'far', title: 'Delivery - further than 12 km', cardTitle: 'Further than 12 km', feeCents: null, unserved: true },
+  { id: 'pickup', title: 'Заберу из пекарни', cardTitle: 'Самовывоз из пекарни', feeCents: 0, pickup: true },
+  { id: 'a', title: 'Доставка по центру, до 5 км', cardTitle: 'Доставка по центру, до 5 км', feeCents: 40000 },
+  { id: 'b', title: 'Доставка в другие районы, 5–12 км', cardTitle: 'Доставка в другие районы, 5–12 км', feeCents: 75000 },
+  { id: 'far', title: 'Доставка дальше 12 км', cardTitle: 'Дальше 12 км', feeCents: null, unserved: true },
 ];
 
 // ---- engine/lookup.js ----
@@ -833,17 +815,17 @@ function buildOrder(session, ctx) {
   };
 }
 
-// ---- engine/text.js ----
-// Every sentence the bot says. Kept apart from the logic so the owner can
-// reword the shop's voice without touching the dialog, and so the tests can check
-// in one place that nothing unfinished ever ships.
+// ---- engine/ru/text.js ----
+// Всё, что говорит бот, по-русски. Те же имена и та же форма, что в engine/text.js:
+// логика диалога берёт фразы отсюда и не знает, на каком языке говорит.
+// Бот обращается к покупателю на «вы».
 
 
 
 
 
 
-/** Telegram is sent parse_mode=HTML, so anything a customer typed is escaped first. */
+/** Telegram получает parse_mode=HTML, поэтому всё, что ввёл покупатель, сначала экранируется. */
 function esc(value) {
   return String(value == null ? '' : value)
     .replace(/&/g, '&amp;')
@@ -851,81 +833,96 @@ function esc(value) {
     .replace(/>/g, '&gt;');
 }
 
-/** Labels on the buttons. The callback data carries ids, so rewording a label never breaks a step. */
-const BTN = {
-  back: '← Back',
-  backToOrder: '← Back to the order',
-  carryOn: 'Carry on',
-  startNew: 'Start a new order',
-  nothingToAdd: 'Nothing to add',
-  confirm: 'Confirm the order ✅',
-  change: 'Change something',
-  cancel: 'Cancel the order',
-  editItem: 'The item',
-  editDay: 'The day or time',
-  editDelivery: 'Pickup or delivery',
-  editNote: 'The note',
-  editContact: 'Name or phone',
-  order: '🧁 Place an order',
-  menu: '📋 Menu & prices',
-  hours: '🚚 Pickup, delivery & hours',
-  ask: '💬 Talk to a human',
-  useName: (name) => `Use "${name}"`,
-  category: (c) => `${c.title} - ${c.note}`,
-  item: (item) => `${item.title} - ${money(item.priceCents)}`,
-  itemFrom: (item, cents) => `${item.title} - from ${money(cents)}`,
-  variant: (v) => `${v.title} - ${money(v.priceCents)}`,
-  zone: (z) => (z.unserved ? z.title : `${z.title}${z.feeCents ? ` - ${money(z.feeCents)}` : ' - free'}`),
-};
+/** 1 заказ, 2 заказа, 5 заказов. */
+function plural(n, one, few, many) {
+  const tens = n % 100;
+  const units = n % 10;
+  if (tens >= 11 && tens <= 14) return many;
+  if (units === 1) return one;
+  if (units >= 2 && units <= 4) return few;
+  return many;
+}
 
-/** '26.09' - an example date the bot is sure to accept. */
+/** «26.09» — пример даты, которую бот точно примет. */
 function ddmm(iso) {
   return `${iso.slice(8, 10)}.${iso.slice(5, 7)}`;
 }
 
-const REPLY_HINT = '↩️ Reply to this message and the bot forwards your answer to the customer.';
+const REPLY_HINT = '↩️ Ответьте на это сообщение, и бот перешлёт ответ покупателю.';
 
-/** The question the bot asks on each step of the order. */
+function hours(n) {
+  return `${n} ${plural(n, 'час', 'часа', 'часов')}`;
+}
+
+/** Подписи на кнопках. В callback уходит id, поэтому новая подпись не ломает шаг. */
+const BTN = {
+  back: '← Назад',
+  backToOrder: '← Назад к заказу',
+  carryOn: 'Продолжить',
+  startNew: 'Начать новый заказ',
+  nothingToAdd: 'Без пожеланий',
+  confirm: 'Подтвердить заказ ✅',
+  change: 'Изменить',
+  cancel: 'Отменить заказ',
+  editItem: 'Состав заказа',
+  editDay: 'День или время',
+  editDelivery: 'Самовывоз или доставку',
+  editNote: 'Пожелания',
+  editContact: 'Имя или телефон',
+  order: '🧁 Сделать заказ',
+  menu: '📋 Меню и цены',
+  hours: '🚚 Самовывоз, доставка, часы работы',
+  ask: '💬 Написать человеку',
+  useName: (name) => `На имя «${name}»`,
+  category: (c) => `${c.title} · за ${hours(c.leadHours)}`,
+  item: (item) => `${item.title} · ${money(item.priceCents)}`,
+  itemFrom: (item, cents) => `${item.title} · от ${money(cents)}`,
+  variant: (v) => `${v.title} · ${money(v.priceCents)}`,
+  zone: (z) => (z.unserved ? z.title : `${z.title} · ${z.feeCents ? money(z.feeCents) : 'бесплатно'}`),
+};
+
+/** Вопрос, который бот задаёт на каждом шаге заказа. */
 const ASK = {
-  resume: 'You already have an order in progress. Would you like to carry on with it, or start a new one?',
-  category: 'What are we baking for you?',
-  item: (category) => `<b>${category.title}</b> - ${category.note}.\n\nPick one:`,
-  variant: (item) => `<b>${item.title}</b>\n${item.description}\n\nWhich size?`,
-  qty: (item) => `How many?${item.maxQty > 6 ? `\n\nTap a number, or type any number up to ${item.maxQty}.` : ''}`,
+  resume: 'У вас уже есть начатый заказ. Продолжим его или начнём новый?',
+  category: 'Что для вас испечь?',
+  item: (category) => `<b>${category.title}</b>: ${category.note}.\n\nВыберите:`,
+  variant: (item) => `<b>${item.title}</b>\n${item.description}\n\nКакой размер?`,
+  qty: (item) => `Сколько штук?${item.maxQty > 6 ? `\n\nНажмите на кнопку или напишите число до ${item.maxQty}.` : ''}`,
   date: (leadHours, earliestIso) => [
-    'Which day would you like it?',
+    'На какой день?',
     '',
-    `This one needs ${leadHours} hours, so the earliest is <b>${humanDate(earliestIso)}</b>.`,
-    `Tap a day, or type one - day first, like ${ddmm(earliestIso)}.`,
+    `Этот заказ готовим ${hours(leadHours)}, поэтому самый ранний день: <b>${humanDate(earliestIso)}</b>.`,
+    `Нажмите на день или напишите дату, например ${ddmm(earliestIso)} или ${dayMonth(earliestIso)}.`,
   ].join('\n'),
-  slot: (iso) => `<b>${humanDate(iso)}</b> - when suits you?`,
+  slot: (iso) => `<b>${humanDate(iso)}</b>. Какое время удобно?`,
   zone: (q, canDeliver) => [
-    'Pickup or delivery?',
+    'Самовывоз или доставка?',
     '',
-    `Your order so far: ${esc(q.itemLabel)} × ${q.qty} - ${money(q.subtotalCents)}.`,
+    `Ваш заказ: ${esc(q.itemLabel)} × ${q.qty} на ${money(q.subtotalCents)}.`,
     canDeliver
-      ? `Delivery is added on top; pickup is free, ${SHOP.pickup.from}-${SHOP.pickup.to}.`
-      : `Delivery starts at ${money(SHOP.deliveryMinimumCents)} per order, so this one is pickup - or go back and add a little more.`,
+      ? `Доставка оплачивается отдельно, самовывоз бесплатный, с ${SHOP.pickup.from} до ${SHOP.pickup.to}.`
+      : `Доставляем заказы от ${money(SHOP.deliveryMinimumCents)}, поэтому этот только самовывозом. Или вернитесь и добавьте что-нибудь.`,
   ].join('\n'),
-  address: 'What is the delivery address?\n\nStreet, house number and flat - the driver reads exactly what you write.',
+  address: 'Куда доставить?\n\nУлица, дом и квартира. Курьер увидит адрес точно так, как вы его напишете.',
   notes: (item) => [
-    'Anything we should know?',
+    'Есть пожелания к заказу?',
     '',
     item.allowsInscription
-      ? 'Allergies, a message to pipe on the cake, a doorbell that never works - write it here.'
-      : 'Allergies, packaging, a doorbell that never works - write it here.',
+      ? 'Например, аллергия, надпись на торте или код домофона. Напишите их сюда.'
+      : 'Например, аллергия, упаковка или код домофона. Напишите их сюда.',
   ].join('\n'),
-  name: 'Whose name should the order be under?',
-  phone: 'And a phone number, in case the bakehouse needs to reach you on the day.',
-  edit: 'What would you like to change?',
+  name: 'На чьё имя оформить заказ?',
+  phone: 'И телефон: вдруг пекарне понадобится связаться с вами в день заказа.',
+  edit: 'Что хотите изменить?',
 };
 
 function partOfDay(now) {
   const hour = new Date(now).getUTCHours();
-  if (hour >= 5 && hour < 12) return 'Good morning';
-  if (hour >= 12 && hour < 18) return 'Good afternoon';
-  if (hour >= 18) return 'Good evening';
-  return 'Hello';
+  if (hour >= 5 && hour < 12) return 'Доброе утро';
+  if (hour >= 12 && hour < 18) return 'Добрый день';
+  if (hour >= 18) return 'Добрый вечер';
+  // «Доброй ночи» по-русски говорят на прощание, поэтому ночью просто здороваемся.
+  return 'Здравствуйте';
 }
 
 function greeting(now, firstName) {
@@ -933,9 +930,9 @@ function greeting(now, firstName) {
   return [
     `${partOfDay(now)}${who}! 👋`,
     '',
-    `You are chatting with <b>${SHOP.name}</b>. I take orders at any hour. The bakehouse gets them right away and replies from ${SHOP.pickup.from}.`,
+    `Это бот <b>${SHOP.nameOf}</b>. Принимаю заказы круглосуточно. Пекарня получает их сразу, а отвечает с ${SHOP.pickup.from}.`,
     '',
-    'What would you like to do?',
+    'Что хотите сделать?',
   ].join('\n');
 }
 
@@ -946,115 +943,115 @@ function menuCard() {
         const range = item.variants.map((v) => `${v.title} ${money(v.priceCents)}`).join(' · ');
         return `• <b>${item.title}</b>\n   ${item.description}\n   ${range}`;
       }
-      return `• <b>${item.title}</b> - ${money(item.priceCents)}\n   ${item.description}`;
+      return `• <b>${item.title}</b>, ${money(item.priceCents)}\n   ${item.description}`;
     });
     return `<b>${category.title.toUpperCase()}</b> (${category.note})\n${lines.join('\n')}`;
   });
-  return `${blocks.join('\n\n')}\n\nPrices include tax. Delivery is added at the end.`;
+  return `${blocks.join('\n\n')}\n\nЦены окончательные, стоимость доставки добавится в конце.`;
 }
 
 function hoursCard() {
-  // Built from ZONES so the card can never drift away from what the bot charges.
+  // Собрано из ZONES, чтобы карточка не разошлась с тем, что бот берёт за доставку.
   const zones = ZONES.map((z) => {
-    if (z.unserved) return `• ${z.cardTitle} - no delivery, pickup only`;
-    if (z.pickup) return `• ${z.cardTitle} - free, ${SHOP.pickup.from}-${SHOP.pickup.to}`;
-    return `• ${z.cardTitle} - ${money(z.feeCents)}`;
+    if (z.unserved) return `• ${z.cardTitle}: не доставляем, можно забрать самовывозом`;
+    if (z.pickup) return `• ${z.cardTitle}: бесплатно, ${SHOP.pickup.from}–${SHOP.pickup.to}`;
+    return `• ${z.cardTitle}: ${money(z.feeCents)}`;
   }).join('\n');
   return [
-    '<b>Pickup, delivery and hours</b>',
+    '<b>Самовывоз, доставка и часы работы</b>',
     '',
-    `Open Tuesday to Sunday, ${SHOP.pickup.from}-${SHOP.pickup.to} (${SHOP.timezoneLabel}). Closed on Mondays.`,
+    `Работаем со вторника по воскресенье, ${SHOP.pickup.from}–${SHOP.pickup.to} (${SHOP.timezoneLabel}). В понедельник выходной.`,
     '',
     zones,
     '',
-    `Delivery needs a basket of at least ${money(SHOP.deliveryMinimumCents)}.`,
+    `Доставляем заказы от ${money(SHOP.deliveryMinimumCents)}.`,
     '',
-    '<b>How much notice we need</b>',
-    ...CATEGORIES.map((c) => `• ${c.title} - ${c.leadHours} hours`),
+    '<b>За сколько заказывать</b>',
+    ...CATEGORIES.map((c) => `• ${c.title}: за ${hours(c.leadHours)}`),
   ].join('\n');
 }
 
 const ASK_QUESTION = [
-  'Of course. Type your question here and I will pass it to the bakehouse.',
+  'Конечно. Напишите вопрос сюда, я передам его в пекарню.',
   '',
-  `Someone answers in person from ${SHOP.pickup.from} (${SHOP.timezoneLabel}). If it cannot wait, write to ${SHOP.humanHandoff} directly.`,
+  `Живой человек ответит с ${SHOP.pickup.from} (${SHOP.timezoneLabel}). Если вопрос срочный, пишите сразу в ${SHOP.humanHandoff}.`,
 ].join('\n');
 
 function anythingElse() {
-  return 'Anything else I can do for you?';
+  return 'Чем ещё могу помочь?';
 }
 
 function questionSent() {
-  return `Passed on. ✅ The bakehouse will reply in this chat from ${SHOP.pickup.from} (${SHOP.timezoneLabel}).`;
+  return `Передал ✅ Пекарня ответит здесь с ${SHOP.pickup.from} (${SHOP.timezoneLabel}).`;
 }
 
-/** A free-typed message outside an order is a message for a person, not an error. */
+/** Сообщение вне заказа адресовано человеку, это не ошибка. */
 function messageForwarded() {
-  return `Got it - I have passed that to the bakehouse, and someone will reply here from ${SHOP.pickup.from} (${SHOP.timezoneLabel}).`;
+  return `Понял, передал в пекарню. Вам ответят здесь с ${SHOP.pickup.from} (${SHOP.timezoneLabel}).`;
 }
 
 function askForWords() {
-  return 'Write your question as a message and I will pass it on - or tap Back to return to the menu.';
+  return 'Напишите вопрос сообщением, и я передам его. Или нажмите «Назад», чтобы вернуться в меню.';
 }
 
 function cannotSeeAttachments() {
-  return 'I cannot open pictures, voice notes or files - please describe it in words and I will pass it on.';
+  return 'Я не открываю фото, голосовые и файлы. Опишите словами, и я передам.';
 }
 
-const CANCELLED = 'No problem - I have dropped that order. Nothing was sent to the bakehouse. Start again whenever you like.';
+const CANCELLED = 'Хорошо, заказ отменён. В пекарню ничего не ушло. Начните заново, когда захотите.';
 
-const NOTHING_TO_CANCEL = 'There is no order in progress. Tap "Place an order" whenever you are ready.';
+const NOTHING_TO_CANCEL = 'Начатого заказа нет. Нажмите «Сделать заказ», когда будете готовы.';
 
 function stale() {
-  return 'That button belongs to an earlier step - here is where we are now.';
+  return 'Эта кнопка уже неактуальна. Продолжим с текущего шага:';
 }
 
 function unexpectedText() {
-  return 'I did not catch that. Please use the buttons below, or type /cancel to start over.';
+  return 'Не понял. Нажмите на кнопку ниже или напишите /cancel, чтобы начать заново.';
 }
 
 function summary(session) {
   const d = session.draft;
   const q = quote(d);
   const lines = [
-    '<b>Here is your order</b>',
+    '<b>Ваш заказ</b>',
     '',
-    `🧁 ${esc(q.itemLabel)} × ${q.qty} - ${money(q.subtotalCents)}`,
+    `🧁 ${esc(q.itemLabel)} × ${q.qty} · ${money(q.subtotalCents)}`,
     `📅 ${humanDate(d.dateIso)}, ${slotById(d.slotId).title}`,
   ];
-  if (d.address) lines.push(`🚚 Delivery to ${esc(d.address)} - ${money(q.deliveryCents)}`);
-  else lines.push('🏠 Pickup at the bakehouse - free');
+  if (d.address) lines.push(`🚚 Доставка (${money(q.deliveryCents)}): ${esc(d.address)}`);
+  else lines.push('🏠 Самовывоз из пекарни, бесплатно');
   if (d.notes) lines.push(`📝 ${esc(d.notes)}`);
   lines.push(`👤 ${esc(d.name)}, ${esc(d.phone)}`);
-  lines.push('', `<b>Total: ${money(q.totalCents)}</b>`, 'Payment on pickup or on delivery - card or cash.');
+  lines.push('', `<b>Итого: ${money(q.totalCents)}</b>`, 'Оплата при получении, картой или наличными.');
   return lines.join('\n');
 }
 
 function confirmed(order) {
   return [
-    `Booked! ✅ Your order number is <b>${order.number}</b>.`,
+    `Готово! ✅ Номер заказа <b>${order.number}</b>.`,
     '',
-    `${esc(order.item.label)} × ${order.item.qty}, ready ${order.handover.dateLabel}, ${esc(order.handover.slotLabel)}.`,
+    `${esc(order.item.label)} × ${order.item.qty}. Когда: ${order.handover.dateLabel}, ${esc(order.handover.slotLabel)}.`,
     order.handover.method === 'delivery'
-      ? `We deliver to ${esc(order.handover.address)}.`
-      : `Pickup at the bakehouse, ${SHOP.pickup.from}-${SHOP.pickup.to}.`,
-    `Total ${money(order.totals.totalCents)}.`,
+      ? `Доставим по адресу: ${esc(order.handover.address)}.`
+      : `Самовывоз из пекарни, ${SHOP.pickup.from}–${SHOP.pickup.to}.`,
+    `Итого ${money(order.totals.totalCents)}.`,
     '',
-    `The bakehouse sees this order right away and will confirm in this chat from ${SHOP.pickup.from}. Need to change something? Write here, quote ${order.number}, and someone from the bakehouse will sort it out.`,
+    `Пекарня получила заказ и подтвердит его в этом чате с ${SHOP.pickup.from}. Нужно что-то поменять? Напишите сюда номер ${order.number}, и сотрудник пекарни всё исправит.`,
   ].join('\n');
 }
 
-/** What lands on the owner's phone the moment an order is finished. */
+/** Что приходит владельцу на телефон, как только заказ оформлен. */
 function ownerAlert(order) {
   const lines = [
-    `🧾 <b>New order ${order.number}</b> (${order.receivedAtLabel})`,
+    `🧾 <b>Новый заказ ${order.number}</b> (${order.receivedAtLabel})`,
     `${esc(order.item.label)} × ${order.item.qty}`,
     `${order.handover.dateLabel}, ${esc(order.handover.slotLabel)}`,
     order.handover.method === 'delivery'
-      ? `Deliver: ${esc(order.handover.address)} (${esc(String(order.handover.zoneTitle || '').replace(/^Delivery,\s+/, ''))})`
-      : 'Pickup',
+      ? `Доставка: ${esc(order.handover.address)} (${esc(String(order.handover.zoneTitle || '').replace(/^Доставка\s+/, ''))})`
+      : 'Самовывоз',
   ];
-  if (order.notes) lines.push(`Note: ${esc(order.notes)}`);
+  if (order.notes) lines.push(`Пожелание: ${esc(order.notes)}`);
   lines.push(`${esc(order.customer.name)}, ${esc(order.customer.phone)}${order.telegramUser ? ` (${esc(order.telegramUser)})` : ''}`);
   lines.push(`<b>${money(order.totals.totalCents)}</b>`, '', REPLY_HINT);
   return lines.join('\n');
@@ -1062,66 +1059,66 @@ function ownerAlert(order) {
 
 function ownerQuestion(chat, question) {
   return [
-    `💬 <b>Question from ${esc(chat.name || 'a customer')}</b>${chat.username ? ` (@${esc(chat.username)})` : ''}`,
+    `💬 <b>Новый вопрос</b> · ${esc(chat.name || 'покупатель')}${chat.username ? ` (@${esc(chat.username)})` : ''}`,
     esc(question),
     '',
     REPLY_HINT,
   ].join('\n');
 }
 
-/** The one message the owner reads with the first coffee. */
+/** Одно сообщение, которое владелец читает с первым кофе. */
 function nightSummary(orders, questions, fromTs, toTs) {
   if (orders.length === 0 && questions === 0) {
-    return `☀️ <b>Night summary</b> (${humanTime(fromTs)}-${humanTime(toTs)})\n\nNo orders came in tonight.`;
+    return `☀️ <b>Итог ночи</b> (${humanTime(fromTs)}–${humanTime(toTs)})\n\nЗа ночь заказов не было.`;
   }
   const total = orders.reduce((sum, o) => sum + o.totals.totalCents, 0);
   const lines = [
-    `☀️ <b>Night summary</b> (${humanTime(fromTs)}-${humanTime(toTs)})`,
+    `☀️ <b>Итог ночи</b> (${humanTime(fromTs)}–${humanTime(toTs)})`,
     '',
-    `<b>${orders.length} order${orders.length === 1 ? '' : 's'} · ${money(total)}</b>`,
+    `<b>${orders.length} ${plural(orders.length, 'заказ', 'заказа', 'заказов')} · ${money(total)}</b>`,
     '',
   ];
   for (const o of orders) {
-    lines.push(`• ${o.number} - ${esc(o.item.label)} × ${o.item.qty}, ${o.handover.dateLabel} ${o.handover.method === 'delivery' ? '🚚' : '🏠'} - ${money(o.totals.totalCents)}`);
+    lines.push(`• ${o.number}: ${esc(o.item.label)} × ${o.item.qty} · на ${o.handover.dateLabel} ${o.handover.method === 'delivery' ? '🚚' : '🏠'} · ${money(o.totals.totalCents)}`);
   }
   if (questions > 0) {
-    lines.push('', `${questions} question${questions === 1 ? '' : 's'} waiting for a personal answer.`);
+    lines.push('', `${questions} ${plural(questions, 'вопрос ждёт', 'вопроса ждут', 'вопросов ждут')} личного ответа.`);
   }
   return lines.join('\n');
 }
 
-/** The owner's answer, forwarded by the bot to the customer. */
+/** Ответ владельца, который бот пересылает покупателю. */
 function ownerReply(text) {
-  return `💬 <b>From the bakehouse</b>\n${esc(text)}`;
+  return `💬 <b>Ответ пекарни</b>\n${esc(text)}`;
 }
 
-const REPLY_DELIVERED = 'Sent to the customer ✅';
+const REPLY_DELIVERED = 'Отправил покупателю ✅';
 
-const REPLY_NO_TARGET = 'I could not tell who that is for. Reply to the message with the order or question.';
+const REPLY_NO_TARGET = 'Не понял, кому ответить. Ответьте на сообщение с заказом или вопросом.';
 
 const ERRORS = {
-  qty_not_a_number: (max) => `Please send a plain number, from 1 to ${max}.`,
-  qty_too_small: () => 'At least one, please.',
-  qty_too_many: (max) => `We can bake up to ${max} of these in one order. For a bigger run, send /start and choose "Talk to a human" - the bakehouse arranges those personally.`,
-  name_too_short: () => 'I need a name for the order - at least two characters.',
-  name_too_long: () => 'That name is too long for the label. Up to 60 characters, please.',
-  name_no_letters: () => 'That does not look like a name. Letters, please.',
-  phone_has_letters: () => 'Numbers only, please - "+", spaces and dashes are fine. For example: +1 415 555 0199.',
-  phone_too_short: () => 'That number looks too short. Please include the area code.',
-  phone_too_long: () => 'That number looks too long. Please check it.',
-  address_too_short: () => 'Please send the full address - street, house number and flat if any.',
-  address_too_long: () => 'That address is too long for the driver. Up to 140 characters, please.',
-  address_no_number: () => 'The address needs a house or building number.',
-  note_too_long: () => 'Please keep the note under 120 characters.',
-  date_unreadable: () => 'I could not read that date. Try day first - 25.09, 25 Sep or 2026-09-25 - or use the buttons.',
-  date_in_the_past: () => 'That day has passed. Which day ahead works for you?',
-  date_too_far: (days) => `We take orders up to ${days} days ahead.`,
-  date_closed_day: (iso) => `${humanDate(iso)} is a Monday - the bakehouse is closed. Pick another day.`,
-  date_too_soon: (iso, hours) => `${humanDate(iso)} is too soon: this one needs ${hours} hours in the oven and on the bench. Pick a later day, or use the buttons below.`,
-  slot_gone: (iso) => `We can no longer make that time on ${humanDate(iso)}. Please pick another day.`,
-  delivery_minimum: (min) => `Delivery starts at ${money(min)} per order. This one is under that, so pickup it is - or go back and add a little more.`,
-  zone_unserved: () => `We do not deliver further than 12 km - bakes need to arrive fresh. Pickup is free, Tuesday to Sunday, ${SHOP.pickup.from}-${SHOP.pickup.to}.`,
-  callback_too_old: () => 'This chat is too old for that button - send /start to begin again.',
+  qty_not_a_number: (max) => `Напишите число от 1 до ${max}.`,
+  qty_too_small: () => 'Нужна хотя бы одна штука.',
+  qty_too_many: (max) => `За один заказ печём не больше ${max} штук. Для большой партии отправьте /start и выберите «Написать человеку»: такие заказы пекарня обсуждает лично.`,
+  name_too_short: () => 'Для заказа нужно имя, хотя бы два символа.',
+  name_too_long: () => 'Имя не поместится на наклейку. Не длиннее 60 символов, пожалуйста.',
+  name_no_letters: () => 'Не похоже на имя. Напишите буквами, пожалуйста.',
+  phone_has_letters: () => 'Только цифры, пожалуйста. «+», пробелы и дефисы можно. Например: +7 900 123-45-67.',
+  phone_too_short: () => 'Номер слишком короткий. Укажите его с кодом.',
+  phone_too_long: () => 'Номер слишком длинный. Проверьте, пожалуйста.',
+  address_too_short: () => 'Пришлите полный адрес: улица, дом и квартира, если есть.',
+  address_too_long: () => 'Адрес слишком длинный для курьера. Не больше 140 символов, пожалуйста.',
+  address_no_number: () => 'В адресе нужен номер дома.',
+  note_too_long: () => 'Уложитесь, пожалуйста, в 120 символов.',
+  date_unreadable: () => 'Не понял дату. Напишите, например, 27.09 или 27 сентября, или нажмите на кнопку с днём.',
+  date_in_the_past: () => 'Этот день уже прошёл. Какой день впереди вам подходит?',
+  date_too_far: (days) => `Заказы принимаем не дальше чем на ${days} ${plural(days, 'день', 'дня', 'дней')} вперёд.`,
+  date_closed_day: (iso) => `${dayMonth(iso)} — понедельник, в этот день пекарня закрыта. Выберите другой день.`,
+  date_too_soon: (iso, leadHours) => `${dayMonth(iso)} не успеем: этот заказ готовим ${hours(leadHours)}. Выберите более поздний день или нажмите на кнопку ниже.`,
+  slot_gone: (iso) => `На ${dayMonth(iso)} это время уже не успеваем. Выберите другой день.`,
+  delivery_minimum: (min) => `Доставляем заказы от ${money(min)}. Этот меньше, поэтому только самовывоз. Или вернитесь и добавьте что-нибудь.`,
+  zone_unserved: () => `Дальше 12 км не возим: выпечка должна приехать свежей. Самовывоз бесплатный, со вторника по воскресенье с ${SHOP.pickup.from} до ${SHOP.pickup.to}.`,
+  callback_too_old: () => 'Эта кнопка из старого чата. Отправьте /start, чтобы начать заново.',
 };
 
 const T = { esc, BTN, ASK, partOfDay, greeting, menuCard, hoursCard, ASK_QUESTION, anythingElse, questionSent, messageForwarded, askForWords, cannotSeeAttachments, CANCELLED, NOTHING_TO_CANCEL, stale, unexpectedText, summary, confirmed, ownerAlert, ownerQuestion, nightSummary, ownerReply, REPLY_DELIVERED, REPLY_NO_TARGET, ERRORS };
@@ -1868,15 +1865,14 @@ function describe(keyboard) {
   return keyboard.rows.flat().map((b) => `"${b.text}"`).join(', ');
 }
 
-// ---- demo/scenarios.js ----
-// The simulated night used by the demo page and by the tests.
+// ---- demo/ru/scenarios.js ----
+// Ночь для русской демо-страницы. Та же схема, что demo/scenarios.js.
 //
-// These are not recordings and not screenshots: each line below is fed to the real
-// dialog engine, and every number on the page (orders, revenue, answer time) comes
-// out of running them. Cedarline Bakehouse, its customers and this night are invented.
-// Only data lives here; demo/night.js replays it. The Russian night is demo/ru/scenarios.js.
+// Это не записи и не скриншоты: каждая строка ниже проходит через настоящий движок
+// диалога, и все цифры на странице (заказы, выручка, вопросы) получаются из этого прогона.
+// Пекарня «Кедр», её покупатели, адреса и эта ночь выдуманы. Телефоны заведомо несуществующие.
 
-/** The night the demo replays. Fixed date, so the page shows the same night every time. */
+/** Ночь, которую показывает демо. Дата фиксирована, чтобы страница каждый раз показывала одно и то же. */
 const NIGHT_START = Date.parse('2026-09-23T22:05:00Z');
 
 const MIN = 60 * 1000;
@@ -1885,147 +1881,147 @@ const SCENARIOS = [
   {
     id: 'birthday-cake',
     at: 15 * MIN,
-    customer: { firstName: 'Nadia', username: 'nadia_k' },
-    title: 'Birthday cake, delivered',
+    customer: { firstName: 'Надя', username: 'nadia_k' },
+    title: 'Торт на день рождения, с доставкой',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Celebration cakes' },
-      { tap: 'chocolate' }, { tap: '10 servings' }, { tap: '1' },
-      { tapNth: { like: 'Sep', index: 0 } }, { tap: 'Afternoon' },
-      { tap: 'city centre' }, { type: '12 Harbour Lane, flat 4' },
-      { type: 'Happy birthday Mira - no nuts please' }, { tap: 'Use "Nadia"' },
-      { type: '+1 415 555 0199' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Торты на праздник' },
+      { tap: 'Шоколадный' }, { tap: '10 порций' }, { tap: '1' },
+      { tapNth: { like: 'сентября', index: 0 } }, { tap: 'День' },
+      { tap: 'по центру' }, { type: 'ул. Кленовая, 12, кв. 4' },
+      { type: 'С днём рождения, Мира! Без орехов, пожалуйста' }, { tap: 'На имя' },
+      { type: '+7 000 000-01-99' }, { tap: 'Подтвердить' },
     ],
   },
   {
     id: 'office-platters',
     at: 47 * MIN,
-    customer: { firstName: 'Tobias', username: 'tobias_m' },
-    title: 'Office breakfast for a Friday meeting',
+    customer: { firstName: 'Тимур', username: 'timur_m' },
+    title: 'Завтрак в офис на пятничную планёрку',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Office platters' },
-      { tap: 'Morning pastry' }, { type: '3' },
-      { tapNth: { like: 'Sep', index: 0 } }, { tap: 'Morning' },
-      { tap: 'outer districts' }, { type: 'Kestrel House, 88 Rowan Street, 2nd floor' },
-      { type: 'Please ring reception, the office door is locked before 9' },
-      { type: 'Tobias Meier' }, { type: '+49 30 0000 1188' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Сеты в офис' },
+      { tap: 'Сет утренней' }, { type: '3' },
+      { tapNth: { like: 'сентября', index: 0 } }, { tap: 'Утро' },
+      { tap: 'другие районы' }, { type: 'БЦ «Пеликан», ул. Рябиновая, 88, 2 этаж' },
+      { type: 'Позвоните на ресепшен, до 9 дверь офиса закрыта' },
+      { type: 'Тимур Маслов' }, { type: '+7 000 000-11-88' }, { tap: 'Подтвердить' },
     ],
   },
   {
     id: 'too-soon',
     at: 92 * MIN,
-    customer: { firstName: 'Priya', username: null },
-    title: 'Wants a cake tomorrow - learns about the 48 hours, books anyway',
+    customer: { firstName: 'Полина', username: null },
+    title: 'Хочет торт на завтра, узнаёт про 48 часов и всё равно заказывает',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Celebration cakes' },
-      { tap: 'Lemon' }, { tap: '6 servings' }, { tap: '1' },
-      { type: 'tomorrow' },
-      { tapNth: { like: 'Sep', index: 1 } }, { tap: 'Morning' },
-      { tap: 'pick it up' }, { tap: 'Nothing to add' },
-      { type: 'Priya' }, { type: '+44 7700 900461' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Торты на праздник' },
+      { tap: 'Лимонный' }, { tap: '6 порций' }, { tap: '1' },
+      { type: 'завтра' },
+      { tapNth: { like: 'сентября', index: 1 } }, { tap: 'Утро' },
+      { tap: 'Заберу из пекарни' }, { tap: 'Без пожеланий' },
+      { type: 'Полина' }, { type: '+7 000 000-04-61' }, { tap: 'Подтвердить' },
     ],
   },
   {
     id: 'question',
     at: 128 * MIN,
-    customer: { firstName: 'Ellen', username: 'ellen_w' },
-    title: 'A question only a human can answer',
+    customer: { firstName: 'Елена', username: 'elena_v' },
+    title: 'Вопрос, на который ответит только человек',
     steps: [
-      { start: true }, { tap: 'Talk to a human' },
-      { type: 'Can you make the lemon cake without gluten for 20 people?' },
+      { start: true }, { tap: 'Написать человеку' },
+      { type: 'Можно лимонный торт без глютена на 20 человек?' },
     ],
   },
   {
     id: 'out-of-zone',
     at: 171 * MIN,
-    customer: { firstName: 'Marek', username: null },
-    title: 'Lives too far for delivery - switches to pickup',
+    customer: { firstName: 'Марат', username: null },
+    title: 'Живёт слишком далеко для доставки и переходит на самовывоз',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Bread boxes' },
-      { tap: 'Sourdough' }, { type: '4' },
-      { tapNth: { like: 'Sep', index: 0 } }, { tap: 'Morning' },
-      { tap: 'further than 12 km' }, { tap: 'pick it up' },
-      { tap: 'Nothing to add' }, { type: 'Marek Nowak' }, { type: '+48 000 000 122' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Хлеб к утру' },
+      { tap: 'Два хлеба' }, { type: '4' },
+      { tapNth: { like: 'сентября', index: 0 } }, { tap: 'Утро' },
+      { tap: 'дальше 12 км' }, { tap: 'Заберу из пекарни' },
+      { tap: 'Без пожеланий' }, { type: 'Марат Галиев' }, { type: '+7 000 000-01-22' }, { tap: 'Подтвердить' },
     ],
   },
   {
     id: 'changed-mind',
     at: 214 * MIN,
-    customer: { firstName: 'Sofia', username: 'sofia_r' },
-    title: 'Books, then changes the size before confirming',
+    customer: { firstName: 'Соня', username: 'sonya_r' },
+    title: 'Оформляет заказ, потом меняет размер перед подтверждением',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Celebration cakes' },
-      { tap: 'vanilla' }, { tap: '6 servings' }, { tap: '1' },
-      { tapNth: { like: 'Sep', index: 1 } }, { tap: 'Afternoon' },
-      { tap: 'pick it up' }, { type: 'Message on top: Congratulations Amir' },
-      { type: 'Sofia Ruiz' }, { type: '+34 000 000 019' },
-      { tap: 'Change something' }, { tap: 'The item' },
-      { tap: 'Celebration cakes' }, { tap: 'vanilla' }, { tap: '16 servings' }, { tap: '1' },
-      { tapNth: { like: 'Sep', index: 1 } }, { tap: 'Afternoon' },
-      // a bigger cake means the delivery question comes back - she still wants pickup
-      { tap: 'pick it up' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Торты на праздник' },
+      { tap: 'Ванильный' }, { tap: '6 порций' }, { tap: '1' },
+      { tapNth: { like: 'сентября', index: 1 } }, { tap: 'День' },
+      { tap: 'Заберу из пекарни' }, { type: 'Надпись: Поздравляем, Амир!' },
+      { type: 'Соня Руденко' }, { type: '+7 000 000-00-19' },
+      { tap: 'Изменить' }, { tap: 'Состав заказа' },
+      { tap: 'Торты на праздник' }, { tap: 'Ванильный' }, { tap: '16 порций' }, { tap: '1' },
+      { tapNth: { like: 'сентября', index: 1 } }, { tap: 'День' },
+      // торт больше, поэтому бот снова спрашивает про доставку; она по-прежнему забирает сама
+      { tap: 'Заберу из пекарни' }, { tap: 'Подтвердить' },
     ],
   },
   {
     id: 'typos',
     at: 259 * MIN,
-    customer: { firstName: 'Junhao', username: null },
-    title: 'Types instead of tapping, gets the date wrong twice',
+    customer: { firstName: 'Алибек', username: null },
+    title: 'Пишет вместо кнопок и дважды ошибается с датой',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Office platters' },
-      { tap: 'Cookie box' }, { type: 'two boxes' }, { type: '2' },
-      { type: 'next friday' }, { type: '28.09' }, { type: '25.09' }, { tap: 'Morning' },
-      { tap: 'city centre' }, { type: '5 Alder Court' },
-      { tap: 'Nothing to add' }, { type: 'Junhao' }, { type: '+65 0000 0132' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Сеты в офис' },
+      { tap: 'Коробка печенья' }, { type: 'две коробки' }, { type: '2' },
+      { type: 'в пятницу' }, { type: '28.09' }, { type: '25.09' }, { tap: 'Утро' },
+      { tap: 'по центру' }, { type: 'пер. Ольховый, 5' },
+      { tap: 'Без пожеланий' }, { type: 'Алибек' }, { type: '+7 000 000-01-32' }, { tap: 'Подтвердить' },
     ],
   },
   {
     id: 'abandoned',
     at: 296 * MIN,
-    customer: { firstName: 'Aria', username: null },
-    title: 'Starts an order and gives up halfway',
+    customer: { firstName: 'Арина', username: null },
+    title: 'Начинает заказ и бросает на середине',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Celebration cakes' },
-      { tap: 'chocolate' }, { tap: '16 servings' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Торты на праздник' },
+      { tap: 'Шоколадный' }, { tap: '16 порций' },
     ],
   },
   {
     id: 'bread-run',
     at: 331 * MIN,
-    customer: { firstName: 'Olu', username: 'olu_b' },
-    title: 'Bread for the morning, pickup',
+    customer: { firstName: 'Олег', username: 'oleg_b' },
+    title: 'Хлеб на утро, самовывоз',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Bread boxes' },
-      { tap: 'rye' }, { type: '6' },
-      { tapNth: { like: 'Sep', index: 0 } }, { tap: 'Morning' },
-      { tap: 'pick it up' }, { tap: 'Nothing to add' },
-      { type: 'Olu' }, { type: '+234 000 000 7781' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Хлеб к утру' },
+      { tap: 'Ржаной' }, { type: '6' },
+      { tapNth: { like: 'сентября', index: 0 } }, { tap: 'Утро' },
+      { tap: 'Заберу из пекарни' }, { tap: 'Без пожеланий' },
+      { type: 'Олег' }, { type: '+7 000 000-77-81' }, { tap: 'Подтвердить' },
     ],
   },
   {
     id: 'cancelled',
     at: 372 * MIN,
-    customer: { firstName: 'Dana', username: null },
-    title: 'Fills everything in, then cancels',
+    customer: { firstName: 'Даша', username: null },
+    title: 'Заполняет всё и отменяет',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Office platters' },
-      { tap: 'Sandwich' }, { type: '1' },
-      { tapNth: { like: 'Sep', index: 0 } }, { tap: 'Afternoon' },
-      { tap: 'pick it up' }, { tap: 'Nothing to add' },
-      { type: 'Dana' }, { type: '+1 312 555 0110' }, { tap: 'Cancel the order' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Сеты в офис' },
+      { tap: 'Сет сэндвичей' }, { type: '1' },
+      { tapNth: { like: 'сентября', index: 0 } }, { tap: 'День' },
+      { tap: 'Заберу из пекарни' }, { tap: 'Без пожеланий' },
+      { type: 'Даша' }, { type: '+7 000 000-01-10' }, { tap: 'Отменить заказ' },
     ],
   },
   {
     id: 'late-cake',
     at: 409 * MIN,
-    customer: { firstName: 'Henrik', username: 'henrik_s' },
-    title: 'Last order before opening - big cake, delivered',
+    customer: { firstName: 'Глеб', username: 'gleb_s' },
+    title: 'Последний заказ перед открытием: два больших торта с доставкой',
     steps: [
-      { start: true }, { tap: 'Place an order' }, { tap: 'Celebration cakes' },
-      { tap: 'Lemon' }, { tap: '16 servings' }, { tap: '2' },
-      { tapNth: { like: 'Sep', index: 2 } }, { tap: 'Afternoon' },
-      { tap: 'outer districts' }, { type: 'Sailmaker Yard 3, gate code 4417' },
-      { type: 'Two cakes for a wedding rehearsal - please keep them cool' },
-      { type: 'Henrik Sandvik' }, { type: '+47 000 00 112' }, { tap: 'Confirm' },
+      { start: true }, { tap: 'Сделать заказ' }, { tap: 'Торты на праздник' },
+      { tap: 'Лимонный' }, { tap: '16 порций' }, { tap: '2' },
+      { tapNth: { like: 'сентября', index: 2 } }, { tap: 'День' },
+      { tap: 'другие районы' }, { type: 'Парусная ул., 3, код ворот 4417' },
+      { type: 'Два торта на репетицию свадьбы, держите в холоде, пожалуйста' },
+      { type: 'Глеб Савельев' }, { type: '+7 000 000-01-12' }, { tap: 'Подтвердить' },
     ],
   },
 ];
@@ -2111,7 +2107,7 @@ function tapNth(chat, { like, index }) {
   var root = document.documentElement;
   function setTheme(name) {
     root.setAttribute('data-theme', name);
-    $('theme-toggle').textContent = name === 'dark' ? '☀️ Day' : '🌙 Night';
+    $('theme-toggle').textContent = name === 'dark' ? '☀️ День' : '🌙 Ночь';
   }
   var wantedTheme = params.get('theme');
   setTheme(wantedTheme === 'dark' || wantedTheme === 'light' ? wantedTheme
@@ -2130,7 +2126,7 @@ function tapNth(chat, { like, index }) {
   var firstPaint = true;
 
   function newChat() {
-    chat = createChat({ now: DEMO_NOW, firstName: 'Sam', username: 'sam_bakes', chatId: 7, sequence: 1 });
+    chat = createChat({ now: DEMO_NOW, firstName: 'Саша', username: 'sam_bakes', chatId: 7, sequence: 1 });
     shown = 0;
     $('chat').innerHTML = '';
     renderOwner();
@@ -2182,7 +2178,7 @@ function tapNth(chat, { like, index }) {
     var feed = $('owner-feed');
     $('owner-count').textContent = String(chat.ownerMessages.length);
     if (chat.ownerMessages.length === 0) {
-      feed.innerHTML = '<div class="empty">Nothing yet - finish an order in the chat and it appears here instantly.</div>';
+      feed.innerHTML = '<div class="empty">Пока пусто. Оформите заказ в чате, и он сразу появится здесь.</div>';
       return;
     }
     feed.innerHTML = '';
@@ -2202,7 +2198,7 @@ function tapNth(chat, { like, index }) {
       '<td>' + o.handover.dateLabel + '<br><span class="small muted">' + esc(o.handover.slotLabel) + '</span></td>' +
       '<td>' + (o.handover.method === 'delivery'
         ? '🚚 ' + esc(o.handover.address)
-        : '🏠 pickup') + '</td>' +
+        : '🏠 самовывоз') + '</td>' +
       '<td class="num">' + money(o.totals.totalCents) + '</td>';
     return tr;
   }
@@ -2211,7 +2207,7 @@ function tapNth(chat, { like, index }) {
     var body = $('live-orders').querySelector('tbody');
     body.innerHTML = '';
     if (chat.orders.length === 0) {
-      body.innerHTML = '<tr><td colspan="5" class="empty">No orders yet.</td></tr>';
+      body.innerHTML = '<tr><td colspan="5" class="empty">Заказов пока нет.</td></tr>';
       return;
     }
     chat.orders.forEach(function (o) { body.appendChild(orderRow(o)); });
@@ -2239,13 +2235,13 @@ function tapNth(chat, { like, index }) {
     $('night-stats').hidden = false;
     $('night-result').hidden = false;
     $('night-transcripts').hidden = false;
-    $('night-state').textContent = 'Run just now, in this page.';
+    $('night-state').textContent = 'Ночь прокручена только что, прямо на этой странице.';
 
     $('night-summary').innerHTML = nightSummary(night.orders, night.questions, night.start, night.end);
     // The sentence is written from the run itself, so it cannot drift from it.
-    $('night-intro').textContent = night.chats.length + ' people wrote to the bakehouse between '
-      + humanTime(night.start) + ' and ' + humanTime(night.end)
-      + ' - one September night, invented like the rest of this demo. Every number below was counted from that run just now, in this page.';
+    $('night-intro').textContent = night.chats.length + (night.chats.length % 10 === 1 && night.chats.length % 100 !== 11 ? ' человек написал' : night.chats.length % 10 >= 2 && night.chats.length % 10 <= 4 && (night.chats.length % 100 < 12 || night.chats.length % 100 > 14) ? ' человека написали' : ' человек написали') + ' в пекарню с '
+      + humanTime(night.start) + ' до ' + humanTime(night.end)
+      + '. Это одна сентябрьская ночь, выдуманная, как и всё демо. Все цифры ниже посчитаны из этого прогона только что, на этой странице.';
 
     var body = $('night-orders').querySelector('tbody');
     body.innerHTML = '';
@@ -2262,7 +2258,7 @@ function tapNth(chat, { like, index }) {
       head.innerHTML = '<b>' + humanTime(entry.chat.messages.length ? night.start + entry.scenario.at : night.start) + '</b> ' +
         esc(entry.scenario.title) +
         ' <span class="tag ' + (placed ? 'ok' : 'none') + '">' +
-        (placed ? money(entry.chat.orders[0].totals.totalCents) : (asked ? 'question' : 'no order')) + '</span>';
+        (placed ? money(entry.chat.orders[0].totals.totalCents) : (asked ? 'вопрос' : 'без заказа')) + '</span>';
       box.appendChild(head);
       var inner = document.createElement('div');
       inner.className = 'transcript-body';
