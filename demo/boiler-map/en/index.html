@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Карта котельных — тепловой слой, кластеры, инфо-окна · демо Flow Lab</title>
-<meta name="description" content="Интерактивная карта теплоисточников: тепловой слой плотности, группировка объектов при отдалении, карточки с данными по клику. Демо на открытых данных OpenStreetMap.">
-<meta property="og:title" content="Карта котельных — демо Flow Lab">
-<meta property="og:description" content="Тепловой слой, кластеры и инфо-окна на Leaflet. Демо на открытых данных OpenStreetMap.">
+<title>Boiler house map: heat layer, clusters, info cards · Flow Lab demo</title>
+<meta name="description" content="An interactive map of heat sources: a density heat layer, sites that group as you zoom out, and an info card on click. A demo built on OpenStreetMap open data.">
+<meta property="og:title" content="Boiler house map: a Flow Lab demo">
+<meta property="og:description" content="Heat layer, clusters and info cards on Leaflet. A demo built on OpenStreetMap open data.">
 <script>(function(){try{var t=localStorage.getItem('boiler-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
-<link rel="stylesheet" href="vendor/leaflet.css">
-<link rel="stylesheet" href="vendor/MarkerCluster.css">
+<link rel="stylesheet" href="../vendor/leaflet.css">
+<link rel="stylesheet" href="../vendor/MarkerCluster.css">
 <style>
 :root{--bg:#f6f5f2;--card:rgba(255,255,255,.92);--ink:#16181d;--muted:#5d6370;--line:rgba(22,24,29,.1);--accent:#c2410c;
   --k1:#e8590c;--k2:#c2255c;--k3:#5f3dc4;--shadow:0 12px 40px rgba(20,22,28,.14);--accent-ink:#fff;color-scheme:light}
@@ -91,50 +91,50 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
 </style>
 </head>
 <body>
-<div id="map" role="application" aria-label="Карта теплоисточников"></div>
+<div id="map" role="application" aria-label="Map of heat sources"></div>
 
-<aside class="panel collapsed" id="panel" aria-label="Слои и фильтры">
-  <button class="sheet-handle" id="handle" aria-expanded="false" aria-controls="panel" aria-label="Развернуть панель"></button>
-  <p class="eyebrow">Демо · открытые данные</p>
-  <h1>Теплоисточники Москвы и ближнего Подмосковья</h1>
-  <p class="lead">Тепловой слой показывает, где объекты расположены плотнее. При отдалении объекты группируются, по клику — карточка с данными.</p>
+<aside class="panel collapsed" id="panel" aria-label="Layers and filters">
+  <button class="sheet-handle" id="handle" aria-expanded="false" aria-controls="panel" aria-label="Expand the panel"></button>
+  <p class="eyebrow">Demo · open data</p>
+  <h1>Heat sources in Moscow and the surrounding Moscow Region</h1>
+  <p class="lead">The heat layer shows where sites are packed most densely. Zoom out and nearby sites merge into clusters; click a site to open its info card.</p>
   <div class="stats" aria-live="polite">
-    <div class="stat"><b id="n-shown">—</b><span>на карте</span></div>
-    <div class="stat"><b id="n-total">—</b><span>в базе</span></div>
+    <div class="stat"><b id="n-shown">—</b><span>on the map</span></div>
+    <div class="stat"><b id="n-total">—</b><span>in the dataset</span></div>
   </div>
 
   <div class="group">
-    <h2>Слои</h2>
-    <label class="toggle">Тепловая карта <input type="checkbox" id="l-heat" checked><span></span></label>
-    <label class="toggle">Объекты и группы <input type="checkbox" id="l-pts" checked><span></span></label>
+    <h2>Layers</h2>
+    <label class="toggle">Heat map <input type="checkbox" id="l-heat" checked><span></span></label>
+    <label class="toggle">Sites and clusters <input type="checkbox" id="l-pts" checked><span></span></label>
     <div class="legend" aria-hidden="true"></div>
-    <div class="legend-l"><span>реже</span><span>плотнее</span></div>
+    <div class="legend-l"><span>less dense</span><span>more dense</span></div>
   </div>
 
   <div class="group">
-    <h2>Тип объекта</h2>
+    <h2>Site type</h2>
     <div class="chips" id="kinds"></div>
   </div>
 
   <div class="group">
-    <h2>Поиск</h2>
-    <input class="search" id="q" type="search" placeholder="Название, оператор или улица" autocomplete="off" aria-label="Поиск объекта">
+    <h2>Search</h2>
+    <input class="search" id="q" type="search" placeholder="Name, operator or street" autocomplete="off" aria-label="Find a site">
     <ul class="results" id="res"></ul>
   </div>
 
-  <p class="note">Демо на открытых данных OpenStreetMap (© участники OpenStreetMap, лицензия <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>; файл boilers.geojson — под той же лицензией): 95 объектов, у части нет адреса и оператора. Ваши 213 котельных с координатами, мощностью и любыми полями подставим из таблицы — карточка покажет все поля. Та же база собирает векторный макет для печати.</p>
+  <p class="note">A demo built on OpenStreetMap open data (© OpenStreetMap contributors, <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a> license; the boilers.geojson file is under the same license): 95 sites, some without an address or operator. Names and addresses are translated from the Russian OSM records. We can load your own sites with coordinates, capacity and any other fields from a spreadsheet, and the card will show every field. The same data also builds a vector layout for print.</p>
 </aside>
 
-<script src="vendor/leaflet.js"></script>
-<script src="vendor/leaflet.markercluster.js"></script>
-<script src="vendor/leaflet-heat.js"></script>
+<script src="../vendor/leaflet.js"></script>
+<script src="../vendor/leaflet.markercluster.js"></script>
+<script src="../vendor/leaflet-heat.js"></script>
 <script>
 (function () {
-  const KINDS = { 'Котельная': '--k1', 'Тепловая станция': '--k2', 'ТЭЦ': '--k3' };
+  const KINDS = { 'Boiler house': '--k1', 'Heating station': '--k2', 'CHP plant': '--k3' };
   // popup fields: property -> label. Client data: just add rows here (power, fuel, year, phone…)
-  const FIELDS = [['operator', 'Оператор'], ['address', 'Адрес'], ['fuel', 'Топливо'], ['power', 'Тепловая мощность']];
+  const FIELDS = [['operator', 'Operator'], ['address', 'Address'], ['fuel', 'Fuel'], ['power', 'Heat output']];
   // power in RU: decimal comma, thin space in thousands, unit in Russian (data keeps «MW» for the EN build)
-  const unit = (s) => String(s).replace(/^(\d+)(?:[.,](\d+))? MW$/, (_, i, f) => i.replace(/\B(?=(\d{3})+$)/g, '\u202F') + (f ? ',' + f : '') + '\u00A0МВт');
+  const unit = (s) => s;
   const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   const dark = matchMedia('(prefers-color-scheme: dark)');
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -143,17 +143,17 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
   // language and day/night, above the zoom buttons
   const tools = L.control({ position: 'topright' });
   tools.onAdd = () => { const d = L.DomUtil.create('div', 'tools');
-    d.innerHTML = '<nav class="lang" aria-label="Язык"><a href="en/" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="./" hreflang="ru" lang="ru" title="Русский">RU</a></nav>' +
-      '<button class="theme" id="theme" type="button" title="Переключить день и ночь">Ночь</button>';
+    d.innerHTML = '<nav class="lang" aria-label="Language"><a aria-current="page" href="./" hreflang="en" lang="en" title="English">EN</a><a href="../" hreflang="ru" lang="ru" title="Русский">RU</a></nav>' +
+      '<button class="theme" id="theme" type="button" title="Switch between day and night">Night</button>';
     L.DomEvent.disableClickPropagation(d); return d; };
   tools.addTo(map);
   L.control.zoom({ position: 'topright' }).addTo(map);
   // standard OSM tiles, muted by CSS (grey in light theme, inverted in dark); client's own key → Yandex/2GIS/Mapbox here
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19,
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">участники OpenStreetMap</a>' }).addTo(map);
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>' }).addTo(map);
   const root = document.documentElement, themeBtn = document.getElementById('theme');
   const isDark = () => (root.dataset.theme ? root.dataset.theme === 'dark' : dark.matches);
-  const themeLabel = () => { themeBtn.textContent = isDark() ? 'День' : 'Ночь'; };
+  const themeLabel = () => { themeBtn.textContent = isDark() ? 'Day' : 'Night'; };
   themeBtn.onclick = () => { const t = isDark() ? 'light' : 'dark'; root.dataset.theme = t;
     try { localStorage.setItem('boiler-theme', t); } catch (e) {} retheme(); };
   dark.addEventListener('change', retheme);
@@ -170,7 +170,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
   function popup(p) {
     const rows = FIELDS.filter(([k]) => p[k]).map(([k, l]) => `<dt>${l}</dt><dd>${esc(k === 'power' ? unit(p[k]) : p[k])}</dd>`).join('');
     return `<div class="pop"><div class="pop-k" style="color:${css(KINDS[p.kind])}">${esc(p.kind)}</div><h3>${esc(p.name)}</h3>` +
-      (rows ? `<dl>${rows}</dl>` : '') + `<p style="margin:10px 0 0"><a href="${esc(p.osm)}" target="_blank" rel="noopener">Объект в OpenStreetMap ↗</a></p></div>`;
+      (rows ? `<dl>${rows}</dl>` : '') + `<p style="margin:10px 0 0"><a href="${esc(p.osm)}" target="_blank" rel="noopener">Open in OpenStreetMap ↗</a></p></div>`;
   }
 
   function refresh() {
@@ -183,7 +183,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
       markers.set(f, m); cluster.addLayer(m);
     }
     if (heat) map.removeLayer(heat);
-    heat = L.heatLayer(shown.map((f) => [f.geometry.coordinates[1], f.geometry.coordinates[0], f.properties.kind === 'ТЭЦ' ? 1 : 0.6]),
+    heat = L.heatLayer(shown.map((f) => [f.geometry.coordinates[1], f.geometry.coordinates[0], f.properties.kind === 'CHP plant' ? 1 : 0.6]),
       { radius: 34, blur: 26, maxZoom: 13, minOpacity: 0.25, gradient: { 0.2: '#ffe8a3', 0.45: '#ffb347', 0.7: '#ff6b1a', 1: '#c9184a' } });
     if (document.getElementById('l-heat').checked) heat.addTo(map);
     if (document.getElementById('l-pts').checked && !map.hasLayer(cluster)) cluster.addTo(map);
@@ -211,7 +211,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
     const s = q.value.trim().toLowerCase(); res.innerHTML = '';
     if (s.length < 2) return;
     const hits = all.filter((f) => active.has(f.properties.kind) && [f.properties.name, f.properties.operator, f.properties.address].join(' ').toLowerCase().includes(s)).slice(0, 6);
-    if (!hits.length) { res.innerHTML = '<li style="color:var(--muted);padding:6px 4px">Ничего не нашлось</li>'; return; }
+    if (!hits.length) { res.innerHTML = '<li style="color:var(--muted);padding:6px 4px">Nothing found</li>'; return; }
     for (const f of hits) {
       const li = document.createElement('li'), b = document.createElement('button');
       b.type = 'button'; b.textContent = f.properties.name + (f.properties.address ? ' · ' + f.properties.address : '');
@@ -233,7 +233,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
     const id = decodeURIComponent(location.hash).match(/obj=([a-z]+\/\d+)/);
     const f = id && all.find((x) => x.properties.osm.endsWith(id[1]));
     if (f) { const m = markers.get(f); cluster.zoomToShowLayer(m, () => m.openPopup()); }
-  }).catch(() => { document.getElementById('n-total').textContent = 'ошибка'; });
+  }).catch(() => { document.getElementById('n-total').textContent = 'error'; });
 })();
 </script>
 </body>
