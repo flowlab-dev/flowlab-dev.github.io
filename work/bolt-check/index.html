@@ -1,32 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>A Bolt app showed every customer quote to strangers. Found and fixed the same day - Flow Lab</title>
-<meta name="description" content="Bolt built a quote-and-deposit app from one prompt and left 8 of 8 customer quotes readable without a login. An outside check found it in about a minute; after the fix, 0 rows.">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Flow Lab">
-<meta property="og:url" content="https://flowlab-dev.github.io/work/bolt-check/">
-<meta property="og:title" content="A Bolt app showed every customer quote to strangers. Found and fixed the same day - Flow Lab">
-<meta property="og:description" content="Bolt built a quote-and-deposit app from one prompt and left 8 of 8 customer quotes readable without a login. An outside check found it in about a minute; after the fix, 0 rows.">
-<meta property="og:image" content="https://flowlab-dev.github.io/img/og/bolt-check.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="A Bolt app showed every customer quote to strangers: 8 of 8 quotes readable without a login, 0 rows after the fix">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="A Bolt app showed every customer quote to strangers. Found and fixed the same day - Flow Lab">
-<meta name="twitter:description" content="Bolt built a quote-and-deposit app from one prompt and left 8 of 8 customer quotes readable without a login. An outside check found it in about a minute; after the fix, 0 rows.">
-<meta name="twitter:image" content="https://flowlab-dev.github.io/img/og/bolt-check.png">
-<link rel="canonical" href="https://flowlab-dev.github.io/work/bolt-check/">
-<meta name="color-scheme" content="light dark">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<meta content="Bolt built a quote-and-deposit app from one prompt and left 8 of 8 customer quotes readable without a login. An outside check found it in about a minute; after the fix, 0 rows." name="description"/>
+<meta content="website" property="og:type"/><meta content="en_US" property="og:locale"/>
+<meta content="Flow Lab" property="og:site_name"/>
+<meta content="https://flowlab-dev.github.io/work/bolt-check/" property="og:url"/>
+<meta content="A Bolt app showed every customer quote to strangers. Found and fixed the same day - Flow Lab" property="og:title"/>
+<meta content="Bolt built a quote-and-deposit app from one prompt and left 8 of 8 customer quotes readable without a login. An outside check found it in about a minute; after the fix, 0 rows." property="og:description"/>
+<meta content="https://flowlab-dev.github.io/img/og/bolt-check.png" property="og:image"/>
+<meta content="1200" property="og:image:width"/>
+<meta content="630" property="og:image:height"/>
+<meta content="A Bolt app showed every customer quote to strangers: 8 of 8 quotes readable without a login, 0 rows after the fix" property="og:image:alt"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="A Bolt app showed every customer quote to strangers. Found and fixed the same day - Flow Lab" name="twitter:title"/>
+<meta content="Bolt built a quote-and-deposit app from one prompt and left 8 of 8 customer quotes readable without a login. An outside check found it in about a minute; after the fix, 0 rows." name="twitter:description"/>
+<meta content="https://flowlab-dev.github.io/img/og/bolt-check.png" name="twitter:image"/>
+<link href="https://flowlab-dev.github.io/work/bolt-check/" rel="canonical"/><link href="https://flowlab-dev.github.io/ru/work/bolt-check/" hreflang="ru" rel="alternate"/><link href="https://flowlab-dev.github.io/work/bolt-check/" hreflang="en" rel="alternate"/><link href="https://flowlab-dev.github.io/work/bolt-check/" hreflang="x-default" rel="alternate"/>
+<meta content="light dark" name="color-scheme"/>
+
+
 <script>try{var q=location.search.match(/theme=(light|dark)/);var t=q?q[1]:localStorage.getItem('fl-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}document.documentElement.classList.add('js')</script>
-<style>
+<link as="font" crossorigin="" href="/fonts/spacegrotesk-latin.woff2" rel="preload" type="font/woff2"/><link as="font" crossorigin="" href="/fonts/archivo-latin.woff2" rel="preload" type="font/woff2"/><style>@font-face{font-family:'Archivo';src:url(/fonts/archivo-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Space Grotesk';src:url(/fonts/spacegrotesk-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'JetBrains Mono';src:url(/fonts/jbmono-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'JetBrains Mono';src:url(/fonts/jbmono-cyrillic.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}@font-face{font-family:'Archivo Fallback';src:local('Arial Bold'),local('Arial-BoldMT');size-adjust:103.82%;ascent-override:84.57%;descent-override:20.23%;line-gap-override:0%}@font-face{font-family:'Space Grotesk Fallback';src:local('Arial'),local('ArialMT');size-adjust:109.27%;ascent-override:90.05%;descent-override:26.72%;line-gap-override:0%}</style><style>
 :root{--bg:#F6F6F4;--surface:#FFFFFF;--surface-2:#EFEFEC;--fg:#0B0B0D;--muted:#55585F;--line:rgba(11,11,13,.09);--line-2:rgba(11,11,13,.16);
 --accent:#2450E0;--accent-soft:rgba(36,80,224,.09);--inv-bg:#0B0B0D;--inv-fg:#F4F4F5;--inv-muted:#A1A1AA;--shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px -12px rgba(15,23,42,.14);
---r:18px;--ease:cubic-bezier(.2,.7,.2,1);--display:'Archivo',system-ui,sans-serif;--body:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
+--r:18px;--ease:cubic-bezier(.2,.7,.2,1);--display:'Archivo','Archivo Fallback',system-ui,sans-serif;--body:'Space Grotesk','Space Grotesk Fallback',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#09090B;--surface:#111114;--surface-2:#18181B;--fg:#F4F4F5;--muted:#A1A1AA;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
 --accent:#8AA4FF;--accent-soft:rgba(138,164,255,.12);--inv-bg:#111114;--inv-fg:#F4F4F5;--inv-muted:#A1A1AA;--shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -16px rgba(0,0,0,.6)}}
 :root[data-theme="dark"]{--bg:#09090B;--surface:#111114;--surface-2:#18181B;--fg:#F4F4F5;--muted:#A1A1AA;--line:rgba(255,255,255,.10);--line-2:rgba(255,255,255,.18);
@@ -247,41 +247,37 @@ h1{letter-spacing:-.04em}
   html.scenes .case-hero .shot{transform-origin:50% 0;will-change:transform}
   html.scenes .fig .frame{will-change:clip-path,transform}
 }
-</style>
+.lang{display:flex;align-items:center;height:40px;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}.lang a{display:grid;place-items:center;min-width:40px;height:100%;padding:0 8px;font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--muted);text-decoration:none;transition:color .2s var(--ease),background-color .2s var(--ease)}.lang a[aria-current]{background:var(--fg);color:var(--bg)}.lang a:not([aria-current]):hover{color:var(--fg)}.lang a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.brand{white-space:nowrap}.tile{min-width:0}.case-hero::before{inset:-200px -10% auto;height:calc(100% + 200px)}@media (max-width:420px){.lang a{min-width:36px;padding:0 6px}}</style>
 <script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
-
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav" aria-label="Main"><div class="wrap">
-  <a class="brand" href="/"><svg class="mark" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="fxm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9FB4E8"/><stop offset=".5" stop-color="#2450E0"/><stop offset="1" stop-color="#0B1E4A"/></linearGradient></defs><g fill="none" stroke="url(#fxm)" stroke-width="24" stroke-linecap="round"><path d="M34 62C74 30 112 94 166 58"/><path d="M34 102C74 70 112 134 166 98"/><path d="M34 142C74 110 112 174 166 138"/></g></svg>Flow Lab</a>
-  <a class="nl" href="/#work">Work</a><a class="nl" href="/#services">Services</a><a class="nl" href="/#support">Monthly plan</a><a class="nl" href="/#process">Process</a>
-  <button class="theme" type="button" aria-label="Switch light or dark theme"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
-  <a class="btn solid" href="/#contact">Contact</a>
+<nav aria-label="Main" class="nav"><div class="wrap">
+<a class="brand" href="/"><svg aria-hidden="true" class="mark" viewbox="0 0 200 200"><defs><lineargradient id="fxm" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#9FB4E8"></stop><stop offset=".5" stop-color="#2450E0"></stop><stop offset="1" stop-color="#0B1E4A"></stop></lineargradient></defs><g fill="none" stroke="url(#fxm)" stroke-linecap="round" stroke-width="24"><path d="M34 62C74 30 112 94 166 58"></path><path d="M34 102C74 70 112 134 166 98"></path><path d="M34 142C74 110 112 174 166 138"></path></g></svg>Flow Lab</a>
+<a class="nl" href="/#work">Work</a><a class="nl" href="/#services">Services</a><a class="nl" href="/#support">Monthly plan</a><a class="nl" href="/#process">Process</a>
+<div aria-label="Site language" class="lang" role="group"><a aria-current="page" href="/work/bolt-check/" hreflang="en" lang="en" title="English">EN</a><a href="/ru/work/bolt-check/" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Switch light or dark theme" class="theme" type="button"><svg class="sun" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg><svg class="moon" viewbox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button>
+<a class="btn solid" href="/#contact">Contact</a>
 </div></nav>
 <main id="main">
 <header class="case-hero"><div class="wrap">
-  <a class="back" href="/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>Flow Lab</a>
-  <h1>A Bolt app showed every customer quote to strangers. Found and fixed the same day</h1>
-  <p class="lede">Bolt built a quote-and-deposit app from one prompt. My outside check took about a minute to show that anyone with the public link could read all 8 customer quotes without logging in. After the fix, a visitor without a login reads 0 rows.</p>
-  <p class="note"><b>Self-initiated demo, not client work.</b> Harbor Lane Mobile Detailing is an invented business. Every name, phone number and address in the app is made up, and no real money moves through it. Bolt built the app from scratch.</p>
-  <div class="cta"><a class="btn solid" href="https://quote-and-deposit-we-h33a.bolt.host">Open the app<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn ghost" href="https://contra.com/s/BP7W6YEr-security-check-of-your-lovable-or-bolt-app-in-1-day">Order a check on Contra</a></div>
-  <div class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i></div><picture><source media="(max-width: 640px)" srcset="/img/work/bolt-check-1m.webp" width="780" height="1688"><img src="/img/work/bolt-check-1.webp" width="1440" height="900" alt="Screenshot: A Bolt app showed every customer quote to strangers. Found and fixed the same day" loading="eager"></picture></div></div>
-  <div class="kfacts" style="--n:4"><div class="reveal" style="--d:0"><b>8 of 8</b><span>customer quotes a stranger could read, with phone and home address</span></div><div class="reveal" style="--d:1"><b>About a minute</b><span>for the outside check to find it</span></div><div class="reveal" style="--d:2"><b>0 rows</b><span>readable without a login after the fix</span></div><div class="reveal" style="--d:3"><b>Same day</b><span>from the finding to the fix and a second check</span></div></div>
+<a class="back" href="/"><svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>Flow Lab</a>
+<h1>A Bolt app showed every customer quote to strangers. Found and fixed the same day</h1>
+<p class="lede">Bolt built a quote-and-deposit app from one prompt. My outside check took about a minute to show that anyone with the public link could read all 8 customer quotes without logging in. After the fix, a visitor without a login reads 0 rows.</p>
+<p class="note"><b>Self-initiated demo, not client work.</b> Harbor Lane Mobile Detailing is an invented business. Every name, phone number and address in the app is made up, and no real money moves through it. Bolt built the app from scratch.</p>
+<div class="cta"><a class="btn solid" href="https://quote-and-deposit-we-h33a.bolt.host">Open the app<svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><a class="btn ghost" href="https://contra.com/s/BP7W6YEr-security-check-of-your-lovable-or-bolt-app-in-1-day">Order a check on Contra</a></div>
+<div class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i></div><picture><source height="1688" media="(max-width: 640px)" srcset="/img/work/bolt-check-1m.webp" width="780"><img alt="Screenshot: A Bolt app showed every customer quote to strangers. Found and fixed the same day" height="900" loading="eager" src="/img/work/bolt-check-1.webp" width="1440"/></source></picture></div></div>
+<div class="kfacts" style="--n:4"><div class="reveal" style="--d:0"><b>8 of 8</b><span>customer quotes a stranger could read, with phone and home address</span></div><div class="reveal" style="--d:1"><b>About a minute</b><span>for the outside check to find it</span></div><div class="reveal" style="--d:2"><b>0 rows</b><span>readable without a login after the fix</span></div><div class="reveal" style="--d:3"><b>Same day</b><span>from the finding to the fix and a second check</span></div></div>
 </div></header>
-
-<section class="article wrap" style="padding-bottom:24px"><div class="kicker">The case</div><div><p><span class="lead-in">Task.</span> A mobile car detailer sends a customer a quote as a link. The customer opens it on a phone, accepts and pays a deposit, and the owner sees every status on a dashboard. I asked Bolt to build this from scratch in one prompt. What came back looked finished: a dashboard, a list of quotes and a clean customer page.</p><p><span class="lead-in">Check.</span> Before I call an app done, I look at it the way a stranger would, with only the public link. My script takes the database address and the public key from the page code (every visitor's browser already gets that key) and asks each table for rows without logging in. It only reads, and it counts rows instead of printing them. The whole run took about a minute.</p><div class="pull reveal"><b>About a minute</b><span>for the outside check to find it</span></div><p><span class="lead-in">Finding.</span> Bolt had made the quotes table readable by anyone. A stranger could pull 8 of 8 quotes with each customer's name, phone, email and home address, plus the private link that lets the customer accept and pay. The settings table was open as well, and anyone could create an account in the app's database without confirming an email.</p><figure class="fig reveal"><div class="frame"><div class="bar"><i></i><i></i><i></i></div><img src="/img/work/bolt-check-2.webp" width="1000" height="1465" alt="The outside check before and after the fix. It counts rows and names columns; it never prints the values." loading="lazy" decoding="async"></div><figcaption>The outside check before and after the fix. It counts rows and names columns; it never prints the values.</figcaption></figure><p><span class="lead-in">Fix.</span> I described the fix to Bolt in one prompt. Anonymous reads of quotes and settings were removed. The customer page now loads a single quote through a database function that checks the link, and accepting, declining or paying goes through functions that check the link, the expiry date and the quote's status. After that I switched off new sign-ups in the Bolt Database settings and made an unknown link show "Quote not found".</p><p><span class="lead-in">Result.</span> The same check, run again the same day: quotes and settings answer 401 without a login, and 0 rows come back. A customer's own link still opens their quote on a 390 px phone and on a desktop screen, and the owner dashboard works as before. I ran the check once more before publishing this page, with the same result.</p><p><span class="lead-in">Scope.</span> The outside check shows what a stranger can reach. It does not read the source code line by line; that is the full review, a separate job.</p></div></section>
-
-
+<section class="article wrap" style="padding-bottom:24px"><div class="kicker">The case</div><div><p><span class="lead-in">Task.</span> A mobile car detailer sends a customer a quote as a link. The customer opens it on a phone, accepts and pays a deposit, and the owner sees every status on a dashboard. I asked Bolt to build this from scratch in one prompt. What came back looked finished: a dashboard, a list of quotes and a clean customer page.</p><p><span class="lead-in">Check.</span> Before I call an app done, I look at it the way a stranger would, with only the public link. My script takes the database address and the public key from the page code (every visitor's browser already gets that key) and asks each table for rows without logging in. It only reads, and it counts rows instead of printing them. The whole run took about a minute.</p><div class="pull reveal"><b>About a minute</b><span>for the outside check to find it</span></div><p><span class="lead-in">Finding.</span> Bolt had made the quotes table readable by anyone. A stranger could pull 8 of 8 quotes with each customer's name, phone, email and home address, plus the private link that lets the customer accept and pay. The settings table was open as well, and anyone could create an account in the app's database without confirming an email.</p><figure class="fig reveal"><div class="frame"><div class="bar"><i></i><i></i><i></i></div><img alt="The outside check before and after the fix. It counts rows and names columns; it never prints the values." decoding="async" height="1465" loading="lazy" src="/img/work/bolt-check-2.webp" width="1000"/></div><figcaption>The outside check before and after the fix. It counts rows and names columns; it never prints the values.</figcaption></figure><p><span class="lead-in">Fix.</span> I described the fix to Bolt in one prompt. Anonymous reads of quotes and settings were removed. The customer page now loads a single quote through a database function that checks the link, and accepting, declining or paying goes through functions that check the link, the expiry date and the quote's status. After that I switched off new sign-ups in the Bolt Database settings and made an unknown link show "Quote not found".</p><p><span class="lead-in">Result.</span> The same check, run again the same day: quotes and settings answer 401 without a login, and 0 rows come back. A customer's own link still opens their quote on a 390 px phone and on a desktop screen, and the owner dashboard works as before. I ran the check once more before publishing this page, with the same result.</p><p><span class="lead-in">Scope.</span> The outside check shows what a stranger can reach. It does not read the source code line by line; that is the full review, a separate job.</p></div></section>
 <section id="contact"><div class="wrap">
-  <div class="contact nextstep reveal">
-    <div class="kicker">Next step</div>
-    <h2>Built your app in Bolt or Lovable?</h2>
-    <p class="sub">Send me the public link. The one-day check starts at $150: what a stranger can read, what breaks on a phone, and what to fix first. If the fix is small, I can do it the same week.</p>
-    <div class="cta"><a class="btn solid" href="https://contra.com/s/BP7W6YEr-security-check-of-your-lovable-or-bolt-app-in-1-day">Order the check<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="btn ghost" href="mailto:trading.flowlab@gmail.com">Write to me</a></div>
-    <div class="tiles"><a class="tile" href="mailto:trading.flowlab@gmail.com"><span class="k">Email</span><span class="v">trading.flowlab@gmail.com</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="tile" href="https://t.me/flowlabdev"><span class="k">Telegram</span><span class="v">@flowlabdev</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a class="tile" href="https://contra.com/flowlab_trading_0ng4zwrr"><span class="k">Contra</span><span class="v">contra.com/flowlab_trading_0ng4zwrr</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-  </div>
-  <div class="bottom-back"><a class="back" href="/"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>All services and demos</a></div>
+<div class="contact nextstep reveal">
+<div class="kicker">Next step</div>
+<h2>Built your app in Bolt or Lovable?</h2>
+<p class="sub">Send me the public link. The one-day check starts at $150: what a stranger can read, what breaks on a phone, and what to fix first. If the fix is small, I can do it the same week.</p>
+<div class="cta"><a class="btn solid" href="https://contra.com/s/BP7W6YEr-security-check-of-your-lovable-or-bolt-app-in-1-day">Order the check<svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><a class="btn ghost" href="mailto:trading.flowlab@gmail.com">Write to me</a></div>
+<div class="tiles"><a class="tile" href="mailto:trading.flowlab@gmail.com"><span class="k">Email</span><span class="v">trading.flowlab@gmail.com</span><svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><a class="tile" href="https://t.me/flowlabdev"><span class="k">Telegram</span><span class="v">@flowlabdev</span><svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a><a class="tile" href="https://contra.com/flowlab_trading_0ng4zwrr"><span class="k">Contra</span><span class="v">contra.com/flowlab_trading_0ng4zwrr</span><svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
+</div>
+<div class="bottom-back"><a class="back" href="/"><svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>All services and demos</a></div>
 </div></section>
 </main>
 <footer><div class="wrap"><span>Flow Lab · Luna. The demos on this site are self-initiated; the companies in them are invented.</span><a href="#main">Back to top ↑</a></div></footer>
@@ -297,7 +293,6 @@ h1{letter-spacing:-.04em}
   else els.forEach(function(el){el.classList.add('in')});
 })();
 </script>
-
 <script>
 (function () {
   var root = document.documentElement;
