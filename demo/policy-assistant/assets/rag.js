@@ -270,6 +270,14 @@
     const softScore = opts && opts.softScore != null ? opts.softScore : Infinity;
     const softCover = opts && opts.softCover != null ? opts.softCover : 1;
 
+    // «раньше давали» marks the past, but «давали» is still what the question is about: keep it.
+    function withoutPast(q) {
+      return q.replace(new RegExp(PAST.source, 'gi'), (m) => {
+        const keep = L.pastKeep && m.match(L.pastKeep);
+        return keep ? ` ${keep[0]} ` : ' ';
+      }).replace(DATES, ' ');
+    }
+
     function search(q, allowOld) {
       const { base, weighted } = expand(fixTypos(q), L);
       const hits = [];
@@ -315,7 +323,7 @@
     function ask(q) {
       const wantsOld = PAST.test(q);
       // «What was the limit before March 2026?» — the date only says «old version»; it is not a topic word.
-      const topic = wantsOld ? q.replace(new RegExp(PAST.source, 'gi'), ' ').replace(DATES, ' ') : q;
+      const topic = wantsOld ? withoutPast(q) : q;
       const { base, weighted, hits } = search(topic, wantsOld);
       const top = hits[0];
       if (!top || top.cover < minCover || (top.score < minScore && !(top.score >= softScore && top.cover >= softCover))) {
@@ -365,7 +373,7 @@
     // The search step on its own, without the refusal gate: the k passages a language model would be given.
     function retrieve(q, k) {
       const wantsOld = PAST.test(q);
-      const topic = wantsOld ? q.replace(new RegExp(PAST.source, 'gi'), ' ').replace(DATES, ' ') : q;
+      const topic = wantsOld ? withoutPast(q) : q;
       return search(topic, wantsOld).hits.slice(0, k || 5).map((h) => ({ ...sourceOf(h), text: h.c.text }));
     }
 
