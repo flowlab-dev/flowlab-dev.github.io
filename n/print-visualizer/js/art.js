@@ -1,5 +1,6 @@
 // Sample artwork catalogue, drawn in code (no stock images, no licensing questions).
 // Each design renders once into an offscreen canvas and is cached.
+// `tags` = products the design is offered for; display names are translated in i18n.js (key design.<id>).
 
 function rng(seed) {
   let s = seed >>> 0;
@@ -14,7 +15,7 @@ function canvas(w, h) {
 
 const designs = [
   {
-    id: 'marble', name: 'Calacatta Marble', tags: ['tile', 'glass'],
+    id: 'marble', name: 'Calacatta Marble', tags: ['tile', 'glass', 'cabinet', 'metal'],
     draw(ctx, w, h) {
       const r = rng(7);
       const g = ctx.createLinearGradient(0, 0, w, h);
@@ -38,7 +39,7 @@ const designs = [
     },
   },
   {
-    id: 'terrazzo', name: 'Terrazzo Warm', tags: ['tile', 'glass'],
+    id: 'terrazzo', name: 'Terrazzo Warm', tags: ['tile', 'glass', 'cabinet'],
     draw(ctx, w, h) {
       const r = rng(11);
       ctx.fillStyle = '#efe7dc'; ctx.fillRect(0, 0, w, h);
@@ -109,7 +110,7 @@ const designs = [
     },
   },
   {
-    id: 'coast', name: 'Coastal Sunset', tags: ['glass', 'backlit'], aspect: 1.6,
+    id: 'coast', name: 'Coastal Sunset', tags: ['glass', 'backlit', 'cabinet', 'metal', 'glassblock'], aspect: 1.6,
     draw(ctx, w, h) {
       const sky = ctx.createLinearGradient(0, 0, 0, h * 0.62);
       sky.addColorStop(0, '#2b3a67'); sky.addColorStop(0.55, '#e3795a'); sky.addColorStop(1, '#f6c177');
@@ -117,7 +118,7 @@ const designs = [
       ctx.beginPath(); ctx.arc(w * 0.62, h * 0.56, h * 0.12, 0, Math.PI * 2); ctx.fillStyle = '#fde3a7'; ctx.fill();
       const layer = (y0, amp, col, seed) => {
         const r = rng(seed); ctx.beginPath(); ctx.moveTo(0, h);
-        for (let x = 0; x <= w; x += w / 40) ctx.lineTo(x, y0 + Math.sin(x / w * 6 + seed) * amp + (r() - 0.5) * amp * 0.5);
+        for (let i = 0; i <= 40; i++) { const x = i * w / 40; ctx.lineTo(x, y0 + Math.sin(x / w * 6 + seed) * amp + (r() - 0.5) * amp * 0.5); }
         ctx.lineTo(w, h); ctx.closePath(); ctx.fillStyle = col; ctx.fill();
       };
       layer(h * 0.52, h * 0.05, '#7a4e6b', 3);
@@ -130,7 +131,7 @@ const designs = [
     },
   },
   {
-    id: 'aurora', name: 'Aurora Flow', tags: ['glass', 'backlit'], aspect: 1.6,
+    id: 'aurora', name: 'Aurora Flow', tags: ['glass', 'backlit', 'metal', 'glassblock'], aspect: 1.6,
     draw(ctx, w, h) {
       ctx.fillStyle = '#0b1026'; ctx.fillRect(0, 0, w, h);
       ctx.globalCompositeOperation = 'lighter';
@@ -147,7 +148,7 @@ const designs = [
     },
   },
   {
-    id: 'botanical', name: 'Botanical Leaves', tags: ['glass', 'tile'], aspect: 1.25,
+    id: 'botanical', name: 'Botanical Leaves', tags: ['glass', 'tile', 'cabinet', 'metal', 'glassblock'], aspect: 1.25,
     draw(ctx, w, h) {
       ctx.fillStyle = '#e9efe6'; ctx.fillRect(0, 0, w, h);
       const r = rng(21);
@@ -167,7 +168,7 @@ const designs = [
     },
   },
   {
-    id: 'ink', name: 'Indigo Ink', tags: ['glass', 'backlit', 'tile'], aspect: 1.5,
+    id: 'ink', name: 'Indigo Ink', tags: ['glass', 'backlit', 'tile', 'cabinet', 'metal', 'glassblock'], aspect: 1.5,
     draw(ctx, w, h) {
       ctx.fillStyle = '#f3f0ea'; ctx.fillRect(0, 0, w, h);
       const r = rng(5);

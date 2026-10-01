@@ -1,6 +1,7 @@
 // Scene renderer: room photo + printed products + room lighting, all in image pixel space.
 import { drawQuad, quadPath, squareToQuad, applyH } from './warp.js';
 import { renderDesign, getDesign } from './art.js';
+import { applyMetal, drawDoors, drawGlassBlocks, METAL_SIZE } from './surfaces.js';
 
 const texCache = new Map();
 
@@ -15,6 +16,7 @@ function sourceOf(print) {
 }
 
 function isRepeat(print) {
+  if (print.type === 'cabinet' || print.type === 'metal') return false; // one image across the whole piece
   if (print.layout === 'repeat') return true;
   if (print.layout === 'mural') return false;
   return !print.upload && !!getDesign(print.design)?.repeat;
@@ -23,9 +25,12 @@ function isRepeat(print) {
 // The flat artwork as it would come off the printer, in the print's real proportions.
 export function buildTexture(print) {
   const key = [print.upload ? print.uploadKey : print.design, print.type, print.widthIn, print.heightIn,
-    print.tileIn, print.grout, print.layout].join('|');
+    print.tileIn, print.grout, print.layout,
+    print.type === 'cabinet' ? [print.doors, print.doorGapIn, print.handle].join(',') : '',
+    print.type === 'metal' ? [print.metal, print.underbase].join(',') : '',
+    print.type === 'glassblock' ? [print.blockIn, print.glassKind].join(',') : ''].join('|');
   if (texCache.has(key)) return texCache.get(key);
-  const longSide = print.type === 'tile' ? 2048 : 1400;
+  const longSide = print.type === 'tile' || print.type === 'cabinet' || print.type === 'glassblock' ? 2048 : print.type === 'metal' ? METAL_SIZE : 1400;
   const aspect = print.widthIn / print.heightIn;
   const W = aspect >= 1 ? longSide : longSide * aspect;
   const H = aspect >= 1 ? longSide / aspect : longSide;
@@ -36,7 +41,7 @@ export function buildTexture(print) {
   const tilePx = print.type === 'tile' && print.tileIn > 0 ? print.tileIn * ppi : 0;
 
   if (isRepeat(print)) {
-    const cell = tilePx || 8 * ppi; // one motif per tile (or per 8" when printed as one sheet)
+    const cell = tilePx || (print.type === 'glassblock' ? (print.blockIn || 8) * ppi : 8 * ppi); // one motif per tile (or per 8" when printed as one sheet)
     for (let y = 0; y < c.height; y += cell) for (let x = 0; x < c.width; x += cell) ctx.drawImage(src, x, y, cell, cell);
   } else {
     const s = Math.max(c.width / src.width, c.height / src.height);
@@ -58,9 +63,13 @@ export function buildTexture(print) {
     for (let x = 0; x <= c.width + 1; x += tilePx) ctx.fillRect(x - gw / 2, 0, gw, c.height);
     for (let y = 0; y <= c.height + 1; y += tilePx) ctx.fillRect(0, y - gw / 2, c.width, gw);
   }
+  if (print.type === 'cabinet') drawDoors(ctx, c.width, c.height, ppi, print);
+  if (print.type === 'metal') c.sheen = applyMetal(c, print.metal, print.underbase);
+  if (print.type === 'glassblock') drawGlassBlocks(c, ppi, print);
   if (texCache.size > 8) {
     const k = texCache.keys().next().value;
     const old = texCache.get(k); old.width = old.height = 0; // free memory right away (iOS canvas limit)
+    if (old.sheen) old.sheen.width = old.sheen.height = 0;
     texCache.delete(k);
   }
   texCache.set(key, c);
@@ -132,12 +141,13 @@ function drawPrintBody(ctx, print, photo, opts) {
   const q = print.corners;
   const tex = buildTexture(print);
   withClip(ctx, print, () => {
-    if (print.type === 'glass') {
-      // printed glass sits on stand-off pins: soft shadow on the wall
-      const off = quadSize(q) * 0.018;
+    const lift = { glass: [0.018, 0.38], metal: [0.007, 0.32], cabinet: [0.005, 0.26] }[print.type];
+    if (lift) {
+      // printed glass sits on stand-off pins, metal and doors closer to the wall: soft shadow behind
+      const off = quadSize(q) * lift[0];
       ctx.save();
       ctx.filter = `blur(${Math.max(2, off * 0.9)}px)`;
-      ctx.fillStyle = `rgba(0,0,0,${0.38 * opts.shadowScale})`;
+      ctx.fillStyle = `rgba(0,0,0,${lift[1] * opts.shadowScale})`;
       quadPath(ctx, q.map((p) => ({ x: p.x + off * 0.6, y: p.y + off })));
       ctx.fill();
       ctx.restore();
@@ -151,13 +161,23 @@ function drawPrintBody(ctx, print, photo, opts) {
       ctx.drawImage(shadeMap(photo, opts.lightMatch?.colour ?? 0), 0, 0, photo.width, photo.height);
       ctx.restore();
     }
-    if (print.finish === 'gloss' || print.type !== 'tile') {
+    if (opts.through) {
+      // the surface itself shows through the ink (ribbed glass of real glass blocks)
+      ctx.save();
+      quadPath(ctx, q); ctx.clip();
+      ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = opts.through;
+      ctx.drawImage(photo, 0, 0);
+      ctx.restore();
+    }
+    if (print.type === 'metal') drawMetalSheen(ctx, print, tex, photo, opts);
+    const finishable = print.type === 'tile' || print.type === 'cabinet';
+    if (finishable ? print.finish === 'gloss' : print.type !== 'metal') {
       const H = squareToQuad(q);
       const a = applyH(H, 0.1, 0), b = applyH(H, 0.9, 1);
       const g = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
       g.addColorStop(0, 'rgba(255,255,255,0)');
       g.addColorStop(0.42, 'rgba(255,255,255,0)');
-      g.addColorStop(0.5, `rgba(255,255,255,${print.type === 'tile' ? 0.10 : 0.16})`);
+      g.addColorStop(0.5, `rgba(255,255,255,${print.type === 'tile' ? 0.10 : print.type === 'cabinet' ? 0.13 : 0.16})`);
       g.addColorStop(0.62, 'rgba(255,255,255,0)');
       ctx.save();
       quadPath(ctx, q); ctx.clip();
@@ -165,13 +185,46 @@ function drawPrintBody(ctx, print, photo, opts) {
       ctx.fillStyle = g; ctx.fillRect(0, 0, photo.width, photo.height);
       ctx.restore();
     }
-    if (print.type !== 'tile') {
+    if (print.type !== 'tile' && print.type !== 'cabinet' && print.type !== 'glassblock') {
+      // polished glass edge, or the bright cut edge of a thin metal sheet
       ctx.save();
       quadPath(ctx, q);
-      ctx.lineWidth = 1.2; ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.stroke();
+      ctx.lineWidth = print.type === 'metal' ? 1 : 1.2;
+      ctx.strokeStyle = print.type === 'metal' ? 'rgba(255,255,255,0.42)' : 'rgba(255,255,255,0.55)'; ctx.stroke();
       ctx.restore();
     }
   });
+}
+
+// Brushed metal reflects light as a soft band across the brushing (vertical for horizontal brushing).
+// Its strength follows the room light; the evening light also moves it, and the room's colour cast tints it later.
+let sheenLayer = null;
+function drawMetalSheen(ctx, print, tex, photo, opts) {
+  if (!tex.sheen) return;
+  const q = print.corners;
+  const light = opts.light || { brightness: 1, warmth: 0 };
+  if (!sheenLayer || sheenLayer.width !== photo.width || sheenLayer.height !== photo.height) sheenLayer = mk(photo.width, photo.height);
+  const s = sheenLayer.getContext('2d');
+  s.save();
+  s.clearRect(0, 0, sheenLayer.width, sheenLayer.height);
+  drawQuad(s, tex.sheen, q, opts.steps);
+  quadPath(s, q); s.clip();
+  s.globalCompositeOperation = 'multiply';
+  const H = squareToQuad(q);
+  const a = applyH(H, 0, 0.5), b = applyH(H, 1, 0.5);
+  const g = s.createLinearGradient(a.x, a.y, b.x, b.y);
+  const uc = 0.34 + 0.24 * Math.max(0, Math.min(1, light.warmth));
+  const gray = (v) => { const n = Math.round(255 * v); return `rgb(${n},${n},${n})`; };
+  const stops = [[0, 0.16], [uc - 0.26, 0.2], [uc - 0.09, 0.72], [uc, 1], [uc + 0.09, 0.72], [uc + 0.26, 0.2], [1, 0.12]];
+  stops.forEach(([u, v]) => g.addColorStop(Math.max(0, Math.min(1, u)), gray(v)));
+  s.fillStyle = g;
+  s.fillRect(0, 0, sheenLayer.width, sheenLayer.height);
+  s.restore();
+  ctx.save();
+  ctx.globalCompositeOperation = 'screen';
+  ctx.globalAlpha = Math.max(0.12, Math.min(0.85, 0.2 + 0.6 * light.brightness));
+  ctx.drawImage(sheenLayer, 0, 0);
+  ctx.restore();
 }
 
 let emitLayer = null;
@@ -215,9 +268,11 @@ function drawEmission(ctx, print, light, opts, photo) {
 }
 
 function drawOccluders(ctx, scene, photo, light) {
-  if (!scene.occluders?.length) return;
+  const keyed = keyLayer(scene, photo);
+  if (!scene.occluders?.length && !keyed) return;
   ctx.save();
-  scene.occluders.forEach((poly) => { polyPath(ctx, poly); ctx.save(); ctx.clip(); ctx.drawImage(photo, 0, 0); ctx.restore(); });
+  (scene.occluders || []).forEach((poly) => { polyPath(ctx, poly); ctx.save(); ctx.clip(); ctx.drawImage(photo, 0, 0); ctx.restore(); });
+  if (keyed) ctx.drawImage(keyed, 0, 0);
   ctx.restore();
   if (light.brightness !== 1 || light.warmth !== 0) {
     ctx.save();
@@ -228,14 +283,67 @@ function drawOccluders(ctx, scene, photo, light) {
   }
 }
 
+// Things in front of the print cut out by colour inside a box (a plant's leaves): built once per photo.
+const keyCache = new WeakMap();
+function keyLayer(scene, photo) {
+  if (!scene.keyOccluders?.length) return null;
+  if (keyCache.has(photo)) return keyCache.get(photo);
+  const c = mk(photo.width, photo.height), x = c.getContext('2d');
+  for (const k of scene.keyOccluders) {
+    const [x0, y0, x1, y1] = k.box, w = x1 - x0, h = y1 - y0;
+    x.drawImage(photo, x0, y0, w, h, x0, y0, w, h);
+    const d = x.getImageData(x0, y0, w, h), a = d.data;
+    for (let i = 0; i < a.length; i += 4) {
+      const mx = Math.max(a[i], a[i + 1], a[i + 2]), mn = Math.min(a[i], a[i + 1], a[i + 2]);
+      const sat = mx ? (mx - mn) / mx : 0;
+      a[i + 3] = Math.round(255 * Math.min(1, Math.max(0, (sat - k.minSat) / 0.08))); // soft edge
+    }
+    x.putImageData(d, x0, y0);
+  }
+  keyCache.set(photo, c);
+  return c;
+}
+
+// A polished counter under the print: blur away what it reflected before, mirror the new print into it.
+const washCache = new WeakMap();
+function drawReflection(ctx, r, photo, scale) {
+  const cv = ctx.canvas;
+  const copy = mk(cv.width, cv.height); copy.getContext('2d').drawImage(cv, 0, 0);
+  const path = (c) => {
+    c.beginPath();
+    r.polys.forEach((poly) => { poly.forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y))); c.closePath(); });
+  };
+  let wash = washCache.get(photo);
+  if (!wash) {
+    // blurred counter with feathered edges, so no seam shows where the old reflection is washed out
+    wash = mk(photo.width, photo.height);
+    const w = wash.getContext('2d'); w.filter = `blur(${r.wash}px)`; w.drawImage(photo, 0, 0);
+    const m = mk(photo.width, photo.height), mc = m.getContext('2d');
+    mc.filter = 'blur(6px)'; path(mc); mc.fillStyle = '#000'; mc.fill();
+    w.filter = 'none'; w.globalCompositeOperation = 'destination-in'; w.drawImage(m, 0, 0);
+    m.width = m.height = 0;
+    washCache.set(photo, wash);
+  }
+  ctx.save();
+  ctx.globalAlpha = 0.8; ctx.drawImage(wash, 0, 0);
+  path(ctx); ctx.clip();
+  ctx.globalAlpha = r.alpha;
+  ctx.filter = `blur(${r.blur * scale}px)`;
+  ctx.translate(0, 2 * r.edgeY); ctx.scale(1, -1);
+  ctx.drawImage(copy, 0, 0, copy.width, copy.height, 0, 0, photo.width, photo.height);
+  ctx.restore();
+  copy.width = copy.height = 0;
+}
+
 // Draw everything at `scale` (canvas px per photo px).
 export function renderScene(ctx, { photo, scene, prints, light }, scale = 1, opts = {}) {
-  const o = { steps: opts.steps || 14, shadowScale: 1, lightMatch: scene.lightMatch };
+  const o = { steps: opts.steps || 14, shadowScale: 1, lightMatch: scene.lightMatch, light, through: scene.surfaceThrough || 0 };
   ctx.save();
   ctx.setTransform(scale, 0, 0, scale, 0, 0);
   ctx.clearRect(0, 0, photo.width, photo.height);
   ctx.drawImage(photo, 0, 0);
   for (const p of prints) drawPrintBody(ctx, p, photo, o);
+  if (scene.reflection && prints.length) drawReflection(ctx, scene.reflection, photo, scale);
   drawOccluders(ctx, scene, photo, { brightness: 1, warmth: 0 });
   if (light.brightness !== 1 || light.warmth !== 0) {
     ctx.save();
