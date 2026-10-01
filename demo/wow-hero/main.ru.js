@@ -13,7 +13,7 @@ const capture = /^(127\.0\.0\.1|localhost)$/.test(location.hostname) ? new URLSe
 // ---- theme: dark first (the hero is dark by design); light only when the visitor picks it ---------------
 const themeBtn = document.getElementById('theme');
 const isLight = () => root.getAttribute('data-theme') === 'light';
-const label = () => { themeBtn.textContent = isLight() ? 'Dark theme' : 'Light theme'; };
+const label = () => { themeBtn.textContent = isLight() ? 'Тёмная тема' : 'Светлая тема'; };
 themeBtn.addEventListener('click', () => { const n = isLight() ? 'dark' : 'light'; root.setAttribute('data-theme', n); try { localStorage.setItem('fw-theme', n); } catch (e) {} label(); });
 label();
 
@@ -27,11 +27,12 @@ if ('IntersectionObserver' in window && !reduce.matches) {
 
 // ---- demo form: says honestly that nothing is sent ----------------------------------------------------
 const form = document.getElementById('reserve-form');
+form.querySelector('[type=submit]').textContent = 'Забронировать'; // RU: в шапке короткое «Бронь», на кнопке формы полное слово
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const out = document.getElementById('r-status');
-  if (!form.checkValidity()) { out.textContent = 'Please add your name and a valid email.'; form.querySelector(':invalid')?.focus(); return; }
-  out.textContent = 'This is a demo, so nothing was sent. On a real site this would reach the shop and confirm by email.';
+  if (!form.checkValidity()) { out.textContent = 'Укажите имя и правильный адрес электронной почты.'; form.querySelector(':invalid')?.focus(); return; }
+  out.textContent = 'Это демо, поэтому ничего не отправлено. На настоящем сайте заявка ушла бы в магазин, а подтверждение пришло бы на почту.';
   form.reset();
 });
 
@@ -56,7 +57,7 @@ function canAfford() {
 let mounts = null;
 async function startLive() {
   const logo = new Image();
-  logo.src = 'assets/logo-metal.webp'; // starts downloading while the code loads
+  logo.src = '../assets/logo-metal.webp'; // starts downloading while the code loads
   const [{ ShaderMount }, { meshGradientFragmentShader }, { liquidMetalFragmentShader }, { getShaderColorFromString: col }, { ShaderFitOptions: fit }] = await Promise.all([
     import(LIB + 'shader-mount.js'), import(LIB + 'shaders/mesh-gradient.js'), import(LIB + 'shaders/liquid-metal.js'),
     import(LIB + 'get-shader-color-from-string.js'), import(LIB + 'shader-sizing.js'), logo.decode(),

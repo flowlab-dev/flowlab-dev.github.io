@@ -1,4 +1,5 @@
 @font-face { font-family: "Manrope"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("assets/manrope-latin.woff2") format("woff2"); }
+@font-face { font-family: "Manrope"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("assets/manrope-cyrillic.woff2") format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 /* Fallback sized close to Manrope, so the hero lines barely move when the font arrives. */
 @font-face { font-family: "Manrope Fallback"; src: local("Arial"); size-adjust: 104%; ascent-override: 102%; descent-override: 29%; }
 :root {
@@ -32,6 +33,7 @@ a { color: inherit; }
 nav { display: flex; gap: 22px; margin-left: auto; font-size: 15px; }
 nav a { color: #e6e1d8; text-decoration: none; padding: 10px 2px; min-height: 44px; display: inline-flex; align-items: center; }
 nav a:hover { color: #fff; }
+.top .fl-lang { margin: 0 10px 0 20px; color: #f2efe9; height: 44px; }
 .nav-cta { color: var(--accent) !important; font-weight: 700; }
 .theme { font: inherit; font-size: 14px; color: #f2efe9; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18);
   border-radius: 999px; padding: 10px 16px; min-height: 44px; cursor: pointer; backdrop-filter: blur(8px); white-space: nowrap; }
@@ -110,4 +112,11 @@ form .btn { margin-top: 8px; justify-self: start; }
   .hero-copy { padding-top: 0; padding-bottom: 28px; }
   .hero { align-items: flex-end; min-height: 100svh; }
 }
-@media (max-width: 480px) { .wrap { padding: 0 16px; } .theme { padding: 10px 12px; } th, td { padding: 14px 16px; } }
+@media (max-width: 480px) { .wrap { padding: 0 16px; } th, td { padding: 14px 16px; }
+  /* phone: the theme button becomes a round icon (sun = switch to light, moon = switch to dark); the label stays for screen readers */
+  .theme { position: relative; width: 44px; padding: 0; font-size: 0; flex: none; }
+  .theme::before { content: ""; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E") center / contain no-repeat; }
+  :root[data-theme="light"] .theme::before { -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z'/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z'/%3E%3C/svg%3E"); }
+  .top .row { gap: 10px; } .top .fl-lang { margin: 0; }
+  nav { gap: 0; }
+}
