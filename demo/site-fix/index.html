@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Site fix, measured · Tarnside Roofing (demo)</title>
-<meta content="A small business website fixed and measured on a phone: page weight, time to the main picture, text size, form, search listing. Before and after, same content." name="description"/>
+<title>Speeding up a site on phones · Tarnside Roofing (demo)</title>
+<meta content="Same roofer, same content. Now the site works on a phone." name="description"/>
 <meta content="light dark" name="color-scheme"/>
 <script>
   // Before first paint: restore the saved theme and let CSS know JS is on (so hidden-until-scrolled blocks stay visible without JS).
@@ -85,6 +85,21 @@
     table.m tbody th { grid-column: 1 / -1; margin-bottom: 6px; }
     table.m td.v { white-space: normal; }
     table.m td.v::before { content: attr(data-l); display: block; font-size: 12px; font-weight: 600; color: var(--muted); } }
+
+  .hero .ex { font-size: 14px; color: var(--muted); margin: 0 0 14px; max-width: 62ch; }
+  .wipe h2.hint-h { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; margin-bottom: 28px; }
+  .lead + .lead { margin-top: -10px; }
+  details.dev { margin-top: 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+  details.dev summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; padding: 10px 16px; font-weight: 600; font-size: 15px; }
+  details.dev summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius); }
+  details.dev .method { margin: 0; padding: 0 16px 16px; font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .price { margin: 28px 0 0; font-size: 19px; font-weight: 700; }
+  .first { margin: 10px 0 0; max-width: 66ch; }
+  .go { margin: 20px 0 0; }
+  .go a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 600; text-decoration: none; }
+  .go a:hover { opacity: .88; } .go a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .ps { margin: 24px 0 0; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); max-width: 66ch; }
+  @media (max-width: 600px) { .go a { width: 100%; justify-content: center; } }
 </style>
 <style>
   /* ---- v3: one scene — the fix, wiped across the phone (desktop only) ---- */
@@ -112,7 +127,7 @@
   .device .tag .on { display: inline; color: var(--ink); }
 </style>
 <script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
-<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font:600 12px/1 inherit;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
+<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:600;line-height:1;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
 <body>
 <!-- flowlab-band -->
 <style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
@@ -122,17 +137,17 @@
 <p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/site-fix/">Flow Lab</a>. Tarnside Roofing is invented.</p>
 <!-- /flowlab-band -->
 <div class="wrap">
-<header class="top"><div class="brand"><i aria-hidden="true"></i>Site fix, measured</div><div aria-label="Language" class="fl-lang" role="group"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme" id="theme" type="button">Dark theme</button></header>
+<header class="top"><div class="brand"><i aria-hidden="true"></i>Speeding up a site on phones</div><div aria-label="Language" class="fl-lang" role="group"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme" id="theme" type="button">Dark theme</button></header>
 <div class="hero">
-<h1>Same roofer, same content. Now it works on a phone.</h1>
-<p>This is a worked example on an invented business: the “before” site was built with problems that are common on small-business sites, then fixed and measured. It looked passable on a desktop. On a phone it was slow to load, the text was too small to read, the phone number was a line of text about 6 px high with no call button, and the contact form lost every enquiry. Here is the fix, measured before and after the same way.</p>
+<p class="ex">A sample project: Tarnside Roofing is made up, the before and after sites are real</p>
+<h1>Same roofer, same content. Now the site works on a phone</h1>
+<p>I built this site with problems that are common on small business sites on purpose, then fixed it and measured both versions the same way. On a desktop it looked fine. On a phone it loaded slowly, the text was too small to read, the phone number was a line of text about 6 px high with no call button, and the contact form lost every inquiry.</p>
 </div>
 </div>
 <section aria-label="The same page on a phone, before and after the fix" class="wipe">
 <div class="wrap wipe-in">
 <div>
-<h2>Scroll, and the fix goes in.</h2>
-<p class="lead">One phone, one page, same content. The old version sits underneath; the fixed one slides over it.</p>
+<h2 class="hint-h">Scroll down: the fixed version slides over the old one, and the numbers change as you watch.</h2>
 <ul class="metrics">
 <li data-k="bytes"><span>Page weight</span><b>–</b><small></small></li>
 <li data-k="lcp"><span>Until the main picture appears</span><b>–</b><small></small></li>
@@ -160,33 +175,36 @@
 <section class="block">
 <div class="wrap reveal">
 <h2>The numbers</h2>
-<p class="lead" id="numlead">Measured on a phone-sized browser over a slow mobile connection, with the processor slowed four times, the way Lighthouse imitates a mid-range phone. Each version was loaded three times with an empty cache; the table shows the middle result. Both ran on a local test server, so real hosting would add some time to both.</p>
 <div class="panel scroll"><table class="m" id="numbers"></table></div>
 </div>
 </section>
 <section class="block">
 <div class="wrap reveal">
 <h2>What was fixed</h2>
-<p class="lead">Nothing was redesigned: same sections, same pictures, same font. The text was tightened a little, grey text made darker, and the buttons given one brand colour. Each fix is small on its own.</p>
 <div class="fixes" id="fixes"></div>
 </div>
 </section>
 <section class="block">
 <div class="wrap reveal">
-<h2>How it was measured</h2>
-<p class="method" id="method">Both versions are served from one local server and opened in headless Chrome set to an iPhone screen size (390 × 844). The connection is slowed to 150 ms latency and 1.6 Mbit/s, and the processor to a quarter of its speed, so the numbers are closer to a phone on weak 4G than to a laptop on Wi-Fi. “Time until the main picture appears” is the browser’s Largest Contentful Paint. The form was sent once to a test endpoint on the same server, which recorded the enquiry; on a real site it would go to the owner’s inbox. The checks in the last row come from the same script I run on a real site before I write to its owner. Tarnside Roofing is invented; the pictures were drawn in code, and the phone number is from the range Ofcom keeps for fiction.</p>
+<h2>How I measured it</h2>
+<p class="lead">I opened both versions in a browser the size of an iPhone screen, on a slow mobile connection with the processor slowed down like a budget phone. I loaded each version three times with an empty cache and show the middle result. I sent the form once to a test address, and the inquiry arrived. I run these same checks on a real site before I ever write to its owner.</p>
+<p class="lead">Nothing was redesigned: same sections, pictures and font. The text got a little shorter, gray text got darker, and the buttons got one brand color.</p>
+<details class="dev"><summary>For developers: exactly how it was measured</summary><p class="method" id="method">Both versions are served from one local server and opened in headless Chrome set to an iPhone screen size (390 × 844). The connection is slowed to 150 ms latency and 1.6 Mbit/s, and the processor to a quarter of its speed, so the numbers are closer to a phone on weak 4G than to a laptop on Wi-Fi. “Time until the main picture appears” is the browser’s Largest Contentful Paint. The form was sent once to a test endpoint on the same server, which recorded the enquiry; on a real site it would go to the owner’s inbox. The checks in the last row come from the same script I run on a real site before I write to its owner. Tarnside Roofing is invented; the pictures were drawn in code, and the phone number is from the range Ofcom keeps for fiction.</p></details>
 </div>
 </section>
 <section class="block">
 <div class="wrap reveal">
 <h2>If your site needs the same</h2>
 <div class="grid4">
-<div class="panel"><h3>A short check first</h3><p>A list of what is wrong on your site, each item with proof, like the table above. You decide what to fix.</p></div>
-<div class="panel"><h3>Fixes, not a rebuild</h3><p>Your text, pictures and look stay. Whether it runs on WordPress, Shopify or plain HTML, the fixes go into what you already have.</p></div>
-<div class="panel"><h3>Measured again</h3><p>The same measurements after the work, so you can see what changed rather than take it on trust.</p></div>
-<div class="panel"><h3>Monthly check-up</h3><p>Each month: the form still delivers, the site still loads fast, and nothing new has broken.</p></div>
+<div class="panel"><h3>A short check first</h3><p>A list of what's holding your site back on phones, each item with proof, like the table above. You decide what gets fixed.</p></div>
+<div class="panel"><h3>Fixes, not a new site</h3><p>Your text, pictures and look stay yours, whether you're on WordPress, Shopify, Tilda or plain HTML.</p></div>
+<div class="panel"><h3>Measured again afterward</h3><p>The same tests after the work, so you see the result in numbers.</p></div>
+<div class="panel"><h3>A monthly check</h3><p>Every month: the form still delivers, the site still loads fast, and nothing new has broken. From $30 a month.</p></div>
 </div>
-<p class="lead cta">Want the same check on your own site? Send me its address through the contacts on the <a href="https://flowlab-dev.github.io/">Flow Lab page</a>.</p>
+<p class="price">A fix like this one · from $150 · 2 days</p>
+<p class="first">Send me the link to your site. I'll tell you what slows it down most on a phone and what it would cost to fix. No commitment.</p>
+<p class="go"><a href="https://flowlab-dev.github.io/#contact">Get a free estimate</a></p>
+<p class="ps">P.S. Are you sure your contact form actually reaches you? Send yourself a test inquiry from your phone right now. If it doesn't arrive, send me the link.</p>
 </div>
 </section>
 <footer><div class="wrap">Tarnside Roofing is an invented business. Both versions of its site were written for this demo and were measured as described above.</div></footer>

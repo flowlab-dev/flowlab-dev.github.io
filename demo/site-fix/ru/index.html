@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Починка сайта с замерами · Tarnside Roofing (демо)</title>
-<meta content="Сайт небольшой фирмы исправлен и измерен на телефоне: вес страницы, время до главной картинки, размер текста, форма, вид в поиске. До и после, содержимое то же." name="description"/>
+<title>Ускорение сайта для телефона · Tarnside Roofing (демо)</title>
+<meta content="Тот же кровельщик, те же тексты. Теперь сайт работает на телефоне." name="description"/>
 <meta content="light dark" name="color-scheme"/>
 <script>
   // Before first paint: restore the saved theme and let CSS know JS is on (so hidden-until-scrolled blocks stay visible without JS).
@@ -85,6 +85,21 @@
     table.m tbody th { grid-column: 1 / -1; margin-bottom: 6px; }
     table.m td.v { white-space: normal; }
     table.m td.v::before { content: attr(data-l); display: block; font-size: 12px; font-weight: 600; color: var(--muted); } }
+
+  .hero .ex { font-size: 14px; color: var(--muted); margin: 0 0 14px; max-width: 62ch; }
+  .wipe h2.hint-h { font-size: clamp(26px, 2.6vw, 34px); line-height: 1.15; margin-bottom: 28px; }
+  .lead + .lead { margin-top: -10px; }
+  details.dev { margin-top: 8px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+  details.dev summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; padding: 10px 16px; font-weight: 600; font-size: 15px; }
+  details.dev summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius); }
+  details.dev .method { margin: 0; padding: 0 16px 16px; font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .price { margin: 28px 0 0; font-size: 19px; font-weight: 700; }
+  .first { margin: 10px 0 0; max-width: 66ch; }
+  .go { margin: 20px 0 0; }
+  .go a { display: inline-flex; align-items: center; min-height: 48px; padding: 0 24px; border-radius: 999px; background: var(--ink); color: var(--bg); font-weight: 600; text-decoration: none; }
+  .go a:hover { opacity: .88; } .go a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .ps { margin: 24px 0 0; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); max-width: 66ch; }
+  @media (max-width: 600px) { .go a { width: 100%; justify-content: center; } }
 </style>
 <style>
   /* ---- v3: one scene — the fix, wiped across the phone (desktop only) ---- */
@@ -112,7 +127,7 @@
   .device .tag .on { display: inline; color: var(--ink); }
 </style>
 <script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
-<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font:600 12px/1 inherit;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
+<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:600;line-height:1;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
 <body>
 <!-- flowlab-band -->
 <style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
@@ -122,17 +137,17 @@
 <p class="fl-band" role="note">Демо <a href="/ru/work/site-fix/">Flow Lab</a> по собственной инициативе, не на заказ. Компания Tarnside Roofing вымышлена.</p>
 <!-- /flowlab-band -->
 <div class="wrap">
-<header class="top"><div class="brand"><i aria-hidden="true"></i>Починка сайта с замерами</div><div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme" id="theme" type="button">Тёмная тема</button></header>
+<header class="top"><div class="brand"><i aria-hidden="true"></i>Ускорение сайта для телефона</div><div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme" id="theme" type="button">Тёмная тема</button></header>
 <div class="hero">
-<h1>Тот же кровельщик, то же содержимое. Теперь сайт работает на телефоне.</h1>
-<p>Это разобранный пример на вымышленной фирме: сайт «до» нарочно собран с проблемами, которые часто встречаются на сайтах малого бизнеса, а потом исправлен и измерен. На компьютере он выглядел сносно. На телефоне он медленно грузился, текст был слишком мелким для чтения, номер телефона был строчкой текста высотой около 6 px без кнопки звонка, а форма связи теряла все заявки. Ниже исправления и замеры: до и после всё измерено одним и тем же способом.</p>
+<p class="ex">Пример: компания Tarnside Roofing придумана, сайт до и после настоящий</p>
+<h1>Тот же кровельщик, те же тексты. Теперь сайт работает на телефоне</h1>
+<p>Я нарочно собрала сайт с проблемами, которые часто встречаются у сайтов малого бизнеса, а потом исправила его и замерила до и после одинаково. На компьютере он выглядел нормально. На телефоне открывался медленно, текст было не прочитать, номер телефона был строчкой высотой около 6 px без кнопки звонка, а форма теряла каждую заявку.</p>
 </div>
 </div>
 <section aria-label="Одна и та же страница на телефоне до и после исправлений" class="wipe">
 <div class="wrap wipe-in">
 <div>
-<h2>Прокрутите, и исправления встанут на место.</h2>
-<p class="lead">Один телефон, одна страница, то же содержимое. Старая версия лежит снизу, исправленная наезжает поверх неё.</p>
+<h2 class="hint-h">Прокрутите страницу: исправленная версия наезжает на старую, и цифры меняются у вас на глазах.</h2>
 <ul class="metrics">
 <li data-k="bytes"><span>Вес страницы</span><b>–</b><small></small></li>
 <li data-k="lcp"><span>Время до появления главной картинки</span><b>–</b><small></small></li>
@@ -160,33 +175,36 @@
 <section class="block">
 <div class="wrap reveal">
 <h2>Цифры</h2>
-<p class="lead" id="numlead">Замеры сделаны в браузере размером с телефон на медленном мобильном интернете, процессор замедлен в четыре раза: так Lighthouse (проверка сайтов от Google) изображает телефон среднего уровня. Каждую версию загружали три раза с пустым кэшем, в таблице средний из трёх результатов (не лучший и не худший). Обе версии работали на локальном тестовом сервере, так что настоящий хостинг добавил бы обеим немного времени.</p>
 <div class="panel scroll"><table class="m" id="numbers"></table></div>
 </div>
 </section>
 <section class="block">
 <div class="wrap reveal">
 <h2>Что исправлено</h2>
-<p class="lead">Дизайн не переделывали: те же разделы, те же картинки, тот же шрифт. Текст немного сократили, серый текст сделали темнее, а кнопкам дали один фирменный цвет. Каждое исправление само по себе небольшое.</p>
 <div class="fixes" id="fixes"></div>
 </div>
 </section>
 <section class="block">
 <div class="wrap reveal">
-<h2>Как измеряли</h2>
-<p class="method" id="method">Обе версии отдаются с одного локального сервера и открываются в Chrome без окна (headless) с размером экрана iPhone (390 × 844). Связь замедлена до задержки 150 мс и скорости 1,6 Мбит/с, а процессор до четверти его скорости, поэтому цифры ближе к телефону на слабом 4G, чем к ноутбуку на Wi-Fi. «Время до появления главной картинки» в браузере называется Largest Contentful Paint (LCP). Форму один раз отправили на тестовый адрес на том же сервере, и он записал заявку; на настоящем сайте она пришла бы на почту владельца. Проверки в последней строке делает тот же скрипт, который я запускаю на настоящем сайте, прежде чем написать его владельцу. Фирма Tarnside Roofing вымышлена: картинки нарисованы кодом, а номер телефона взят из диапазона, который Ofcom (британский регулятор связи) держит для фильмов и книг.</p>
+<h2>Как я замеряла</h2>
+<p class="lead">Обе версии я открывала в браузере размером с экран iPhone, на медленном мобильном интернете и с замедленным процессором, как у недорогого телефона. Каждую версию загружала три раза с пустым кэшем и показываю средний результат. Форму отправила один раз на тестовый адрес, и заявка дошла. Эти же проверки я запускаю на настоящем сайте, прежде чем написать его владельцу.</p>
+<p class="lead">Ничего не переделывала: те же разделы, картинки и шрифт. Текст стал чуть короче, серый текст темнее, кнопки одного фирменного цвета.</p>
+<details class="dev"><summary>Для разработчика: как именно замерено</summary><p class="method" id="method">Обе версии отдаются с одного локального сервера и открываются в Chrome без окна (headless) с размером экрана iPhone (390 × 844). Связь замедлена до задержки 150 мс и скорости 1,6 Мбит/с, а процессор до четверти его скорости, поэтому цифры ближе к телефону на слабом 4G, чем к ноутбуку на Wi-Fi. «Время до появления главной картинки» в браузере называется Largest Contentful Paint (LCP). Форму один раз отправили на тестовый адрес на том же сервере, и он записал заявку; на настоящем сайте она пришла бы на почту владельца. Проверки в последней строке делает тот же скрипт, который я запускаю на настоящем сайте, прежде чем написать его владельцу. Фирма Tarnside Roofing вымышлена: картинки нарисованы кодом, а номер телефона взят из диапазона, который Ofcom (британский регулятор связи) держит для фильмов и книг.</p></details>
 </div>
 </section>
 <section class="block">
 <div class="wrap reveal">
-<h2>Если вашему сайту нужно то же самое</h2>
+<h2>Если вашему сайту нужно то же</h2>
 <div class="grid4">
-<div class="panel"><h3>Сначала короткая проверка</h3><p>Список того, что не так на вашем сайте, и у каждого пункта доказательство, как в таблице выше. Что исправлять, решаете вы.</p></div>
-<div class="panel"><h3>Исправления, а не новый сайт</h3><p>Ваши тексты, картинки и внешний вид остаются. Сайт на WordPress, Shopify или на простом HTML: исправления вносятся в то, что у вас уже есть.</p></div>
-<div class="panel"><h3>Повторные замеры</h3><p>Те же замеры после работы, чтобы вы видели, что изменилось, а не верили на слово.</p></div>
-<div class="panel"><h3>Ежемесячная проверка</h3><p>Каждый месяц: заявки из формы по-прежнему доходят, сайт всё так же быстро грузится, и ничего нового не сломалось.</p></div>
+<div class="panel"><h3>Сначала короткая проверка</h3><p>Список того, что мешает вашему сайту на телефоне, и по каждому пункту доказательство, как в таблице выше. Что исправлять, решаете вы.</p></div>
+<div class="panel"><h3>Исправления, а не новый сайт</h3><p>Тексты, картинки и вид остаются вашими, на WordPress, Shopify, Tilda или обычном HTML.</p></div>
+<div class="panel"><h3>Новый замер после</h3><p>Те же тесты после работы, поэтому результат видно в цифрах.</p></div>
+<div class="panel"><h3>Ежемесячная проверка</h3><p>Каждый месяц: форма доставляет заявки, сайт быстро открывается, ничего нового не сломалось. От $30 в месяц.</p></div>
 </div>
-<p class="lead cta">Хотите такую же проверку для своего сайта? Пришлите мне его адрес через контакты на <a href="/ru/">странице Flow Lab</a>.</p>
+<p class="price">Исправление как в этом примере · от $150 · 2 дня</p>
+<p class="first">Пришлите ссылку на сайт. Отвечу, что сильнее всего тормозит его на телефоне и сколько стоит это исправить. Ни к чему не обязывает.</p>
+<p class="go"><a href="/ru/#contact">Получить бесплатную оценку</a></p>
+<p class="ps">P.S. Форма на вашем сайте точно доходит до вас? Отправьте себе тестовую заявку с телефона прямо сейчас. Если она не пришла, пришлите мне ссылку.</p>
 </div>
 </section>
 <footer><div class="wrap">Tarnside Roofing — вымышленная фирма. Обе версии её сайта написаны для этого демо и измерены так, как описано выше.</div></footer>
