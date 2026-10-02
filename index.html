@@ -236,7 +236,28 @@ h2{font-size:clamp(36px,4.8vw,64px)}
   html.scenes #support .plan-card li.on{opacity:1}
   html.scenes #support .plan{min-height:calc(100vh - 64px);align-content:center}
 }
+
+/* М-45 Ч3: телефон и планшет — лёгкие сцены без библиотек: только transform/opacity, прокрутка родная, без закреплений */
+@media (max-width:1023px) and (prefers-reduced-motion:no-preference){
+  @supports (animation-timeline:view()){
+    .stack{view-timeline:--stk block}
+    .stack .f1{animation:fl-m-f1 linear both;animation-timeline:--stk;animation-range:cover 45% cover 95%}
+    .stack .f2{animation:fl-m-f2 linear both;animation-timeline:--stk;animation-range:cover 45% cover 95%}
+    .stack .f3{animation:fl-m-f3 linear both;animation-timeline:--stk;animation-range:cover 45% cover 95%}
+    .grid.main .card,.more-grid .card{animation:fl-m-card linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+  }
+  html.lite .year{display:flex}
+  html.lite #support .plan-card li{opacity:.35;transition:opacity .4s var(--ease)}
+  html.lite #support .plan-card li.on{opacity:1}
+  html.lite .plan-card .year{margin:0 0 18px}
+  html.lite .plan-card .year b{font-size:56px}
+}
+@keyframes fl-m-f1{to{translate:9% -7%}}
+@keyframes fl-m-f2{to{translate:-8% -2%}}
+@keyframes fl-m-f3{to{translate:0 -9%;scale:1.06}}
+@keyframes fl-m-card{from{translate:0 22px;scale:.95}}
 .lang{display:flex;align-items:center;height:40px;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}.lang a{display:grid;place-items:center;min-width:40px;height:100%;padding:0 8px;font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--muted);text-decoration:none;transition:color .2s var(--ease),background-color .2s var(--ease)}.lang a[aria-current]{background:var(--fg);color:var(--bg)}.lang a:not([aria-current]):hover{color:var(--fg)}.lang a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.brand{white-space:nowrap}.tile{min-width:0}.case-hero::before{inset:-200px -10% auto;height:calc(100% + 200px)}@media (max-width:420px){.lang a{min-width:36px;padding:0 6px}}</style>
+<script>if(matchMedia('(max-width:1023px) and (prefers-reduced-motion:no-preference)').matches&&!/[?&]snap/.test(location.search))document.documentElement.classList.add('lite')</script>
 <script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
 </head>
 <body>
@@ -399,6 +420,25 @@ h2{font-size:clamp(36px,4.8vw,64px)}
     });
     window.__st = ScrollTrigger;
   }
+})();
+</script>
+<script>
+// М-45 Ч3: блок поддержки на телефоне — пункты загораются по мере прокрутки, счётчик месяцев 01→12 (IntersectionObserver, без обработчиков прокрутки)
+(function () {
+  var root = document.documentElement;
+  if (!root.classList.contains('lite') || !('IntersectionObserver' in window)) return;
+  var items = [].slice.call(document.querySelectorAll('#support .plan-card li')), month = document.querySelector('.year b');
+  if (!items.length || !month) return;
+  // на телефоне счётчик ставим в карточку над списком: он виден, пока пункты загораются
+  var card = document.querySelector('#support .plan-card'), h3 = card && card.querySelector('h3');
+  if (h3) h3.after(month.parentNode);
+  function count() { var n = items.filter(function (li) { return li.classList.contains('on'); }).length;
+    month.textContent = String(Math.max(1, Math.round(12 * n / items.length))).padStart(2, '0'); }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { e.target.classList.toggle('on', e.isIntersecting || e.boundingClientRect.top < 0); });
+    count();
+  }, { rootMargin: '0px 0px -35% 0px' });
+  items.forEach(function (li) { io.observe(li); });
 })();
 </script>
 </body>
