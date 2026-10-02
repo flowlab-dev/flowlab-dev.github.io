@@ -442,3 +442,12 @@ dialog::backdrop { background: rgba(20, 17, 15, .55); }
 @media (prefers-reduced-motion: reduce) { .spot { transition: none; } }
 [data-mode="simple"] .stage { touch-action: pan-y; } /* a swipe on the photo scrolls the page */
 .type-only { margin: 0; font-weight: 600; font-size: 15px; }
+
+/* picture inside the print: fill / whole, zoom, move, center */
+.artpos { display: grid; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.artpos-h { font-weight: 600; margin: 0; }
+.artpos .seg.mini { width: 100%; }
+.artpos-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.artpos-btns .btn { min-height: 44px; }
+#btnArtMove[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); border-color: var(--ink); }
+.stage.art-moving, [data-mode="simple"] .stage.art-moving { touch-action: none; cursor: grab; }

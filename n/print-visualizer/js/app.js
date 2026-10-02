@@ -1,4 +1,4 @@
-import { renderScene, buildTexture } from './render.js';
+import { renderScene, buildTexture, isRepeat, artSpan } from './render.js';
 import { keepLayer } from './keep.js';
 import { pointInQuad, scaleQuad, centroid, isConvex, squareToQuad, applyH, invertH } from './warp.js';
 import { listDesigns, getDesign, thumb } from './art.js';
@@ -192,6 +192,7 @@ const state = {
   keepFit: true, // keep only the item inside each box, not the wall around it
   draft: null, // the box being dragged out in keepMode
   mode: 'simple', // 'simple': ready rooms, tap a surface, pick a design · 'advanced': own photo, corners, outline, items
+  artMove: false, // dragging the picture inside the selected print instead of the print itself
   art: null, // the last design or own artwork picked in simple mode: a newly filled surface gets it too
 };
 const isSimple = () => state.mode === 'simple';
@@ -248,6 +249,7 @@ async function setScene(scene, photo) {
   state.photo = img;
   $('#status').textContent = '';
   state.prints = (scene.prints ? scene.prints() : []).map(withDefaults);
+  if (state.artMove) setArtMove(false); // a new room starts with the print itself movable again
   state.sel = state.prints.length ? 0 : -1;
   state.shape = false;
   state.preview = false;
@@ -281,7 +283,7 @@ function frame() {
     const dpr = canvas.width / (state.photo.width * viewScale);
     const scene = viewScene(true);
     renderScene(ctx, { photo: state.photo, scene, prints: state.prints, light: state.light },
-      viewScale * dpr, { steps: fast ? 8 : 16 });
+      viewScale * dpr, { steps: fast ? 8 : 16, draft: fast });
     drawOverlay();
   }
   requestAnimationFrame(frame);
@@ -642,6 +644,12 @@ let drag = null;
 
 stage.addEventListener('pointerdown', (e) => {
   if (e.target.closest('#btnDone, .spot')) return;
+  const ap = state.artMove && artMovable(sel()) && !state.keepMode && !state.shape && !e.target.closest('.handle, .kx') ? sel() : null;
+  if (drag?.kind === 'art') return; // a second finger does not take over the drag
+  if (ap && pointInQuad(ap.corners, toImage(e))) {
+    drag = { kind: 'art', id: e.pointerId, last: toUnit(ap, toImage(e)) };
+    stage.setPointerCapture(e.pointerId); fast = true; e.preventDefault(); return;
+  }
   if (isSimple()) { tap = { x: e.clientX, y: e.clientY, id: e.pointerId }; return; } // picked on pointerup
   const h = e.target.closest('.handle, .kx');
   const pt = toImage(e);
@@ -696,14 +704,20 @@ stage.addEventListener('pointerdown', (e) => {
 stage.addEventListener('pointermove', (e) => {
   if (!drag) {
     const pt = toImage(e);
-    stage.style.cursor = isSimple() ? (surfaceAt(pt) ? 'pointer' : 'default')
+    const ap = state.artMove && artMovable(sel()) ? sel() : null;
+    stage.style.cursor = ap && pointInQuad(ap.corners, pt) ? 'grab' : isSimple() ? (surfaceAt(pt) ? 'pointer' : 'default')
       : state.keepMode && !state.preview ? 'crosshair' : state.prints.some((p) => pointInQuad(p.corners, pt)) ? 'move' : 'default';
     return;
   }
   const p = state.prints[state.sel];
   const pt = toImage(e);
   const W = state.photo.width, H = state.photo.height;
-  if (drag.kind === 'box') {
+  if (drag.kind === 'art') {
+    if (e.pointerId !== drag.id) return;
+    const u = toUnit(p, pt);
+    slideArt(p, u.x - drag.last.x, u.y - drag.last.y);
+    drag.last = u;
+  } else if (drag.kind === 'box') {
     state.draft = boxFrom(drag.start, P(clamp(pt.x, 0, W), clamp(pt.y, 0, H)));
   } else if (drag.kind === 'kvtx') {
     state.keep[drag.a][drag.i] = P(clamp(pt.x, 0, W), clamp(pt.y, 0, H));
@@ -720,8 +734,9 @@ stage.addEventListener('pointermove', (e) => {
   redraw();
 });
 
-function endDrag() {
+function endDrag(e) {
   if (!drag) return;
+  if (drag.kind === 'art' && e?.pointerId != null && e.pointerId !== drag.id) return; // the other finger lifted
   drag.el?.classList.remove('drag');
   if (drag.kind === 'box') {
     const b = state.draft; state.draft = null;
@@ -747,6 +762,23 @@ stage.addEventListener('pointerup', (e) => {
 stage.addEventListener('pointercancel', () => { tap = null; });
 stage.addEventListener('pointercancel', endDrag);
 
+// The picture inside a print (one image, not a repeated tile) can be zoomed and slid so the right part shows.
+const artMovable = (p) => !!p && !isRepeat(p);
+// a point on the photo → where it falls on the flat print: 0…1 across, 0…1 down
+function toUnit(p, pt) { const q = invertH(squareToQuad(p.corners))(pt.x, pt.y); return { x: q.u, y: q.v }; }
+// du, dv: how far the finger went across the print (fractions of its width and height); the picture follows it
+function slideArt(p, du, dv) {
+  const { fx, fy } = artSpan(p);
+  if (Math.abs(1 - fx) > 0.002) p.artX = clamp((p.artX || 0) + 2 * du / (1 - fx), -1, 1);
+  if (Math.abs(1 - fy) > 0.002) p.artY = clamp((p.artY || 0) + 2 * dv / (1 - fy), -1, 1);
+}
+function setArtMove(on) {
+  state.artMove = on;
+  stage.classList.toggle('art-moving', on);
+  $('#btnArtMove').setAttribute('aria-pressed', String(on));
+  if (on) say(t('artpos.moving'));
+}
+
 // Move a whole print, keeping its centre on the photo.
 function moveBy(p, dx, dy) {
   const c = centroid(p.corners);
@@ -771,6 +803,11 @@ function nudge(dx, dy, cornerIndex) {
 
 document.addEventListener('keydown', (e) => {
   const map = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+  if (state.artMove && map[e.key] && artMovable(sel()) && (document.activeElement === stage || document.activeElement?.id === 'btnArtMove')) {
+    const k = e.shiftKey ? 0.1 : 0.02;
+    slideArt(sel(), map[e.key][0] * k, map[e.key][1] * k);
+    redraw(); e.preventDefault(); return;
+  }
   if (state.preview && document.activeElement === stage && (map[e.key] || e.key === 'Delete' || e.key === 'Backspace')) {
     // "Done" hides the frame: the first key brings it back instead of moving or deleting a print you can't see
     state.preview = false; redraw(); e.preventDefault(); return;
@@ -953,7 +990,7 @@ function syncDesigns() {
     b.type = 'button'; b.className = 'design'; b.setAttribute('aria-pressed', !!p.upload);
     b.innerHTML = `<img src="${p.myArt.thumb}" alt=""><span>${t('design.yours')}</span>`;
     b.addEventListener('click', () => {
-      Object.assign(p, { upload: p.myArt.canvas, uploadKey: p.myArt.key, uploadThumb: p.myArt.thumb, layout: 'mural' });
+      Object.assign(p, { upload: p.myArt.canvas, uploadKey: p.myArt.key, uploadThumb: p.myArt.thumb, layout: 'mural', artX: 0, artY: 0, artZoom: 1 });
       state.art = { myArt: p.myArt };
       syncAll();
     });
@@ -964,7 +1001,7 @@ function syncDesigns() {
     x.addEventListener('click', () => {
       // only the picture goes: the print, its size, place and product stay, back on the last design
       if (state.art?.myArt === p.myArt) state.art = { design: p.design };
-      p.myArt = null; p.upload = null; p.uploadThumb = null;
+      p.myArt = null; p.upload = null; p.uploadThumb = null; p.artX = p.artY = 0; p.artZoom = 1;
       p.layout = p.type === 'tile' ? 'auto' : 'mural';
       syncAll();
       $('#designs .design')?.focus();
@@ -982,6 +1019,7 @@ function syncDesigns() {
     b.innerHTML = `<img src="${thumbCache.get(k)}" alt=""><span>${designName({ design: d.id })}</span>`;
     b.addEventListener('click', () => {
       p.design = d.id; p.upload = null; p.layout = p.type === 'tile' ? 'auto' : 'mural';
+      p.artX = p.artY = 0; p.artZoom = 1;
       state.art = { design: d.id };
       syncAll();
     });
@@ -1005,6 +1043,7 @@ function syncControls() {
   const p = sel();
   $('#printControls').hidden = !p;
   $('#emptyNote').hidden = !!p;
+  if (!p && state.artMove) setArtMove(false); // no print left: a swipe on the photo must scroll the page again
   if (!p) return;
   pressed($('#types'), 'data-type', p.type);
   const sf = surfaceOf(p);
@@ -1050,6 +1089,12 @@ function syncControls() {
   swatches($('#glowColors'), GLOWS, p.glowColor, (c) => { p.glowColor = c; }, t('led.colour'));
   $('#lightOn').checked = p.lightOn;
   $('#glow').value = Math.round(p.glow * 100);
+  const am = artMovable(p);
+  $('#artPos').hidden = !am;
+  if (!am && state.artMove) setArtMove(false);
+  pressed($('#artFit'), 'data-fit', p.artFit || 'cover');
+  $('#artZoom').value = Math.round((p.artZoom || 1) * 100);
+  $('#artZoom').setAttribute('aria-valuetext', `${$('#artZoom').value} %`);
 }
 
 function syncLight() {
@@ -1252,6 +1297,15 @@ $('#btnDone').addEventListener('click', () => {
   syncControls(); redraw();
 });
 
+$('#artFit').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-fit]'), p = sel(); if (!b || !p) return;
+  p.artFit = b.dataset.fit; pressed($('#artFit'), 'data-fit', p.artFit); redraw();
+});
+$('#artZoom').addEventListener('input', (e) => { const p = sel(); if (!p) return; p.artZoom = e.target.value / 100; e.target.setAttribute('aria-valuetext', `${e.target.value} %`); fast = true; redraw(); });
+$('#artZoom').addEventListener('change', () => { fast = false; redraw(); });
+$('#btnArtCenter').addEventListener('click', () => { const p = sel(); if (!p) return; p.artX = p.artY = 0; redraw(); say(t('artpos.centered')); });
+$('#btnArtMove').addEventListener('click', () => setArtMove(!state.artMove));
+
 // one size slider in simple mode: the picture grows or shrinks around its centre, inches follow
 $('#simpleSize').addEventListener('input', (e) => {
   const p = sel(); if (!p) return;
@@ -1322,7 +1376,7 @@ $('#artFile').addEventListener('change', async (e) => {
   try { art = await fileToCanvas(f, 1600); } catch {
     say(t('err.art')); e.target.value = ''; return;
   }
-  p.upload = art; p.uploadKey = `u${++uploadSeq}`; p.layout = 'mural';
+  p.upload = art; p.uploadKey = `u${++uploadSeq}`; p.layout = 'mural'; p.artX = p.artY = 0; p.artZoom = 1;
   const tc = document.createElement('canvas'); tc.width = tc.height = 96;
   const s = Math.max(96 / art.width, 96 / art.height);
   tc.getContext('2d').drawImage(art, (96 - art.width * s) / 2, (96 - art.height * s) / 2, art.width * s, art.height * s);
@@ -1407,20 +1461,23 @@ function shareUrl(p) {
   const extra = p.type === 'cabinet' ? `,${p.doors},${p.handle}` : p.type === 'metal' ? `,${p.metal},${p.underbase ? 1 : 0}`
     : p.type === 'glassblock' ? `,${p.glassKind},0` : '';
   const size = p.type === 'glassblock' ? p.blockIn : p.tileIn || 0;
-  return `${base}#ar=${p.type},${p.design},${p.widthIn},${p.heightIn},${size}${extra}&${lang}`;
+  const art = p.artFit === 'contain' || (p.artZoom || 1) !== 1 || p.artX || p.artY
+    ? `&art=${p.artFit === 'contain' ? 'contain' : 'cover'},${+(p.artZoom || 1).toFixed(2)},${+(p.artX || 0).toFixed(3)},${+(p.artY || 0).toFixed(3)}` : '';
+  return `${base}#ar=${p.type},${p.design},${p.widthIn},${p.heightIn},${size}${extra}${art}&${lang}`;
 }
 
-const AR_LINK = /^#ar=(tile|glass|backlit|cabinet|metal|glassblock),([a-z]+),([\d.]+),([\d.]+),([\d.]+)(?:,([a-z0-9]+),([a-z0-9]+))?(?:&lang=[a-z]{2})?$/;
+const AR_LINK = /^#ar=(tile|glass|backlit|cabinet|metal|glassblock),([a-z]+),([\d.]+),([\d.]+),([\d.]+)(?:,([a-z0-9]+),([a-z0-9]+))?(?:&art=(cover|contain),([\d.]+),(-?[\d.]+),(-?[\d.]+))?(?:&lang=[a-z]{2})?$/;
 async function openFromLink() {
   const m = location.hash.match(AR_LINK);
   if (!m || !getDesign(m[2])) return;
-  const [, type, design, w, h, tl, x1, x2] = m;
+  const [, type, design, w, h, tl, x1, x2, fit, zoom, ax, ay] = m;
   const p = state.prints[0];
   if (!p) return;
   const k = Math.min(+w / p.widthIn, +h / p.heightIn);
   Object.assign(p, { type, design, upload: null, layout: type === 'tile' ? 'auto' : 'mural', tileIn: +tl || p.tileIn });
   if (type === 'cabinet' && x1) { p.doors = clamp(+x1 || 3, 1, 6); if (HANDLES.includes(x2)) p.handle = x2; }
   if (type === 'metal' && x1) { if (METALS.includes(x1)) p.metal = x1; p.underbase = x2 === '1'; }
+  if (fit) Object.assign(p, { artFit: fit, artZoom: clamp(+zoom || 1, 1, 3), artX: clamp(+ax || 0, -1, 1), artY: clamp(+ay || 0, -1, 1) });
   if (type === 'glassblock') { if (BLOCK_SIZES.includes(+tl)) p.blockIn = +tl; if (GLASS_KINDS.includes(x1)) p.glassKind = x1; }
   setCorners(p, scaleQuad(p.corners, k, k));
   p.widthIn = clamp(+w, 4, 240); p.heightIn = clamp(+h, 4, 120);

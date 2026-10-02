@@ -136,6 +136,19 @@
             <label class="row" id="simpleSizeRow"><span data-i18n="size.simple">Size on the wall</span><input type="range" id="simpleSize" min="50" max="150" value="100" aria-describedby="simpleSizeOut"></label>
             <p class="muted small" id="simpleSizeOut" aria-live="polite"></p>
           </div>
+          <div class="artpos" id="artPos" hidden>
+            <p class="artpos-h" data-i18n="artpos.h">Picture inside the print</p>
+            <div class="seg mini" id="artFit" role="radiogroup" aria-label="Fit" data-i18n-aria="artpos.fit">
+              <button type="button" role="radio" data-fit="cover" data-i18n="artpos.fill">Fill</button>
+              <button type="button" role="radio" data-fit="contain" data-i18n="artpos.whole">Whole picture</button>
+            </div>
+            <label class="row"><span data-i18n="artpos.zoom">Zoom</span><input type="range" id="artZoom" min="100" max="300" value="100"></label>
+            <div class="artpos-btns">
+              <button type="button" class="btn" id="btnArtMove" aria-pressed="false" aria-describedby="artPosNote" data-i18n="artpos.move">Move picture</button>
+              <button type="button" class="btn" id="btnArtCenter" data-i18n="artpos.center">Center</button>
+            </div>
+            <p class="muted small" id="artPosNote" data-i18n="artpos.note">Turn on "Move picture" and drag it on the print, or use the arrow keys.</p>
+          </div>
         </section>
 
         <section class="group adv-only">

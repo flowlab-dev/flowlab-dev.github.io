@@ -15,22 +15,35 @@ function sourceOf(print) {
   return print.upload ? print.upload : renderDesign(print.design);
 }
 
-function isRepeat(print) {
+export function isRepeat(print) {
   if (print.type === 'cabinet' || print.type === 'metal') return false; // one image across the whole piece
   if (print.layout === 'repeat') return true;
   if (print.layout === 'mural') return false;
   return !print.upload && !!getDesign(print.design)?.repeat;
 }
 
+// How big the picture is drawn compared with the print (1 = edge to edge): dragging uses it to follow the finger.
+export function artSpan(print) {
+  const src = sourceOf(print), r = print.widthIn / print.heightIn;
+  const fit = print.artFit === 'contain' ? Math.min : Math.max;
+  const s = fit(1 / src.width, 1 / (src.height * r)) * (print.artZoom || 1);
+  return { fx: src.width * s, fy: src.height * s * r };
+}
+
 // The flat artwork as it would come off the printer, in the print's real proportions.
-export function buildTexture(print) {
+// draft: while a slider or a finger is moving the picture, build it at half size (not kept in the main cache)
+// so every frame stays smooth; the full texture is built again when the finger lifts.
+const draftCache = new Map();
+export function buildTexture(print, draft = false) {
   const key = [print.upload ? print.uploadKey : print.design, print.type, print.widthIn, print.heightIn,
     print.tileIn, print.grout, print.layout,
     print.type === 'cabinet' ? [print.doors, print.doorGapIn, print.handle].join(',') : '',
     print.type === 'metal' ? [print.metal, print.underbase].join(',') : '',
-    print.type === 'glassblock' ? [print.blockIn, print.glassKind].join(',') : ''].join('|');
+    print.type === 'glassblock' ? [print.blockIn, print.glassKind].join(',') : '',
+    [print.artFit, print.artZoom, print.artX, print.artY].join(',')].join('|');
   if (texCache.has(key)) return texCache.get(key);
-  const longSide = print.type === 'tile' || print.type === 'cabinet' || print.type === 'glassblock' ? 2048 : print.type === 'metal' ? METAL_SIZE : 1400;
+  if (draft && draftCache.has(key)) return draftCache.get(key);
+  const longSide = (print.type === 'tile' || print.type === 'cabinet' || print.type === 'glassblock' ? 2048 : print.type === 'metal' ? METAL_SIZE : 1400) / (draft ? 2 : 1);
   const aspect = print.widthIn / print.heightIn;
   const W = aspect >= 1 ? longSide : longSide * aspect;
   const H = aspect >= 1 ? longSide / aspect : longSide;
@@ -39,7 +52,7 @@ export function buildTexture(print) {
   const src = sourceOf(print);
   const ppi = c.width / print.widthIn;
   const tilePx = print.type === 'tile' && print.tileIn > 0 ? print.tileIn * ppi : 0;
-  if (print.type === 'tile' || print.type === 'cabinet' || (print.upload && print.type !== 'metal')) {
+  if (print.type === 'tile' || print.type === 'cabinet' || (print.upload && print.type !== 'metal') || (print.artFit === 'contain' && print.type !== 'metal')) {
     // tile and doors are white under the ink, glass is printed with a white backing layer: a transparent
     // PNG must not let the old wall through (on metal the clear areas stay bare metal, as when printed)
     ctx.fillStyle = '#fbfaf7'; ctx.fillRect(0, 0, c.width, c.height);
@@ -49,8 +62,12 @@ export function buildTexture(print) {
     const cell = tilePx || (print.type === 'glassblock' ? (print.blockIn || 8) * ppi : 8 * ppi); // one motif per tile (or per 8" when printed as one sheet)
     for (let y = 0; y < c.height; y += cell) for (let x = 0; x < c.width; x += cell) ctx.drawImage(src, x, y, cell, cell);
   } else {
-    const s = Math.max(c.width / src.width, c.height / src.height);
-    ctx.drawImage(src, (c.width - src.width * s) / 2, (c.height - src.height * s) / 2, src.width * s, src.height * s);
+    // fill the print (edges cropped) or show the whole picture; then zoom and slide it inside the print:
+    // artX/artY -1…1 run from one edge of the picture to the other, 0 is the centre
+    const fit = print.artFit === 'contain' ? Math.min : Math.max;
+    const s = fit(c.width / src.width, c.height / src.height) * (print.artZoom || 1);
+    const dw = src.width * s, dh = src.height * s;
+    ctx.drawImage(src, (c.width - dw) * (1 + (print.artX || 0)) / 2, (c.height - dh) * (1 + (print.artY || 0)) / 2, dw, dh);
   }
 
   if (tilePx) {
@@ -71,6 +88,15 @@ export function buildTexture(print) {
   if (print.type === 'cabinet') drawDoors(ctx, c.width, c.height, ppi, print);
   if (print.type === 'metal') c.sheen = applyMetal(c, print.metal, print.underbase);
   if (print.type === 'glassblock') drawGlassBlocks(c, ppi, print);
+  if (draft) {
+    for (const [k, old] of draftCache) {
+      releaseTexture(old); old.width = old.height = 0;
+      if (old.sheen) old.sheen.width = old.sheen.height = 0;
+      draftCache.delete(k);
+    }
+    draftCache.set(key, c);
+    return c;
+  }
   if (texCache.size > 8) {
     const k = texCache.keys().next().value;
     const old = texCache.get(k); releaseTexture(old); old.width = old.height = 0; // free memory right away (iOS canvas limit)
@@ -182,7 +208,7 @@ function quadSize(p) {
 
 function drawPrintBody(ctx, print, photo, opts) {
   const q = print.corners;
-  const tex = buildTexture(print);
+  const tex = buildTexture(print, opts.draft);
   withClip(ctx, print, () => {
     const lift = { glass: [0.018, 0.38], metal: [0.007, 0.32], cabinet: [0.005, 0.26] }[print.type];
     if (lift) {
@@ -280,7 +306,7 @@ function drawEmission(ctx, print, light, opts, photo) {
   if (!emitLayer || emitLayer.width !== photo.width || emitLayer.height !== photo.height) emitLayer = mk(photo.width, photo.height);
   const e = emitLayer.getContext('2d');
   e.clearRect(0, 0, emitLayer.width, emitLayer.height);
-  drawQuad(e, buildTexture(print), q, opts.steps);
+  drawQuad(e, buildTexture(print, opts.draft), q, opts.steps);
   e.save();
   quadPath(e, q); e.clip();
   e.globalCompositeOperation = 'screen';
