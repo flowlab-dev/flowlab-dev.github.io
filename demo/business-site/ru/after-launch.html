@@ -901,7 +901,7 @@ legend {
 
 </style>
 <link href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1e1c'/%3E%3Cpath d='M7 24V8l18 16V8' fill='none' stroke='%23e4b200' stroke-width='3'/%3E%3C/svg%3E" rel="icon"/>
-<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font:600 12px/1 inherit;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
+<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:600;line-height:1;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
 <body>
 <a class="skip-link" href="#main">Перейти к содержимому</a>
 <!-- flowlab-band -->
@@ -1449,7 +1449,7 @@ legend {
   /* ------------------------------------------------------------- summary */
 
   function formatDate(stamp) {
-    if (stamp === null || stamp === undefined) return 'не указана';
+    if (stamp === null || stamp === undefined) return 'не указано';
     var d = new Date(stamp);
     var months = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
     return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();

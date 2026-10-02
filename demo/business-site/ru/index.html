@@ -924,7 +924,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
 .brk-p .dw-dim, .brk-p .dw-dim-text, .brk-p .dw-note { display: none; }
 </style>
 <script>if(matchMedia('(min-width:1024px) and (prefers-reduced-motion:no-preference)').matches){document.documentElement.classList.add('scenes');addEventListener('load',function(){if(!window.ScrollTrigger)document.documentElement.classList.remove('scenes')})}</script>
-<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font:600 12px/1 inherit;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
+<style id="fl-lang-css">.fl-lang{display:inline-flex;align-items:center;height:40px;padding:3px;gap:2px;flex:none;border-radius:999px;border:1px solid color-mix(in srgb,currentColor 22%,transparent)}.fl-lang a{display:grid;place-items:center;min-width:38px;height:100%;padding:0 8px;border-radius:999px;font-family:inherit;font-size:12px;font-weight:600;line-height:1;letter-spacing:.04em;text-decoration:none;color:inherit;opacity:.62;transition:opacity .2s,background-color .2s}.fl-lang a[aria-current]{opacity:1;background:color-mix(in srgb,currentColor 14%,transparent)}.fl-lang a:not([aria-current]):hover{opacity:1}.fl-lang a:focus-visible{outline:2px solid currentColor;outline-offset:1px}@media (max-width:420px){.fl-lang{height:36px}.fl-lang a{min-width:32px;padding:0 6px}}</style></head>
 <body>
 <a class="skip-link" href="#top">Перейти к содержимому</a>
 <!-- flowlab-band -->
@@ -986,16 +986,16 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
 <line class="dw-dim" marker-end="url(#arrow)" marker-start="url(#arrow-back)" x1="80" x2="470" y1="326" y2="326"></line>
 <line class="dw-dim" x1="80" x2="80" y1="296" y2="332"></line>
 <line class="dw-dim" x1="470" x2="470" y1="296" y2="332"></line>
-<text class="dw-dim-text" text-anchor="middle" x="275" y="318">390.0</text>
+<text class="dw-dim-text" text-anchor="middle" x="275" y="318">390,0</text>
 <line class="dw-dim" marker-end="url(#arrow)" marker-start="url(#arrow-back)" x1="46" x2="46" y1="70" y2="290"></line>
 <line class="dw-dim" x1="40" x2="76" y1="70" y2="70"></line>
 <line class="dw-dim" x1="40" x2="76" y1="290" y2="290"></line>
-<text class="dw-dim-text" text-anchor="middle" transform="rotate(-90 40 186)" x="40" y="186">220.0</text>
+<text class="dw-dim-text" text-anchor="middle" transform="rotate(-90 40 186)" x="40" y="186">220,0</text>
 <line class="dw-dim" marker-end="url(#arrow)" marker-start="url(#arrow-back)" x1="168" x2="382" y1="46" y2="46"></line>
-<text class="dw-dim-text" text-anchor="middle" x="275" y="38">214.0</text>
-<text class="dw-note" x="486" y="196">2.0 CRS</text>
-<text class="dw-note" x="486" y="214">2 bends</text>
-<text class="dw-note" x="486" y="232">90 deg</text>
+<text class="dw-dim-text" text-anchor="middle" x="275" y="38">214,0</text>
+<text class="dw-note" x="486" y="196">2,0 CRS</text>
+<text class="dw-note" x="486" y="214">2 гиба</text>
+<text class="dw-note" x="486" y="232">90°</text>
 </svg>
 <figcaption><span>Кронштейн NG-2291, развёртка</span> <span>Жёлтые линии — гибы</span> <span>Размеры в мм</span></figcaption>
 </figure>
@@ -1137,7 +1137,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
 <div class="field">
 <label for="material">Материал</label>
 <select id="material" name="material">
-<option selected="" value="crs">Низкоуглеродистая сталь (CRS 1008)</option>
+<option selected="" value="crs">Низкоуглерод. сталь (CRS 1008)</option>
 <option value="ss304">Нержавеющая сталь 304 (2B)</option>
 <option value="al5052">Алюминий 5052-H32</option>
 </select>
@@ -1827,7 +1827,7 @@ html.scenes .cutscene { display: block; height: 100vh; background: var(--panel);
   /* ------------------------------------------------------------- summary */
 
   function formatDate(stamp) {
-    if (stamp === null || stamp === undefined) return 'не указана';
+    if (stamp === null || stamp === undefined) return 'не указано';
     var d = new Date(stamp);
     var months = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
     return d.getUTCDate() + ' ' + months[d.getUTCMonth()] + ' ' + d.getUTCFullYear();

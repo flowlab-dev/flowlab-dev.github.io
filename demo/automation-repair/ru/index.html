@@ -2841,7 +2841,7 @@ html.shift-done .col .end { opacity: 1; }
 
   function field(workflow, nodeName, key, fallbackComment) {
     var target = node(workflow, nodeName);
-    if (target[key] === undefined) return '// "' + key + '" is not set' + (fallbackComment ? ' — ' + fallbackComment : '');
+    if (target[key] === undefined) return '// "' + key + '" не задан' + (fallbackComment ? ': ' + fallbackComment : '');
     return '"' + key + '": ' + JSON.stringify(target[key]);
   }
 
@@ -2867,8 +2867,8 @@ html.shift-done .col .end { opacity: 1; }
       before: function () {
         return [
           '"name": "Fetch new orders",',
-          field(BROKEN, 'Fetch new orders', 'retryOnFail', 'one bad response is fatal') + ',',
-          field(BROKEN, 'Fetch new orders', 'onError', 'defaults to stopping the workflow')
+          field(BROKEN, 'Fetch new orders', 'retryOnFail', 'один ответ с ошибкой обрывает запуск') + ',',
+          field(BROKEN, 'Fetch new orders', 'onError', 'по умолчанию сценарий останавливается')
         ].join('\n');
       },
       after: function () {
@@ -2892,8 +2892,8 @@ html.shift-done .col .end { opacity: 1; }
       },
       after: function () {
         return '"name": "updated_since",\n"value": ' + JSON.stringify(queryParam(FIXED, 'Fetch new orders', 'updated_since'))
-          + '\n\n// Load cursor:\n' + codeLinesMatching(FIXED, 'Load cursor', ['overlapMinutes =', 'const from'])
-          + '\n\n// Remember what was stored (runs after the row exists):\n'
+          + '\n\n// Узел «Load cursor»:\n' + codeLinesMatching(FIXED, 'Load cursor', ['overlapMinutes =', 'const from'])
+          + '\n\n// Узел «Remember what was stored» (работает после записи строки):\n'
           + codeLinesMatching(FIXED, 'Remember what was stored', ['store.cursor = newest', 'delete store.handled']);
       }
     },
@@ -2936,14 +2936,14 @@ html.shift-done .col .end { opacity: 1; }
       fix: 'Теперь сценарий помнит, какие заказы записал и с какой отметкой времени. Точный повтор отбрасывается, а тот же заказ с более новой отметкой считается правкой: существующая строка переписывается (Append or Update по номеру заказа), команда узнаёт, что изменилось, и клиенту второе письмо не уходит. Память пишется только после того, как строка появилась, а записи старше трёх дней забываются, чтобы она не росла бесконечно.',
       before: function () {
         return '"operation": ' + JSON.stringify(node(BROKEN, 'Save to Google Sheets').parameters.operation) + '\n'
-          + '// No memory of previous runs anywhere in the workflow:\n'
-          + '// nodes: ' + BROKEN.nodes.map(function (n) { return n.name; }).join(', ');
+          + '// Памяти о прошлых запусках в сценарии нет нигде:\n'
+          + '// узлы: ' + BROKEN.nodes.map(function (n) { return n.name; }).join(', ');
       },
       after: function () {
         var save = node(FIXED, 'Save to Google Sheets');
         return '"operation": ' + JSON.stringify(save.parameters.operation) + ',\n'
           + '"matchingColumns": ' + JSON.stringify(save.parameters.columns.matchingColumns) + '\n\n'
-          + '// Skip orders already handled:\n'
+          + '// Узел «Skip orders already handled»:\n'
           + codeLinesMatching(FIXED, 'Skip orders already handled',
               ['const storedAt', 'if (storedAt &&', 'order.is_update']);
       }
@@ -2956,9 +2956,9 @@ html.shift-done .col .end { opacity: 1; }
       fix: 'Если письмо не ушло, узел пробует ещё раз, а потом передаёт сбой в выход для ошибок, и команда получает предупреждение; сам заказ к этому моменту уже записан. Всё, где нужен человек (магазин недоступен, у заказа нет рабочей почты, строку не удалось записать, подтверждение вернулось), попадает в один канал #ops-alerts. А сценарий для ошибок превращает любой оставшийся сбой в сообщение в Slack с названием узла и номером выполнения.',
       before: function () {
         return '"name": "Email customer",\n'
-          + field(BROKEN, 'Email customer', 'retryOnFail', 'a quota block is fatal') + ',\n'
-          + field(BROKEN, 'Email customer', 'onError', 'the Slack step after it never runs') + '\n\n'
-          + '"settings": ' + JSON.stringify(BROKEN.settings, null, 2) + '  // no errorWorkflow';
+          + field(BROKEN, 'Email customer', 'retryOnFail', 'блокировка по лимиту обрывает запуск') + ',\n'
+          + field(BROKEN, 'Email customer', 'onError', 'шаг Slack после него не выполняется') + '\n\n'
+          + '"settings": ' + JSON.stringify(BROKEN.settings, null, 2) + '  // errorWorkflow не задан';
       },
       after: function () {
         return '"name": "Email customer",\n'
@@ -3032,7 +3032,7 @@ html.shift-done .col .end { opacity: 1; }
 
   function describeRun(entry, which) {
     if (entry.status === 'error') {
-      var text = 'Запуск остановился на «' + entry.lastNode + '»: ' + entry.error;
+      var text = 'Запуск остановился на «' + entry.lastNode + '»: ' + entry.error + (function (e) { var t = [[/quota exceeded/, 'превышен лимит запросов к Gmail, повторите позже'], [/Service Unavailable/, 'сервис недоступен: хостинг магазина перезапускается'], [/Too Many Requests/, 'слишком много запросов: сработал лимит API магазина'], [/Bad Gateway/, 'ошибка шлюза: короткий сбой API магазина'], [/recipient address rejected/, 'адрес получателя отклонён: такого домена нет'], [/invalid To header/, 'неверный адрес в поле «Кому»'], [/Cannot read properties of undefined \(reading '(\w+)'\)/, 'не удалось вызвать «$1»: в заказе не заполнено поле']]; for (var i = 0; i < t.length; i++) { var m = String(e).match(t[i][0]); if (m) return ' (' + t[i][1].replace('$1', m[1] || '') + ')'; } return ''; })(entry.error);
       if (entry.silent) text += '. Никто не получил сообщения.';
       return text;
     }

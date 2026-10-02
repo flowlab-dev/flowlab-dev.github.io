@@ -54,11 +54,11 @@ async function loadCollection(handle) {
     if (req !== colReq) return;
     colCache[handle] = d;
     const items = d.collection ? d.collection.products.edges.map((e) => e.node) : [];
-    grid.innerHTML = items.map((p) => `
+    grid.innerHTML = items.map((p) => { const tr = window.MONO.product(p.handle, p); return `
       <a class="card${/sneaker|slides|shoe|boot/i.test(p.handle) ? ' shoe' : ''}" href="product.html?handle=${encodeURIComponent(p.handle)}">
-        <div class="ph"><img src="${img(p.featuredImage.url, 600)}" srcset="${srcset(p.featuredImage.url, [360, 600, 900])}" sizes="(max-width:760px) 50vw, 25vw" width="600" height="600" loading="lazy" decoding="async" alt="${esc(p.featuredImage.altText || p.title)}"></div>
-        <h3>${esc(p.title)}</h3><p class="price">${money(p.priceRange.minVariantPrice)}</p>
-      </a>`).join('') || `<p class="empty">${t('no_products')}</p>`;
+        <div class="ph"><img src="${img(p.featuredImage.url, 600)}" srcset="${srcset(p.featuredImage.url, [360, 600, 900])}" sizes="(max-width:760px) 50vw, 25vw" width="600" height="600" loading="lazy" decoding="async" alt="${esc(tr.translated ? tr.title : p.featuredImage.altText || p.title)}"></div>
+        <h3>${esc(tr.title)}</h3><p class="price">${money(p.priceRange.minVariantPrice)}</p>
+      </a>`; }).join('') || `<p class="empty">${t('no_products')}</p>`;
   } catch (e) {
     if (req === colReq) grid.innerHTML = `<p class="empty">${t('catalog_fail')}</p>`;
   }
@@ -70,24 +70,26 @@ async function loadProduct() {
   if (!root) return;
   const handle = new URLSearchParams(location.search).get('handle') || 'men-t-shirt';
   let d;
-  if (loadProduct.cache && loadProduct.cache.handle === handle) return renderProduct(loadProduct.cache.p);
+  if (loadProduct.cache && loadProduct.cache.handle === handle) return renderProduct(loadProduct.cache.p, handle);
   try {
     d = await gql(`query($h:String!){product(handle:$h){title description options{name values} images(first:5){edges{node{url altText}}} variants(first:50){edges{node{id availableForSale price{amount currencyCode} selectedOptions{name value} image{url}}}}}}`, { h: handle });
   } catch (e) { $('[data-title]').textContent = t('product_fail'); return; }
   const p = d.product;
   if (!p) { $('[data-title]').textContent = t('not_found'); return; }
   loadProduct.cache = { handle, p };
-  renderProduct(p);
+  renderProduct(p, handle);
 }
 
 let chosen = null;
-function renderProduct(p) {
+function renderProduct(p, handle) {
+  const tr = window.MONO.product(handle, p);
   $('[data-title]').removeAttribute('data-i18n');
-  document.title = `${p.title} · ${t('title_suffix')}`;
-  $('[data-title]').textContent = p.title;
-  $('[data-desc]').textContent = p.description;
+  document.title = `${tr.title} · ${t('title_suffix')}`;
+  $('[data-title]').textContent = tr.title;
+  $('[data-desc]').textContent = tr.description;
+  $('[data-note]').textContent = t(tr.translated ? 'tr_note' : 'en_note');
   const pics = p.images.edges.map((e) => e.node).slice(0, 3);
-  $('[data-gallery]').innerHTML = pics.map((im, i) => `<div class="ph"><img src="${img(im.url, i ? 600 : 1000)}" srcset="${srcset(im.url, i ? [400, 600, 900] : [600, 1000, 1400])}" sizes="${i ? '(max-width:760px) 50vw, 30vw' : '(max-width:760px) 100vw, 60vw'}" width="1000" height="1000" ${i ? 'loading="lazy"' : 'fetchpriority="high"'} alt="${esc(im.altText || p.title)}"></div>`).join('');
+  $('[data-gallery]').innerHTML = pics.map((im, i) => `<div class="ph"><img src="${img(im.url, i ? 600 : 1000)}" srcset="${srcset(im.url, i ? [400, 600, 900] : [600, 1000, 1400])}" sizes="${i ? '(max-width:760px) 50vw, 30vw' : '(max-width:760px) 100vw, 60vw'}" width="1000" height="1000" ${i ? 'loading="lazy"' : 'fetchpriority="high"'} alt="${esc(tr.translated ? tr.title : im.altText || p.title)}"></div>`).join('');
 
   const variants = p.variants.edges.map((e) => e.node);
   const opts = p.options.filter((o) => !(o.values.length === 1 && o.values[0] === 'Default Title'));
@@ -166,7 +168,7 @@ function renderCart() {
   box.innerHTML = lines.length ? lines.map((l) => `
     <div class="line">
       <img src="${l.merchandise.image ? img(l.merchandise.image.url, 160) : ''}" width="72" height="72" alt="">
-      <div><p class="t">${esc(l.merchandise.product.title)}</p><p class="v">${esc(window.MONO.variant(l.merchandise.title))}</p>
+      <div><p class="t">${esc(window.MONO.product(l.merchandise.product.handle, l.merchandise.product).title)}</p><p class="v">${esc(window.MONO.variant(l.merchandise.title))}</p>
         <div class="qty"><button type="button" data-q="${l.id}" data-n="${l.quantity - 1}" aria-label="${t('dec')}">−</button><output>${l.quantity}</output><button type="button" data-q="${l.id}" data-n="${l.quantity + 1}" aria-label="${t('inc')}">+</button></div></div>
       <p class="lp">${money(l.cost.totalAmount)}</p>
     </div>`).join('') : `<p class="empty">${t('cart_empty')}</p>`;

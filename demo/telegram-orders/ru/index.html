@@ -2184,7 +2184,7 @@ function tapNth(chat, { like, index }) {
   function orderRow(o) {
     var tr = document.createElement('tr');
     tr.innerHTML =
-      '<td>' + o.number + '</td>' +
+      '<td style="white-space:nowrap">' + o.number + '</td>' +
       '<td>' + esc(o.item.label) + ' × ' + o.item.qty + '</td>' +
       '<td>' + o.handover.dateLabel + '<br><span class="small muted">' + esc(o.handover.slotLabel) + '</span></td>' +
       '<td>' + (o.handover.method === 'delivery'
@@ -2222,6 +2222,7 @@ function tapNth(chat, { like, index }) {
     $('s-orders').textContent = String(night.orders.length);
     $('s-revenue').textContent = money(night.revenueCents);
     $('s-questions').textContent = String(night.questions);
+    $('s-questions').nextElementSibling.textContent = plural(night.questions, 'вопрос передан', 'вопроса переданы', 'вопросов передано') + ' пекарне';
     $('s-chats').textContent = String(night.chats.length);
     $('night-stats').hidden = false;
     $('night-result').hidden = false;

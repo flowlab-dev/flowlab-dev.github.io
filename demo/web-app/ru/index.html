@@ -1567,11 +1567,11 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     });
   }
 
-  var MONTHS = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+  var MONTHS = ['янв.', 'февр.', 'марта', 'апр.', 'мая', 'июня', 'июля', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
   var WEEKDAYS = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
   function shortDay(day) {
     var d = new Date(day);
-    return WEEKDAYS[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()];
+    return WEEKDAYS[d.getUTCDay()] + ', ' + d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()];
   }
   var RU_F = { job: ['заказ', 'заказа', 'заказов'], bend: ['гиб', 'гиба', 'гибов'], hole: ['отверстие', 'отверстия', 'отверстий'] };
   function plural(n, one, many) {
@@ -1604,7 +1604,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     if (j.stage === 'lost') return { text: 'Отказ ' + shortDay(j.closedOn), kind: 'done' };
     if (j.due === null) return { text: 'Без срока', kind: '' };
     if (j.due === TODAY) return { text: 'Срок сегодня', kind: 'soon' };
-    return { text: (j.stage === 'rfq' || j.stage === 'quoted' ? 'Нужно к ' : 'Срок ') + shortDay(j.due), kind: B.dueSoon(j, NOW) ? 'soon' : '' };
+    return { text: (j.stage === 'rfq' || j.stage === 'quoted' ? 'Нужно к: ' : 'Срок: ') + shortDay(j.due), kind: B.dueSoon(j, NOW) ? 'soon' : '' };
   }
 
   /* ----------------------------------------------------------------- theme */
@@ -1632,7 +1632,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   function renderWeek() {
     var t = B.weekTotals(state.jobs, NOW);
     var money = B.ROLES[state.role].seesMoney;
-    $('week-start').textContent = shortDay(t.weekStart).replace(/^\S+ /, '');
+    $('week-start').textContent = (function (d) { return d.getUTCDate() + ' ' + ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][d.getUTCMonth()]; })(new Date(t.weekStart));
     var parts = [];
     parts.push(plural(t.requested, 'заявка|заявки', 'заявок'));
     parts.push(plural(t.quoted, 'расчёт отправлен|расчёта отправлено', 'расчётов отправлено') + (money && t.quoted ? ' на ' + wholeMoney(t.quotedValue) : ''));
