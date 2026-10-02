@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Из Lovable Cloud в собственный проект Supabase, со сверкой каждой таблицы · демо Flow Lab</title><meta name="description" content="Переезд базы из Lovable Cloud в новый проект Supabase: схема, строки и пользователи с хешами паролей, каждое число сверено с оригиналом.">
+<link rel="canonical" href="https://flowlab-dev.github.io/demo/lovable-to-supabase/ru.html"><link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/lovable-to-supabase/"><link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/lovable-to-supabase/ru.html">
+<meta name="color-scheme" content="light dark"><script>try{var q=new URLSearchParams(location.search).get('theme'),t=q==='light'||q==='dark'?q:localStorage.getItem('fl-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preload" href="/fonts/onest-cyrillic.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:'Archivo';src:url(/fonts/archivo-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Space Grotesk';src:url(/fonts/spacegrotesk-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Inter Tight';src:url(/fonts/intertight-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Inter Tight';src:url(/fonts/intertight-cyrillic.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}@font-face{font-family:'Onest';src:url(/fonts/onest-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'Onest';src:url(/fonts/onest-cyrillic.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}@font-face{font-family:'JetBrains Mono';src:url(/fonts/jbmono-latin.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2190-2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'JetBrains Mono';src:url(/fonts/jbmono-cyrillic.woff2) format('woff2');font-weight:100 900;font-display:swap;unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}@font-face{font-family:'Archivo Fallback';src:local('Arial Bold'),local('Arial-BoldMT');size-adjust:103.82%;ascent-override:84.57%;descent-override:20.23%;line-gap-override:0%}@font-face{font-family:'Space Grotesk Fallback';src:local('Arial'),local('ArialMT');size-adjust:109.27%;ascent-override:90.05%;descent-override:26.72%;line-gap-override:0%}@font-face{font-family:'Inter Tight Fallback';src:local('Arial Bold'),local('Arial-BoldMT');size-adjust:99.84%;ascent-override:97.03%;descent-override:24.16%;line-gap-override:0%}@font-face{font-family:'Onest Fallback';src:local('Arial'),local('ArialMT');size-adjust:105.73%;ascent-override:91.74%;descent-override:28.85%;line-gap-override:0%}
+:root{--bg:#F6F6F4;--surface:#FFFFFF;--fg:#0B0B0D;--muted:#55585F;--line:rgba(11,11,13,.09);--accent:#2450E0;--good:#067647;--warn:#B54708;
+--shadow:0 1px 2px rgba(0,0,0,.04),0 12px 32px -12px rgba(15,23,42,.14);
+--display:'Archivo','Archivo Fallback',system-ui,sans-serif;--body:'Space Grotesk','Space Grotesk Fallback',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;color-scheme:light}
+html[lang=ru]{--display:'Inter Tight','Inter Tight Fallback',system-ui,sans-serif;--body:'Onest','Onest Fallback',system-ui,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0B0B0D;--surface:#151518;--fg:#F4F4F5;--muted:#A1A1AA;--line:rgba(255,255,255,.1);
+--accent:#7B9BFF;--good:#4CC38A;--warn:#F5A35C;--shadow:0 12px 32px -12px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0B0B0D;--surface:#151518;--fg:#F4F4F5;--muted:#A1A1AA;--line:rgba(255,255,255,.1);
+--accent:#7B9BFF;--good:#4CC38A;--warn:#F5A35C;--shadow:0 12px 32px -12px rgba(0,0,0,.6);color-scheme:dark}
+*{box-sizing:border-box;margin:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);font:16px/1.5 var(--body);color:var(--fg)}
+.band{background:#0B0B0D;color:#F4F4F5;font:500 12px/1.5 var(--mono);text-align:center;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.wrap{max-width:1200px;margin:0 auto;padding:28px 40px 56px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.top{display:flex;align-items:center;gap:10px;font:600 15px var(--body)}
+.dot{width:14px;height:14px;border-radius:4px;background:var(--accent)}
+.tools{display:flex;gap:8px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:1px;background:var(--surface)}
+.lang a,.lang span,.theme{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 14px;border-radius:999px;
+font:600 14px/1 var(--body);color:var(--muted);text-decoration:none}
+.lang span{background:var(--fg);color:var(--bg)}
+.lang a:hover{color:var(--fg)}
+.theme[hidden]{display:none}
+.theme{height:48px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.theme:hover{border-color:var(--muted)}
+a:focus-visible,.theme:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1{font:800 44px/1.05 var(--display);letter-spacing:-.03em;margin:30px 0 12px;max-width:900px;text-wrap:balance}
+.sub{color:var(--muted);max-width:760px;font-size:17px}
+.route{display:flex;align-items:center;gap:14px;margin:26px 0 24px;flex-wrap:wrap;list-style:none;padding:0}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font:500 14px var(--mono)}
+.pill small{display:block;color:var(--muted);font:400 12px var(--mono)}
+.arrow{font:700 22px var(--display);color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:6px 22px 10px;box-shadow:var(--shadow)}
+.card h2{font:700 18px var(--display);letter-spacing:-.01em;padding:16px 0 10px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:11px 0;border-top:1px solid var(--line);text-align:right;font:500 15px var(--mono);font-variant-numeric:tabular-nums}
+th{color:var(--muted);font:500 11px var(--mono);text-transform:uppercase;letter-spacing:.06em;border-top:0;padding-top:0}
+th:first-child,td:first-child{text-align:left;font:400 16px var(--body)}
+th:first-child{font:500 11px var(--mono)}
+td.ok{color:var(--good);width:28px}
+.n{width:84px}
+.note{margin-top:20px;font:400 13px/1.6 var(--mono);color:var(--muted)}
+.moves{margin-top:48px}
+.label{font:700 24px/1.1 var(--display);letter-spacing:-.02em;margin-bottom:16px}
+.list{list-style:none;padding:4px 20px 8px}
+.list li{padding:13px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.list b{font:500 15px/1.4 var(--mono);display:block}
+.list span{color:var(--muted);font-size:15px}
+.good b{color:var(--good)}.warn b{color:var(--warn)}
+.back{display:inline-flex;align-items:center;min-height:44px;margin-top:36px;color:var(--fg);font-weight:500;text-underline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:760px){.wrap{padding:20px 16px 40px}h1{font-size:32px;margin-top:24px}.grid{grid-template-columns:1fr}.n{width:64px}.sub{font-size:16px}
+.route{flex-direction:column;align-items:flex-start;gap:8px}.arrow{transform:rotate(90deg);margin-left:18px}}
+@media print{:root:not(#_),:root[data-theme]{--bg:#fff;--surface:#fff;--fg:#0B0B0D;--muted:#55585F;--line:#ddd;--accent:#2450E0;--good:#067647;--warn:#B54708;color-scheme:light}
+.band{background:none;color:#000;border-bottom:1px solid #ddd}.tools,.back{display:none}.card{box-shadow:none;break-inside:avoid}}
+</style></head><body>
+<p class="band" role="note">Демо Flow Lab. Bramblewash и его данные вымышленные.</p>
+<main class="wrap">
+  <div class="head"><div class="top"><span class="dot" aria-hidden="true"></span>Bramblewash · переезд базы</div>
+    <div class="tools"><nav class="lang" aria-label="Язык"><a href="./" hreflang="en" lang="en">EN</a><span aria-current="page">RU</span></nav><button class="theme" id="theme" type="button" hidden>Ночь</button></div></div>
+  <h1>Из Lovable Cloud в собственный проект Supabase, со сверкой каждой таблицы</h1>
+  <p class="sub">Схема, данные и пользователи с хешами паролей перенесены через SQL Editor нового проекта. Левый столбец: исходный проект и его выгрузка, правый: запрос к новой базе.</p>
+  <ol class="route" aria-label="Путь переезда">
+    <li class="pill">Выгрузка Lovable Cloud<small>pg_dump, PostgreSQL 17.6</small></li>
+    <li class="arrow" aria-hidden="true">→</li>
+    <li class="pill">Новый проект Supabase<small>SQL Editor, частями по 15 КБ</small></li>
+  </ol>
+  <div class="grid">
+    <section class="card"><h2 id="t-schema">Схема</h2><table aria-labelledby="t-schema"><thead><tr><th scope="col">Что</th><th class="n" scope="col">Оригинал</th><th class="n" scope="col">Новая</th><th><span class="sr">совпадает</span></th></tr></thead><tbody><tr><td>Таблицы</td><td class="n">30</td><td class="n">30</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Защита строк (RLS) включена</td><td class="n">15</td><td class="n">15</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Политики</td><td class="n">15</td><td class="n">15</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Внешние ключи</td><td class="n">20</td><td class="n">20</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Функции</td><td class="n">6</td><td class="n">6</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Триггеры</td><td class="n">1</td><td class="n">1</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Бакеты хранилища</td><td class="n">1</td><td class="n">1</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr></tbody></table></section>
+    <section class="card"><h2 id="t-data">Данные и пользователи</h2><table aria-labelledby="t-data"><thead><tr><th scope="col">Что</th><th class="n" scope="col">Оригинал</th><th class="n" scope="col">Новая</th><th><span class="sr">совпадает</span></th></tr></thead><tbody><tr><td>Записи</td><td class="n">77</td><td class="n">77</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Клиенты</td><td class="n">25</td><td class="n">25</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Собаки</td><td class="n">26</td><td class="n">26</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Лист ожидания</td><td class="n">9</td><td class="n">9</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Сообщения</td><td class="n">25</td><td class="n">25</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr><tr><td>Пользователи</td><td class="n">1</td><td class="n">1</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr>
+      <tr><td>Хеш пароля</td><td class="n"><span aria-hidden="true">—</span><span class="sr">не показывается</span></td><td class="n">тот же</td><td class="ok"><span aria-hidden="true">✓</span><span class="sr">совпадает</span></td></tr></tbody></table></section>
+  </div>
+  <p class="note">Перенесены только вымышленные данные демо и наша тестовая учётная запись владельца. Сам сайт на новую базу не переключали.</p>
+  <div class="grid moves">
+    <section><h2 class="label">Переехало вместе с выгрузкой</h2><ul class="card list good"><li><b>Схема, защита строк, политики</b><span>30 таблиц, RLS включена у тех же 15 таблиц, что и в оригинале</span></li><li><b>Строки</b><span>данные демо пришли с выгрузкой, таблицы заполнила собственная функция сброса в приложении, количество совпадает с оригиналом</span></li><li><b>Пользователи и хеши паролей</b><span>хеш совпадает с исходным</span></li><li><b>Права для ролей API</b><span>сохранены: с 30 октября 2026 года Supabase открывает новые таблицы для API только по явным правам (GRANT)</span></li></ul></section>
+    <section><h2 class="label">Что настраивается вручную в новом проекте</h2><ul class="card list warn"><li><b>Задания по расписанию (pg_cron)</b><span>не переносятся: лежат в служебной схеме cron, их создают заново</span></li><li><b>Собственная роль Lovable</b><span>в Supabase такой роли нет, права для неё пропускаются</span></li><li><b>Серверный код с сервисным ключом</b><span>новые ключи владелец прописывает там, где размещён сайт</span></li><li><b>Провайдеры входа и секреты</b><span>владелец задаёт их в новом проекте</span></li></ul></section>
+  </div>
+  <a class="back" href="https://flowlab-dev.github.io/ru/work/lovable-to-supabase/">← Назад к кейсу</a>
+</main>
+<script>(function(){var r=document.documentElement,b=document.getElementById('theme'),m=matchMedia('(prefers-color-scheme: dark)');function dark(){return r.dataset.theme?r.dataset.theme==='dark':m.matches}function label(){var d=dark();b.textContent=d?'День':'Ночь';b.setAttribute('aria-label',d?'День: включить дневную тему':'Ночь: включить ночную тему')}b.hidden=false;b.onclick=function(){var v=dark()?'light':'dark';r.dataset.theme=v;try{localStorage.setItem('fl-theme',v)}catch(e){}label()};label();m.addEventListener?m.addEventListener('change',label):m.addListener(label)})()</script>
+</body></html>
