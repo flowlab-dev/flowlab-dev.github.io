@@ -134,6 +134,20 @@ button { cursor: pointer; }
 .outline polygon { fill: none; stroke: #fff; stroke-width: 1.5; stroke-dasharray: 6 5; filter: drop-shadow(0 0 1.5px rgba(0,0,0,.7)); }
 .shaping .outline .frame { opacity: .45; }
 .outline .cut { stroke: var(--accent); stroke-width: 2; stroke-dasharray: none; }
+.outline .keep polygon { stroke: #38bdf8; stroke-width: 2; stroke-dasharray: none; fill: rgba(56,189,248,.16); }
+.outline .keep polygon.boxed { stroke: #f59e0b; stroke-dasharray: 6 4; fill: rgba(245,158,11,.14); }
+.keep-boxed { margin: 6px 0 0; color: var(--text); border-left: 3px solid #f59e0b; padding-left: 10px; }
+.handle.keepv::after { border-color: #38bdf8; }
+.kx { position: absolute; width: 28px; height: 28px; margin: -14px 0 0 -14px; padding: 0; border: 0; border-radius: 50%;
+  background: #0f172a; color: #fff; font: 600 18px/28px system-ui, sans-serif; text-align: center; cursor: pointer; z-index: 3;
+  box-shadow: 0 0 0 2px #fff, 0 1px 4px rgba(0,0,0,.4); touch-action: none; }
+.kx::before { content: ""; position: absolute; inset: -8px; } /* 44 px touch target */
+.kx[hidden] { display: none; }
+.kx:focus-visible { outline: 3px solid #38bdf8; outline-offset: 2px; }
+.keep-tools { margin-top: 12px; }
+/* the × is pooled with the point handles (class "handle"): its own size, colour and no point drawn on it */
+.handle.kx { width: 28px; height: 28px; margin: -14px 0 0 -14px; background: #0f172a; cursor: pointer; }
+.handle.kx::after { content: none; }
 .handle.vtx::after { width: 14px; height: 14px; margin: -7px 0 0 -7px; border-width: 3px; }
 .handle.mid { width: 36px; height: 36px; margin: -18px 0 0 -18px; z-index: 1; }
 .handle.vtx { z-index: 2; } /* a point always wins over the "+" next to it */

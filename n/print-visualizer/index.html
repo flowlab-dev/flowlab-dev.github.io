@@ -54,7 +54,7 @@
     <section class="stage-col" aria-label="Room preview" data-i18n-aria="stage.col">
       <div class="stage" id="stage" tabindex="0" aria-label="Room preview. Select a print, drag to move it, use arrow keys to nudge." data-i18n-aria="stage.aria">
         <canvas id="view" width="1024" height="767"></canvas>
-        <svg id="outline" class="outline" aria-hidden="true"><polygon class="frame" points=""/><polygon class="cut" points=""/></svg>
+        <svg id="outline" class="outline" aria-hidden="true"><polygon class="frame" points=""/><polygon class="cut" points=""/><g class="keep"></g></svg>
         <div id="handles"></div>
         <button type="button" class="stage-done" id="btnDone" hidden>
           <svg class="i-done" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
@@ -234,6 +234,20 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           <span data-i18n="chip.add">Add print</span>
         </button>
+      </section>
+
+      <section class="group" id="keepGroup">
+        <h2 data-i18n="keep.h">In front of the print</h2>
+        <p class="muted small" id="keepNote" data-i18n="keep.note">Switches, sockets, the tap, cabinet handles: mark them and they stay on top of the print, as if the wall or the doors themselves changed.</p>
+        <div class="nudge keep-tools">
+          <button type="button" class="text" id="btnKeep" aria-pressed="false" aria-describedby="keepNote" data-i18n="keep.start">Mark items</button>
+          <button type="button" class="text" id="btnKeepUndo" data-i18n="keep.undo" hidden>Undo last</button>
+          <button type="button" class="text danger" id="btnKeepClear" data-i18n="keep.clear" hidden>Clear all</button>
+        </div>
+        <label class="check"><input type="checkbox" id="keepFit" checked aria-describedby="keepFitNote"> <span data-i18n="keep.fit">Fit to the item</span></label>
+        <p class="muted small" id="keepFitNote" data-i18n="keep.fitNote">On: only the item itself stays, the print reaches right up to it. Off: the whole box stays.</p>
+        <p class="muted small" id="keepCount" aria-live="polite"></p>
+        <p class="small keep-boxed" id="keepBoxed" data-i18n="keep.boxed" hidden>Orange boxes stay whole: the item could not be told apart from the wall. Draw the box closer around the item, or drag its points onto the item's outline.</p>
       </section>
 
       <section class="group">

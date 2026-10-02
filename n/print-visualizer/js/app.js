@@ -1,4 +1,5 @@
 import { renderScene, buildTexture } from './render.js';
+import { keepLayer } from './keep.js';
 import { pointInQuad, scaleQuad, centroid, isConvex, squareToQuad, applyH, invertH } from './warp.js';
 import { listDesigns, getDesign, thumb } from './art.js';
 import { panelGLB } from './glb.js';
@@ -130,6 +131,10 @@ const state = {
   light: { ...LIGHT.day, preset: 'day' },
   shape: false, // editing the outline points of the selected print
   preview: false, // "Done": corner dots and frame hidden, the room as it will look
+  keep: [], // areas of the photo that stay in front of every print (switches, sockets, taps, handles): polygons
+  keepMode: false, // marking those areas on the photo
+  keepFit: true, // keep only the item inside each box, not the wall around it
+  draft: null, // the box being dragged out in keepMode
 };
 
 const canvas = $('#view');
@@ -186,6 +191,7 @@ async function setScene(scene, photo) {
   state.sel = state.prints.length ? 0 : -1;
   state.shape = false;
   state.preview = false;
+  state.keep = []; state.keepMode = false; state.draft = null; keepCache = null; keepDirty = false; keepBoxed = []; keepLiveA = -1;
   $('#loading').classList.add('done');
   layout();
   syncAll();
@@ -212,7 +218,8 @@ function frame() {
   if (dirty && state.photo) {
     dirty = false;
     const dpr = canvas.width / (state.photo.width * viewScale);
-    renderScene(ctx, { photo: state.photo, scene: state.scene, prints: state.prints, light: state.light },
+    const scene = viewScene(true);
+    renderScene(ctx, { photo: state.photo, scene, prints: state.prints, light: state.light },
       viewScale * dpr, { steps: fast ? 8 : 16 });
     drawOverlay();
   }
@@ -220,6 +227,27 @@ function frame() {
 }
 
 function redraw() { dirty = true; }
+let keepCache = null, keepDirty = false, keepBoxed = [], keepLiveA = -1, keepTimer = 0;
+// The scene with the marked items on top. On screen the area being dragged (or moved with the arrow keys) shows
+// as its plain outline and is fitted once it is let go; the saved image always uses the fitted cut-outs.
+function viewScene(onScreen = false) {
+  const live = !onScreen ? -1 : drag?.kind === 'kvtx' ? drag.a : keepLiveA;
+  if (keepDirty || live >= 0 || keepCache?.live >= 0) {
+    keepDirty = false;
+    const r = keepLayer(state.photo, state.keep, state.keepFit, live);
+    keepCache = r && { canvas: r.canvas, live };
+    const boxed = r ? r.boxed : [];
+    if (live < 0 && boxed.join() !== keepBoxed.join()) { keepBoxed = boxed; syncKeep(); }
+  }
+  return keepCache ? { ...state.scene, keepLayer: keepCache.canvas } : state.scene;
+}
+function keepChanged() { keepDirty = true; redraw(); }
+// arrow keys on a point: show the plain outline while keys are pressed, fit once they stop
+function keepNudged(a) {
+  keepLiveA = a; clearTimeout(keepTimer);
+  keepTimer = setTimeout(() => { keepLiveA = -1; keepChanged(); }, 300);
+  redraw();
+}
 
 // ---------- selection overlay (outline + corner handles) ----------
 const handles = [0, 1, 2, 3].map((i) => {
@@ -246,23 +274,63 @@ function pool(arr, n, cls, key) {
 const put = (el, c) => { el.style.left = `${c.x * viewScale}px`; el.style.top = `${c.y * viewScale}px`; };
 const pts = (arr) => arr.map((c) => `${c.x * viewScale},${c.y * viewScale}`).join(' ');
 
+// Marked areas (state.keep): each has its points, a "+" on every edge and a × that removes it.
+const keepVtx = [], keepMid = [], keepX = [];
+let keepRefs = []; // flat index → [area, point]
+function drawKeep() {
+  const on = state.keepMode && !state.preview;
+  const g = $('#outline .keep');
+  g.innerHTML = '';
+  const polys = on ? [...state.keep, ...(state.draft ? [state.draft] : [])] : [];
+  polys.forEach((poly, a) => {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    el.setAttribute('points', pts(poly));
+    if (state.keepFit && keepBoxed.includes(a) && poly !== state.draft) el.setAttribute('class', 'boxed');
+    g.append(el);
+  });
+  keepRefs = on ? state.keep.flatMap((poly, a) => poly.map((_, i) => [a, i])) : [];
+  pool(keepVtx, keepRefs.length, 'vtx keepv', 'kv');
+  pool(keepMid, keepRefs.length, 'mid keepm', 'km');
+  pool(keepX, on ? state.keep.length : 0, 'kx', 'kx');
+  keepRefs.forEach(([a, i], k) => {
+    const poly = state.keep[a], q = poly[i], r = poly[(i + 1) % poly.length];
+    put(keepVtx[k], q);
+    put(keepMid[k], P((q.x + r.x) / 2, (q.y + r.y) / 2));
+    keepMid[k].hidden = Math.hypot(r.x - q.x, r.y - q.y) * viewScale < 64;
+    keepVtx[k].setAttribute('aria-label', t('keep.point', { n: i + 1, a: a + 1 }));
+    keepMid[k].setAttribute('aria-label', t('shape.add'));
+  });
+  if (!on) return;
+  state.keep.forEach((poly, a) => {
+    // the × sits just above the area's top point, so it never covers a point you need
+    const top = poly.reduce((m, q) => (q.y < m.y ? q : m), poly[0]);
+    const el = keepX[a];
+    el.style.left = `${top.x * viewScale}px`;
+    el.style.top = `${Math.max(14, top.y * viewScale - 26)}px`;
+    el.setAttribute('aria-label', t('keep.remove', { n: a + 1 }));
+    el.textContent = '×';
+  });
+}
+
 function drawOverlay() {
+  drawKeep();
   const p = state.prints[state.sel];
+  const keeping = state.keepMode && !state.preview;
   const shaping = !!p && state.shape && !!p.clip && !state.preview;
   const n = shaping ? p.clip.length : 0;
   const done = $('#btnDone');
-  done.hidden = !state.prints.length;
+  done.hidden = !state.prints.length && !state.keepMode;
   done.classList.toggle('on', state.preview);
   done.querySelector('span').textContent = t(state.preview ? 'stage.edit' : 'stage.done');
-  handles.forEach((h) => { h.hidden = !p || shaping || state.preview; });
+  handles.forEach((h) => { h.hidden = !p || shaping || keeping || state.preview; });
   pool(vtxEls, n, 'vtx', 'v');
   pool(midEls, n, 'mid', 'm');
   $('#outline .frame').setAttribute('points', p && !state.preview ? pts(p.corners) : '');
   $('#outline .cut').setAttribute('points', shaping ? pts(p.clip) : '');
-  stage.classList.toggle('shaping', shaping);
-  const hint = $('#hint'), key = state.preview ? 'stage.hintPreview' : shaping ? 'stage.hintShape' : 'stage.hint';
+  stage.classList.toggle('shaping', shaping || keeping);
+  const hint = $('#hint'), key = state.preview ? 'stage.hintPreview' : keeping ? 'stage.hintKeep' : shaping ? 'stage.hintShape' : 'stage.hint';
   if (hint.dataset.i18n !== key) { hint.dataset.i18n = key; hint.textContent = t(key); }
-  placeDone(done, !p || state.preview ? [] : [...p.corners, ...(shaping ? p.clip : [])]);
+  placeDone(done, state.preview ? [] : [...(p ? p.corners : []), ...(shaping ? p.clip : []), ...(keeping ? state.keep.flat() : [])]);
   if (!p || state.preview) return;
   p.corners.forEach((c, i) => put(handles[i], c));
   for (let i = 0; i < n; i++) {
@@ -361,9 +429,39 @@ function ensureClip(p) {
 function setShape(on) {
   const p = sel();
   state.shape = !!on && !!p;
-  if (state.shape) { ensureClip(p); state.preview = false; }
+  if (state.shape) { ensureClip(p); state.preview = false; state.keepMode = false; syncKeep(); }
   syncControls(); redraw();
 }
+
+// ---------- things in front of the print ----------
+function setKeepMode(on) {
+  state.keepMode = !!on;
+  if (state.keepMode) { state.shape = false; state.preview = false; syncControls(); }
+  state.draft = null;
+  syncKeep(); redraw();
+}
+function syncKeep() {
+  const n = state.keep.length;
+  $('#btnKeep').setAttribute('aria-pressed', String(state.keepMode));
+  $('#btnKeep').textContent = t(state.keepMode ? 'keep.stop' : 'keep.start');
+  $('#btnKeepUndo').hidden = !n;
+  $('#btnKeepClear').hidden = !n;
+  $('#keepCount').textContent = n ? plural('keep.count', n) : '';
+  const boxed = state.keepFit ? keepBoxed.filter((a) => a < n).length : 0;
+  $('#keepBoxed').hidden = !boxed;
+  $('#keepFit').checked = state.keepFit;
+}
+function removeKeep(a) {
+  state.keep.splice(a, 1);
+  syncKeep(); keepChanged();
+}
+function removeKeepPoint(a, i) {
+  const poly = state.keep[a];
+  if (poly.length <= 3) { removeKeep(a); return; }
+  poly.splice(i, 1);
+  keepChanged();
+}
+const boxFrom = (a, b) => rect(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.max(a.x, b.x), Math.max(a.y, b.y));
 function removePoint(i) {
   const p = sel(); if (!p?.clip) return;
   if (p.clip.length <= 3) { say(t('shape.min')); return; }
@@ -382,9 +480,29 @@ let drag = null;
 
 stage.addEventListener('pointerdown', (e) => {
   if (e.target.closest('#btnDone')) return;
-  const h = e.target.closest('.handle');
+  const h = e.target.closest('.handle, .kx');
   const pt = toImage(e);
-  if (h && h.dataset.m != null) {
+  const W = state.photo?.width || 0, H = state.photo?.height || 0;
+  if (h && h.dataset.kx != null) { removeKeep(+h.dataset.kx); e.preventDefault(); return; }
+  if (h && h.dataset.km != null) {
+    const [a, i] = keepRefs[+h.dataset.km], poly = state.keep[a], q = poly[i], r = poly[(i + 1) % poly.length];
+    poly.splice(i + 1, 0, P((q.x + r.x) / 2, (q.y + r.y) / 2));
+    drawOverlay();
+    const k = keepRefs.findIndex(([b, j]) => b === a && j === i + 1);
+    drag = { kind: 'kvtx', a, i: i + 1, el: keepVtx[k] };
+    drag.el.classList.add('drag');
+  } else if (h && h.dataset.kv != null) {
+    const [a, i] = keepRefs[+h.dataset.kv], now = performance.now(), id = `k${a}:${i}`;
+    if (lastTap.i === id && now - lastTap.t < 400) { lastTap = { i: -1, t: 0 }; removeKeepPoint(a, i); e.preventDefault(); return; }
+    lastTap = { i: id, t: now };
+    drag = { kind: 'kvtx', a, i, el: h };
+    h.classList.add('drag');
+  } else if (state.keepMode && !state.preview) {
+    // drag out a box around a switch, a tap, a handle…
+    const start = P(clamp(pt.x, 0, W), clamp(pt.y, 0, H));
+    drag = { kind: 'box', start };
+    state.draft = boxFrom(start, start);
+  } else if (h && h.dataset.m != null) {
     const p = sel(), i = +h.dataset.m, a = p.clip[i], b = p.clip[(i + 1) % p.clip.length];
     p.clip.splice(i + 1, 0, P((a.x + b.x) / 2, (a.y + b.y) / 2));
     drawOverlay();
@@ -415,13 +533,17 @@ stage.addEventListener('pointerdown', (e) => {
 stage.addEventListener('pointermove', (e) => {
   if (!drag) {
     const pt = toImage(e);
-    stage.style.cursor = state.prints.some((p) => pointInQuad(p.corners, pt)) ? 'move' : 'default';
+    stage.style.cursor = state.keepMode && !state.preview ? 'crosshair' : state.prints.some((p) => pointInQuad(p.corners, pt)) ? 'move' : 'default';
     return;
   }
   const p = state.prints[state.sel];
   const pt = toImage(e);
   const W = state.photo.width, H = state.photo.height;
-  if (drag.kind === 'vtx') {
+  if (drag.kind === 'box') {
+    state.draft = boxFrom(drag.start, P(clamp(pt.x, 0, W), clamp(pt.y, 0, H)));
+  } else if (drag.kind === 'kvtx') {
+    state.keep[drag.a][drag.i] = P(clamp(pt.x, 0, W), clamp(pt.y, 0, H));
+  } else if (drag.kind === 'vtx') {
     p.clip[drag.i] = P(clamp(pt.x, 0, W), clamp(pt.y, 0, H));
   } else if (drag.kind === 'corner') {
     const next = p.corners.slice();
@@ -437,6 +559,12 @@ stage.addEventListener('pointermove', (e) => {
 function endDrag() {
   if (!drag) return;
   drag.el?.classList.remove('drag');
+  if (drag.kind === 'box') {
+    const b = state.draft; state.draft = null;
+    const w = b ? (b[1].x - b[0].x) * viewScale : 0, h = b ? (b[2].y - b[1].y) * viewScale : 0;
+    if (w >= 8 && h >= 8) { state.keep.push(b); syncKeep(); } else if (b) say(t('keep.tooSmall'));
+  }
+  if (drag.kind === 'box' || drag.kind === 'kvtx') keepDirty = true;
   const grew = drag.kind === 'vtx';
   drag = null; fast = false;
   if (grew) { growToClip(sel()); syncAll(); }
@@ -474,6 +602,28 @@ document.addEventListener('keydown', (e) => {
     state.preview = false; redraw(); e.preventDefault(); return;
   }
   const h = document.activeElement?.closest?.('.handle');
+  const kv = h?.dataset.kv != null ? keepRefs[+h.dataset.kv] : null;
+  if (kv && (map[e.key] || e.key === 'Delete' || e.key === 'Backspace')) {
+    if (map[e.key]) {
+      const k = (e.shiftKey ? 10 : 2) / Math.max(0.3, viewScale), q = state.keep[kv[0]][kv[1]];
+      q.x = clamp(q.x + map[e.key][0] * k, 0, state.photo.width); q.y = clamp(q.y + map[e.key][1] * k, 0, state.photo.height);
+      keepNudged(kv[0]);
+    } else removeKeepPoint(kv[0], kv[1]);
+    e.preventDefault(); return;
+  }
+  if (h?.dataset.kx != null && (e.key === 'Enter' || e.key === ' ')) {
+    removeKeep(+h.dataset.kx); $('#btnKeep').focus(); e.preventDefault(); return;
+  }
+  if (state.keepMode && document.activeElement === stage && (e.key === 'Enter' || e.key === ' ')) {
+    // keyboard: a box in the middle of the photo; its points then move with the arrow keys
+    const W = state.photo.width, H = state.photo.height, s = Math.min(W, H) * 0.08;
+    state.keep.push(rect(W / 2 - s, H / 2 - s, W / 2 + s, H / 2 + s)); syncKeep(); keepChanged();
+    say(plural('keep.count', state.keep.length)); e.preventDefault(); return;
+  }
+  if (h?.dataset.km != null && (e.key === 'Enter' || e.key === ' ')) {
+    const [a, i] = keepRefs[+h.dataset.km], poly = state.keep[a], q = poly[i], r = poly[(i + 1) % poly.length];
+    poly.splice(i + 1, 0, P((q.x + r.x) / 2, (q.y + r.y) / 2)); keepChanged(); e.preventDefault(); return;
+  }
   const v = h?.dataset.v != null ? +h.dataset.v : null;
   if (v != null && sel()?.clip && map[e.key]) {
     const k = (e.shiftKey ? 10 : 2) / Math.max(0.3, viewScale), q = sel().clip[v];
@@ -484,7 +634,7 @@ document.addEventListener('keydown', (e) => {
   } else if (h?.dataset.m != null && (e.key === 'Enter' || e.key === ' ')) {
     const p = sel(), i = +h.dataset.m, a = p.clip[i], b = p.clip[(i + 1) % p.clip.length];
     p.clip.splice(i + 1, 0, P((a.x + b.x) / 2, (a.y + b.y) / 2)); redraw(); e.preventDefault();
-  } else if (map[e.key] && (h || document.activeElement === stage)) {
+  } else if (map[e.key] && (h ? h.dataset.i != null : document.activeElement === stage)) {
     const k = (e.shiftKey ? 10 : 2) / Math.max(0.3, viewScale);
     nudge(map[e.key][0] * k, map[e.key][1] * k, h ? +h.dataset.i : null);
     e.preventDefault();
@@ -779,7 +929,7 @@ function syncSummary() {
 }
 
 function syncAll() {
-  syncRooms(); syncLayers(); syncDesigns(); syncControls(); syncLight(); syncSummary(); redraw();
+  syncRooms(); syncLayers(); syncDesigns(); syncControls(); syncLight(); syncSummary(); syncKeep(); redraw();
 }
 
 // ---------- control events ----------
@@ -884,12 +1034,16 @@ $('#btnShapeReset').addEventListener('click', () => {
   syncLayers(); syncSummary();
   syncControls(); redraw();
 });
+$('#btnKeep').addEventListener('click', () => setKeepMode(!state.keepMode));
+$('#btnKeepUndo').addEventListener('click', () => { state.keep.pop(); syncKeep(); keepChanged(); });
+$('#btnKeepClear').addEventListener('click', () => { state.keep = []; syncKeep(); keepChanged(); });
+$('#keepFit').addEventListener('change', (e) => { state.keepFit = e.target.checked; syncKeep(); keepChanged(); });
 $('#btnSquare').addEventListener('click', squareUp);
 $('#btnDelete').addEventListener('click', removeSelected);
 $('#btnEmptyAdd').addEventListener('click', addPrint);
 $('#btnDone').addEventListener('click', () => {
   state.preview = !state.preview;
-  if (state.preview) state.shape = false;
+  if (state.preview) { state.shape = false; state.keepMode = false; state.draft = null; syncKeep(); }
   syncControls(); redraw();
 });
 
@@ -941,7 +1095,7 @@ $('#btnSave').addEventListener('click', () => {
   const scale = Math.min(2, 2048 / state.photo.width);
   const c = document.createElement('canvas');
   c.width = Math.round(state.photo.width * scale); c.height = Math.round(state.photo.height * scale);
-  renderScene(c.getContext('2d'), { photo: state.photo, scene: state.scene, prints: state.prints, light: state.light }, scale, { steps: 24 });
+  renderScene(c.getContext('2d'), { photo: state.photo, scene: viewScene(), prints: state.prints, light: state.light }, scale, { steps: 24 });
   c.toBlob((b) => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(b); a.download = 'my-room-with-prints.jpg';
@@ -1165,7 +1319,7 @@ setScene(startScene).then(openFromLink);
 function exportCanvas(scale) {
   const c = document.createElement('canvas');
   c.width = Math.round(state.photo.width * scale); c.height = Math.round(state.photo.height * scale);
-  renderScene(c.getContext('2d'), { photo: state.photo, scene: state.scene, prints: state.prints, light: state.light }, scale, { steps: 24 });
+  renderScene(c.getContext('2d'), { photo: state.photo, scene: viewScene(), prints: state.prints, light: state.light }, scale, { steps: 24 });
   return c;
 }
-window.__viz = { state, setScene, SCENES, addPrint, setSize, squareUp, redraw, exportCanvas, syncAll, setShape };
+window.__viz = { state, keepChanged, viewScene, setScene, SCENES, addPrint, setSize, squareUp, redraw, exportCanvas, syncAll, setShape };

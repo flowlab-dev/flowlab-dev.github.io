@@ -313,18 +313,34 @@ function drawEmission(ctx, print, light, opts, photo) {
 
 function drawOccluders(ctx, scene, photo, light) {
   const keyed = keyLayer(scene, photo);
-  if (!scene.occluders?.length && !keyed) return;
+  if (!scene.occluders?.length && !keyed && !scene.keepLayer) return;
   ctx.save();
   (scene.occluders || []).forEach((poly) => { polyPath(ctx, poly); ctx.save(); ctx.clip(); ctx.drawImage(photo, 0, 0); ctx.restore(); });
-  if (keyed) ctx.drawImage(keyed, 0, 0);
+  const lit = light.brightness !== 1 || light.warmth !== 0;
+  // cut-out layers: with the room light multiplied in when there is one (drawn once, so no bright halo at their soft edge)
+  for (const layer of [keyed, scene.keepLayer]) if (layer) ctx.drawImage(lit ? tinted(layer, lightColor(light)) : layer, 0, 0);
   ctx.restore();
-  if (light.brightness !== 1 || light.warmth !== 0) {
+  if (lit) {
     ctx.save();
     ctx.globalCompositeOperation = 'multiply';
     ctx.fillStyle = lightColor(light);
-    scene.occluders.forEach((poly) => { polyPath(ctx, poly); ctx.fill(); });
+    (scene.occluders || []).forEach((poly) => { polyPath(ctx, poly); ctx.fill(); });
     ctx.restore();
   }
+}
+
+// A cut-out layer with the room light multiplied in (its own alpha kept), cached per colour.
+const tintCache = new WeakMap();
+function tinted(layer, colour) {
+  const hit = tintCache.get(layer);
+  if (hit?.colour === colour && hit.version === layer.version) return hit.canvas;
+  const c = hit?.canvas || mk(layer.width, layer.height), x = c.getContext('2d');
+  x.globalCompositeOperation = 'copy'; x.drawImage(layer, 0, 0);
+  x.globalCompositeOperation = 'multiply'; x.fillStyle = colour; x.fillRect(0, 0, c.width, c.height);
+  x.globalCompositeOperation = 'destination-in'; x.drawImage(layer, 0, 0);
+  x.globalCompositeOperation = 'source-over';
+  tintCache.set(layer, { colour, version: layer.version, canvas: c });
+  return c;
 }
 
 // Things in front of the print cut out by colour inside a box (a plant's leaves): built once per photo.
