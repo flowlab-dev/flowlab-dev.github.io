@@ -40,6 +40,14 @@ const GLOWS = ['#ffe7b8', '#ffffff', '#cfe3ff', '#ffc9a3'];
 //   }],
 // },
 // bathroom → type 'tile' or 'glass' · office → 'metal' or 'glass' · commercial → 'metal' or 'backlit'.
+//
+// Simple mode: each room also lists its surfaces. The visitor taps one and the print goes there, already lined up.
+//   surfaces: [{ id, name: { en, ru }, types: [products allowed there], fill: true when the print covers the
+//     whole surface (a backsplash, doors), so it has no size slider, print: () => ({ same as a print above }) }]
+// The first surface is filled when the room opens. Advanced mode uses `prints`, which defaults to that first surface.
+const ON_WALL = ['glass', 'backlit', 'metal'];
+const WALL_TILE = ['tile', 'glass'];
+const S = (id, en, ru, types, fill, print) => ({ id, name: { en, ru }, types, fill, print });
 const SCENES = [
   {
     id: 'kitchen', name: { en: 'Backsplash', ru: 'Кухонный фартук' }, src: 'rooms/kitchen-tiles.jpg',
@@ -48,27 +56,37 @@ const SCENES = [
     // polished granite: wash out the old tiles' reflection, mirror the new print in it
     reflection: { edgeY: 580, alpha: 0.26, blur: 2.5, wash: 7,
       polys: [[P(100, 580), P(238, 580), P(238, 668), P(60, 672)], [P(604, 580), P(955, 580), P(980, 676), P(604, 672)]] },
-    prints: () => [{
-      type: 'tile', design: 'moroccan', widthIn: 99, heightIn: 28, tileIn: 6, grout: GROUTS[0],
-      corners: rect(112, 340, 950, 580),
-      clip: [P(112, 428), P(312, 428), P(312, 340), P(590, 340), P(590, 428), P(950, 428), P(950, 580), P(112, 580)],
-    }],
+    surfaces: [
+      S('backsplash', 'Backsplash', 'Фартук', WALL_TILE, true, () => ({
+        type: 'tile', design: 'moroccan', widthIn: 99, heightIn: 28, tileIn: 6, grout: GROUTS[0],
+        corners: rect(112, 340, 950, 580),
+        clip: [P(112, 428), P(312, 428), P(312, 340), P(590, 340), P(590, 428), P(950, 428), P(950, 580), P(112, 580)],
+      })),
+      S('doors', 'Upper doors', 'Верхние дверцы', ['cabinet'], true, () => ({
+        type: 'cabinet', design: 'terrazzo', widthIn: 34, heightIn: 24, doors: 2, handle: 'knob', finish: 'matte',
+        corners: rect(291, 45, 588, 252), // the two doors above the hood
+      })),
+    ],
   },
   {
     id: 'kitchen2', name: { en: 'Kitchen, side view', ru: 'Кухня сбоку' }, src: 'rooms/kitchen-angle.jpg',
     occluders: [[P(437, 268), P(462, 266), P(462, 308), P(437, 310)]],
-    prints: () => [{
-      type: 'glass', design: 'citrus', widthIn: 30, heightIn: 20, layout: 'mural',
-      corners: [P(420, 143), P(700, 93), P(700, 414), P(420, 327)],
-    }],
+    surfaces: [
+      S('wall', 'Wall panel', 'Панель на стене', ON_WALL, false, () => ({
+        type: 'glass', design: 'citrus', widthIn: 30, heightIn: 20, layout: 'mural',
+        corners: [P(420, 143), P(700, 93), P(700, 414), P(420, 327)],
+      })),
+    ],
   },
   {
     id: 'living', name: { en: 'Living room', ru: 'Гостиная' }, src: 'rooms/living-room.jpg',
     occluders: [],
-    prints: () => [{
-      type: 'backlit', design: 'aurora', widthIn: 48, heightIn: 30, glow: 0.8, glowColor: GLOWS[0], lightOn: true,
-      corners: rect(229, 18, 795, 372),
-    }],
+    surfaces: [
+      S('wall', 'Above the sofa', 'Над диваном', ON_WALL, false, () => ({
+        type: 'backlit', design: 'aurora', widthIn: 48, heightIn: 30, glow: 0.8, glowColor: GLOWS[0], lightOn: true,
+        corners: rect(229, 18, 795, 372),
+      })),
+    ],
   },
   {
     id: 'bathroom', name: { en: 'Bathroom', ru: 'Ванная' }, src: 'rooms/bathroom.jpg',
@@ -76,49 +94,87 @@ const SCENES = [
     // the tap and the sink rim; the plant is cut out by its colour (keyOccluders), so the leaves stay sharp
     occluders: [rect(418, 388, 536, 452), [P(495, 448), P(585, 440), P(622, 452), P(628, 476), P(495, 476)]],
     keyOccluders: [{ box: [925, 335, 1105, 492], minSat: 0.28 }],
-    prints: () => [{
-      type: 'tile', design: 'terrazzo', widthIn: 84, heightIn: 72, tileIn: 12, grout: GROUTS[1],
-      corners: [P(497, 22), P(1040, 18), P(1040, 486), P(497, 474)],
-      clip: [P(497, 22), P(1040, 18), P(1040, 486), P(497, 474)],
-    }],
+    surfaces: [
+      S('wall', 'Tiled wall', 'Стена с плиткой', WALL_TILE, true, () => ({
+        type: 'tile', design: 'terrazzo', widthIn: 84, heightIn: 72, tileIn: 12, grout: GROUTS[1],
+        corners: [P(497, 22), P(1040, 18), P(1040, 486), P(497, 474)],
+        clip: [P(497, 22), P(1040, 18), P(1040, 486), P(497, 474)],
+      })),
+    ],
   },
   {
     id: 'office', name: { en: 'Office', ru: 'Офис' }, src: 'rooms/office.jpg',
     occluders: [],
-    prints: () => [{
-      type: 'metal', design: 'coast', widthIn: 72, heightIn: 40, metal: 'aluminium', underbase: false,
-      corners: [P(414, 61), P(805, 62), P(802, 282), P(414, 283)], // over the whiteboard, between the wall lamps
-    }],
+    surfaces: [
+      S('main', 'Main wall', 'Центр стены', ON_WALL, false, () => ({
+        type: 'metal', design: 'coast', widthIn: 72, heightIn: 40, metal: 'aluminium', underbase: false,
+        corners: [P(414, 61), P(805, 62), P(802, 282), P(414, 283)], // over the whiteboard, between the wall lamps
+      })),
+      S('left', 'Wall, left', 'Стена слева', ON_WALL, false, () => ({
+        type: 'glass', design: 'botanical', widthIn: 32, heightIn: 24, layout: 'mural',
+        corners: rect(130, 95, 345, 255),
+      })),
+      S('right', 'Wall, right', 'Стена справа', ON_WALL, false, () => ({
+        type: 'glass', design: 'citrus', widthIn: 32, heightIn: 24, layout: 'mural',
+        corners: rect(870, 95, 1085, 255),
+      })),
+    ],
   },
   {
     id: 'commercial', name: { en: 'Café wall', ru: 'Стена в кафе' }, src: 'rooms/commercial.jpg',
     lightMatch: { colour: 1.2, strength: 1 }, // dim, warm bar light: the print takes its colour too
     occluders: [],
-    prints: () => [{
-      type: 'glass', design: 'botanical', widthIn: 72, heightIn: 36, layout: 'mural',
-      corners: rect(600, 190, 1150, 460),
-    }],
+    surfaces: [
+      S('wall', 'Wall, right', 'Стена справа', ON_WALL, false, () => ({
+        type: 'glass', design: 'botanical', widthIn: 72, heightIn: 36, layout: 'mural',
+        corners: rect(600, 190, 1150, 460),
+      })),
+      S('frame', 'In place of the frame', 'Вместо рамки', ON_WALL, false, () => ({
+        type: 'metal', design: 'coast', widthIn: 30, heightIn: 24, metal: 'brass', underbase: true,
+        corners: rect(336, 265, 549, 438), // covers the framed bird print
+      })),
+    ],
   },
   {
     id: 'kitchen-cabinets', name: { en: 'Kitchen cabinets', ru: 'Кухонные шкафы' }, src: 'rooms/kitchen-cabinets.jpg',
-    // the pendant lamp hangs in front of the right-hand doors
-    occluders: [[P(838, 96), P(873, 96), P(920, 168), P(918, 186), P(793, 186), P(791, 168)], rect(852, 0, 859, 96)],
-    prints: () => [{
-      type: 'cabinet', design: 'terrazzo', widthIn: 64, heightIn: 36, doors: 5, handle: 'none', finish: 'matte',
-      corners: rect(590, 148, 930, 339), // the five upper doors right of the microwave
-    }],
+    // the pendant lamp hangs in front of the right-hand doors; in front of the backsplash (traced by hand, dark on
+    // dark tile): coffee maker, knife block, jars, bottles, socket, tap, second coffee maker, bowl
+    occluders: [[P(838, 96), P(873, 96), P(920, 168), P(918, 186), P(793, 186), P(791, 168)], rect(852, 0, 859, 96),
+      rect(321, 371, 359, 434), [P(359, 372), P(386, 372), P(388, 393), P(393, 410), P(393, 434), P(359, 434)],
+      rect(392, 415, 408, 434), [P(418, 395), P(427, 395), P(428, 404), P(430, 396), P(437, 396), P(438, 405), P(442, 412), P(442, 434), P(418, 434)],
+      rect(624, 380, 637, 402),
+      [P(720, 360), P(726, 360), P(727, 393), P(729, 398), P(727, 420), P(740, 420), P(740, 426), P(727, 426), P(727, 434), P(719, 434), P(719, 398)],
+      rect(847, 375, 911, 434), [P(828, 413), P(873, 413), P(871, 422), P(866, 434), P(833, 434), P(829, 422)]],
+    surfaces: [
+      S('right', 'Upper doors, right', 'Верхние дверцы справа', ['cabinet'], true, () => ({
+        type: 'cabinet', design: 'terrazzo', widthIn: 64, heightIn: 36, doors: 5, handle: 'none', finish: 'matte',
+        corners: rect(590, 148, 930, 339), // the five upper doors right of the microwave
+      })),
+      S('left', 'Upper doors, left', 'Верхние дверцы слева', ['cabinet'], true, () => ({
+        type: 'cabinet', design: 'terrazzo', widthIn: 26, heightIn: 36, doors: 2, handle: 'none', finish: 'matte',
+        corners: rect(306, 148, 443, 340),
+      })),
+      S('backsplash', 'Backsplash', 'Фартук', WALL_TILE, true, () => ({
+        type: 'tile', design: 'moroccan', widthIn: 112, heightIn: 17, tileIn: 4, grout: GROUTS[1],
+        corners: rect(311, 343, 912, 433),
+        clip: [P(311, 343), P(441, 343), P(441, 352), P(590, 352), P(590, 343), P(912, 343), P(912, 433), P(311, 433)],
+      })),
+    ],
   },
   {
-    id: 'glass-block', name: { en: 'Glass block wall', ru: 'Стекло\u00adблоки' }, src: 'rooms/glass-block.jpg',
+    id: 'glass-block', name: { en: 'Glass block wall', ru: 'Стекло­блоки' }, src: 'rooms/glass-block.jpg',
     lightMatch: { colour: 0, strength: 0.7 },
     surfaceThrough: 0.55, // real wavy glass and reflections show through the ink
     occluders: [],
-    prints: () => [{
-      type: 'glassblock', design: 'coast', widthIn: 80, heightIn: 48, blockIn: 8, glassKind: 'frosted', grout: GROUTS[0],
-      corners: rect(193, 145, 1002, 625), // 10 × 6 real blocks, on their mortar joints
-    }],
+    surfaces: [
+      S('wall', 'Glass block wall', 'Стена из стеклоблоков', ['glassblock'], true, () => ({
+        type: 'glassblock', design: 'coast', widthIn: 80, heightIn: 48, blockIn: 8, glassKind: 'frosted', grout: GROUTS[0],
+        corners: rect(193, 145, 1002, 625), // 10 × 6 real blocks, on their mortar joints
+      })),
+    ],
   },
 ];
+for (const s of SCENES) s.prints ||= () => [{ ...s.surfaces[0].print(), surface: s.surfaces[0].id }];
 
 const LIGHT = {
   day: { brightness: 1, warmth: 0 },
@@ -135,7 +191,10 @@ const state = {
   keepMode: false, // marking those areas on the photo
   keepFit: true, // keep only the item inside each box, not the wall around it
   draft: null, // the box being dragged out in keepMode
+  mode: 'simple', // 'simple': ready rooms, tap a surface, pick a design · 'advanced': own photo, corners, outline, items
+  art: null, // the last design or own artwork picked in simple mode: a newly filled surface gets it too
 };
+const isSimple = () => state.mode === 'simple';
 
 const canvas = $('#view');
 const ctx = canvas.getContext('2d');
@@ -187,10 +246,12 @@ async function setScene(scene, photo) {
   if (token !== sceneToken) return; // a newer room was picked while this one loaded
   state.scene = scene;
   state.photo = img;
+  $('#status').textContent = '';
   state.prints = (scene.prints ? scene.prints() : []).map(withDefaults);
   state.sel = state.prints.length ? 0 : -1;
   state.shape = false;
   state.preview = false;
+  if (isSimple() && state.art) state.prints.forEach((p) => giveArt(p, state.art));
   state.keep = []; state.keepMode = false; state.draft = null; keepCache = null; keepDirty = false; keepBoxed = []; keepLiveA = -1;
   $('#loading').classList.add('done');
   layout();
@@ -312,9 +373,108 @@ function drawKeep() {
   });
 }
 
+// ---------- simple mode: surfaces ----------
+const surfacesNow = () => (isSimple() && state.scene?.surfaces) || [];
+const surfaceOf = (p) => (p?.surface && surfacesNow().find((sf) => sf.id === p.surface)) || null;
+const quadOf = (sf) => (sf.quad ||= sf.print().corners);
+const polyOf = (sf) => (sf.poly ||= (() => { const q = sf.print(); return q.clip || q.corners; })()); // stepped backsplash: its outline
+const midOf = (poly) => P(poly.reduce((a, c) => a + c.x, 0) / poly.length, poly.reduce((a, c) => a + c.y, 0) / poly.length);
+const printOn = (id) => state.prints.findIndex((p) => p.surface === id);
+function inPolyXY(poly, pt) {
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const a = poly[i], b = poly[j];
+    if ((a.y > pt.y) !== (b.y > pt.y) && pt.x < (b.x - a.x) * (pt.y - a.y) / (b.y - a.y) + a.x) inside = !inside;
+  }
+  return inside;
+}
+function surfaceAt(pt) {
+  const list = surfacesNow();
+  for (let k = list.length - 1; k >= 0; k--) if (inPolyXY(polyOf(list[k]), pt)) return list[k];
+  return null;
+}
+// A design keeps its own look (tile pattern, mural); own artwork on a picture takes the artwork's proportions.
+function giveArt(p, art) {
+  if (!art) return;
+  if (art.myArt) {
+    Object.assign(p, { myArt: art.myArt, upload: art.myArt.canvas, uploadKey: art.myArt.key, uploadThumb: art.myArt.thumb, layout: 'mural' });
+    if (ON_WALL.includes(p.type)) fitArt(p, art.myArt.canvas);
+  } else if (getDesign(art.design)?.tags.includes(p.type)) {
+    p.design = art.design; p.upload = null; p.layout = p.type === 'tile' ? 'auto' : 'mural';
+  }
+}
+// A picture takes the artwork's proportions and stays inside the surface it was given: a tall picture gets narrower.
+function fitArt(p, art) {
+  const r = art.height / art.width;
+  let w = p.widthIn, h = Math.round(w * r);
+  if (h > p.heightIn) { h = p.heightIn; w = Math.round(h / r); }
+  w = Math.max(4, w); h = Math.max(4, h);
+  setCorners(p, scaleQuad(p.corners, w / p.widthIn, h / p.heightIn));
+  p.widthIn = w; p.heightIn = h; p.sbase = null; p.simpleK = 100;
+}
+// Tap on a surface: select its print, or put a print there with the design picked last.
+function useSurface(id) {
+  const sf = surfacesNow().find((x) => x.id === id); if (!sf) return;
+  let i = printOn(id);
+  if (i < 0) {
+    const p = withDefaults({ ...sf.print(), surface: id });
+    giveArt(p, state.art);
+    state.prints.push(p); i = state.prints.length - 1;
+    say(t('surf.placed', { name: localName(sf.name) }));
+  }
+  state.sel = i; state.preview = false;
+  syncAll();
+}
+const PLUS = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+const spotEls = [];
+function drawSpots() {
+  const list = state.preview ? [] : surfacesNow();
+  // a narrow photo (phones): empty surfaces get a round "+", only the selected print keeps its name on the photo
+  const compact = stage.clientWidth < 600;
+  while (spotEls.length < list.length) {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'spot';
+    b.addEventListener('click', () => useSurface(b.dataset.s));
+    $('#spots').append(b); spotEls.push(b);
+  }
+  spotEls.forEach((b, k) => { b.hidden = k >= list.length; });
+  const g = $('#outline .spots');
+  g.innerHTML = '';
+  list.forEach((sf, k) => {
+    const q = quadOf(sf), i = printOn(sf.id), b = spotEls[k], name = localName(sf.name);
+    const key = `${sf.id}|${i}|${i === state.sel}|${name}|${compact}`;
+    b.hidden = compact && i >= 0 && i !== state.sel;
+    if (b.dataset.key !== key) {
+      b.dataset.key = key; b.dataset.s = sf.id;
+      b.classList.toggle('empty', i < 0);
+      b.classList.toggle('round', compact && i < 0);
+      b.setAttribute('aria-pressed', String(i >= 0 && i === state.sel));
+      b.setAttribute('aria-label', t(i < 0 ? 'surf.place' : 'surf.pick', { name }));
+      b.innerHTML = i < 0 ? PLUS : '';
+      if (!(compact && i < 0)) b.append(Object.assign(document.createElement('span'), { textContent: name }));
+    }
+    // empty: label in the middle of a dashed box · filled: a small label near the top edge, the print stays visible
+    if (i < 0) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+      el.setAttribute('points', pts(polyOf(sf))); g.append(el);
+      put(b, midOf(polyOf(sf)));
+    } else if (compact) {
+      // phones: the name sits just outside the print (below, or above when there is no room), so it never covers it
+      const H = stage.clientHeight / viewScale, gap = 26 / viewScale;
+      const bottom = Math.max(q[2].y, q[3].y), top = Math.min(q[0].y, q[1].y), x = (q[0].x + q[1].x + q[2].x + q[3].x) / 4;
+      put(b, P(x, bottom + gap < H - 4 / viewScale ? bottom + gap : top - gap > 4 / viewScale ? top - gap : bottom - gap));
+    } else {
+      const top = P((q[0].x + q[1].x) / 2, (q[0].y + q[1].y) / 2), c = centroid(q);
+      const d = Math.hypot(c.x - top.x, c.y - top.y) * viewScale, k2 = d > 0 ? Math.min(1, 30 / d) : 0;
+      put(b, P(top.x + (c.x - top.x) * k2, top.y + (c.y - top.y) * k2));
+    }
+  });
+}
+
 function drawOverlay() {
   drawKeep();
-  const p = state.prints[state.sel];
+  drawSpots();
+  const p = isSimple() ? null : state.prints[state.sel];
   const keeping = state.keepMode && !state.preview;
   const shaping = !!p && state.shape && !!p.clip && !state.preview;
   const n = shaping ? p.clip.length : 0;
@@ -328,9 +488,11 @@ function drawOverlay() {
   $('#outline .frame').setAttribute('points', p && !state.preview ? pts(p.corners) : '');
   $('#outline .cut').setAttribute('points', shaping ? pts(p.clip) : '');
   stage.classList.toggle('shaping', shaping || keeping);
-  const hint = $('#hint'), key = state.preview ? 'stage.hintPreview' : keeping ? 'stage.hintKeep' : shaping ? 'stage.hintShape' : 'stage.hint';
+  const hint = $('#hint'), key = state.preview ? 'stage.hintPreview' : keeping ? 'stage.hintKeep' : shaping ? 'stage.hintShape'
+    : isSimple() ? 'stage.hintSimple' : 'stage.hint';
   if (hint.dataset.i18n !== key) { hint.dataset.i18n = key; hint.textContent = t(key); }
-  placeDone(done, state.preview ? [] : [...(p ? p.corners : []), ...(shaping ? p.clip : []), ...(keeping ? state.keep.flat() : [])]);
+  placeDone(done, state.preview ? [] : [...(p ? p.corners : []), ...(shaping ? p.clip : []), ...(keeping ? state.keep.flat() : []),
+    ...surfacesNow().map((sf) => midOf(polyOf(sf)))]);
   if (!p || state.preview) return;
   p.corners.forEach((c, i) => put(handles[i], c));
   for (let i = 0; i < n; i++) {
@@ -479,7 +641,8 @@ function toImage(e) {
 let drag = null;
 
 stage.addEventListener('pointerdown', (e) => {
-  if (e.target.closest('#btnDone')) return;
+  if (e.target.closest('#btnDone, .spot')) return;
+  if (isSimple()) { tap = { x: e.clientX, y: e.clientY, id: e.pointerId }; return; } // picked on pointerup
   const h = e.target.closest('.handle, .kx');
   const pt = toImage(e);
   const W = state.photo?.width || 0, H = state.photo?.height || 0;
@@ -533,7 +696,8 @@ stage.addEventListener('pointerdown', (e) => {
 stage.addEventListener('pointermove', (e) => {
   if (!drag) {
     const pt = toImage(e);
-    stage.style.cursor = state.keepMode && !state.preview ? 'crosshair' : state.prints.some((p) => pointInQuad(p.corners, pt)) ? 'move' : 'default';
+    stage.style.cursor = isSimple() ? (surfaceAt(pt) ? 'pointer' : 'default')
+      : state.keepMode && !state.preview ? 'crosshair' : state.prints.some((p) => pointInQuad(p.corners, pt)) ? 'move' : 'default';
     return;
   }
   const p = state.prints[state.sel];
@@ -571,6 +735,16 @@ function endDrag() {
   redraw();
 }
 stage.addEventListener('pointerup', endDrag);
+// simple mode: a tap picks the surface under it; a swipe (moved more than 10 px) only scrolls the page
+let tap = null;
+stage.addEventListener('pointerup', (e) => {
+  const t0 = tap; tap = null;
+  if (!t0 || t0.id !== e.pointerId || !isSimple() || !state.photo) return;
+  if (Math.hypot(e.clientX - t0.x, e.clientY - t0.y) > 10) return;
+  const sf = surfaceAt(toImage(e));
+  if (sf) useSurface(sf.id);
+});
+stage.addEventListener('pointercancel', () => { tap = null; });
 stage.addEventListener('pointercancel', endDrag);
 
 // Move a whole print, keeping its centre on the photo.
@@ -601,6 +775,8 @@ document.addEventListener('keydown', (e) => {
     // "Done" hides the frame: the first key brings it back instead of moving or deleting a print you can't see
     state.preview = false; redraw(); e.preventDefault(); return;
   }
+  // simple mode: nothing is moved or deleted from the photo itself (the panel has "Remove the print")
+  if (isSimple() && document.activeElement === stage && (map[e.key] || e.key === 'Delete' || e.key === 'Backspace')) return;
   const h = document.activeElement?.closest?.('.handle');
   const kv = h?.dataset.kv != null ? keepRefs[+h.dataset.kv] : null;
   if (kv && (map[e.key] || e.key === 'Delete' || e.key === 'Backspace')) {
@@ -700,6 +876,7 @@ function setSize(wIn, hIn) {
   const p = sel(); if (!p || !(wIn > 0) || !(hIn > 0)) return;
   setCorners(p, scaleQuad(p.corners, wIn / p.widthIn, hIn / p.heightIn));
   p.widthIn = wIn; p.heightIn = hIn;
+  p.sbase = null;
   if (p.type === 'glassblock') snapBlocks(p);
   if (p.type === 'cabinet') p.doors = doorsFor(wIn);
   syncControls();
@@ -730,7 +907,7 @@ const sceneName = (s) => (s.nameKey ? t(s.nameKey) : localName(s.name));
 function syncRooms() {
   const box = $('#rooms');
   box.innerHTML = '';
-  const list = customRoom ? [...SCENES, customRoom.scene] : SCENES;
+  const list = customRoom && !isSimple() ? [...SCENES, customRoom.scene] : SCENES;
   list.forEach((s) => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'room';
@@ -777,6 +954,7 @@ function syncDesigns() {
     b.innerHTML = `<img src="${p.myArt.thumb}" alt=""><span>${t('design.yours')}</span>`;
     b.addEventListener('click', () => {
       Object.assign(p, { upload: p.myArt.canvas, uploadKey: p.myArt.key, uploadThumb: p.myArt.thumb, layout: 'mural' });
+      state.art = { myArt: p.myArt };
       syncAll();
     });
     const x = document.createElement('button');
@@ -785,6 +963,7 @@ function syncDesigns() {
     x.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg>';
     x.addEventListener('click', () => {
       // only the picture goes: the print, its size, place and product stay, back on the last design
+      if (state.art?.myArt === p.myArt) state.art = { design: p.design };
       p.myArt = null; p.upload = null; p.uploadThumb = null;
       p.layout = p.type === 'tile' ? 'auto' : 'mural';
       syncAll();
@@ -803,6 +982,7 @@ function syncDesigns() {
     b.innerHTML = `<img src="${thumbCache.get(k)}" alt=""><span>${designName({ design: d.id })}</span>`;
     b.addEventListener('click', () => {
       p.design = d.id; p.upload = null; p.layout = p.type === 'tile' ? 'auto' : 'mural';
+      state.art = { design: d.id };
       syncAll();
     });
     box.append(b);
@@ -827,6 +1007,15 @@ function syncControls() {
   $('#emptyNote').hidden = !!p;
   if (!p) return;
   pressed($('#types'), 'data-type', p.type);
+  const sf = surfaceOf(p);
+  $('#types').querySelectorAll('[data-type]').forEach((b) => { b.hidden = !!sf && !sf.types.includes(b.dataset.type); });
+  const only = !!sf && sf.types.length === 1;
+  $('#types').hidden = only;
+  $('#typeOnly').hidden = !only;
+  $('#typeOnly').textContent = only ? productName(p.type) : '';
+  $('#simpleSizeRow').hidden = !sf || sf.fill;
+  $('#simpleSize').value = p.simpleK || 100;
+  $('#simpleSizeOut').textContent = t(sf?.fill ? 'surf.fills' : 'surf.size', { w: p.widthIn, h: p.heightIn, unit: t('unit.in') });
   $('#wIn').value = p.widthIn;
   $('#hIn').value = p.heightIn;
   $('#scale').value = 100;
@@ -909,7 +1098,8 @@ function summaryLines() {
     const sqft = a.toLocaleString(getLang(), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
     const area = uv ? t('sum.areaCut', { a: sqft }) : `${sqft} ${t('unit.sqft')}`;
     const unit = t('unit.in');
-    return { i, p, title: `${productName(p.type)} · ${designName(p)}`,
+    const sf = surfaceOf(p);
+    return { i, p, title: `${sf ? `${localName(sf.name)}: ` : ''}${productName(p.type)} · ${designName(p)}`,
       detail: `${p.widthIn} × ${p.heightIn} ${unit} (${area})${tileCount(p, uv)}, ${extraFor(p).join(', ')}` };
   });
 }
@@ -928,8 +1118,23 @@ function syncSummary() {
   });
 }
 
+function syncSurfaces() {
+  const box = $('#surfs');
+  box.innerHTML = '';
+  surfacesNow().forEach((sf) => {
+    const i = printOn(sf.id), b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip';
+    b.setAttribute('aria-pressed', String(i >= 0 && i === state.sel));
+    b.innerHTML = i < 0 ? PLUS : `<img src="${designThumb(state.prints[i])}" alt="">`;
+    b.append(Object.assign(document.createElement('span'), { textContent: localName(sf.name) }));
+    b.addEventListener('click', () => useSurface(sf.id));
+    box.append(b);
+  });
+  $('#btnSurfRemove').hidden = !surfaceOf(sel());
+}
+
 function syncAll() {
-  syncRooms(); syncLayers(); syncDesigns(); syncControls(); syncLight(); syncSummary(); syncKeep(); redraw();
+  syncRooms(); syncLayers(); syncSurfaces(); syncDesigns(); syncControls(); syncLight(); syncSummary(); syncKeep(); redraw();
 }
 
 // ---------- control events ----------
@@ -1047,6 +1252,50 @@ $('#btnDone').addEventListener('click', () => {
   syncControls(); redraw();
 });
 
+// one size slider in simple mode: the picture grows or shrinks around its centre, inches follow
+$('#simpleSize').addEventListener('input', (e) => {
+  const p = sel(); if (!p) return;
+  p.sbase ||= { ...snapshot(p), widthIn: p.widthIn, heightIn: p.heightIn, k: (p.simpleK || 100) / 100 };
+  const r = (e.target.value / 100) / p.sbase.k;
+  setCorners(p, scaleQuad(p.sbase.corners, r, r), p.sbase.corners, p.sbase.clip);
+  p.widthIn = Math.round(p.sbase.widthIn * r); p.heightIn = Math.round(p.sbase.heightIn * r);
+  p.simpleK = +e.target.value;
+  $('#simpleSizeOut').textContent = t('surf.size', { w: p.widthIn, h: p.heightIn, unit: t('unit.in') });
+  fast = true; syncSummary(); redraw();
+});
+$('#simpleSize').addEventListener('change', () => { fast = false; syncSurfaces(); redraw(); });
+$('#btnSurfRemove').addEventListener('click', () => {
+  const sf = surfaceOf(sel()); if (!sf) return;
+  removeSelected();
+  say(t('surf.removed', { name: localName(sf.name) }));
+  $('#surfs .chip')?.focus();
+});
+
+function setMode(m, save = true) {
+  state.mode = m === 'advanced' ? 'advanced' : 'simple';
+  document.documentElement.dataset.mode = state.mode;
+  stage.dataset.i18nAria = isSimple() ? 'stage.ariaSimple' : 'stage.aria';
+  stage.setAttribute('aria-label', t(stage.dataset.i18nAria));
+  pressed($('#modeSwitch'), 'data-mode', state.mode);
+  if (save) try { localStorage.setItem('pv-mode', state.mode); } catch { /* private mode */ }
+}
+$('#modeSwitch').addEventListener('click', (e) => {
+  const m = e.target.closest('[data-mode]')?.dataset.mode;
+  if (!m || m === state.mode) return;
+  setMode(m);
+  state.shape = false; state.keepMode = false; state.preview = false; state.draft = null;
+  // advanced keeps the prints as they are, ready to edit. Back in simple: prints on the room's surfaces stay
+  // (one per surface), prints added by hand go; your own photo stays in advanced, simple opens the first room.
+  if (!isSimple()) { syncAll(); return; }
+  if (!state.scene?.surfaces) { setScene(SCENES[0]); say(t('mode.ownPhoto')); return; }
+  const kept = state.prints.filter((p, i) => p.surface && state.prints.findIndex((q) => q.surface === p.surface) === i);
+  if (!kept.length) { setScene(state.scene); return; }
+  const cur = sel();
+  state.prints = kept;
+  state.sel = Math.max(0, kept.indexOf(cur));
+  syncAll();
+});
+
 $('#roomFile').addEventListener('change', async (e) => {
   const f = e.target.files[0]; if (!f) return;
   let photo;
@@ -1079,9 +1328,17 @@ $('#artFile').addEventListener('change', async (e) => {
   tc.getContext('2d').drawImage(art, (96 - art.width * s) / 2, (96 - art.height * s) / 2, art.width * s, art.height * s);
   p.uploadThumb = tc.toDataURL('image/jpeg', 0.85);
   p.myArt = { canvas: art, key: p.uploadKey, thumb: p.uploadThumb };
+  state.art = { myArt: p.myArt };
   // A picture on glass or metal takes the artwork's proportions (keeping the width). A backsplash, doors
   // or a glass block wall keep the area marked on the wall: the artwork fills it, cropped at the edges.
-  if (p.type === 'glass' || p.type === 'backlit' || p.type === 'metal') {
+  const sf = surfaceOf(p);
+  if (sf && ON_WALL.includes(p.type)) {
+    // simple mode: start again from the surface's own size, then fit the artwork inside it
+    const base = sf.print();
+    setCorners(p, base.corners.map((c) => ({ ...c })));
+    p.widthIn = base.widthIn; p.heightIn = base.heightIn;
+    fitArt(p, art);
+  } else if (p.type === 'glass' || p.type === 'backlit' || p.type === 'metal') {
     const ratio = art.height / art.width;
     setSize(p.widthIn, Math.max(4, Math.round(p.widthIn * ratio)));
   }
@@ -1237,6 +1494,8 @@ $('#btnAR').addEventListener('click', async () => {
     }, { once: true });
     mv.setAttribute('src', lastModelUrl);
     mv.setAttribute('ar', '');
+    // Android: WebXR in Chrome. Scene Viewer is left out on purpose: it opens the model in a separate app, which
+    // can't read a model made in the page (blob: address), and this one is built live from the visitor's choices.
     mv.setAttribute('ar-modes', 'webxr quick-look');
     mv.setAttribute('ar-placement', 'wall');
     mv.setAttribute('ar-scale', 'fixed');
@@ -1307,6 +1566,7 @@ darkQuery.addEventListener?.('change', syncThemeButton);
 
 // ---------- start ----------
 initLang();
+setMode(/^#ar=/.test(location.hash) ? 'advanced' : document.documentElement.dataset.mode, false);
 applyLang();
 window.addEventListener('resize', () => { layout(); });
 new ResizeObserver(() => layout()).observe(stage.parentElement);
@@ -1322,4 +1582,4 @@ function exportCanvas(scale) {
   renderScene(c.getContext('2d'), { photo: state.photo, scene: viewScene(), prints: state.prints, light: state.light }, scale, { steps: 24 });
   return c;
 }
-window.__viz = { state, keepChanged, viewScene, setScene, SCENES, addPrint, setSize, squareUp, redraw, exportCanvas, syncAll, setShape };
+window.__viz = { state, keepChanged, viewScene, setScene, SCENES, addPrint, setSize, squareUp, redraw, exportCanvas, syncAll, setShape, useSurface, setMode };

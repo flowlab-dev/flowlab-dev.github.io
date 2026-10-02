@@ -402,3 +402,43 @@ dialog::backdrop { background: rgba(20, 17, 15, .55); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; }
 }
+
+/* Simple / Advanced. Simple: ready rooms, tap a surface, pick a design; everything for corners, outlines and items is hidden. */
+[data-mode="simple"] .adv-only, :root:not([data-mode="simple"]) .simple-only { display: none !important; }
+[data-mode="simple"] .light-group { order: 1; }
+[data-mode="simple"] .sum-group { order: 2; }
+.mode-group { padding: 12px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.mode-group .seg.mode { width: 220px; flex: none; }
+.mode-group p { flex: 1 1 160px; }
+.step {
+  display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 50%;
+  background: var(--accent); color: var(--accent-ink); font-size: 12px; letter-spacing: 0; vertical-align: 1px;
+}
+.surfs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.surfs .chip svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }
+.surf-tools { margin-top: 12px; }
+.surf-tools .danger { margin-left: 0; }
+.simple-size { margin-top: 14px; }
+.simple-size .muted { margin-top: 4px; }
+
+/* surfaces on the photo: a dashed box with "+ name" where nothing is printed yet, a small label on a filled one */
+.outline .spots polygon { stroke: #fff; stroke-width: 2; stroke-dasharray: 7 6; fill: rgba(255,255,255,.10); }
+#spots { position: absolute; inset: 0; pointer-events: none; }
+.spot {
+  position: absolute; transform: translate(-50%, -50%); pointer-events: auto; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.7); background: rgba(20,18,16,.62); color: #fff; font: 600 13px/1 Inter, system-ui, sans-serif;
+  box-shadow: 0 2px 10px rgba(0,0,0,.35); cursor: pointer; transition: background-color .18s ease, transform .18s ease;
+}
+.spot::before { content: ""; position: absolute; inset: -5px; } /* 46 px touch target */
+.spot svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.spot.empty { background: rgba(20,18,16,.72); }
+.spot:hover { background: rgba(20,18,16,.85); }
+.spot[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.spot:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@media (max-width: 520px) { .spot { min-height: 34px; padding: 0 10px; font-size: 12px; } .spot::before { inset: -6px; } }
+.spot.round { width: 40px; height: 40px; min-height: 0; padding: 0; justify-content: center; }
+.spot.round svg { width: 20px; height: 20px; }
+@media (prefers-reduced-motion: reduce) { .spot { transition: none; } }
+[data-mode="simple"] .stage { touch-action: pan-y; } /* a swipe on the photo scrolls the page */
+.type-only { margin: 0; font-weight: 600; font-size: 15px; }
