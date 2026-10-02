@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Packing station scan check · demo</title>
+<meta name="description" content="Pick and pack scan verification demo: the station checks every barcode against the Shopify order, locks on a wrong item and alerts the supervisor through n8n.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css">
+<script>try{const t=localStorage.getItem('sv-theme');if(t)document.documentElement.dataset.theme=t;else if(matchMedia('(prefers-color-scheme: dark)').matches)document.documentElement.dataset.theme='dark'}catch(e){}</script>
+</head>
+<body>
+<header class="bar">
+  <div class="station"><strong data-i18n="station">Packing station 1</strong> <span class="muted" data-i18n="scanner">Scanner ready</span></div>
+  <div class="toggles">
+    <button type="button" id="lang" class="tog" aria-label="Language">RU</button>
+    <button type="button" id="theme" class="tog" aria-label="Theme"><span data-i18n="themeBtn">Dark</span></button>
+  </div>
+</header>
+
+<main class="grid">
+  <nav class="queue" aria-labelledby="q-h">
+    <h2 id="q-h" data-i18n="queue">Orders to pack</h2>
+    <ul id="queue"></ul>
+  </nav>
+
+  <section class="order" aria-labelledby="o-h">
+    <div class="order-head">
+      <h1 id="o-h"></h1>
+      <p id="o-meta" class="muted"></p>
+    </div>
+    <p id="next" class="next"></p>
+    <ul id="lines" class="lines"></ul>
+  </section>
+
+  <aside class="side">
+    <div id="verdict" class="verdict" role="status" aria-live="polite"></div>
+    <section class="log" aria-labelledby="l-h">
+      <h2 id="l-h" data-i18n="logH">n8n runs</h2>
+      <ol id="log"></ol>
+    </section>
+    <details class="try">
+      <summary data-i18n="tryH">No scanner? Tap a product to scan it</summary>
+      <div id="chips" class="chips"></div>
+    </details>
+  </aside>
+</main>
+
+<div id="lock" class="lock" hidden role="alertdialog" aria-labelledby="lock-h" aria-describedby="lock-p">
+  <div class="lock-in">
+    <h2 id="lock-h"></h2>
+    <p id="lock-code" class="lock-code"></p>
+    <p id="lock-p"></p>
+    <p class="lock-alert" data-i18n="lockAlert">Supervisor alerted in #warehouse-alerts</p>
+    <p><button type="button" id="unlock" class="unlock">Supervisor unlock</button></p>
+  </div>
+</div>
+
+<footer class="foot muted" data-i18n="foot">Demo on made-up orders. The scan check runs in your browser with the same code as the n8n workflow; in a real setup the tablet sends each scan to n8n, which reads the order from Shopify.</footer>
+
+<input id="scan" class="scan-input" autocomplete="off" inputmode="none" aria-label="Barcode">
+<script src="orders.js"></script>
+<script src="verify.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
