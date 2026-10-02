@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Разбор приложения · Walkwren (демо)</title>
+<meta name="description" content="Разбор приложения для записи на прогулки с собаками, собранного на Supabase в ИИ-конструкторе: десять проблем, семь воспроизведены на настоящей базе PostgreSQL, три найдены в коде, каждая исправлена и проверена заново.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://flowlab-dev.github.io/demo/app-rescue/ru/">
+<link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/app-rescue/">
+<link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/app-rescue/ru/">
+<script>(function(){try{var t=localStorage.getItem('fl-theme')||localStorage.getItem('walkwren-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+  :root {
+    --bg: #f6f6f3; --panel: #ffffff; --ink: #16171a; --muted: #62656b; --line: #e3e2dc; --soft: #efeee9;
+    --accent: #3346c4; --accent-ink: #ffffff; --accent-soft: #e8ebfb;
+    --bad: #b42318; --bad-soft: #fdecea; --good: #1e7a4c; --good-soft: #e5f4ec; --warn: #9a5b00; --warn-soft: #fbf1df;
+    --radius: 14px; --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 28px rgba(0,0,0,.05);
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #111214; --panel: #1a1b1e; --ink: #ecebe7; --muted: #a0a2a8; --line: #2c2d32; --soft: #232428;
+      --accent: #8d9bff; --accent-ink: #0f1330; --accent-soft: #232845;
+      --bad: #ff8a80; --bad-soft: #3a1f1d; --good: #6fd3a0; --good-soft: #1b3127; --warn: #f3b760; --warn-soft: #36291a;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #111214; --panel: #1a1b1e; --ink: #ecebe7; --muted: #a0a2a8; --line: #2c2d32; --soft: #232428;
+    --accent: #8d9bff; --accent-ink: #0f1330; --accent-soft: #232845;
+    --bad: #ff8a80; --bad-soft: #3a1f1d; --good: #6fd3a0; --good-soft: #1b3127; --warn: #f3b760; --warn-soft: #36291a;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 28px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 var(--font); }
+  a { color: var(--accent); }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 18px 0; }
+  .brand { font-weight: 650; display: flex; gap: 10px; align-items: center; }
+  .brand i { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); display: inline-block; flex: none; }
+  .top-tools { display: flex; align-items: center; gap: 8px; }
+  .lang-switch { display: flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--panel); }
+  .lang-switch a { min-width: 44px; min-height: 44px; display: grid; place-items: center; border-radius: 999px; font-size: 14px; font-weight: 600; letter-spacing: .04em; color: var(--muted); text-decoration: none; }
+  .lang-switch a:hover { color: var(--ink); }
+  .lang-switch a[aria-current="page"] { background: var(--ink); color: var(--panel); }
+  .theme-toggle { font-size: 15px; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 999px; min-height: 44px; min-width: 76px; padding: 0 16px; cursor: pointer; }
+  .theme-toggle:hover { border-color: var(--muted); }
+  .theme-toggle:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .hero { padding: 40px 0 8px; }
+  .hero h1 { font-size: clamp(32px, 5vw, 52px); line-height: 1.08; letter-spacing: -.025em; margin: 0 0 16px; max-width: 18ch; }
+  .hero p { font-size: 19px; color: var(--muted); max-width: 62ch; margin: 0; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 32px 0 8px; }
+  .stat { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; }
+  .stat .n { font-size: 34px; font-weight: 700; letter-spacing: -.02em; }
+  .stat .l { font-size: 14px; color: var(--muted); }
+  .stat.bad .n { color: var(--bad); } .stat.good .n { color: var(--good); }
+  section.block { padding: 56px 0; }
+  section.block + section.block { border-top: 1px solid var(--line); }
+  section.block h2 { font-size: clamp(26px, 3.4vw, 34px); letter-spacing: -.02em; line-height: 1.15; margin: 0 0 10px; }
+  section.block > .wrap > p.lead { color: var(--muted); font-size: 18px; max-width: 64ch; margin: 0 0 26px; }
+  .finding { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; margin-bottom: 16px; }
+  .fh { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+  .fid { font: 600 13px var(--mono); color: var(--muted); }
+  .sev { font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: .04em; }
+  .sev.critical { background: var(--bad-soft); color: var(--bad); }
+  .sev.high { background: var(--warn-soft); color: var(--warn); }
+  .sev.medium { background: var(--soft); color: var(--muted); }
+  .finding h3 { font-size: 20px; margin: 0; letter-spacing: -.01em; flex: 1 1 320px; }
+  .finding .why { color: var(--muted); margin: 8px 0 14px; max-width: 70ch; }
+  .runs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+  .run { border-radius: 10px; padding: 10px 12px; font-size: 14.5px; }
+  .run b { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+  .run.through { background: var(--bad-soft); } .run.through b { color: var(--bad); }
+  .run.blocked { background: var(--good-soft); } .run.blocked b { color: var(--good); }
+  .attack { font-size: 14.5px; margin: 0 0 8px; }
+  details.fix summary { cursor: pointer; color: var(--accent); font-weight: 600; font-size: 15px; }
+  pre { background: var(--soft); border-radius: 10px; padding: 12px 14px; overflow-x: auto; font: 13px/1.5 var(--mono); margin: 10px 0 0; white-space: pre; }
+  .works { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+  .works li::before { content: '✓ '; color: var(--good); font-weight: 700; }
+  .works li.no::before { content: '✗ '; color: var(--bad); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 17px; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+  .method { color: var(--muted); max-width: 70ch; }
+  .method code { font: 13.5px var(--mono); background: var(--soft); padding: 1px 5px; border-radius: 4px; color: var(--ink); }
+  footer { padding: 36px 0 60px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+  @media (max-width: 820px) { .stats { grid-template-columns: 1fr 1fr; } .runs, .works, .grid2 { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .wrap { padding: 0 16px; } .hero p { font-size: 17px; } .finding { padding: 16px; } .stat .n { font-size: 28px; } }
+</style>
+</head>
+<body>
+
+<!-- flowlab-band -->
+<style>.fl-band{margin:0;max-width:none;box-sizing:border-box;padding:.5rem 1rem;background:#15171c;color:#f1f1ec;font:500 .875rem/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;position:relative;z-index:10}
+.fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
+.fl-band__more{white-space:nowrap}</style>
+<p class="fl-band" role="note">Демо, которое <a href="https://flowlab-dev.github.io/ru/work/app-rescue/">Flow Lab</a> сделала сама, без заказа. Walkwren и Kettleby Dog Walks вымышлены.</p>
+<!-- /flowlab-band -->
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><i aria-hidden="true"></i>Walkwren · разбор приложения</div>
+    <div class="top-tools">
+      <nav class="lang-switch" aria-label="Язык"><a href="../" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="./" hreflang="ru" lang="ru" title="Русский">RU</a></nav>
+      <button class="theme-toggle" id="theme" type="button" title="Переключить день и ночь" data-to-dark="Ночь" data-to-light="День">Ночь</button>
+    </div>
+  </header>
+  <div class="hero">
+    <h1>Собрано за выходные в ИИ-конструкторе. Проверено, пока ничего не случилось.</h1>
+    <p>Kettleby Dog Walks принимала записи на прогулки с собаками через Walkwren, приложение на React и Supabase, собранное в ИИ-конструкторе. Оно работало, но заодно позволяло любому прочитать домашний адрес каждого клиента. Это разбор: десять проблем, семь воспроизведены на настоящей базе PostgreSQL, три найдены в коде. Каждая исправлена и проверена заново.</p>
+    <div class="stats" id="stats"></div>
+  </div>
+</div>
+
+<section class="block">
+  <div class="wrap">
+    <h2>Что нашли и исправили</h2>
+    <p class="lead">По каждой находке: кто и что мог сделать, что вышло при попытке атаки до исправления и после, и само исправление.</p>
+    <div id="findings"></div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap reveal">
+    <h2>У своих всё по‑прежнему работает</h2>
+    <p class="lead">Закрыть доступ легко, если не бояться сломать приложение. Эти действия выполнены на исправленной базе от имени тех, кому они нужны, а само исправление прогнано и на данных, которые могло оставить старое приложение.</p>
+    <ul class="works" id="works"></ul>
+    <p class="method" style="margin-top:22px">Исправление оставляет владельцу и список записей, где видны признаки того, что старыми дырами уже пользовались: цена не совпадает с прайсом или запись оформлена на чужого клиента. Прочитать этот список могут только сервер и панель Supabase.</p>
+    <p class="method">Владельцу осталось решить, до какого срока можно отменить прогулку, в какие часы открыта запись, подходит ли лимит в 10 предстоящих прогулок на клиента и можно ли в приложении менять запись как-то ещё, кроме отмены. Пока такие правки вносятся через панель Supabase.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap reveal">
+    <h2>Как проверяли</h2>
+    <p class="method" id="method">Проверки базы идут на настоящем PostgreSQL (<span id="engine">PostgreSQL</span>, в памяти). Воссозданы роли Supabase <code>anon</code>, <code>authenticated</code> и <code>service_role</code>, права, которые Supabase по умолчанию даёт новым таблицам, и функции <code>auth.uid()</code> и <code>auth.jwt()</code>, поэтому правила защиты строк (row level security) работают так же, как в настоящем Supabase. Слой HTTP (PostgREST) не воссоздан, а у тестовой базы одно подключение, поэтому блокировка «одна запись за раз» проверена как правило, а не при настоящих одновременных запросах. «До» — это сгенерированная миграция. «После» — та же база с миграцией-исправлением поверх уже существующих строк, как и будет при выпуске. Если в старых данных есть то, что исправление не может безопасно преобразовать (время, введённое текстом «tomorrow 10am», несуществующая дата или выгульщик, уже записанный на две прогулки сразу), миграция останавливается, называет эти строки и ничего не меняет. Три находки в браузерной части приложения (F2, F8, F9) проверены чтением кода, а не запуском приложения. Walkwren и Kettleby Dog Walks придуманы, а код «до» написан для этого демо, чтобы показать проблемы, частые в сгенерированных приложениях на Supabase.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap reveal">
+    <h2>Что входит в спасение приложения</h2>
+    <div class="grid2">
+      <div class="card"><h3>1 · Разбор</h3><p>Читаем код и настройки Supabase, проверяем каждую находку настоящей атакой и присылаем отчёт вроде этого. Что исправлять, решаете вы.</p></div>
+      <div class="card"><h3>2 · Исправление с доказательством</h3><p>Исправляем базу так, чтобы ваши данные сохранились, правим код и прогоняем атаки заново, пока не перестанет проходить ни одна и приложение будет работать как прежде.</p></div>
+      <div class="card"><h3>3 · Ключи и запуск</h3><p>Меняем утёкшие ключи, переносим серверную работу в отдельные функции на сервере (edge functions) и выкладываем приложение у вас на глазах.</p></div>
+      <div class="card"><h3>Каждый месяц</h3><p>Конструктор продолжает генерировать код. Раз в месяц атаки прогоняются заново по тому, что изменилось, а новые находки попадают в короткий отчёт.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">Walkwren и Kettleby Dog Walks придуманы, клиенты в тестовых данных вымышлены, а их телефоны взяты из диапазона, который британский регулятор Ofcom резервирует для фильмов и сериалов. Схема, исправления и тесты настоящие и запускаются так, как описано.</div></footer>
+
+<script>
+// Written by tests/attacks.mjs. Do not edit by hand.
+window.RESULTS = {
+ "engine": "PostgreSQL 18.3 (PGlite 0.5.8)",
+ "results": [
+  {
+   "id": "F1",
+   "who": "любой, у кого есть публичный ключ",
+   "what": "прочитать имя, телефон и адрес каждого клиента",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "прочитаны данные 2 клиентов, например Alice Carter, 07700 900101"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: permission denied for table customers"
+   }
+  },
+  {
+   "id": "F1",
+   "who": "любой, у кого есть публичный ключ",
+   "what": "изменить телефон клиента",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "телефон изменён"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: permission denied for table customers"
+   }
+  },
+  {
+   "id": "F2",
+   "who": "любой, кто открыл сайт",
+   "what": "достать сервисный ключ из страницы и обойти все правила",
+   "kind": "code",
+   "before": {
+    "through": true,
+    "detail": "VITE_SUPABASE_SERVICE_ROLE_KEY вшит в публичный JavaScript"
+   },
+   "after": {
+    "through": false,
+    "detail": "в браузер попадает только публичный ключ"
+   }
+  },
+  {
+   "id": "F3",
+   "who": "вошедший клиент",
+   "what": "записаться на прогулку за 0 £",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "прогулка на 60 минут записана за 0,00 £"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: permission denied for table bookings"
+   }
+  },
+  {
+   "id": "F4",
+   "who": "клиент, который вписал себе role: admin в профиль",
+   "what": "увидеть все записи",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "видно записей: 2 (своих: 1)"
+   },
+   "after": {
+    "through": false,
+    "detail": "видно записей: 1 (своих: 1)"
+   }
+  },
+  {
+   "id": "F5",
+   "who": "вошедший клиент",
+   "what": "снизить цену своей записи",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "прогулка теперь стоит 1 пенс"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: permission denied for table bookings"
+   }
+  },
+  {
+   "id": "F5",
+   "who": "вошедший клиент",
+   "what": "оформить запись на чужого клиента",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "прогулка записана на имя и адрес Alice"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: permission denied for table bookings"
+   }
+  },
+  {
+   "id": "F5",
+   "who": "клиент, который вписал себе role: admin в профиль",
+   "what": "отменить чужую запись или изменить её цену",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "статус: Ben отменил запись Alice; цена: прогулка Alice теперь стоит 1 пенс"
+   },
+   "after": {
+    "through": false,
+    "detail": "статус: ни одна строка не изменилась; цена: база отказала: permission denied for table bookings"
+   }
+  },
+  {
+   "id": "F6",
+   "who": "два клиента в один момент",
+   "what": "записать одного выгульщика на одно и то же время",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "сохранены обе: у выгульщицы Priya две записи на 11:00"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: это время только что заняли"
+   }
+  },
+  {
+   "id": "F6",
+   "who": "клиент, который записывается на 30 секунд позже",
+   "what": "проскочить проверку на совпадение времени",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "сохранены обе, с разницей 30 секунд"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: выберите будущее время, кратное 15 минутам"
+   }
+  },
+  {
+   "id": "F6",
+   "who": "клиент",
+   "what": "записаться на прогулку, которая пересекается с другой у того же выгульщика",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "сохранены обе: прогулка на 60 минут в 12:00 и на 30 минут в 12:15"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: это время только что заняли"
+   }
+  },
+  {
+   "id": "F7",
+   "who": "владелец",
+   "what": "получает прогулки на день не по порядку",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "10:00 в списке раньше 9:00 (при текстовой сортировке: 2026-10-03 10:00, 2026-10-03 9:00)"
+   },
+   "after": {
+    "through": false,
+    "detail": "9:00 идёт первым; 09:00 по британскому времени хранится как 08:00 UTC"
+   }
+  },
+  {
+   "id": "F8",
+   "who": "клиент, чья запись не прошла",
+   "what": "всё равно видит «Записано!»",
+   "kind": "code",
+   "before": {
+    "through": true,
+    "detail": "результат записи в базу не проверяется"
+   },
+   "after": {
+    "through": false,
+    "detail": "ошибки показываются, для занятого времени — своё сообщение"
+   }
+  },
+  {
+   "id": "F9",
+   "who": "клиент с большим числом прогулок",
+   "what": "ждёт отдельный запрос на каждую прогулку",
+   "kind": "code",
+   "before": {
+    "through": true,
+    "detail": "1 + N запросов (имя выгульщика загружается в цикле)"
+   },
+   "after": {
+    "through": false,
+    "detail": "один запрос, имя выгульщика приходит сразу"
+   }
+  },
+  {
+   "id": "F10",
+   "who": "любой, у кого есть публичный ключ",
+   "what": "изменить прайс",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "прогулка на 60 минут теперь стоит 1 пенс для всех"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: permission denied for table walk_types"
+   }
+  },
+  {
+   "id": "F10",
+   "who": "любой, у кого есть публичный ключ",
+   "what": "отключить всех выгульщиков",
+   "kind": "database",
+   "before": {
+    "through": true,
+    "detail": "2 выгульщика отключены: записаться нельзя никому"
+   },
+   "after": {
+    "through": false,
+    "detail": "база отказала: permission denied for table walkers"
+   }
+  }
+ ],
+ "works": [
+  {
+   "name": "Alice читает свои данные",
+   "ok": true
+  },
+  {
+   "name": "Alice записывается на прогулку, цена берётся из прайса",
+   "ok": true
+  },
+  {
+   "name": "Две собаки записаны на одну групповую прогулку",
+   "ok": true
+  },
+  {
+   "name": "Собаке отказано, когда групповая прогулка заполнена",
+   "ok": true
+  },
+  {
+   "name": "Alice отменяет свою запись",
+   "ok": true
+  },
+  {
+   "name": "Владелец (администратор задан на сервере) видит все записи",
+   "ok": true
+  },
+  {
+   "name": "Владелец отменяет запись клиента",
+   "ok": true
+  },
+  {
+   "name": "Прайс и список выгульщиков по‑прежнему видны всем",
+   "ok": true
+  },
+  {
+   "name": "Запись на «бесконечность» или на годы вперёд отклонена",
+   "ok": true
+  },
+  {
+   "name": "11-я открытая запись одного клиента отклонена",
+   "ok": true
+  },
+  {
+   "name": "Владелец не может поставить выдуманный статус",
+   "ok": true
+  },
+  {
+   "name": "Запись в прошлое отклонена",
+   "ok": true
+  },
+  {
+   "name": "Старые записи сохраняются после миграции; 9:00 по британскому времени хранится как 08:00 UTC",
+   "ok": true
+  },
+  {
+   "name": "Исправление безопасно останавливается, если время введено текстом («tomorrow 10am»): ничего не изменено, проблемные строки перечислены",
+   "ok": true
+  },
+  {
+   "name": "Исправление безопасно останавливается, если дата не существует («2026-02-30 10:00»): ничего не изменено, проблемные строки перечислены",
+   "ok": true
+  },
+  {
+   "name": "Исправление безопасно останавливается, если одно время записано двумя способами («09:00» и «9:00»): ничего не изменено, проблемные строки перечислены",
+   "ok": true
+  },
+  {
+   "name": "Исправление безопасно останавливается, если прогулки пересекаются (в 10:00 на час и в 10:30): ничего не изменено, проблемные строки перечислены",
+   "ok": true
+  },
+  {
+   "name": "Исправление безопасно останавливается, если у записи нет статуса: ничего не изменено, проблемные строки перечислены",
+   "ok": true
+  },
+  {
+   "name": "Исправление безопасно останавливается, если выгульщик уже записан дважды: ничего не изменено, проблемные строки перечислены",
+   "ok": true
+  },
+  {
+   "name": "Прошлые злоупотребления попадают в список для владельца: запись за 0 £ и запись на чужое имя",
+   "ok": true
+  }
+ ]
+};
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var root = document.documentElement, btn = $('theme');
+  function apply(t) { root.setAttribute('data-theme', t); btn.textContent = btn.getAttribute(t === 'dark' ? 'data-to-light' : 'data-to-dark'); }
+  var saved = root.getAttribute('data-theme');
+  apply(saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('fl-theme', next); } catch (e) {}
+  });
+
+  // Words the script puts on the page (the Russian build swaps this line).
+  var T = { sev: { critical: 'критический', high: 'высокий', medium: 'средний' }, before: 'До', after: 'После', reproduced: 'проблема воспроизведена', gone: 'проблемы нет', inCode: '(проверено по коду)', fixLabel: 'Исправление' };
+
+  var F = {
+    F1: { sev: 'critical', title: 'Данные клиентов были открыты всем', why: 'У таблицы клиентов не было защиты строк (row level security), и доступ к ней был выдан публичному ключу, который есть в браузере у каждого посетителя. Имена, телефоны и домашние адреса всех, кто записывался на прогулку, можно было прочитать и изменить без входа.',
+      fix: "revoke all on public.customers from anon;\nalter table public.customers enable row level security;\ncreate policy \"customer reads own record\" on public.customers\n  for select to authenticated using (user_id = (select auth.uid()));" },
+    F2: { sev: 'critical', title: 'Сервисный ключ попал в браузер', why: 'Страница администратора работала с ключом service role, который обходит все правила базы. Vite отдаёт коду в браузере каждую переменную VITE_…, и этот ключ использовался именно там, так что он лежал в публичном JavaScript и скопировать его мог кто угодно. Просто убрать его мало: ключ нужно заменить (перейти на новые секретные ключи или сменить JWT-секрет, после чего всем придётся войти заново) и проверить список пользователей, не выдал ли кто-то себе этим ключом права администратора.',
+      fix: "- const serviceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;\n- export const supabaseAdmin = createClient(url, serviceKey);\n+ // Only the public key reaches the browser; the service key was rotated\n+ // and lives only in server-side code." },
+    F3: { sev: 'critical', title: 'Цену назначал браузер', why: 'Форма записи отправляла цену вместе с записью, а база сохраняла всё, что пришло. Клиент мог записаться на любую прогулку за 0 £. Теперь запись идёт через одну функцию базы, которая берёт цену из прайса (сам прайс защищает исправление F10).',
+      fix: "revoke insert on public.bookings from authenticated;\ncreate function public.book_walk(p_walker uuid, p_walk_type text, p_slot timestamptz)\n  ... security definer set search_path = '' ...\n  select * into v_type from public.walk_types where id = p_walk_type;\n  insert into public.bookings (..., price_pence) values (..., v_type.price_pence);" },
+    F4: { sev: 'high', title: 'Любой мог сделать себя администратором', why: 'Правило «администратор видит все записи» брало роль из user_metadata. Любой вошедший пользователь может менять свои user_metadata прямо из браузера. Теперь роль берётся из app_metadata, которые задаёт только сервер.',
+      fix: "- using ((auth.jwt() -> 'user_metadata' ->> 'role') = 'admin')\n+ using ((select public.is_admin()))   -- reads app_metadata.role" },
+    F5: { sev: 'high', title: 'Записи могли менять те, кому нельзя', why: 'Любой клиент мог менять все поля своих записей, включая цену, и оформлять записи на имя и адрес другого клиента. А вместе с F4 мог ещё отменять чужие прогулки и менять их цену. Теперь из браузера можно поменять только статус записи: клиент отменяет свои, владелец ставит любой статус. Остальные правки делаются через панель Supabase.',
+      fix: "revoke insert, update, delete, truncate on public.bookings from authenticated;\ngrant update (status) on public.bookings to authenticated;\ncreate policy \"customer cancels own booking\" on public.bookings for update to authenticated\n  using (user_id = (select auth.uid()))\n  with check (user_id = (select auth.uid()) and status = 'cancelled');\ncreate policy \"owner sets any status\" on public.bookings for update to authenticated\n  using ((select public.is_admin())) with check ((select public.is_admin()));" },
+    F6: { sev: 'high', title: 'Выгульщика записывали на две индивидуальные прогулки сразу', why: 'Ничто не мешало двум клиентам записать одного выгульщика на одно и то же время или на пересекающиеся прогулки (в 12:00 на час и в 12:15). Приложение показывало обе как подтверждённые. Теперь индивидуальная прогулка у выгульщика не может пересекаться ни с чем, а на групповую с одним временем начала берут до четырёх собак. Время записи можно выбрать только с шагом 15 минут и не дальше чем на год вперёд, у одного клиента может быть не больше 10 предстоящих прогулок, а записи к одному выгульщику принимаются по одной, так что двое, нажавшие «Записаться» одновременно, не получат одно время на двоих.',
+      fix: "perform pg_advisory_xact_lock(hashtextextended(p_walker::text, 0));\nif exists (select 1 from public.bookings b join public.walk_types t on t.id = b.walk_type\n  where b.walker_id = p_walker and b.status <> 'cancelled'\n    and tstzrange(b.slot, b.slot + make_interval(mins => t.duration_min)) && tstzrange(p_slot, v_end)\n    and not (v_type.max_dogs > 1 and b.walk_type = p_walk_type and b.slot = p_slot))\n  or (/* group walk already has max_dogs */) then\n  raise exception 'that slot has just been taken' using errcode = '23505';" },
+    F7: { sev: 'medium', title: 'Время хранилось текстом: 10:00 шло раньше 9:00', why: 'Время сохранялось текстом, как его ввели в форме. При сортировке 10:00 оказывалось раньше 9:00. А без часового пояса любой код, который сравнивает или переводит время (напоминания, календарь владельца), вынужден гадать, летнее это 9:00 или зимнее.',
+      fix: "alter table public.bookings\n  alter column slot type timestamptz using (slot::timestamp at time zone 'Europe/London');" },
+    F8: { sev: 'medium', title: '«Записано!», даже когда запись не прошла', why: 'Форма не проверяла результат сохранения, и клиентам сообщали о прогулке, которой не было.',
+      fix: "const { error } = await supabase.rpc('book_walk', { ... });\nif (error) {\n  toast(error.code === '23505' ? 'Sorry, that slot has just been taken.' : error.message, 'error');\n  return;\n}" },
+    F10: { sev: 'critical', title: 'Прайс мог изменить кто угодно', why: 'У прайса и таблицы выгульщиков не было защиты строк, а Supabase открывает каждую новую таблицу публичному ключу. Любой мог поставить прогулке цену 1 пенс для всех, добавить выгульщиков или отключить их всех, и записаться стало бы нельзя. Теперь читать обе таблицы могут все, а менять — только сервер.',
+      fix: "alter table public.walk_types enable row level security;\nalter table public.walkers enable row level security;\nrevoke insert, update, delete, truncate on public.walk_types, public.walkers from anon, authenticated;\ncreate policy \"everyone reads the price list\" on public.walk_types for select to anon, authenticated using (true);" },
+    F9: { sev: 'medium', title: 'Отдельный запрос на каждую прогулку', why: 'Список «Мои прогулки» загружал имя каждого выгульщика отдельно: 1 + N запросов, на мобильном интернете это медленно. Теперь это один запрос.',
+      fix: "- for (const b of data) { await supabase.from('walkers')... }\n+ supabase.from('bookings').select('id, slot, status, walkers(name)')" },
+  };
+
+  var R = window.RESULTS || { results: [], works: [] };
+  var by = {};
+  R.results.forEach(function (r) { (by[r.id] = by[r.id] || []).push(r); });
+  var before = R.results.filter(function (r) { return r.before.through; }).length;
+  var after = R.results.filter(function (r) { return r.after.through; }).length;
+  var ok = R.works.filter(function (w) { return w.ok; }).length;
+  $('stats').innerHTML = [
+    ['bad', before + '/' + R.results.length, 'проверок нашли проблему до исправлений'],
+    ['good', after, 'проверок находят её после исправлений'],
+    ['good', ok + '/' + R.works.length, 'нужных действий по‑прежнему работают'],
+    ['', Object.keys(F).length, 'находок, из них ' + Object.keys(F).filter(function (k) { return F[k].sev === 'critical'; }).length + ' критических'],
+  ].map(function (s) { return '<div class="stat ' + s[0] + '"><div class="n">' + s[1] + '</div><div class="l">' + s[2] + '</div></div>'; }).join('');
+
+  var ids = Object.keys(F).sort(function (a, b) { return a.slice(1) - b.slice(1); });
+  $('findings').innerHTML = ids.map(function (id) {
+    var f = F[id];
+    var runs = (by[id] || []).map(function (r) {
+      var cell = function (x, when) { return '<div class="run ' + (x.through ? 'through' : 'blocked') + '"><b>' + when + ' · ' + (x.through ? T.reproduced : T.gone) + '</b>' + esc(x.detail) + '</div>'; };
+      var who = r.who.charAt(0).toUpperCase() + r.who.slice(1);
+      return '<p class="attack"><b>' + esc(who) + '</b> → ' + esc(r.what) + (r.kind === 'code' ? ' <span class="fid">' + T.inCode + '</span>' : '') + '</p>' +
+        '<div class="runs">' + cell(r.before, T.before) + cell(r.after, T.after) + '</div>';
+    }).join('');
+    return '<article class="finding reveal"><div class="fh"><span class="fid">' + id + '</span><span class="sev ' + f.sev + '">' + T.sev[f.sev] + '</span><h3>' + esc(f.title) + '</h3></div>' +
+      '<p class="why">' + esc(f.why) + '</p>' + runs + '<details class="fix"><summary>' + T.fixLabel + '</summary><pre>' + esc(f.fix) + '</pre></details></article>';
+  }).join('');
+
+  $('works').innerHTML = R.works.map(function (w) { return '<li class="' + (w.ok ? '' : 'no') + '">' + esc(w.name) + '</li>'; }).join('');
+  if (R.engine) $('engine').textContent = R.engine;
+
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.08 });
+    els.forEach(function (el) { io.observe(el); });
+  } else { els.forEach(function (el) { el.classList.add('in'); }); }
+})();
+</script>
+</body>
+</html>
