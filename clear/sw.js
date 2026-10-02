@@ -5,8 +5,8 @@
 // build, and a new build installs a new cache with fresh copies of the rest.
 // Requests to other sites (Lemon Squeezy) are never touched.
 const PREFIX = 'flowlab-clear-quit-';
-const CACHE = PREFIX + '614af73d283e';
-const FILES = ["./","./apple-touch-icon.png","./expo/static/js/web/index-780a47522d611923ace194ada39dd768.js","./favicon.ico","./icon-192.png","./icon-512.png","./manifest.webmanifest","./metadata.json"];
+const CACHE = PREFIX + '7da5156b4df2';
+const FILES = ["./","./apple-touch-icon.png","./expo/static/js/web/index-6ef535c30f761e6a507e5f27066b99b0.js","./favicon.ico","./icon-192.png","./icon-512.png","./manifest.webmanifest","./metadata.json"];
 const SHELL = new URL('./', self.location).href;
 
 self.addEventListener('install', (e) => {
