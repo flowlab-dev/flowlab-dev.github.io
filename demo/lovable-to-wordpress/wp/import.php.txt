@@ -1,0 +1,308 @@
+<?php
+/**
+ * Demo content for WordPress Playground: the five Kilnberry pages in English and Russian, built from editor blocks,
+ * the classes, the menus, titles and descriptions carried over from the Lovable site, Polylang settings.
+ * Runs once from blueprint.json (runPHP) after Polylang and the Kilnberry theme are installed.
+ * Texts are copied word for word from the published Lovable site (kilnberry-clay-studio-site.lovable.app).
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+wp_set_current_user( 1 ); // the site admin: pages keep their markup (no kses stripping)
+kses_remove_filters();
+
+$log = array();
+$say = function ( $m ) use ( &$log ) { $log[] = $m; };
+
+// 0. sample content out
+foreach ( get_posts( array( 'post_type' => array( 'post', 'page' ), 'post_status' => 'any', 'numberposts' => -1 ) ) as $p ) {
+	wp_delete_post( $p->ID, true );
+}
+update_option( 'blogname', 'Kilnberry Clay Studio' );
+update_option( 'blogdescription', 'Pottery classes in Portland' );
+
+// 1. languages (both Polylang APIs: before and after 3.7)
+$model = PLL()->model;
+if ( ! ( isset( $model->languages ) && is_object( $model->languages ) && method_exists( $model->languages, 'add' ) ) && ! method_exists( $model, 'add_language' ) && class_exists( 'PLL_Admin_Model' ) ) {
+	$model = new PLL_Admin_Model( PLL()->options ?? get_option( 'polylang' ) ); // Polylang before 3.7: languages are added by the admin model
+}
+$add   = function ( $args ) use ( $model, $say ) {
+	if ( $model->get_language( $args['slug'] ) ) {
+		return;
+	}
+	if ( isset( $model->languages ) && is_object( $model->languages ) && method_exists( $model->languages, 'add' ) ) {
+		$r = $model->languages->add( $args );
+	} else {
+		$r = $model->add_language( $args );
+	}
+	$say( 'language ' . $args['slug'] . ': ' . ( is_wp_error( $r ) ? 'ERROR ' . $r->get_error_message() : 'ok' ) );
+};
+$add( array( 'name' => 'English', 'slug' => 'en', 'locale' => 'en_US', 'rtl' => false, 'term_group' => 0, 'flag' => 'us' ) );
+$add( array( 'name' => 'Русский', 'slug' => 'ru', 'locale' => 'ru_RU', 'rtl' => false, 'term_group' => 1, 'flag' => 'ru' ) );
+if ( method_exists( $model, 'clean_languages_cache' ) ) {
+	$model->clean_languages_cache();
+}
+if ( isset( $model->languages ) && is_object( $model->languages ) && method_exists( $model->languages, 'clean_cache' ) ) {
+	$model->languages->clean_cache();
+}
+
+// 2. classes
+$classes = array(
+	array( 'Wheel taster', '2 hours', '$45', 'Your first time on the wheel. You make two pieces and choose one to fire.',
+		'Пробное занятие на круге', '2 часа', '$45', 'Первый раз за гончарным кругом. Вы сделаете две вещи и выберете одну для обжига.' ),
+	array( 'Four-week wheel course', '4 evenings, 2.5 hours each', '$240', 'Centering, throwing cups and bowls, trimming and glazing.',
+		'Курс на круге, 4 недели', '4 вечера по 2,5 часа', '$240', 'Центровка, чашки и миски на круге, обточка и глазурь.' ),
+	array( 'Handbuilding weekend', 'Sat and Sun, 3 hours each', '$160', 'Pinch, coil and slab: plates, planters and mugs without a wheel.',
+		'Выходные ручной лепки', 'сб и вс по 3 часа', '$160', 'Щипковая лепка, жгуты и пласты: тарелки, кашпо и кружки без круга.' ),
+	array( 'Open studio', 'per month', '$95', 'For people who have finished a course: 8 hours of wheel time a week, a shelf, and firing for up to 10 pieces.',
+		'Свободная студия', 'в месяц', '$95', 'Для тех, кто прошёл курс: 8 часов за кругом в неделю, своя полка и обжиг до 10 вещей.' ),
+	array( 'Private party', '2.5 hours, up to 6 people', 'from $300', 'Birthdays and team events with a teacher just for your group.',
+		'Праздник для своей компании', '2,5 часа, до 6 человек', 'от $300', 'Дни рождения и встречи коллег с преподавателем только для вашей группы.' ),
+);
+foreach ( $classes as $i => $c ) {
+	$ids = array();
+	foreach ( array( 'en' => 0, 'ru' => 4 ) as $lang => $o ) {
+		$ids[ $lang ] = wp_insert_post( array(
+			'post_type'    => 'kb_class',
+			'post_status'  => 'publish',
+			'post_title'   => $c[ $o ],
+			'post_excerpt' => $c[ $o + 3 ],
+			'menu_order'   => $i + 1,
+			'post_name'    => sanitize_title( $lang . '-' . $c[0] ),
+			'meta_input'   => array( 'kb_length' => $c[ $o + 1 ], 'kb_price' => $c[ $o + 2 ] ),
+		) );
+		pll_set_post_language( $ids[ $lang ], $lang );
+	}
+	pll_save_post_translations( $ids );
+}
+$say( 'classes: ' . count( $classes ) . ' × 2' );
+
+// 3. pages: slug, menu title, browser title, description (EN, RU)
+$pages = array(
+	'home'    => array( 'home', 'Home', 'Kilnberry Clay Studio | Pottery classes in Portland', 'Small wheel and handbuilding classes in Southeast Portland. Six people per class, clay and firing included.',
+		'glavnaya', 'Главная', 'Kilnberry Clay Studio | Занятия гончарным делом в Портленде', 'Небольшие занятия на гончарном круге и ручная лепка в юго-восточном Портленде. До шести человек в группе, глина и обжиг включены.' ),
+	'classes' => array( 'classes', 'Classes', 'Classes and prices | Kilnberry', 'Wheel taster, four-week course, handbuilding weekend, open studio and private parties. Prices in US dollars.',
+		'zanyatiya', 'Занятия', 'Занятия и цены | Kilnberry', 'Пробное занятие, курс на четыре недели, выходные ручной лепки, свободная студия и праздники. Цены в долларах США.' ),
+	'about'   => array( 'about', 'About', 'About the studio | Kilnberry', 'A small studio with six wheels, two kilns and a long table for handbuilding.',
+		'o-studii', 'О студии', 'О студии | Kilnberry', 'Небольшая студия: шесть гончарных кругов, две печи и длинный стол для ручной лепки.' ),
+	'faq'     => array( 'faq', 'FAQ', 'Questions and answers | Kilnberry', 'Experience, clothes, cancellations, age and gift cards: short answers before your first class.',
+		'voprosy', 'Вопросы', 'Вопросы и ответы | Kilnberry', 'Опыт, одежда, отмена, возраст и подарочные карты: короткие ответы перед первым занятием.' ),
+	'contact' => array( 'contact', 'Contact', 'Contact | Kilnberry', 'Write to the studio, call or come by. Opening hours and a contact form.',
+		'kontakty', 'Контакты', 'Контакты | Kilnberry', 'Напишите в студию, позвоните или заходите. Часы работы и форма для вопроса.' ),
+);
+$ids   = array( 'en' => array(), 'ru' => array() );
+$order = 0;
+foreach ( $pages as $key => $p ) {
+	$order++;
+	foreach ( array( 'en' => 0, 'ru' => 4 ) as $lang => $o ) {
+		$ids[ $lang ][ $key ] = wp_insert_post( array(
+			'post_type'   => 'page',
+			'post_status' => 'publish',
+			'post_title'  => $p[ $o + 1 ],
+			'post_name'   => $p[ $o ],
+			'menu_order'  => $order,
+			'meta_input'  => array( 'kb_seo_title' => $p[ $o + 2 ], 'kb_seo_desc' => $p[ $o + 3 ] ),
+		) );
+		pll_set_post_language( $ids[ $lang ][ $key ], $lang );
+	}
+	pll_save_post_translations( array( 'en' => $ids['en'][ $key ], 'ru' => $ids['ru'][ $key ] ) );
+}
+
+// 4. Polylang settings: English without /en/, Russian under /ru/, browser language on the first visit, classes translatable
+$opt = get_option( 'polylang', array() );
+$set = array(
+	'default_lang' => 'en',
+	'force_lang'   => 1,
+	'hide_default' => true,
+	'rewrite'      => true,
+	'redirect_lang' => true, // the Russian front page lives at /ru/, not /ru/glavnaya/
+	'browser'      => true,
+	'media_support' => false,
+	'post_types'   => array( 'kb_class' ),
+);
+if ( isset( PLL()->options ) && is_object( PLL()->options ) && method_exists( PLL()->options, 'set' ) ) {
+	foreach ( $set as $k => $v ) {
+		PLL()->options->set( $k, $v );
+	}
+}
+$opt = array_merge( is_array( $opt ) ? $opt : array(), $set );
+update_option( 'polylang', $opt );
+
+global $wp_rewrite;
+$wp_rewrite->set_permalink_structure( '/%postname%/' );
+update_option( 'show_on_front', 'page' );
+update_option( 'page_on_front', $ids['en']['home'] );
+delete_option( 'rewrite_rules' ); // rebuilt on the next request with the Polylang rules
+
+// 5. page content: core blocks only (paragraph, heading, group, buttons, details, shortcode), editable without code
+$b = array(
+	'p'  => function ( $text, $class = '' ) {
+		return $class ? "<!-- wp:paragraph {\"className\":\"$class\"} -->\n<p class=\"$class\">$text</p>\n<!-- /wp:paragraph -->\n"
+			: "<!-- wp:paragraph -->\n<p>$text</p>\n<!-- /wp:paragraph -->\n";
+	},
+	'h'  => function ( $text, $level = 2 ) {
+		$attr = 2 === $level ? '' : " {\"level\":$level}";
+		return "<!-- wp:heading$attr -->\n<h$level class=\"wp-block-heading\">$text</h$level>\n<!-- /wp:heading -->\n";
+	},
+	'g'  => function ( $class, $inner, $tag = 'div' ) {
+		$attr = 'div' === $tag ? "{\"className\":\"$class\"}" : "{\"tagName\":\"$tag\",\"className\":\"$class\"}";
+		return "<!-- wp:group $attr -->\n<$tag class=\"wp-block-group $class\">$inner</$tag>\n<!-- /wp:group -->\n";
+	},
+	'btn' => function ( $list ) {
+		$out = '';
+		foreach ( $list as $x ) {
+			list( $text, $url, $style ) = $x;
+			$out .= "<!-- wp:button {\"className\":\"$style\"} -->\n<div class=\"wp-block-button $style\"><a class=\"wp-block-button__link wp-element-button\" href=\"" . esc_url( $url ) . "\">$text</a></div>\n<!-- /wp:button -->\n";
+		}
+		return "<!-- wp:buttons -->\n<div class=\"wp-block-buttons\">$out</div>\n<!-- /wp:buttons -->\n";
+	},
+	'sc' => function ( $code ) {
+		return "<!-- wp:shortcode -->\n$code\n<!-- /wp:shortcode -->\n";
+	},
+	'qa' => function ( $q, $a ) {
+		return "<!-- wp:details -->\n<details class=\"wp-block-details\"><summary>$q</summary><!-- wp:paragraph -->\n<p>$a</p>\n<!-- /wp:paragraph --></details>\n<!-- /wp:details -->\n";
+	},
+);
+$T = array(
+	'en' => array(
+		'eyebrow' => 'Kilnberry Clay Studio', 'h1' => 'Make something with your hands this week',
+		'see' => 'See classes', 'ask' => 'Ask a question', 'how' => 'How it works',
+		'steps' => array( array( 'Pick a class', 'Start with a 2-hour taster or a 4-week course.' ), array( 'Make your piece', 'Wheel, tools, apron and clay are ready when you arrive.' ), array( 'Take it home', 'We glaze and fire your work. Pick it up about two weeks later.' ) ),
+		'popular' => 'Popular classes', 'all' => 'All classes and prices', 'closing' => 'Not sure where to start? Book the taster.', 'write' => 'Write to us',
+		'c_h1' => 'Classes and prices', 'c_note' => 'Clay, tools, glazes and firing are included in every class.', 'c_ask' => 'Ask about a class',
+		'a_h1' => 'About the studio',
+		'a_p' => array( 'Kilnberry is a small studio with six wheels, two kilns and a long table for handbuilding. Classes are small on purpose, so the teacher can help everyone at the wheel.', 'We fire to about 1220 °C (cone 6) and mix our own glazes. Everything you make here is safe for food once it is glazed.' ),
+		'facts' => array( array( 'Small groups', 'Six people at most.' ), array( 'Everything included', 'Clay, tools, glazes and firing.' ), array( 'Beginners welcome', 'Most of our students start from zero.' ) ),
+		'f_h1' => 'Questions and answers',
+		'faq' => array(
+			array( 'Do I need any experience?', 'No. The taster and the four-week course are made for beginners.' ),
+			array( 'What should I wear?', 'Clothes that can get muddy. Short nails help. We have aprons.' ),
+			array( 'When can I take my piece home?', 'About two weeks after the class, once it has been glazed and fired.' ),
+			array( 'Can I cancel or move my class?', 'Yes, up to 48 hours before it starts. After that we can\'t refund, but you can send a friend instead.' ),
+			array( 'Is there an age limit?', 'Classes are for ages 14 and up; under 18 with an adult.' ),
+			array( 'Do you sell gift cards?', 'Yes, for any class. Write to us on the contact page.' ),
+		),
+		'k_h1' => 'Contact',
+	),
+	'ru' => array(
+		'eyebrow' => 'Kilnberry Clay Studio', 'h1' => 'Сделайте что-то своими руками на этой неделе',
+		'see' => 'Смотреть занятия', 'ask' => 'Задать вопрос', 'how' => 'Как это устроено',
+		'steps' => array( array( 'Выберите занятие', 'Начните с пробного занятия на 2 часа или с курса на 4 недели.' ), array( 'Сделайте свою вещь', 'Круг, инструменты, фартук и глина ждут вас на месте.' ), array( 'Заберите домой', 'Мы покроем работу глазурью и обожжём. Забрать можно примерно через две недели.' ) ),
+		'popular' => 'Популярные занятия', 'all' => 'Все занятия и цены', 'closing' => 'Не знаете, с чего начать? Приходите на пробное занятие.', 'write' => 'Написать нам',
+		'c_h1' => 'Занятия и цены', 'c_note' => 'Глина, инструменты, глазури и обжиг входят в любое занятие.', 'c_ask' => 'Спросить о занятии',
+		'a_h1' => 'О студии',
+		'a_p' => array( 'В Kilnberry шесть гончарных кругов, две печи и длинный стол для ручной лепки. Группы маленькие нарочно, чтобы преподаватель успевал помочь каждому за кругом.', 'Мы обжигаем при 1220 °C и сами смешиваем глазури. Всё, что вы сделаете у нас, после глазури подходит для еды.' ),
+		'facts' => array( array( 'Маленькие группы', 'Не больше шести человек.' ), array( 'Всё включено', 'Глина, инструменты, глазури и обжиг.' ), array( 'Новичкам рады', 'Большинство приходит к нам с нуля.' ) ),
+		'f_h1' => 'Вопросы и ответы',
+		'faq' => array(
+			array( 'Нужен ли опыт?', 'Нет. Пробное занятие и курс на четыре недели рассчитаны на новичков.' ),
+			array( 'Что надеть?', 'Одежду, которую не жалко испачкать. Удобнее с короткими ногтями. Фартуки у нас есть.' ),
+			array( 'Когда можно забрать работу?', 'Примерно через две недели после занятия, когда её покроют глазурью и обожгут.' ),
+			array( 'Можно ли отменить или перенести занятие?', 'Да, не позже чем за 48 часов до начала. Позже вернуть деньги не получится, но можно прислать вместо себя друга.' ),
+			array( 'Есть ли ограничение по возрасту?', 'Занятия с 14 лет; до 18 лет со взрослым.' ),
+			array( 'Есть ли подарочные карты?', 'Да, на любое занятие. Напишите нам на странице контактов.' ),
+		),
+		'k_h1' => 'Контакты',
+	),
+);
+foreach ( array( 'en', 'ru' ) as $lang ) {
+	$t   = $T[ $lang ];
+	// addresses as Polylang serves them: English at the root, Russian under /ru/ (built here: Polylang's link rules load on the next request)
+	$url = function ( $k ) use ( $pages, $lang ) {
+		$slug = 'home' === $k ? '' : $pages[ $k ][ 'en' === $lang ? 0 : 4 ] . '/';
+		return home_url( ( 'ru' === $lang ? '/ru/' : '/' ) . $slug );
+	};
+	$desc = function ( $k ) use ( $pages, $lang ) {
+		return $pages[ $k ][ 'en' === $lang ? 3 : 7 ];
+	};
+	$e = 'esc_html';
+
+	$steps = '';
+	foreach ( $t['steps'] as $i => $s ) {
+		$steps .= $b['g']( 'kb-step', $b['p']( sprintf( '%02d', $i + 1 ), 'kb-num' ) . $b['h']( $e( $s[0] ), 3 ) . $b['p']( $e( $s[1] ) ) );
+	}
+	$home = $b['g']( 'site-container kb-hero',
+			$b['g']( 'kb-hero__text', $b['p']( $e( $t['eyebrow'] ), 'eyebrow' ) . $b['h']( $e( $t['h1'] ), 1 ) . $b['p']( $e( $desc( 'home' ) ), 'lead' )
+				. $b['btn']( array( array( $e( $t['see'] ), $url( 'classes' ), 'kb-arrow' ), array( $e( $t['ask'] ), $url( 'contact' ), 'is-style-outline' ) ) ) )
+			. $b['sc']( '[kb_art name="vase,bowl" class="kb-scene"]' ) )
+		. $b['g']( 'kb-band', $b['g']( 'site-container', $b['h']( $e( $t['how'] ) ) . $b['g']( 'kb-steps', $steps ) ), 'section' )
+		. $b['g']( 'kb-section', $b['g']( 'site-container',
+			$b['g']( 'kb-row', $b['h']( $e( $t['popular'] ) ) . $b['p']( '<a class="story-link" href="' . esc_url( $url( 'classes' ) ) . '">' . $e( $t['all'] ) . '</a>' ) )
+			. $b['sc']( '[kb_classes limit="3"]' ) ), 'section' )
+		. $b['g']( 'kb-closing', $b['g']( 'site-container kb-closing__inner', $b['h']( $e( $t['closing'] ) ) . $b['btn']( array( array( $e( $t['write'] ), $url( 'contact' ), 'kb-arrow' ) ) ) ), 'section' );
+
+	$classes_page = $b['g']( 'site-container kb-intro', $b['h']( $e( $t['c_h1'] ), 1 ) . $b['p']( $e( $desc( 'classes' ) ) ), 'section' )
+		. $b['g']( 'site-container kb-tail', $b['sc']( '[kb_classes]' )
+			. $b['g']( 'kb-note', $b['p']( $e( $t['c_note'] ) ) . $b['btn']( array( array( $e( $t['c_ask'] ), $url( 'contact' ), 'kb-arrow' ) ) ) ) );
+
+	$facts = '';
+	foreach ( $t['facts'] as $i => $f ) {
+		$facts .= $b['g']( 'kb-fact', $b['p']( sprintf( '%02d', $i + 1 ), 'kb-num' ) . $b['h']( $e( $f[0] ) ) . $b['p']( $e( $f[1] ) ) );
+	}
+	$about = $b['g']( 'site-container kb-intro', $b['h']( $e( $t['a_h1'] ), 1 ), 'section' )
+		. $b['g']( 'site-container kb-about', $b['g']( 'kb-about__text', $b['p']( $e( $t['a_p'][0] ), 'lead' ) . $b['p']( $e( $t['a_p'][1] ), 'lead' ) )
+			. $b['sc']( '[kb_art name="vase,mug" class="kb-about-art"]' ) )
+		. $b['g']( 'kb-facts', $b['g']( 'site-container kb-facts__grid', $facts ), 'section' );
+
+	$qa = '';
+	foreach ( $t['faq'] as $f ) {
+		$qa .= $b['qa']( $e( $f[0] ), $e( $f[1] ) );
+	}
+	$faq = $b['g']( 'site-container kb-intro', $b['h']( $e( $t['f_h1'] ), 1 ) . $b['p']( $e( $desc( 'faq' ) ) ), 'section' )
+		. $b['g']( 'site-container kb-faq', $qa );
+
+	$contact = $b['g']( 'site-container kb-intro', $b['h']( $e( $t['k_h1'] ), 1 ), 'section' )
+		. $b['g']( 'site-container kb-contact-grid', $b['sc']( '[kb_contact]' ) . $b['sc']( '[kb_form]' ) );
+
+	foreach ( array( 'home' => $home, 'classes' => $classes_page, 'about' => $about, 'faq' => $faq, 'contact' => $contact ) as $k => $content ) {
+		wp_update_post( wp_slash( array( 'ID' => $ids[ $lang ][ $k ], 'post_content' => $content ) ) );
+	}
+}
+$say( 'pages: 5 × 2' );
+
+// 6. menus, one per language (Polylang shows the right one)
+$menus = array();
+foreach ( array( 'en' => 'Main menu (English)', 'ru' => 'Main menu (Russian)' ) as $lang => $name ) {
+	$old = wp_get_nav_menu_object( $name );
+	if ( $old ) {
+		wp_delete_nav_menu( $old->term_id );
+	}
+	$menus[ $lang ] = wp_create_nav_menu( $name );
+	$pos            = 0;
+	foreach ( $ids[ $lang ] as $id ) {
+		wp_update_nav_menu_item( $menus[ $lang ], 0, array(
+			'menu-item-object-id' => $id,
+			'menu-item-object'    => 'page',
+			'menu-item-type'      => 'post_type',
+			'menu-item-status'    => 'publish',
+			'menu-item-position'  => ++$pos,
+		) );
+	}
+}
+$opt              = get_option( 'polylang' );
+$opt['nav_menus'] = array( get_stylesheet() => array( 'primary' => $menus ) );
+update_option( 'polylang', $opt );
+if ( isset( PLL()->options ) && is_object( PLL()->options ) && method_exists( PLL()->options, 'set' ) ) {
+	PLL()->options->set( 'nav_menus', $opt['nav_menus'] );
+}
+set_theme_mod( 'nav_menu_locations', array( 'primary' => $menus['en'] ) );
+$say( 'menus: ' . implode( ',', $menus ) );
+
+// 7. quiet admin: no setup wizard, no review banners; the default category gets a language
+delete_transient( 'pll_activation_redirect' );
+update_option( 'pll_dismissed_notices', array( 'wizard', 'review', 'lingotek', 'pllwc', 'pll-wizard' ) );
+if ( function_exists( 'pll_set_term_language' ) ) {
+	pll_set_term_language( (int) get_option( 'default_category' ), 'en' );
+}
+
+// languages cache keeps each language's front page: rebuild it now that the front page is set
+if ( method_exists( $model, 'clean_languages_cache' ) ) {
+	$model->clean_languages_cache();
+}
+if ( isset( $model->languages ) && is_object( $model->languages ) && method_exists( $model->languages, 'clean_cache' ) ) {
+	$model->languages->clean_cache();
+}
+delete_transient( 'pll_languages_list' );
+
+update_option( 'kb_demo_import', $log );
+echo implode( "\n", $log ), "\n";

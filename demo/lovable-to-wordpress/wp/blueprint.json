@@ -1,0 +1,52 @@
+{
+ "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+ "meta": {
+  "title": "Kilnberry: a Lovable site moved to WordPress",
+  "author": "Flow Lab",
+  "description": "Demo. The five-page Kilnberry Clay Studio site rebuilt as a WordPress theme with editor blocks, English and Russian (Polylang), day and night theme. Kilnberry Clay Studio is a fictional business."
+ },
+ "preferredVersions": {
+  "php": "8.3",
+  "wp": "7.1"
+ },
+ "landingPage": "/",
+ "steps": [
+  {
+   "step": "installPlugin",
+   "pluginData": {
+    "resource": "url",
+    "url": "https://downloads.wordpress.org/plugin/polylang.3.8.10.zip"
+   },
+   "options": {
+    "activate": true
+   }
+  },
+  {
+   "step": "installTheme",
+   "themeData": {
+    "resource": "url",
+    "url": "https://flowlab-dev.github.io/demo/lovable-to-wordpress/wp/kilnberry.zip"
+   },
+   "options": {
+    "activate": true
+   }
+  },
+  {
+   "step": "writeFile",
+   "path": "/tmp/kb-import.php",
+   "data": {
+    "resource": "url",
+    "url": "https://flowlab-dev.github.io/demo/lovable-to-wordpress/wp/import.php.txt"
+   }
+  },
+  {
+   "step": "runPHP",
+   "code": "<?php define( 'WP_ADMIN', true ); require '/wordpress/wp-load.php'; require '/tmp/kb-import.php';"
+  },
+  {
+   "step": "runPHP",
+   "code": "<?php define( 'WP_ADMIN', true ); require '/wordpress/wp-load.php'; delete_transient( 'pll_languages_list' ); $m = PLL()->model; if ( method_exists( $m, 'clean_languages_cache' ) ) { $m->clean_languages_cache(); } if ( isset( $m->languages ) && method_exists( $m->languages, 'clean_cache' ) ) { $m->languages->clean_cache(); } foreach ( pll_languages_list( array( 'fields' => '' ) ) as $l ) { echo $l->slug, ' front ', $l->page_on_front, PHP_EOL; }"
+  }
+ ],
+ "login": true
+}
