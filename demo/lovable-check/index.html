@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lovable App Check · Sample Report</title>
 <meta name="description" content="Sample one-day check of a live Lovable app: what a visitor can reach from outside, plus a walkthrough of the main flows. Every finding with risk, fix and retest.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://flowlab-dev.github.io/demo/lovable-check/">
+<link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/lovable-check/">
+<link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/lovable-check/ru/">
+<script>(function(){try{var t=localStorage.getItem('fl-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root{--bg:#FBF8F5;--card:#fff;--ink:#1F1A17;--sub:#5B514B;--line:#EADFD7;--accent:#C2412D;--red:#B42318;--redbg:#FDECEA;--amber:#8A5A00;--amberbg:#FFF4DB;--green:#1E6B3A;--greenbg:#E6F4EA;--grey:#5B514B;--greybg:#F1ECE8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171412;--card:#211D1A;--ink:#F3EEEA;--sub:#B9ADA5;--line:#3A332E;--accent:#F08A76;--red:#FF8A80;--redbg:#3A1E1B;--amber:#F5C66B;--amberbg:#352A14;--green:#8BD7A3;--greenbg:#16301F;--grey:#B9ADA5;--greybg:#2A2522}}
@@ -42,10 +47,21 @@ pre{background:var(--card);border:1px solid var(--line);border-radius:12px;paddi
 ul{padding-left:20px}
 @media (max-width:600px){h1{font-size:30px}.f dl{grid-template-columns:1fr}.f dt{padding-top:6px}.shots{grid-template-columns:1fr}th:nth-child(3),td:nth-child(3){display:none}}
 @media print{body{background:#fff;font-size:12.5px}.wrap{padding:0}h1{font-size:28px}h2{font-size:18px;margin-top:22px}.f,.meta div,table,pre,.shots figure{break-inside:avoid}.shots img{max-width:190px}}
+:root[data-theme="dark"]{--bg:#171412;--card:#211D1A;--ink:#F3EEEA;--sub:#B9ADA5;--line:#3A332E;--accent:#F08A76;--red:#FF8A80;--redbg:#3A1E1B;--amber:#F5C66B;--amberbg:#352A14;--green:#8BD7A3;--greenbg:#16301F;--grey:#B9ADA5;--greybg:#2A2522}
+.top{display:flex;justify-content:flex-end;gap:8px;margin:-16px 0 18px}
+.lang-switch{display:flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--card)}
+.lang-switch a{min-width:44px;min-height:44px;display:grid;place-items:center;border-radius:999px;font-size:14px;font-weight:600;letter-spacing:.04em;color:var(--sub);text-decoration:none}
+.lang-switch a:hover{color:var(--ink)}
+.lang-switch a[aria-current="page"]{background:var(--ink);color:var(--card)}
+.theme-toggle{font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;min-height:44px;min-width:76px;padding:0 16px;cursor:pointer}
+.theme-toggle:hover{border-color:var(--sub)}
+.theme-toggle:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+@media print{.top{display:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
+<header class="top"><nav class="lang-switch" aria-label="Language"><a aria-current="page" href="./" hreflang="en" lang="en" title="English">EN</a><a href="ru/" hreflang="ru" lang="ru" title="Русский">RU</a></nav><button class="theme-toggle" id="theme" type="button" title="Switch between day and night" data-to-dark="Night" data-to-light="Day">Night</button></header>
 <div class="band">Self-initiated demo by Flow Lab · the app is real and live, the business behind it (Bramblewash Mobile Grooming) is invented · no client data involved</div>
 
 <div class="kicker">Sample report · Lovable app check</div>
@@ -165,5 +181,18 @@ Lovable security scan ........... 0 issues</pre>
 </ul>
 <p class="note">Live demo: <a href="https://bramblewash-bookings.lovable.app">bramblewash-bookings.lovable.app</a> — tap “Open Maya’s dashboard (demo)” to see the owner side.</p>
 </div>
+<script>
+(function () {
+  var root = document.documentElement, btn = document.getElementById('theme');
+  function apply(t) { root.setAttribute('data-theme', t); btn.textContent = btn.getAttribute(t === 'dark' ? 'data-to-light' : 'data-to-dark'); }
+  var saved = root.getAttribute('data-theme');
+  apply(saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    try { localStorage.setItem('fl-theme', next); } catch (e) {}
+  });
+})();
+</script>
 </body>
 </html>
