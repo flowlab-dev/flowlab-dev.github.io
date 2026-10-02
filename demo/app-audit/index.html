@@ -1,35 +1,45 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Release readiness audit — fieldcrew</title><style>
-:root{--bg:#f7f8f8;--card:#fff;--ink:#111827;--muted:#4b5563;--line:#d9dee0;--accent:#0f766e}
-@media (prefers-color-scheme:dark){:root{--bg:#0e1413;--card:#17201f;--ink:#ecf1f0;--muted:#a7b4b2;--line:#2a3634;--accent:#5eead4}}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-main{max-width:920px;margin:0 auto;padding:32px 16px 48px}h1{font-size:28px;line-height:1.2;margin:0 0 12px}h2{font-size:20px;margin:28px 0 8px}
+<title>Release readiness audit: FieldCrew</title><meta name="color-scheme" content="light dark"><meta name="description" content="Sample release readiness audit of an Expo / React Native app: blocking issues, fixes, an hour estimate and a step-by-step plan."><link rel="canonical" href="https://flowlab-dev.github.io/demo/app-audit/"><link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/app-audit/"><link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/app-audit/ru/"><script>try{var q=new URLSearchParams(location.search).get('theme'),t=q==='light'||q==='dark'?q:localStorage.getItem('fl-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script><style>
+:root{--bg:#f7f8f8;--card:#fff;--ink:#111827;--muted:#4b5563;--line:#d9dee0;--accent:#0f766e;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1413;--card:#17201f;--ink:#ecf1f0;--muted:#a7b4b2;--line:#2a3634;--accent:#5eead4;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0e1413;--card:#17201f;--ink:#ecf1f0;--muted:#a7b4b2;--line:#2a3634;--accent:#5eead4;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%}
+main{max-width:920px;margin:0 auto;padding:20px 16px 48px}h1{font-size:28px;line-height:1.2;margin:0 0 12px;text-wrap:balance}h2{font-size:20px;margin:28px 0 8px}
+.tools{display:flex;justify-content:flex-end;gap:8px;margin-bottom:16px}
+.lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:1px;background:var(--card)}
+.lang a,.lang span,.theme{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;padding:0 14px;border-radius:999px;font-weight:600;font-size:14px;line-height:1;font-family:inherit;color:var(--muted);text-decoration:none}
+.lang span{background:var(--ink);color:var(--bg)}.lang a:hover{color:var(--ink)}
+.theme[hidden]{display:none}.theme{height:48px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}.theme:hover{border-color:var(--muted)}
+a:focus-visible,.theme:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 p{margin:6px 0;color:var(--muted)}p b{color:var(--ink)}.note{border:1.5px solid var(--accent);border-radius:12px;padding:10px 14px;color:var(--ink);margin-bottom:18px}
+.note a{color:inherit;text-underline-offset:2px}
 table{width:100%;border-collapse:collapse;background:var(--card);border-radius:14px;overflow:hidden;margin:16px 0;font-size:15px}
 th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--line)}th{font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
-td.lvl{width:1.5em}ol{background:var(--card);border-radius:14px;padding:14px 14px 14px 36px}li{margin:4px 0}
-@media (max-width:640px){table,thead,tbody,tr,td,th{display:block}thead{display:none}tr{border-bottom:1px solid var(--line);padding:8px 4px}td{border:0;padding:2px 8px}}
-</style></head><body><main><p class=note>Sample report on an invented project (FieldCrew) — this is what you get for a real app.</p><h1>Release readiness audit — fieldcrew</h1>
+td.lvl{width:1.5em}td.area{white-space:nowrap}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}ol{background:var(--card);border-radius:14px;padding:14px 14px 14px 36px}li{margin:4px 0}
+@media (max-width:640px){table,thead,tbody,tr,td,th{display:block}thead{display:none}tr{border-bottom:1px solid var(--line);padding:10px 4px}td{border:0;padding:2px 8px}
+td.lvl,td.area{display:inline-block;width:auto;padding-right:0;font-weight:600;white-space:normal}td[data-h]{margin-top:4px;color:var(--muted)}td[data-h]::before{content:attr(data-h) ": ";font-weight:600;color:var(--ink)}}
+@media print{:root:not(#_),:root[data-theme]{--bg:#fff;--card:#fff;--ink:#111827;--muted:#4b5563;--line:#d9dee0;--accent:#0f766e;color-scheme:light}.tools{display:none}}
+</style></head><body><main><div class=tools><nav class=lang aria-label="Language"><span aria-current=page>EN</span><a href="ru/" hreflang=ru lang=ru>RU</a></nav><button class=theme id=theme type=button hidden>Night</button></div><p class=note>Demo by <a href="https://flowlab-dev.github.io/work/app-audit/">Flow Lab</a>: a sample report on an invented project (FieldCrew). This is what you get for a real app.</p><h1>Release readiness audit: FieldCrew</h1>
 <p>Stack: Expo ~53.0.9 · React Native 0.79.2 · TypeScript · tests: 0 · lockfile: yarn.lock</p>
 <p>iOS bundle id: com.example.fieldcrew · Android package: com.example.fieldcrew</p>
 <p><b>3 blocking · 10 to fix · 3 notes.</b> This audit reads the project files only; nothing was installed or run.</p>
-<table><thead><tr><th></th><th>Area</th><th>Finding</th><th>Fix</th></tr></thead><tbody>
-<tr><td class=lvl>🔴</td><td>Stack</td><td>Expo SDK 53 is 4 versions behind the current SDK 57. Store builds now need recent Xcode/iOS SDK and Android target API levels; old SDKs usually cannot meet them.</td><td>Upgrade SDK step by step (53→57), fix breaking changes, retest.</td></tr>
-<tr><td class=lvl>🔴</td><td>Security</td><td>.env is in the project and .gitignore does not exclude .env files.</td><td>Remove it from the repository, rotate the keys, add .env* to .gitignore.</td></tr>
-<tr><td class=lvl>🔴</td><td>Security</td><td>Possible Stripe live secret key in src/billing/config.ts.</td><td>Move it to the server or EAS secrets and rotate it — anything in the app bundle can be read by anyone.</td></tr>
-<tr><td class=lvl>🟡</td><td>Config</td><td>iOS bundle identifier &quot;com.example.fieldcrew&quot; looks like a placeholder.</td><td>Choose the final id before the first store upload — it cannot be changed later.</td></tr>
-<tr><td class=lvl>🟡</td><td>Config</td><td>Android package &quot;com.example.fieldcrew&quot; looks like a placeholder.</td><td>Choose the final id before the first store upload — it cannot be changed later.</td></tr>
-<tr><td class=lvl>🟡</td><td>Build</td><td>No eas.json: cloud builds are not set up.</td><td>Add EAS build profiles (development / preview / production).</td></tr>
-<tr><td class=lvl>🟡</td><td>App Store</td><td>Icon is 512×512; the store needs 1024×1024.</td><td>Export the icon at 1024×1024.</td></tr>
-<tr><td class=lvl>🟡</td><td>App Store</td><td>Icon PNG has an alpha channel; App Store icons must not be transparent.</td><td>Flatten the icon onto a solid background.</td></tr>
-<tr><td class=lvl>🟡</td><td>Google Play</td><td>No Android adaptive icon.</td><td>Add adaptiveIcon foreground + background colour.</td></tr>
-<tr><td class=lvl>🟡</td><td>App Store</td><td>Export compliance (encryption) is not declared, so App Store Connect asks on every upload.</td><td>Set ios.config.usesNonExemptEncryption (usually false for HTTPS-only apps).</td></tr>
-<tr><td class=lvl>🟡</td><td>App Store</td><td>expo-camera is used but the iOS permission text is not set (NSCameraUsageDescription); generic default texts are a common rejection reason (guideline 5.1.1).</td><td>Write a specific purpose string for each permission.</td></tr>
-<tr><td class=lvl>🟡</td><td>App Store</td><td>expo-location is used but the iOS permission text is not set (NSLocationWhenInUseUsageDescription); generic default texts are a common rejection reason (guideline 5.1.1).</td><td>Write a specific purpose string for each permission.</td></tr>
-<tr><td class=lvl>🟡</td><td>Security</td><td>app config &quot;extra&quot; has supabaseServiceKey — values in extra ship inside the app.</td><td>Keep only public values there.</td></tr>
-<tr><td class=lvl>⚪</td><td>Build</td><td>Install script postinstall: &quot;patch-package&quot; (common tool).</td><td></td></tr>
-<tr><td class=lvl>⚪</td><td>App Store</td><td>No app-level privacy manifest declared (Expo adds manifests for its own modules).</td><td>Declare data collection / required-reason APIs if the app or its SDKs use them.</td></tr>
-<tr><td class=lvl>⚪</td><td>Quality</td><td>No automated tests found.</td><td>Add tests for the key logic before changes.</td></tr>
+<table><thead><tr><th><span class=sr>Level</span></th><th>Area</th><th>Finding</th><th>Fix</th></tr></thead><tbody>
+<tr><td class=lvl><span role=img aria-label="Blocking">🔴</span></td><td class=area>Stack</td><td>Expo SDK 53 is 4 versions behind the current SDK 57. Store builds now need recent Xcode/iOS SDK and Android target API levels; old SDKs usually cannot meet them.</td><td data-h="Fix">Upgrade SDK step by step (53→57), fix breaking changes, retest.</td></tr>
+<tr><td class=lvl><span role=img aria-label="Blocking">🔴</span></td><td class=area>Security</td><td>.env is in the project and .gitignore does not exclude .env files.</td><td data-h="Fix">Remove it from the repository, rotate the keys, add .env* to .gitignore.</td></tr>
+<tr><td class=lvl><span role=img aria-label="Blocking">🔴</span></td><td class=area>Security</td><td>Possible Stripe live secret key in src/billing/config.ts.</td><td data-h="Fix">Move it to the server or EAS secrets and rotate it: anything in the app bundle can be read by anyone.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>Config</td><td>iOS bundle identifier &quot;com.example.fieldcrew&quot; looks like a placeholder.</td><td data-h="Fix">Choose the final id before the first store upload: it cannot be changed later.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>Config</td><td>Android package &quot;com.example.fieldcrew&quot; looks like a placeholder.</td><td data-h="Fix">Choose the final id before the first store upload: it cannot be changed later.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>Build</td><td>No eas.json: cloud builds are not set up.</td><td data-h="Fix">Add EAS build profiles (development / preview / production).</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>App Store</td><td>Icon is 512×512; the store needs 1024×1024.</td><td data-h="Fix">Export the icon at 1024×1024.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>App Store</td><td>Icon PNG has an alpha channel; App Store icons must not be transparent.</td><td data-h="Fix">Flatten the icon onto a solid background.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>Google Play</td><td>No Android adaptive icon.</td><td data-h="Fix">Add adaptiveIcon foreground + background color.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>App Store</td><td>Export compliance (encryption) is not declared, so App Store Connect asks on every upload.</td><td data-h="Fix">Set ios.config.usesNonExemptEncryption (usually false for HTTPS-only apps).</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>App Store</td><td>expo-camera is used but the iOS permission text is not set (NSCameraUsageDescription); generic default texts are a common rejection reason (guideline 5.1.1).</td><td data-h="Fix">Write a specific purpose string for each permission.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>App Store</td><td>expo-location is used but the iOS permission text is not set (NSLocationWhenInUseUsageDescription); generic default texts are a common rejection reason (guideline 5.1.1).</td><td data-h="Fix">Write a specific purpose string for each permission.</td></tr>
+<tr><td class=lvl><span role=img aria-label="To fix">🟡</span></td><td class=area>Security</td><td>The &quot;extra&quot; section of the app config has supabaseServiceKey; everything in extra ships inside the app.</td><td data-h="Fix">Keep only public values there.</td></tr>
+<tr><td class=lvl><span role=img aria-label="Note">⚪</span></td><td class=area>Build</td><td>Install script postinstall: &quot;patch-package&quot; (common tool).</td><td></td></tr>
+<tr><td class=lvl><span role=img aria-label="Note">⚪</span></td><td class=area>App Store</td><td>No app-level privacy manifest declared (Expo adds manifests for its own modules).</td><td data-h="Fix">Declare data collection / required-reason APIs if the app or its SDKs use them.</td></tr>
+<tr><td class=lvl><span role=img aria-label="Note">⚪</span></td><td class=area>Quality</td><td>No automated tests found.</td><td data-h="Fix">Add tests for the key logic before changes.</td></tr>
 </tbody></table>
 <p>Estimated work to a store-ready build: <b>about 21 h</b> (fixes above + EAS setup and first builds). Store accounts (Apple Developer, Google Play) and publishing stay on the owner's accounts.</p>
 <h2>Plan, step by step</h2>
@@ -40,4 +50,4 @@ td.lvl{width:1.5em}ol{background:var(--card);border-radius:14px;padding:14px 14p
 <li>Set up EAS cloud builds and make test builds for iOS and Android.</li>
 <li>Testing on your devices: TestFlight (iOS) and internal testing (Google Play).</li>
 <li>Submission to App Store and Google Play review from your accounts; answering reviewer notes.</li>
-</ol></main></body></html>
+</ol></main><script>(function(){var r=document.documentElement,b=document.getElementById('theme'),m=matchMedia('(prefers-color-scheme: dark)');function dark(){return r.dataset.theme?r.dataset.theme==='dark':m.matches}function label(){var d=dark();b.textContent=d?'Day':'Night';b.setAttribute('aria-label',d?'Day: switch to day theme':'Night: switch to night theme')}b.hidden=false;b.onclick=function(){var v=dark()?'light':'dark';r.dataset.theme=v;try{localStorage.setItem('fl-theme',v)}catch(e){}label()};label();m.addEventListener?m.addEventListener('change',label):m.addListener(label)})()</script></body></html>
