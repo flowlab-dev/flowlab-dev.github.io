@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head><script>try{var q=location.search.match(/theme=(light|dark)/);var t=q?q[1]:localStorage.getItem('fl-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+<title>HoursOwed: учет смен и переработки, включая разделенные смены</title>
+<meta content="Разделенные и ночные смены, неоплачиваемые перерывы. HoursOwed считает переработку 1,5× после 40 часов и превращает расчетный период в PDF." name="description"/>
+<link href="https://flowlab-dev.github.io/ru/hoursowed/" rel="canonical"/><link href="https://flowlab-dev.github.io/ru/hoursowed/" hreflang="ru" rel="alternate"/><link href="https://flowlab-dev.github.io/hoursowed/" hreflang="en" rel="alternate"/><link href="https://flowlab-dev.github.io/hoursowed/" hreflang="x-default" rel="alternate"/>
+<meta content="website" property="og:type"/><meta content="ru_RU" property="og:locale"/><meta content="HoursOwed: учет смен и переработки, включая разделенные смены" property="og:title"/><meta content="Разделенные и ночные смены, неоплачиваемые перерывы. HoursOwed считает переработку 1,5× после 40 часов и превращает расчетный период в PDF." property="og:description"/><meta content="https://flowlab-dev.github.io/ru/hoursowed/" property="og:url"/><meta content="https://flowlab-dev.github.io/hoursowed/assets/og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/>
+<meta content="#0f766e" media="(prefers-color-scheme: light)" name="theme-color"/><meta content="#0b0f0e" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<link href="/hoursowed/assets/icon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/hoursowed/assets/icon-180.png" rel="apple-touch-icon"/>
+<link href="/hoursowed/assets/style.css" rel="stylesheet"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HoursOwed","url":"https://flowlab-dev.github.io/hoursowed/","applicationCategory":"BusinessApplication","operatingSystem":"iOS, Android, Web","offers":[{"@type":"Offer","price":"3.99","priceCurrency":"USD","name":"Monthly"},{"@type":"Offer","price":"19.99","priceCurrency":"USD","name":"Yearly"},{"@type":"Offer","price":"39.99","priceCurrency":"USD","name":"Lifetime"}]}</script>
+<style>.fl-tools{display:flex;gap:8px;align-items:center;flex:none}.lang{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}.lang a{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0 8px;font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--muted);text-decoration:none;transition:color .2s ease,background-color .2s ease}.lang a[aria-current]{background:var(--fg);color:var(--bg)}.lang a:not([aria-current]):hover{color:var(--fg)}.lang a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.theme{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--fg);display:grid;place-items:center;cursor:pointer;padding:0;flex:none}.theme:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.theme svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}.theme .moon{display:none}:root[data-theme=dark] .theme .sun{display:none}:root[data-theme=dark] .theme .moon{display:block}@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .theme .sun{display:none}:root:not([data-theme=light]) .theme .moon{display:block}}@media (prefers-reduced-motion:reduce){.lang a{transition:none}}:root{--fg:var(--text)}.top .wrap>nav{margin-left:auto}.btn.small{min-height:44px}.top .brand,.top nav a:not(.btn){min-height:44px;display:inline-flex;align-items:center}@media (max-width:640px){.top .wrap{gap:10px}.top nav a.hide-sm{display:none}}@media (max-width:420px){.top nav .btn.small{display:none}}:root[data-theme="light"]{--bg: #fafaf9; --surface: #ffffff; --text: #111827; --muted: #4b5563; --line: #e5e7eb; --accent: #0f766e; --accent-ink: #ffffff; --accent-soft: #ccfbf1; --warn: #b45309; --danger: #b91c1c; --radius: 14px; --shadow: 0 1px 2px rgb(0 0 0 / .04), 0 8px 24px rgb(0 0 0 / .06); --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace; color-scheme: light dark;color-scheme:light}:root[data-theme="dark"]{--bg: #0b0f0e; --surface: #121816; --text: #ecfdf5; --muted: #a3b3ad; --line: #24302c; --accent: #2dd4bf; --accent-ink: #042f2e; --accent-soft: #134e4a; --warn: #fbbf24; --danger: #f87171; --shadow: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .35);color-scheme:dark}</style></head>
+<body>
+<a class="skip" href="#main">Перейти к содержимому</a>
+<header class="top"><div class="wrap"><a class="brand" href="/ru/hoursowed/"><img alt="" height="28" src="/hoursowed/assets/icon.svg" width="28"/>HoursOwed</a> <nav aria-label="Главное меню"><a class="hide-sm" href="/hoursowed/time-card-calculator/">Бесплатный калькулятор</a><a class="hide-sm" href="/ru/hoursowed/#pricing">Цены</a><a class="btn small" href="/hoursowed/app/?lang=ru">Открыть бесплатно</a></nav><div class="fl-tools"><div aria-label="Язык сайта" class="lang" role="group"><a href="/hoursowed/" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="/ru/hoursowed/" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Светлая или темная тема" class="theme" type="button"><svg class="sun" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg><svg class="moon" viewbox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button></div></div></header>
+<main id="main">
+<section class="hero"><div class="wrap hero-grid">
+<div>
+<p class="eyebrow">Для почасовых и сменных работников, сиделок, медсестер</p>
+<h1>Часы и переработка<br/>посчитаны точно.</h1>
+<p class="lead">Разделенные и ночные смены, неоплачиваемые перерывы вносятся в несколько касаний. HoursOwed считает переработку по ставке 1,5× после 40 часов. В версии Pro любой расчетный период превращается в PDF для руководителя.</p>
+<div class="actions"><a class="btn" href="/hoursowed/app/?lang=ru">Открыть HoursOwed бесплатно</a> <a class="btn ghost" href="/hoursowed/time-card-calculator/">Бесплатный калькулятор</a></div>
+<p class="muted small">Pro бесплатно 7 дней, карта не нужна. Затем выберите план или оставайтесь на бесплатной версии: данные сохраняются.</p>
+</div>
+<figure class="demo">
+<picture>
+<source media="(prefers-reduced-motion: reduce)" srcset="/hoursowed/assets/hoursowed-demo-still.webp">
+<img alt="HoursOwed: начало смены, неоплачиваемый перерыв, переработка после 40 часов, отчет за период" decoding="async" height="1007" src="/hoursowed/assets/hoursowed-demo.webp" width="432"/>
+</picture>
+<figcaption class="muted small">Настоящее приложение за 10 секунд: начало смены → переработка после 40 ч → отчет за период</figcaption>
+</figure>
+</div>
+<div class="wrap hero-week"><figure aria-label="Пример недели" class="week card reveal">
+<figcaption class="muted small">Пример недели · $20/ч</figcaption>
+<table>
+<tr><td>Пн</td><td>8:00–10:00 · 12:00–16:45</td><td>6:45</td></tr>
+<tr><td>Вт</td><td>8:00–18:30 · перерыв 30 мин</td><td>10:00</td></tr>
+<tr><td>Ср</td><td>8:00–18:30 · перерыв 30 мин</td><td>10:00</td></tr>
+<tr><td>Чт</td><td>8:00–18:30 · перерыв 30 мин</td><td>10:00</td></tr>
+<tr><td>Пт</td><td>8:00–18:30 · перерыв 30 мин</td><td>10:00</td></tr>
+<tr><td>Сб</td><td>22:00–6:00</td><td>8:00</td></tr>
+</table>
+<div class="week-sum"><span>Обычные <b>40:00</b></span><span>Переработка <b>14:45</b></span><span>До налогов <b>$1 242,50</b></span></div>
+</figure></div></section>
+<section><div class="wrap">
+<h2 class="reveal">Для недель, которые не укладываются в шаблон</h2>
+<p class="lead reveal">Во многие недели одна смена в день не получается: разделенные смены, ночи, неоплачиваемые перерывы.</p>
+<div class="grid-3">
+<div class="card reveal">
+<svg aria-hidden="true" class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M3 12h6M15 12h6M9 8v8M15 8v8"></path></svg>
+<h3>Разделенные смены</h3>
+<p class="muted">Работа с 8 до 10 утра и с 12 до 16:45? Обе части вносятся в один день. Ночная смена засчитывается в день, когда она началась.</p>
+</div>
+<div class="card reveal">
+<svg aria-hidden="true" class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+<h3>Переработка без расчетов</h3>
+<p class="muted">Полуторная ставка после 40 часов в неделю, бесплатно. В Pro также дневная переработка: 1,5× после 8 часов в день или калифорнийский режим с 2× после 12 часов (правило седьмого дня не входит).</p>
+</div>
+<div class="card reveal">
+<svg aria-hidden="true" class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"></path><path d="M14 3v5h5M10 13h6M10 17h6"></path></svg>
+<h3>Отчет за период в одно касание</h3>
+<p class="muted">В Pro: файл PDF или CSV за неделю, две недели, полмесяца или месяц, со всеми сменами, перерывами и итогами.</p>
+</div>
+<div class="card reveal">
+<svg aria-hidden="true" class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><rect height="9" rx="2" width="12" x="6" y="11"></rect><path d="M9 11V8a3 3 0 0 1 6 0v3"></path></svg>
+<h3>Данные остаются у вас</h3>
+<p class="muted">Без аккаунта, рекламы и cookies. Смены хранятся на вашем телефоне, а не на наших серверах.</p>
+</div>
+<div class="card reveal">
+<svg aria-hidden="true" class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M4 12h16M12 4v16"></path></svg>
+<h3>Работает без интернета</h3>
+<p class="muted">Добавьте приложение на главный экран и вносите смены даже без связи на работе. Установка сохраняет данные: Safari удаляет данные сайта через 7 дней без посещения.</p>
+</div>
+<div class="card reveal">
+<svg aria-hidden="true" class="icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewbox="0 0 24 24"><path d="M20 7L9 18l-5-5"></path></svg>
+<h3>Без недельных подписок</h3>
+<p class="muted">Основные функции бесплатны. Pro оплачивается помесячно, за год или один раз, подписку можно отменить в любой момент.</p>
+</div>
+</div>
+</div></section>
+<section><div class="wrap"><h2 class="reveal">Как это выглядит</h2><p class="lead reveal">Экраны из приложения. Место работы и даты приведены для примера.</p><div class="shots"><figure class="shot reveal"><img alt="Экран «Сегодня»: работа на складе с 7:00, таймер на 3 часах, кнопки «Неоплачиваемый перерыв» и «Конец смены»; за неделю 42 часа, из них 2 часа переработки" height="1488" loading="lazy" src="/hoursowed/shots/today.webp" width="780"/><figcaption>Начало и конец смены, неоплачиваемый перерыв в одно касание.</figcaption></figure><figure class="shot reveal"><img alt="Смены за 13–26 сентября: разделенная смена 7:00–12:00 и 12:30–17:30, текущая смена с 2 часами переработки" height="1488" loading="lazy" src="/hoursowed/shots/shifts.webp" width="780"/><figcaption>Разделенные смены и переработка в момент ее начала.</figcaption></figure><figure class="shot reveal"><img alt="Отчет за 13–26 сентября: 82 часа, из них 80 обычных и 2 переработки, $1 535,50 до налогов; по рабочим неделям: 40 часов, затем 42 часа с 2 часами переработки" height="1488" loading="lazy" src="/hoursowed/shots/report.webp" width="780"/><figcaption>Расчетный период по рабочим неделям.</figcaption></figure><figure class="shot reveal"><img alt="Экран редактирования работы: новая ставка 19,75 с 27.09.2026, варианты правил переработки: федеральное, дневное и калифорнийское" height="1488" loading="lazy" src="/hoursowed/shots/raise.webp" width="780"/><figcaption>Новая ставка действует с указанной даты, прошлые выплаты не меняются.</figcaption></figure></div></div></section>
+<section id="pricing"><div class="wrap">
+<h2 class="reveal">Цены</h2>
+<p class="lead reveal">Калькулятор рабочего времени на этом сайте бесплатен для всех. В приложении бесплатны разделенные смены и недельная переработка, Pro добавляет дневную переработку и отчеты за период.</p>
+<div class="price">
+<div class="card reveal">
+<h3>Бесплатно</h3>
+<p class="amount">$0</p>
+<ul><li>Разделенные и ночные смены</li><li>Неоплачиваемые перерывы</li><li>Недельная переработка 1,5× после 40 часов</li></ul>
+<a class="btn ghost" href="/hoursowed/app/?lang=ru">Открыть приложение</a>
+</div>
+<div class="card reveal">
+<h3>Pro помесячно</h3>
+<p class="amount">$3,99<span class="muted small"> / месяц</span></p>
+<ul><li>Дневная переработка и двойная ставка</li><li>PDF и CSV за любой период</li><li>Продлевается каждый месяц до отмены</li></ul>
+<a class="btn ghost" href="/hoursowed/app/?lang=ru">Оформить на месяц</a>
+</div>
+<div class="card best reveal">
+<h3>Pro на год <span class="badge">Выгода 58%</span></h3>
+<p class="amount">$19,99<span class="muted small"> / год</span></p>
+<ul><li>Все возможности Pro</li><li>$1,67 в месяц</li><li>Продлевается каждый год до отмены</li></ul>
+<a class="btn" href="/hoursowed/app/?lang=ru">Оформить на год</a>
+</div>
+<div class="card reveal">
+<h3>Навсегда</h3>
+<p class="amount">$39,99<span class="muted small"> один раз</span></p>
+<ul><li>Все возможности Pro, включая обновления</li><li>Один платеж, без продлений</li><li>Для веб-приложения; версия для App Store будет продаваться отдельно</li></ul>
+<a class="btn ghost" href="/hoursowed/app/?lang=ru">Купить один раз</a>
+</div>
+</div>
+<p class="muted small">Pro бесплатно 7 дней, карта не нужна. Затем выберите план или оставайтесь на бесплатной версии: данные сохраняются. Цены в USD. Платежи принимает Gumroad: он выступает продавцом и добавляет налог с продаж или НДС, где это требуется.</p>
+</div></section>
+<section><div class="narrow">
+<h2 class="reveal">Вопросы</h2>
+<details><summary>Нужен ли аккаунт?</summary><p>Нет. Откройте приложение и вносите смены, почасовую ставку можно добавить в любой момент. После покупки Pro Gumroad показывает лицензионный ключ на странице чека и отправляет его на почту. Вставьте ключ в приложение, и Pro включится.</p></details>
+<details><summary>Где хранятся мои смены?</summary><p>Только на вашем устройстве. Сервера, который хранит ваши часы, у нас нет. Добавьте приложение на главный экран, чтобы Safari не удалил его данные, и время от времени выгружайте CSV как резервную копию.</p></details>
+<details><summary>Как отменить подписку?</summary><p>По ссылке «Manage membership» в письме-чеке Gumroad или через «Manage or cancel subscription» в настройках приложения после ввода ключа. Pro действует до конца оплаченного периода. Покупка навсегда оплачивается один раз, отменять нечего.</p></details>
+<details><summary>Что делать, если изменилась ставка?</summary><p>Укажите новую ставку и дату начала. Прошлые периоды сохраняют прежнюю ставку, задним числом ничего не пересчитывается.</p></details>
+<details><summary>Я езжу в командировки. Часы не сдвинутся?</summary><p>Нет. Часовой пояс работы выбирается один раз, и поездки в другие пояса не сдвигают смены прошлых недель.</p></details>
+<details><summary>По каким правилам считается переработка?</summary><p>Недельная переработка после 40 часов по ставке 1,5×, как в федеральном законе FLSA. В Pro дневная переработка: 1,5× после 8 часов в день или калифорнийский режим с 2× после 12 часов. Правило седьмого дня и другие особые правила штатов не рассчитываются. Это инструмент учета, а не юридическая или бухгалтерская консультация.</p></details>
+</div></section>
+</main>
+<footer class="foot"><div class="wrap"><span>© 2026 Flow Lab</span> <span><a href="/hoursowed/time-card-calculator/">Табель</a> · <a href="/hoursowed/biweekly-time-card-calculator/">Две недели</a> · <a href="/hoursowed/overtime-calculator-california/">Переработка в Калифорнии</a> · <a href="/hoursowed/split-shift-calculator/">Разделенные смены</a> · <a href="/hoursowed/privacy/">Конфиденциальность</a> · <a href="/hoursowed/terms/">Условия</a> · <a href="mailto:trading.flowlab@gmail.com">trading.flowlab@gmail.com</a></span></div></footer>
+<script async="" data-goatcounter="https://hoursowed.goatcounter.com/count" src="https://gc.zgo.at/count.js"></script>
+<script>
+  if (matchMedia('(prefers-reduced-motion: no-preference)').matches && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  } else document.querySelectorAll('.reveal').forEach((el) => el.classList.add('in'));
+</script>
+<script>document.querySelector('.theme').addEventListener('click',function(){var r=document.documentElement,d=r.getAttribute('data-theme')==='dark'||(r.getAttribute('data-theme')!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches),t=d?'light':'dark';r.setAttribute('data-theme',t);try{localStorage.setItem('fl-theme',t)}catch(e){}})</script></body>
+</html>

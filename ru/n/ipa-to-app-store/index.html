@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head><script>try{var q=location.search.match(/theme=(light|dark)/);var t=q?q[1]:localStorage.getItem('fl-theme');if(t)document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>IPA to App Store Without a Mac · Flow Lab</title><meta content="en_US" property="og:locale"/><link href="https://flowlab-dev.github.io/ru/n/ipa-to-app-store/" hreflang="ru" rel="alternate"/><link href="https://flowlab-dev.github.io/n/ipa-to-app-store/" hreflang="en" rel="alternate"/><link href="https://flowlab-dev.github.io/n/ipa-to-app-store/" hreflang="x-default" rel="alternate"/>
-<meta content="Upload the .ipa from Base44, Lovable or Expo to App Store Connect without a Mac: a workflow in your own GitHub, your keys stay with you. USD 60–90, first upload together." name="description"/>
+<title>IPA в App Store без Mac · Flow Lab</title><meta content="ru_RU" property="og:locale"/><link href="https://flowlab-dev.github.io/ru/n/ipa-to-app-store/" hreflang="ru" rel="alternate"/><link href="https://flowlab-dev.github.io/n/ipa-to-app-store/" hreflang="en" rel="alternate"/><link href="https://flowlab-dev.github.io/n/ipa-to-app-store/" hreflang="x-default" rel="alternate"/>
+<meta content="Загрузка .ipa из Base44, Lovable или Expo в App Store Connect без Mac: сценарий в вашем GitHub, ключи остаются у вас. 60–90 USD, первая загрузка вместе." name="description"/>
 <style>
 :root{--bg:#FBF8F5;--card:#fff;--ink:#1F1A17;--sub:#5B514B;--line:#EADFD7;--accent:#C2412D;--red:#B42318;--redbg:#FDECEA;--amber:#8A5A00;--amberbg:#FFF4DB;--green:#1E6B3A;--greenbg:#E6F4EA;--grey:#5B514B;--greybg:#F1ECE8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171412;--card:#211D1A;--ink:#F3EEEA;--sub:#B9ADA5;--line:#3A332E;--accent:#F08A76;--red:#FF8A80;--redbg:#3A1E1B;--amber:#F5C66B;--amberbg:#352A14;--green:#8BD7A3;--greenbg:#16301F;--grey:#B9ADA5;--greybg:#2A2522}}
@@ -46,38 +46,38 @@ ul{padding-left:20px}
 <style>.fl-tools{display:flex;gap:8px;align-items:center;flex:none}.lang{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex:none}.lang a{display:grid;place-items:center;min-width:44px;min-height:44px;padding:0 8px;font:500 12px/1 var(--mono);letter-spacing:.04em;color:var(--muted);text-decoration:none;transition:color .2s ease,background-color .2s ease}.lang a[aria-current]{background:var(--fg);color:var(--bg)}.lang a:not([aria-current]):hover{color:var(--fg)}.lang a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}.theme{width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--fg);display:grid;place-items:center;cursor:pointer;padding:0;flex:none}.theme:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.theme svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}.theme .moon{display:none}:root[data-theme=dark] .theme .sun{display:none}:root[data-theme=dark] .theme .moon{display:block}@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .theme .sun{display:none}:root:not([data-theme=light]) .theme .moon{display:block}}@media (prefers-reduced-motion:reduce){.lang a{transition:none}}:root{--fg:var(--ink);--muted:var(--sub);--mono:ui-monospace,'SF Mono',Menlo,monospace}.band{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap}:root[data-theme=dark]{color-scheme:dark}@media (prefers-color-scheme:dark){:root:not([data-theme=light]){color-scheme:dark}}:root[data-theme="light"]{--bg:#FBF8F5;--card:#fff;--ink:#1F1A17;--sub:#5B514B;--line:#EADFD7;--accent:#C2412D;--red:#B42318;--redbg:#FDECEA;--amber:#8A5A00;--amberbg:#FFF4DB;--green:#1E6B3A;--greenbg:#E6F4EA;--grey:#5B514B;--greybg:#F1ECE8;color-scheme:light}:root[data-theme="dark"]{--bg:#171412;--card:#211D1A;--ink:#F3EEEA;--sub:#B9ADA5;--line:#3A332E;--accent:#F08A76;--red:#FF8A80;--redbg:#3A1E1B;--amber:#F5C66B;--amberbg:#352A14;--green:#8BD7A3;--greenbg:#16301F;--grey:#B9ADA5;--greybg:#2A2522;color-scheme:dark}</style></head>
 <body>
 <div class="wrap">
-<div class="band"><span>Flow Lab · a service page · no client work shown here</span><div class="fl-tools"><div aria-label="Site language" class="lang" role="group"><a aria-current="page" href="/n/ipa-to-app-store/" hreflang="en" lang="en" title="English">EN</a><a href="/ru/n/ipa-to-app-store/" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Switch light or dark theme" class="theme" type="button"><svg class="sun" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg><svg class="moon" viewbox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button></div></div>
+<div class="band"><span>Flow Lab · страница услуги · работ для клиентов здесь нет</span><div class="fl-tools"><div aria-label="Язык сайта" class="lang" role="group"><a href="/n/ipa-to-app-store/" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="/ru/n/ipa-to-app-store/" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Светлая или темная тема" class="theme" type="button"><svg class="sun" viewbox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg><svg class="moon" viewbox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></button></div></div>
 <div class="kicker">Base44 · Lovable · Expo → App Store</div>
-<h1>Your .ipa is ready but you have no Mac? Upload it to the App Store anyway.</h1>
-<p class="lead">Base44 and similar builders give you an .ipa file, and then stop. Apple wants it sent from a Mac with a recent Xcode. You don’t need one: a small workflow in <b>your own GitHub</b> uploads the file for you on GitHub’s Mac servers, with Apple’s own upload tool. Your App Store key stays in your account, and we never see it.</p>
+<h1>Файл .ipa готов, а Mac нет? Приложение все равно попадет в App Store.</h1>
+<p class="lead">Base44 и похожие конструкторы выдают файл .ipa и на этом останавливаются. Apple принимает его только с Mac и свежим Xcode. Mac для этого не нужен. Небольшой сценарий в <b>вашем собственном GitHub</b> загружает файл на серверах Mac от GitHub штатным инструментом Apple. Ключ App Store остается в вашем аккаунте, доступа к нему у нас нет.</p>
 <div class="meta">
-<div><b>No Mac</b><span>runs on GitHub’s macOS servers</span></div>
-<div><b>Your keys</b><span>you add them to your GitHub, not to us</span></div>
-<div><b>1 click</b><span>for every next update, done by you</span></div>
-<div><b>USD 60–90</b><span>setup and the first upload together</span></div>
+<div><b>Без Mac</b><span>работает на серверах macOS от GitHub</span></div>
+<div><b>Ваши ключи</b><span>они хранятся в вашем GitHub, а не у нас</span></div>
+<div><b>1 нажатие</b><span>для каждого следующего обновления, вы делаете его сами</span></div>
+<div><b>60–90 USD</b><span>настройка и первая загрузка вместе</span></div>
 </div>
-<h2>What we do</h2>
+<h2>Порядок работы</h2>
 <table>
-<tr><th>#</th><th>Step</th><th>Who</th></tr>
-<tr><td>1</td><td>We send you one workflow file for a new private GitHub repository. It checks the .ipa with Apple’s tool first, then uploads it, then deletes the key from the server.</td><td><span class="tag t-green">Flow Lab</span></td></tr>
-<tr><td>2</td><td>You create an App Store Connect API key (role “App Manager”) and paste it into your repository’s secrets. We send step-by-step instructions: where to click in App Store Connect and in GitHub.</td><td><span class="tag t-amber">You, ~10 min</span></td></tr>
-<tr><td>3</td><td>We run the first upload together: you press “Run workflow”, you send us the run log (GitHub hides your secrets in it), and we fix anything Apple’s check flags.</td><td><span class="tag t-grey">Together</span></td></tr>
-<tr><td>4</td><td>After Apple processes the upload, the build shows up in App Store Connect → TestFlight. Next updates: new .ipa link → “Run workflow”.</td><td><span class="tag t-green">Done</span></td></tr>
+<tr><th>#</th><th>Шаг</th><th>Кто</th></tr>
+<tr><td>1</td><td>Вы получаете один файл сценария для нового закрытого репозитория GitHub. Сначала сценарий проверяет .ipa инструментом Apple, затем загружает его и удаляет ключ с сервера.</td><td><span class="tag t-green">Flow Lab</span></td></tr>
+<tr><td>2</td><td>Вы создаете ключ API в App Store Connect (роль «App Manager») и добавляете его в секреты репозитория. Пошаговая инструкция прилагается: где нажать в App Store Connect и в GitHub.</td><td><span class="tag t-amber">Вы, около 10 минут</span></td></tr>
+<tr><td>3</td><td>Первая загрузка проходит вместе: вы нажимаете «Run workflow» и присылаете журнал запуска (секреты GitHub в нем скрывает). Все замечания проверки Apple исправляем сразу.</td><td><span class="tag t-grey">Вместе</span></td></tr>
+<tr><td>4</td><td>После обработки в Apple сборка появляется в App Store Connect → TestFlight. Следующие обновления: новая ссылка на .ipa → «Run workflow».</td><td><span class="tag t-green">Готово</span></td></tr>
 </table>
-<h2>What you need</h2>
+<h2>Что понадобится</h2>
 <ul>
-<li>An Apple Developer account (Apple charges USD 99 a year; that’s Apple’s fee, not ours) and an app record in App Store Connect with the same bundle ID as your .ipa.</li>
-<li>The .ipa from your builder (a download link is enough).</li>
-<li>A free GitHub account.</li>
+<li>Аккаунт Apple Developer (Apple берет 99 USD в год, это плата Apple, а не наша) и карточка приложения в App Store Connect с тем же bundle ID, что у вашего .ipa.</li>
+<li>Файл .ipa из вашего конструктора (достаточно ссылки на скачивание).</li>
+<li>Бесплатный аккаунт GitHub.</li>
 </ul>
-<h2>Honest notes</h2>
+<h2>Честно о границах</h2>
 <ul>
-<li>This is the method Apple documents for uploads (<a href="https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds">Apple: upload builds</a>). We set it up and do the <b>first run together on your account</b>. We don’t have your account, so we can’t upload for you in advance, and we haven’t done this upload for a client yet.</li>
-<li>If the .ipa isn’t signed for the App Store, Apple’s check says so before anything is uploaded; that part is fixed in your builder’s signing settings.</li>
-<li>In-app subscriptions are a separate topic: builders like Base44 don’t include Apple’s purchase flow out of the box. Ask us if you need it.</li>
+<li>Этот способ загрузки описан в документации Apple (<a href="https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds">Apple: загрузка сборок</a>). Настройка и <b>первый запуск проходят вместе, в вашем аккаунте</b>. Доступа к вашему аккаунту у нас нет, поэтому заранее загрузить за вас нельзя. Для клиента такую загрузку мы еще не делали.</li>
+<li>Если .ipa не подписан для App Store, проверка Apple сообщит об этом до загрузки. Подпись исправляется в настройках вашего конструктора.</li>
+<li>Подписки внутри приложения настраиваются отдельно: в Base44 и похожих конструкторах покупок Apple по умолчанию нет. Если они нужны, напишите.</li>
 </ul>
-<h2>Price</h2>
-<p><b>USD 60–90</b> fixed: the workflow, the setup guide and the first upload together. Help with later App Review questions and new versions: USD 30 a month, or per hour. Built with Claude Code; every change is checked before it ships.</p>
+<h2>Цена</h2>
+<p>Фиксированная цена <b>60–90 USD</b>: сценарий, инструкция по настройке и первая загрузка вместе. Помощь с вопросами App Review и новыми версиями: 30 USD в месяц или почасово. Работа идет в Claude Code, каждое изменение проверяется до выпуска.</p>
 <p class="note">Flow Lab · trading.flowlab@gmail.com · Telegram @flowlabdev</p>
 </div>
 <script>document.querySelector('.theme').addEventListener('click',function(){var r=document.documentElement,d=r.getAttribute('data-theme')==='dark'||(r.getAttribute('data-theme')!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches),t=d?'light':'dark';r.setAttribute('data-theme',t);try{localStorage.setItem('fl-theme',t)}catch(e){}})</script></body>
