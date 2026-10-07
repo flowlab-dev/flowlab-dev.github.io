@@ -1,4 +1,4 @@
-// Vireal Aero — язык, тема, прокрутка, связь страницы со сценой
+// Vireal Aero - язык, тема, прокрутка, связь страницы со сценой
 const doc = document.documentElement;
 doc.classList.add('js');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -9,7 +9,7 @@ const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { ret
 const EN = {
   skip: 'Skip to content', sections: 'Sections',
   'nav.lens': 'Lenses', 'nav.build': 'Design', 'nav.colors': 'Colors', 'nav.specs': 'Specs',
-  langBtn: 'RU', langAria: 'RU — переключить на русский', themeAria: 'Switch theme',
+  langBtn: 'RU', langAria: 'RU: переключить на русский', themeAria: 'Switch theme',
   stageAria: '3D model of Vireal Aero sunglasses that turns as you scroll',
   'hero.title': 'See the light.', 'hero.lead': 'A slim metal frame and lenses that shimmer like a soap bubble.',
   'hero.cta': 'Choose a color', 'hero.more': 'Specs', 'hero.hint': 'Scroll',
@@ -28,9 +28,9 @@ const EN = {
   'final.cta': 'Contact FlowLab', 'final.more': 'More work',
   'foot.demo': 'Self-initiated concept demo by Flow Lab. The Vireal brand, product and specs are invented. A page like this for your product: from $1,500, in 3 weeks. <a href="https://flowlab-dev.github.io/work/vireal/">How it was built and what it costs</a>',
   'foot.model': '3D model: <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SunglassesKhronos">Sunglasses Khronos</a> (Khronos Group; Eric Chadwick, Darmstadt Graphics Group), <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Modified: temple logos replaced, materials changed.',
-  title: 'Vireal Aero — see the light · FlowLab demo', pick: (f, l) => `Frame: ${f} · lenses: ${l}`,
+  title: 'Vireal Aero: see the light · FlowLab demo', pick: (f, l) => `Frame: ${f} · lenses: ${l}`,
 };
-const RU = { title: document.title, pick: (f, l) => `Оправа: ${f} · линзы: ${l}`, langAria: 'EN — switch to English', themeAria: 'Сменить тему', sections: 'Разделы', stageAria: '3D-модель очков Vireal Aero: прокрутка поворачивает ее' };
+const RU = { title: document.title, pick: (f, l) => `Оправа: ${f} · линзы: ${l}`, langAria: 'EN: switch to English', themeAria: 'Сменить тему', sections: 'Разделы', stageAria: '3D-модель очков Vireal Aero: прокрутка поворачивает ее' };
 // русские тексты берем из разметки
 document.querySelectorAll('[data-i18n]').forEach((el) => { RU[el.dataset.i18n] = el.textContent; });
 document.querySelectorAll('[data-i18n-html]').forEach((el) => { RU[el.dataset.i18nHtml] = el.innerHTML; });
@@ -122,7 +122,7 @@ const band = (p, a, b) => smooth(clamp01((p - a) / (b - a)));
 function mix(A, B, t) { const o = {}; for (const k in A) o[k] = lerp(A[k], k in B ? B[k] : A[k], t); return o; }
 
 // место модели считаем по верстке: свободная полоса экрана (px) → поза вписывается в нее по настоящим границам модели
-// align: 0 — прижать к верху полосы, 0.5 — по центру; maxW — предельная ширина в долях экрана (0…2)
+// align: 0 - прижать к верху полосы, 0.5 - по центру; maxW - предельная ширина в долях экрана (0…2)
 function place(pose, top, bottom, maxScale, x = pose.x, align = 0.5, maxW = wideNow() ? 0.9 : 1.7) {
   if (!stage) return pose;
   const H = innerHeight;
@@ -153,7 +153,7 @@ function poses() {
     lensA:  wide ? { ...base, x: 0.40, scale: 0.84, rx: 0.06, ry: 0.6 } : place({ ...base, rx: 0.06, ry: 0.6 }, 72, lc - 12, 0.95),
     lensB:  wide ? { ...base, x: 0.40, scale: 0.92, rx: 0.02, ry: -0.6, shift: 1 } : place({ ...base, rx: 0.02, ry: -0.6, shift: 1 }, 72, lc - 12, 1),
     // разбор: поза считается по разобранной модели, чтобы все детали поместились между заголовком и цифрами
-    // собранная (A0/B0) и разобранная (A1/B1) — масштаб плавно меняется вместе с разлетом
+    // собранная (A0/B0) и разобранная (A1/B1) - масштаб плавно меняется вместе с разлетом
     buildA0: place({ ...base, rx: 0.36, ry: -0.6 }, tb + 12, ct - 12, 2, 0, 0.5, wide ? 0.82 : 1.7),
     buildB0: place({ ...base, rx: 0.3, ry: -0.3 }, tb + 12, ct - 12, 2, 0, 0.5, wide ? 0.82 : 1.7),
     buildA1: place({ ...base, rx: 0.36, ry: -0.6, ex: 1 }, tb + 12, ct - 12, 2, 0, 0.5, wide ? 0.9 : 1.8),
@@ -188,14 +188,14 @@ function startScroll() {
     build: seg('#build', 'top top', 'bottom bottom'),
     toColors: seg('#colors', 'top bottom', 'bottom bottom'),
   };
-  // строки главы зажигаются по очереди; текст не гаснет — уезжает вместе с главой, пустых кадров на переходах нет
+  // строки главы зажигаются по очереди; текст не гаснет - уезжает вместе с главой, пустых кадров на переходах нет
   const beats = (sel, at) => {
     const items = [...document.querySelectorAll(sel + ' [data-beat]')];
     ScrollTrigger.create({ trigger: sel, start: 'top top', end: 'bottom bottom', onUpdate: (st) => {
       items.forEach((el, i) => el.classList.toggle('is-on', st.progress >= at[i]));
     }, onLeaveBack: () => items.forEach((el) => el.classList.remove('is-on')) });
   };
-  // мелкий текст гаснет в начале перехода к следующей главе — очки едут, не пересекая абзацы
+  // мелкий текст гаснет в начале перехода к следующей главе - очки едут, не пересекая абзацы
   const fadeOn = (trigger, start, end, sel, len = 0.28) => {
     const els = [...document.querySelectorAll(sel)];
     ScrollTrigger.create({ trigger, start, end, onUpdate: (st) => { const o = String(1 - band(st.progress, 0, len)); els.forEach((el) => { el.style.opacity = o; }); },
@@ -204,7 +204,7 @@ function startScroll() {
   fadeOn('#build', 'top bottom', 'top top', '#lens .beats, #lens .eyebrow, #lens .h1');
   fadeOn('#colors', 'top bottom', 'bottom bottom', '#build .callouts', 0.1);
   beats('#lens', [0.08, 0.38, 0.66]);
-  beats('#build', [0.03, 0.03, 0.03]); // все три цифры сразу (лесенка — задержкой в CSS)
+  beats('#build', [0.03, 0.03, 0.03]); // все три цифры сразу (лесенка - задержкой в CSS)
   return { S, lenis, ScrollTrigger };
 }
 
@@ -228,7 +228,7 @@ function stateAt(y, S, P) {
 
 /* ---------- запуск сцены ---------- */
 // видеокарта: проверяем сразу после первой отрисовки (создание WebGL не держит показ текста).
-// Без видеокарты или WebGL — класс no3d и картинка, тяжелую 3D-библиотеку не грузим; с ней — тот же контекст отдаем сцене.
+// Без видеокарты или WebGL - класс no3d и картинка, тяжелую 3D-библиотеку не грузим; с ней - тот же контекст отдаем сцене.
 const showFallback = () => doc.classList.add('no3d');
 let gl = null;
 function probe() {
@@ -275,7 +275,7 @@ async function boot() {
   window.__scroll = sc;
   window.__poses = () => P;
 }
-// 3D — после загрузки страницы, чтобы текст первого экрана появился сразу
+// 3D - после загрузки страницы, чтобы текст первого экрана появился сразу
 const later = () => ('requestIdleCallback' in window ? requestIdleCallback(boot, { timeout: 600 }) : setTimeout(boot, 50));
 requestAnimationFrame(() => setTimeout(() => {
   gl = probe();

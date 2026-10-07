@@ -1,4 +1,4 @@
-// Lantern One v2 — язык, тема, прокрутка, форма, связь страницы со сценой
+// Lantern One v2 - язык, тема, прокрутка, форма, связь страницы со сценой
 const doc = document.documentElement;
 doc.classList.add('js');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -9,7 +9,7 @@ const store = { get(k) { try { return localStorage.getItem(k); } catch (e) { ret
 const EN = {
   skip: 'Skip to content', sections: 'Sections',
   'nav.inside': 'Inside', 'nav.specs': 'Specs', 'nav.privacy': 'Privacy', 'nav.reserve': 'Reserve',
-  langBtn: 'RU', langAria: 'RU — переключить на русский', themeAria: 'Switch theme',
+  langBtn: 'RU', langAria: 'RU: переключить на русский', themeAria: 'Switch theme',
   stageAria: '3D model of the Lantern One computer that opens up in layers as you scroll',
   'hero.t1': 'Your AI.', 'hero.t2': 'In your room.',
   'hero.lead': 'Lantern One runs large language models on your desk. Contracts, patient notes and unreleased manuscripts never leave the building.',
@@ -48,12 +48,12 @@ const EN = {
   'final.cta': 'Contact FlowLab', 'final.more': 'More work',
   'foot.demo': 'Self-initiated concept demo by Flow Lab. Candlewren, Lantern One and every number on this page are invented. Lantern One is not for sale. A page like this for your product: from $1,500, in 3 weeks. <a href="https://flowlab-dev.github.io/work/3d-site/">How it was built and what it costs</a>',
   'foot.made': '3D model, design and code: FlowLab.',
-  title: 'Lantern One — your AI, in your room · FlowLab demo',
+  title: 'Lantern One: your AI, in your room · FlowLab demo',
   err: { name: 'Enter your name.', long: 'Use 80 characters or fewer.', email: 'Enter your work email.', bad: 'Enter an email like name@company.com.', team: 'Choose your team size.' },
   done: (n, t, e) => `Thanks, ${n}. This is a demo, so nothing was sent. On a live site Candlewren would get your reservation for a team of ${t} and email ${e} a confirmation.`,
 };
 const RU = {
-  title: document.title, langAria: 'EN — switch to English', themeAria: 'Сменить тему', sections: 'Разделы',
+  title: document.title, langAria: 'EN: switch to English', themeAria: 'Сменить тему', sections: 'Разделы',
   stageAria: '3D-модель компьютера Lantern One: прокрутка раскрывает ее на слои',
   err: { name: 'Напишите, как вас зовут.', long: 'Не больше 80 символов.', email: 'Укажите рабочую почту.', bad: 'Почта должна быть вида name@company.com.', team: 'Выберите размер команды.' },
   done: (n, t, e) => `Спасибо, ${n}. Это демо, поэтому ничего не отправлено. На настоящем сайте Candlewren получила бы бронь для команды ${t} и прислала подтверждение на ${e}.`,
@@ -183,7 +183,7 @@ function mix(A, B, t) { const o = {}; for (const k in A) o[k] = lerp(A[k], k in 
 const wideNow = () => innerWidth >= 900;
 
 // поза вписывается в свободную полосу экрана (px) по настоящим границам модели;
-// x = 0 — по центру экрана, иначе — центр модели в этой точке (−1…1); maxW — предельная ширина в долях экрана (0…2)
+// x = 0 - по центру экрана, иначе - центр модели в этой точке (−1…1); maxW - предельная ширина в долях экрана (0…2)
 function place(pose, top, bottom, maxScale, x = 0, align = 0.5, maxW = wideNow() ? 0.9 : 1.7) {
   if (!stage) return pose;
   const H = innerHeight;
@@ -236,7 +236,7 @@ function startScroll() {
   };
   ScrollTrigger.create({ trigger: '#inside', start: 'top top', end: 'bottom bottom', onUpdate: (s) => {
     const p = s.progress;
-    setStep(p >= 0.9 ? -1 : Math.min(3, Math.floor(stepAt(p)))); // в конце коробка собрана — итог, без активного шага
+    setStep(p >= 0.9 ? -1 : Math.min(3, Math.floor(stepAt(p)))); // в конце коробка собрана - итог, без активного шага
     bar.style.transform = `scaleX(${p.toFixed(3)})`;
   }, onLeaveBack: () => setStep(-1) });
   // заголовок главы проявляется, только когда почти встал на место, чтобы не проезжать по модели
@@ -246,7 +246,7 @@ function startScroll() {
   return { S, lenis, ScrollTrigger };
 }
 
-// шаг главы: 0 — до 22 % прокрутки, дальше новый шаг каждые 17 %
+// шаг главы: 0 - до 22 % прокрутки, дальше новый шаг каждые 17 %
 const stepAt = (p) => (p < 0.22 ? 0 : (p - 0.22) / 0.17 + 1);
 
 function stateAt(y, S, P) {
@@ -266,7 +266,7 @@ function stateAt(y, S, P) {
 }
 
 /* ---------- запуск сцены ---------- */
-// видеокарта: проверяем после первой отрисовки; без нее — картинка, тяжелую 3D-библиотеку не грузим
+// видеокарта: проверяем после первой отрисовки; без нее - картинка, тяжелую 3D-библиотеку не грузим
 const showFallback = () => doc.classList.add('no3d');
 let gl = null;
 function probe() {
@@ -286,7 +286,7 @@ function preload3d() {
   }
 }
 
-// библиотеки прокрутки нужны только вместе с 3D — грузим их после первой отрисовки, по порядку
+// библиотеки прокрутки нужны только вместе с 3D - грузим их после первой отрисовки, по порядку
 const SCROLL_LIBS = ['assets/vendor/gsap.min.js', 'assets/vendor/ScrollTrigger.min.js', 'assets/vendor/lenis.min.js'];
 const loadScripts = (list) => Promise.all(list.map((src) => new Promise((res) => {
   const s = document.createElement('script');
@@ -313,13 +313,13 @@ async function boot() {
   stage.set(stateAt(scrollY, sc.S, P), true);
   addEventListener('scroll', update, { passive: true });
   sc.ScrollTrigger.addEventListener('refresh', () => { P = poses(); update(); });
-  // сцену закрыли сплошные блоки — не рисуем
+  // сцену закрыли сплошные блоки - не рисуем
   sc.ScrollTrigger.create({ trigger: '#specs', start: 'top top', end: () => 'max', onToggle: (s) => stage.setVisible(!s.isActive) });
   window.__scroll = sc;
   window.__poses = () => P;
 }
 const later = () => ('requestIdleCallback' in window ? requestIdleCallback(boot, { timeout: 600 }) : setTimeout(boot, 50));
-// «уменьшить движение» — неподвижная картинка вместо живой сцены: модель не висит поверх текста
+// «уменьшить движение» - неподвижная картинка вместо живой сцены: модель не висит поверх текста
 if (reduced) showFallback();
 else requestAnimationFrame(() => setTimeout(() => {
   gl = probe();
