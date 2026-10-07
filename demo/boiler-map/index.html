@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Карта котельных — тепловой слой, кластеры, инфо-окна · демо Flow Lab</title>
+<title>Карта котельных: тепловой слой, кластеры, инфо-окна · демо Flow Lab</title>
 <meta name="description" content="Интерактивная карта теплоисточников: тепловой слой плотности, группировка объектов при отдалении, карточки с данными по клику. Демо на открытых данных OpenStreetMap.">
-<meta property="og:title" content="Карта котельных — демо Flow Lab">
+<meta property="og:title" content="Карта котельных: демо Flow Lab">
 <meta property="og:description" content="Тепловой слой, кластеры и инфо-окна на Leaflet. Демо на открытых данных OpenStreetMap.">
 <script>(function(){try{var t=localStorage.getItem('boiler-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="vendor/leaflet.css">
@@ -97,10 +97,10 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
   <button class="sheet-handle" id="handle" aria-expanded="false" aria-controls="panel" aria-label="Развернуть панель"></button>
   <p class="eyebrow">Демо · открытые данные</p>
   <h1>Теплоисточники Москвы и ближнего Подмосковья</h1>
-  <p class="lead">Тепловой слой показывает, где объекты расположены плотнее. При отдалении объекты группируются, по клику — карточка с данными.</p>
+  <p class="lead">Тепловой слой показывает, где объекты расположены плотнее. При отдалении объекты группируются, по клику: карточка с данными.</p>
   <div class="stats" aria-live="polite">
-    <div class="stat"><b id="n-shown">—</b><span>на карте</span></div>
-    <div class="stat"><b id="n-total">—</b><span>в базе</span></div>
+    <div class="stat"><b id="n-shown">…</b><span>на карте</span></div>
+    <div class="stat"><b id="n-total">…</b><span>в базе</span></div>
   </div>
 
   <div class="group">
@@ -122,7 +122,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
     <ul class="results" id="res"></ul>
   </div>
 
-  <p class="note">Демо на открытых данных OpenStreetMap (© участники OpenStreetMap, лицензия <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>; файл boilers.geojson — под той же лицензией): 95 объектов, у части нет адреса и оператора. Ваши 213 котельных с координатами, мощностью и любыми полями подставим из таблицы — карточка покажет все поля. Та же база собирает векторный макет для печати.</p>
+  <p class="note">Демо на открытых данных OpenStreetMap (© участники OpenStreetMap, лицензия <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>; файл boilers.geojson: под той же лицензией): 95 объектов, у части нет адреса и оператора. Ваши 213 котельных с координатами, мощностью и любыми полями подставим из таблицы: карточка покажет все поля. Та же база собирает векторный макет для печати.</p>
 </aside>
 
 <script src="vendor/leaflet.js"></script>
@@ -229,7 +229,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
     document.getElementById('n-total').textContent = all.length;
     chips(); refresh();
     map.fitBounds(L.geoJSON(gj).getBounds(), { padding: [40, 40] });
-    // link to one object: …/#obj=node/123 — opens its card (handy to send a colleague)
+    // link to one object: …/#obj=node/123: opens its card (handy to send a colleague)
     const id = decodeURIComponent(location.hash).match(/obj=([a-z]+\/\d+)/);
     const f = id && all.find((x) => x.properties.osm.endsWith(id[1]));
     if (f) { const m = markers.get(f); cluster.zoomToShowLayer(m, () => m.openPopup()); }
