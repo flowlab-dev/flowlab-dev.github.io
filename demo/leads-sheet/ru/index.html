@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google" content="notranslate">
 <title>Мастерская «Ясень»: демо заявок в Google Таблицу</title>
-<meta name="description" content="Отправьте тестовую заявку: она попадёт в Google Таблицу, а в Telegram придёт уведомление. Потом запустите ночь: повторные заявки уйдут на свой лист, утром придёт отчёт. На странице работает настоящий код Apps Script, мастерская вымышленная.">
+<meta name="description" content="Отправьте тестовую заявку: она попадет в Google Таблицу, а в Telegram придет уведомление. Потом запустите ночь: повторные заявки уйдут на свой лист, утром придет отчет. На странице работает настоящий код Apps Script, мастерская вымышленная.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Мастерская «Ясень»: демо заявок в Google Таблицу">
-<meta property="og:description" content="Отправьте тестовую заявку: она попадёт в Google Таблицу, а в Telegram придёт уведомление. Потом запустите ночь: повторные заявки уйдут на свой лист, утром придёт отчёт. На странице работает настоящий код Apps Script, мастерская вымышленная.">
+<meta property="og:description" content="Отправьте тестовую заявку: она попадет в Google Таблицу, а в Telegram придет уведомление. Потом запустите ночь: повторные заявки уйдут на свой лист, утром придет отчет. На странице работает настоящий код Apps Script, мастерская вымышленная.">
 <meta property="og:url" content="https://flowlab-dev.github.io/demo/leads-sheet/ru/">
 <meta property="og:image" content="https://flowlab-dev.github.io/img/work/leads-sheet-1.webp">
 <meta name="twitter:card" content="summary_large_image">
@@ -234,8 +234,8 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14p
   <section class="hero wrap">
     <span class="eyebrow">Живое демо · Google Таблицы + Telegram</span>
     <h1>Все заявки в одной таблице, уведомление в Telegram</h1>
-    <p class="lead">Заполните форму на сайте, как клиент. Настоящий код Apps Script из этого проекта запишет строку и пришлёт уведомление. Ночью он уберёт повторные заявки, а утром пришлёт отчёт на почту.</p>
-    <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Мастерская «Ясень» и все контакты вымышленные. Ничего не уходит со страницы: Google и Telegram здесь только изображены, всё работает в вашем браузере.</span></p>
+    <p class="lead">Заполните форму на сайте, как клиент. Настоящий код Apps Script из этого проекта запишет строку и пришлет уведомление. Ночью он уберет повторные заявки, а утром пришлет отчет на почту.</p>
+    <p class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span>Мастерская «Ясень» и все контакты вымышленные. Ничего не уходит со страницы: Google и Telegram здесь только изображены, все работает в вашем браузере.</span></p>
   </section>
 
   <section class="stage wrap" aria-label="Все заявки в одной таблице, уведомление в Telegram">
@@ -261,11 +261,11 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14p
           <div class="try">
             <span>Заполнить примером:</span>
             <button class="chip" type="button" data-sample="new">Новый клиент</button>
-            <button class="chip" type="button" data-sample="again" disabled>Тот же клиент ещё раз</button>
+            <button class="chip" type="button" data-sample="again" disabled>Тот же клиент еще раз</button>
             <button class="chip" type="button" data-sample="bot">Бот-спамер</button>
             <button class="chip" type="button" data-sample="nophone">Без телефона</button>
           </div>
-          <label class="switch"><input type="checkbox" id="tg-down"><span><b>Telegram не отвечает</b><small>Уведомления с этого момента не доходят, а заявка всё равно попадает в таблицу.</small></span></label>
+          <label class="switch"><input type="checkbox" id="tg-down"><span><b>Telegram не отвечает</b><small>Уведомления с этого момента не доходят, а заявка все равно попадает в таблицу.</small></span></label>
         </div>
       </div>
 
@@ -310,7 +310,7 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14p
     <h2 class="reveal">Что делает код</h2>
     <div class="grid4">
       <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><h3>Любая форма, одна таблица</h3><p>Сайт, Tilda или n8n отправляют заявку с секретным ключом, подходит и привязанная Google Форма. Поля узнаются по названию на русском или английском.</p></div>
-      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><h3>Заявки не теряются</h3><p>У Telegram три попытки. Если он так и не ответил, заявка всё равно остаётся в таблице, а в «Журнале» видно, какое уведомление не ушло.</p></div>
+      <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></div><h3>Заявки не теряются</h3><p>У Telegram три попытки. Если он так и не ответил, заявка все равно остается в таблице, а в «Журнале» видно, какое уведомление не ушло.</p></div>
       <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Чистые данные</h3><p>Телефоны приводятся к одному виду, скрытое поле останавливает ботов, а текст вида =ФОРМУЛА() не сработает в ячейке.</p></div>
       <div class="card feat reveal"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg></div><h3>Ничего не удаляется</h3><p>Повторные заявки переносятся на свой лист с номером исходной строки, их можно вернуть.</p></div>
     </div>
@@ -319,12 +319,12 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14p
   <section class="wrap">
     <p class="law">Заявки жителей России по закону хранят на серверах в России. Для таких заявок тот же сценарий делаю на хостинге в РФ, а Google Таблица получает только сводку без личных данных.</p>
     <div class="card cta reveal">
-      <div><h2>Хотите так же для своих заявок?</h2><p>Всё работает в вашем Google-аккаунте: без сервера и платы за хостинг. Для заявок жителей России есть вариант на хостинге в РФ. Сначала бесплатная оценка.</p></div>
+      <div><h2>Хотите так же для своих заявок?</h2><p>Все работает в вашем Google-аккаунте: без сервера и платы за хостинг. Для заявок жителей России есть вариант на хостинге в РФ. Сначала бесплатная оценка.</p></div>
       <div class="cta-links"><a class="btn primary" href="https://flowlab-dev.github.io/ru/work/leads-sheet/#contact">Написать мне</a><a class="btn line" href="https://flowlab-dev.github.io/ru/work/leads-sheet/">Назад к кейсу</a></div>
     </div>
   </section>
 </main>
-<footer><div class="wrap">Мастерская «Ясень» и её клиенты вымышленные. Демо я сделала сама, это не заказ клиента. Flow Lab · Луна.</div></footer>
+<footer><div class="wrap">Мастерская «Ясень» и ее клиенты вымышленные. Демо я сделала сама, это не заказ клиента. Такая таблица заявок для вашего бизнеса: первый шаг от $100, за 2 дня. <a href="https://flowlab-dev.github.io/ru/work/leads-sheet/">Как сделано и сколько стоит</a>. Flow Lab · Луна.</div></footer>
 
 <script>
 "use strict";
@@ -334,32 +334,32 @@ function makeKit(G) {
   const { SpreadsheetApp, PropertiesService, LockService, ScriptApp, UrlFetchApp, MailApp, ContentService, Utilities, Date } = G;
   // ---- Core.js ----
   /**
-   * Flow Lab — Google Sheets automations (Apps Script). Core: language, settings, secrets, log, menu, setup.
-   * Settings (not secret) live on the settings sheet (column A — key, B — value), so the owner edits them himself.
-   * Secrets (Telegram token, webhook secret, API tokens) live ONLY in Script Properties — never in cells.
+   * Flow Lab - Google Sheets automations (Apps Script). Core: language, settings, secrets, log, menu, setup.
+   * Settings (not secret) live on the settings sheet (column A - key, B - value), so the owner edits them himself.
+   * Secrets (Telegram token, webhook secret, API tokens) live ONLY in Script Properties - never in cells.
    */
 
-  var LANG = 'ru';   // 'en' — English sheet names, settings, alerts and report; set once, before the first «setup»
+  var LANG = 'ru';   // 'en' - English sheet names, settings, alerts and report; set once, before the first «setup»
 
   var WORDS = {
     ru: {
       sheets: { settings: 'Настройки', leads: 'Заявки', dupes: 'Дубли', import: 'Импорт', log: 'Журнал' },
       set: { tz: 'Часовой пояс', country: 'Код страны', fields: 'Поля заявки', required: 'Обязательные поля', dupeBy: 'Дубли по полям',
-        dupeDays: 'Дубли за дней', reportTo: 'Отчёт на почту', reportSum: 'Отчёт: сумма по полю', importUrl: 'Импорт: адрес',
+        dupeDays: 'Дубли за дней', reportTo: 'Отчет на почту', reportSum: 'Отчет: сумма по полю', importUrl: 'Импорт: адрес',
         importKey: 'Импорт: ключ', importFields: 'Импорт: поля', importList: 'Импорт: путь к списку' },
       defaults: { tz: 'Europe/Moscow', country: '7', fields: 'Имя, Телефон, Почта, Сообщение, Источник', required: 'Имя, Телефон',
         dupeBy: 'Телефон, Почта', dupeDays: '1', reportTo: '', reportSum: '', importUrl: '', importKey: 'id', importFields: '', importList: '' },
       f: { date: 'Дата', name: 'Имя', phone: 'Телефон', email: 'Почта', message: 'Сообщение', source: 'Источник', dupeOf: 'Дубль строки',
         param: 'Параметр', value: 'Значение', time: 'Время', what: 'Что', details: 'Подробности', key: 'Ключ', updated: 'Обновлено' },
-      menu: { setup: '1. Настроить таблицу и расписание', importNow: 'Импорт сейчас', dupes: 'Найти дубли', report: 'Отчёт сейчас', tg: 'Проверить Telegram' },
+      menu: { setup: '1. Настроить таблицу и расписание', importNow: 'Импорт сейчас', dupes: 'Найти дубли', report: 'Отчет сейчас', tg: 'Проверить Telegram' },
       src: { site: 'сайт', form: 'Google Форма', none: 'без источника', all: 'все' },
       log: { setup: 'setup', setupDone: 'листы и расписание готовы', lead: 'заявка', busy: 'таблица занята, заявка не записана: ',
         tg: 'telegram', tgFail: function (n) { return 'заявка №' + n + ' не отправлена в Telegram (заявка в таблице есть)'; },
-        tgOk: 'проверка: доставлено', tgBad: 'проверка: НЕ доставлено — проверьте TELEGRAM_TOKEN / TELEGRAM_CHAT_ID и нажмите /start в боте',
-        dupes: 'дубли', dupesBusy: 'таблица занята — попробую в следующий раз', dupesNone: 'дублей нет',
+        tgOk: 'проверка: доставлено', tgBad: 'проверка: НЕ доставлено. Проверьте TELEGRAM_TOKEN / TELEGRAM_CHAT_ID и нажмите /start в боте',
+        dupes: 'дубли', dupesBusy: 'таблица занята, повтор при следующем запуске', dupesNone: 'дублей нет',
         dupesMoved: function (n, sheet) { return 'перенесено в «' + sheet + '»: ' + n; },
-        report: 'отчёт', reportNoTo: 'не задан адрес — пропуск', reportSent: function (to, n) { return 'отправлен на ' + to + ': ' + n + ' заявок'; },
-        imp: 'импорт', impNoUrl: 'не задан адрес — пропуск', impFetch: 'ошибка загрузки: ', impParse: 'не удалось разобрать ответ: ',
+        report: 'отчет', reportNoTo: 'не задан адрес, пропуск', reportSent: function (to, n) { return 'отправлен на ' + to + ': ' + n + ' заявок'; },
+        imp: 'импорт', impNoUrl: 'не задан адрес, пропуск', impFetch: 'ошибка загрузки: ', impParse: 'не удалось разобрать ответ: ',
         impNoList: function (p) { return 'по пути «' + (p || '(корень)') + '» нет списка'; },
         impDone: function (n, a, c, s) { return 'записей ' + n + ': новых ' + a + ', изменено ' + c + (s ? ', без ключа ' + s : ''); } },
       err: { phone: 'Проверьте телефон', missing: 'Не заполнено: ' },
@@ -381,11 +381,11 @@ function makeKit(G) {
       src: { site: 'website', form: 'Google Form', none: 'no source', all: 'all' },
       log: { setup: 'setup', setupDone: 'sheets and schedule ready', lead: 'lead', busy: 'sheet busy, lead not written: ',
         tg: 'telegram', tgFail: function (n) { return 'lead #' + n + ' not sent to Telegram (the lead is in the sheet)'; },
-        tgOk: 'test: delivered', tgBad: 'test: NOT delivered — check TELEGRAM_TOKEN / TELEGRAM_CHAT_ID and press /start in the bot',
-        dupes: 'duplicates', dupesBusy: 'sheet busy — will try next time', dupesNone: 'no duplicates',
+        tgOk: 'test: delivered', tgBad: 'test: NOT delivered. Check TELEGRAM_TOKEN / TELEGRAM_CHAT_ID and press /start in the bot',
+        dupes: 'duplicates', dupesBusy: 'sheet busy, will retry on the next run', dupesNone: 'no duplicates',
         dupesMoved: function (n, sheet) { return 'moved to “' + sheet + '”: ' + n; },
-        report: 'report', reportNoTo: 'no e-mail set — skipped', reportSent: function (to, n) { return 'sent to ' + to + ': ' + n + ' leads'; },
-        imp: 'import', impNoUrl: 'no URL set — skipped', impFetch: 'download failed: ', impParse: 'could not read the response: ',
+        report: 'report', reportNoTo: 'no e-mail set, skipped', reportSent: function (to, n) { return 'sent to ' + to + ': ' + n + ' leads'; },
+        imp: 'import', impNoUrl: 'no URL set, skipped', impFetch: 'download failed: ', impParse: 'could not read the response: ',
         impNoList: function (p) { return 'no list at “' + (p || '(root)') + '”'; },
         impDone: function (n, a, c, s) { return n + ' records: ' + a + ' new, ' + c + ' changed' + (s ? ', ' + s + ' without a key' : ''); } },
       err: { phone: 'Please check the phone number', missing: 'Missing: ' },
@@ -466,8 +466,8 @@ function makeKit(G) {
 
   /**
    * One phone format for the sheet: +<country><number>, 11–15 digits. Empty string if it is not a phone.
-   * Written with «+» or «00» — taken as international. Otherwise the country code from settings is added:
-   * 7 — the Russian rules (8 900… / 900… → +7900…); any other — a 10-digit national number gets the code (US: 415… → +1415…).
+   * Written with «+» or «00» - taken as international. Otherwise the country code from settings is added:
+   * 7 - the Russian rules (8 900… / 900… → +7900…); any other - a 10-digit national number gets the code (US: 415… → +1415…).
    * `cc` may be passed in by loops, so the settings sheet is read once.
    */
   function normPhone_(v, cc) {
@@ -497,7 +497,7 @@ function makeKit(G) {
    * Upsert by key: new records are appended, changed ones updated in place, nothing is deleted.
    * Settings (names as on the settings sheet, RU / EN): «Импорт: адрес» / Import: URL; «Импорт: ключ» / Import: key (field with a unique id);
    * «Импорт: поля» / Import: columns («Column=path», e.g. «Name=name, Price=price.amount»); «Импорт: путь к списку» / Import: list path
-   * (where the array is inside JSON, e.g. «data.items»). Token (if the API needs one) — Script Property IMPORT_TOKEN.
+   * (where the array is inside JSON, e.g. «data.items»). Token (if the API needs one) - Script Property IMPORT_TOKEN.
    */
 
   function runImport() {
@@ -516,7 +516,7 @@ function makeKit(G) {
     var header = [W.f.key].concat(cols).concat([W.f.updated]);
     var sh = sheet_(SHEETS.import, header);
     var values = sh.getDataRange().getValues();
-    if (values[0].join('|') !== header.join('|')) {         // columns changed in settings — rewrite the header only
+    if (values[0].join('|') !== header.join('|')) {         // columns changed in settings - rewrite the header only
       sh.getRange(1, 1, 1, header.length).setValues([header]);
       values = sh.getDataRange().getValues();
     }
@@ -595,9 +595,9 @@ function makeKit(G) {
   // ---- Leads.js ----
   /**
    * Leads → the leads sheet + Telegram. Two entry points:
-   *  1) doPost — the script published as a web app: any site, Tilda webhook, n8n/Make can POST (form or JSON).
-   *     Every request must carry ?key=<WEBHOOK_SECRET> (Script Properties) — otherwise anyone could fill the sheet.
-   *  2) onFormSubmit — a Google Form linked to this spreadsheet (installable trigger «On form submit»).
+   *  1) doPost - the script published as a web app: any site, Tilda webhook, n8n/Make can POST (form or JSON).
+   *     Every request must carry ?key=<WEBHOOK_SECRET> (Script Properties) - otherwise anyone could fill the sheet.
+   *  2) onFormSubmit - a Google Form linked to this spreadsheet (installable trigger «On form submit»).
    */
 
   function doPost(e) {
@@ -685,7 +685,7 @@ function makeKit(G) {
         var code = r.getResponseCode();
         if (code === 200) sent = true;
         else if (code === 429 || code >= 500) Utilities.sleep(1000 * (attempt + 1));
-        else break;   // wrong token or chat — retrying will not help
+        else break;   // wrong token or chat - retrying will not help
       }
       ok = ok && sent;
     });
@@ -706,8 +706,8 @@ function makeKit(G) {
   /**
    * Duplicates and the daily report.
    * moveDuplicates: rows of the leads sheet that repeat an earlier row by phone or e-mail within N days are MOVED to the
-   * duplicates sheet (with the number of the original row) — never deleted, the owner can move them back.
-   * sendReport: yesterday's leads by source (+ sum of a numeric column, if set) — to the e-mail from settings.
+   * duplicates sheet (with the number of the original row) - never deleted, the owner can move them back.
+   * sendReport: yesterday's leads by source (+ sum of a numeric column, if set) - to the e-mail from settings.
    */
 
   function moveDuplicates() {
@@ -847,7 +847,7 @@ function makeGoogle(opts) {
 <script>
 "use strict";
 (() => {
-  const S = {"title":"Мастерская «Ясень»: демо заявок в Google Таблицу","desc":"Отправьте тестовую заявку: она попадёт в Google Таблицу, а в Telegram придёт уведомление. Потом запустите ночь: повторные заявки уйдут на свой лист, утром придёт отчёт. На странице работает настоящий код Apps Script, мастерская вымышленная.","skip":"Перейти к форме","back":"Назад к кейсу","langAria":"Язык","themeAria":"Переключить день и ночь","themeDay":"День","themeNight":"Ночь","eyebrow":"Живое демо · Google Таблицы + Telegram","h1":"Все заявки в одной таблице, уведомление в Telegram","lead":"Заполните форму на сайте, как клиент. Настоящий код Apps Script из этого проекта запишет строку и пришлёт уведомление. Ночью он уберёт повторные заявки, а утром пришлёт отчёт на почту.","note":"Мастерская «Ясень» и все контакты вымышленные. Ничего не уходит со страницы: Google и Telegram здесь только изображены, всё работает в вашем браузере.","siteMark":"Я","siteName":"Мастерская «Ясень»","siteSub":"Кухни и шкафы на заказ","formH":"Заявка на бесплатный замер","lblName":"Имя","lblPhone":"Телефон","lblEmail":"Почта (необязательно)","lblMsg":"Что нужно сделать?","lblSrc":"Откуда узнали","src1":"сайт","src2":"Авито","src3":"Instagram","btnSend":"Отправить заявку","fill":"Заполнить примером:","sNew":"Новый клиент","sAgain":"Тот же клиент ещё раз","sBot":"Бот-спамер","sNoPhone":"Без телефона","tgDown":"Telegram не отвечает","tgDownHint":"Уведомления с этого момента не доходят, а заявка всё равно попадает в таблицу.","ok":"Спасибо! Заявка № {n} принята.","spam":"Форма ответила «спасибо», но в таблицу ничего не записано: скрытое поле поймало бота.","whatOk":"doPost → строка {row} на листе «{sheet}» → уведомление в Telegram","whatTgFail":"doPost → строка {row} на листе «{sheet}» → Telegram не ответил 3 раза → запись на листе «{log}»","whatRefused":"doPost отклонил заявку, в таблицу ничего не записано","sheetH":"Google Таблица","sheetFile":"Ясень · заявки","tabsAria":"Листы","secretNote":"Токена бота и ключа формы на этом листе нет: они хранятся в свойствах скрипта.","tgH":"Telegram владельца","tgBot":"Бот заявок","tgEmpty":"Уведомлений пока нет. Отправьте форму, и уведомление появится здесь.","nightH":"Ночью и утром","nightP":"В 3:00 скрипт переносит повторные заявки на лист «Дубли» и отмечает строку, которую они повторяют. В 9:00 присылает владельцу на почту сводку вчерашних заявок по источникам.","nightBtn":"Запустить ночь","nightDone":"Ночь после {day}: в «{sheet}» перенесено {moved}, отчёт отправлен.","mailFrom":"От","mailTo":"Кому","mailSubj":"Тема","mailSender":"Ваш Google-аккаунт, через скрипт","mailOwner":"owner@yasen-kitchens.example","restart":"Начать заново","againMsg":"И ещё: нужен остров","howH":"Что делает код","f1h":"Любая форма, одна таблица","f1p":"Сайт, Tilda или n8n отправляют заявку с секретным ключом, подходит и привязанная Google Форма. Поля узнаются по названию на русском или английском.","f2h":"Заявки не теряются","f2p":"У Telegram три попытки. Если он так и не ответил, заявка всё равно остаётся в таблице, а в «Журнале» видно, какое уведомление не ушло.","f3h":"Чистые данные","f3p":"Телефоны приводятся к одному виду, скрытое поле останавливает ботов, а текст вида =ФОРМУЛА() не сработает в ячейке.","f4h":"Ничего не удаляется","f4p":"Повторные заявки переносятся на свой лист с номером исходной строки, их можно вернуть.","ctaH":"Хотите так же для своих заявок?","ctaP":"Всё работает в вашем Google-аккаунте: без сервера и платы за хостинг. Для заявок жителей России есть вариант на хостинге в РФ. Сначала бесплатная оценка.","ctaBtn":"Написать мне","law":"Заявки жителей России по закону хранят на серверах в России. Для таких заявок тот же сценарий делаю на хостинге в РФ, а Google Таблица получает только сводку без личных данных.","foot":"Мастерская «Ясень» и её клиенты вымышленные. Демо я сделала сама, это не заказ клиента. Flow Lab · Луна.","samples":{"new":[{"name":"Анна Ковалёва","phone":"8 (000) 000-11-01","email":"anna@mail.example","message":"Кухня 3,2 м, угловая. Когда можно замер?","source":"сайт"},{"name":"Олег","phone":"+7 000 000-22-02","email":"","message":"Сколько стоит столешница из кварца на 2,4 м?","source":"Авито"},{"name":"Мария Громова","phone":"80000003303","email":"maria@mail.example","message":"Шкаф-купе в прихожую, 1,8 м","source":"Instagram"},{"name":"Игорь Лебедев","phone":"8 000 000 44 04","email":"","message":"Переделать фасады на старой кухне","source":"Авито"},{"name":"Светлана","phone":"+7 000 000-55-05","email":"sveta@mail.example","message":"Кухня в новостройку, бюджет до 300 тыс.","source":"сайт"}],"bot":{"name":"Раскрутка сайта","phone":"80000000000","email":"","message":"Дёшево поднимем сайт в поиске!!!","source":"сайт"},"nophone":{"name":"Просто спросить","phone":"","email":"look@mail.example","message":"А ванные делаете?","source":"Instagram"}}};
+  const S = {"title":"Мастерская «Ясень»: демо заявок в Google Таблицу","desc":"Отправьте тестовую заявку: она попадет в Google Таблицу, а в Telegram придет уведомление. Потом запустите ночь: повторные заявки уйдут на свой лист, утром придет отчет. На странице работает настоящий код Apps Script, мастерская вымышленная.","skip":"Перейти к форме","back":"Назад к кейсу","langAria":"Язык","themeAria":"Переключить день и ночь","themeDay":"День","themeNight":"Ночь","eyebrow":"Живое демо · Google Таблицы + Telegram","h1":"Все заявки в одной таблице, уведомление в Telegram","lead":"Заполните форму на сайте, как клиент. Настоящий код Apps Script из этого проекта запишет строку и пришлет уведомление. Ночью он уберет повторные заявки, а утром пришлет отчет на почту.","note":"Мастерская «Ясень» и все контакты вымышленные. Ничего не уходит со страницы: Google и Telegram здесь только изображены, все работает в вашем браузере.","siteMark":"Я","siteName":"Мастерская «Ясень»","siteSub":"Кухни и шкафы на заказ","formH":"Заявка на бесплатный замер","lblName":"Имя","lblPhone":"Телефон","lblEmail":"Почта (необязательно)","lblMsg":"Что нужно сделать?","lblSrc":"Откуда узнали","src1":"сайт","src2":"Авито","src3":"Instagram","btnSend":"Отправить заявку","fill":"Заполнить примером:","sNew":"Новый клиент","sAgain":"Тот же клиент еще раз","sBot":"Бот-спамер","sNoPhone":"Без телефона","tgDown":"Telegram не отвечает","tgDownHint":"Уведомления с этого момента не доходят, а заявка все равно попадает в таблицу.","ok":"Спасибо! Заявка № {n} принята.","spam":"Форма ответила «спасибо», но в таблицу ничего не записано: скрытое поле поймало бота.","whatOk":"doPost → строка {row} на листе «{sheet}» → уведомление в Telegram","whatTgFail":"doPost → строка {row} на листе «{sheet}» → Telegram не ответил 3 раза → запись на листе «{log}»","whatRefused":"doPost отклонил заявку, в таблицу ничего не записано","sheetH":"Google Таблица","sheetFile":"Ясень · заявки","tabsAria":"Листы","secretNote":"Токена бота и ключа формы на этом листе нет: они хранятся в свойствах скрипта.","tgH":"Telegram владельца","tgBot":"Бот заявок","tgEmpty":"Уведомлений пока нет. Отправьте форму, и уведомление появится здесь.","nightH":"Ночью и утром","nightP":"В 3:00 скрипт переносит повторные заявки на лист «Дубли» и отмечает строку, которую они повторяют. В 9:00 присылает владельцу на почту сводку вчерашних заявок по источникам.","nightBtn":"Запустить ночь","nightDone":"Ночь после {day}: в «{sheet}» перенесено {moved}, отчет отправлен.","mailFrom":"От","mailTo":"Кому","mailSubj":"Тема","mailSender":"Ваш Google-аккаунт, через скрипт","mailOwner":"owner@yasen-kitchens.example","restart":"Начать заново","againMsg":"И еще: нужен остров","howH":"Что делает код","f1h":"Любая форма, одна таблица","f1p":"Сайт, Tilda или n8n отправляют заявку с секретным ключом, подходит и привязанная Google Форма. Поля узнаются по названию на русском или английском.","f2h":"Заявки не теряются","f2p":"У Telegram три попытки. Если он так и не ответил, заявка все равно остается в таблице, а в «Журнале» видно, какое уведомление не ушло.","f3h":"Чистые данные","f3p":"Телефоны приводятся к одному виду, скрытое поле останавливает ботов, а текст вида =ФОРМУЛА() не сработает в ячейке.","f4h":"Ничего не удаляется","f4p":"Повторные заявки переносятся на свой лист с номером исходной строки, их можно вернуть.","ctaH":"Хотите так же для своих заявок?","ctaP":"Все работает в вашем Google-аккаунте: без сервера и платы за хостинг. Для заявок жителей России есть вариант на хостинге в РФ. Сначала бесплатная оценка.","ctaBtn":"Написать мне","law":"Заявки жителей России по закону хранят на серверах в России. Для таких заявок тот же сценарий делаю на хостинге в РФ, а Google Таблица получает только сводку без личных данных.","foot":"Мастерская «Ясень» и ее клиенты вымышленные. Демо я сделала сама, это не заказ клиента. Flow Lab · Луна.","samples":{"new":[{"name":"Анна Ковалева","phone":"8 (000) 000-11-01","email":"anna@mail.example","message":"Кухня 3,2 м, угловая. Когда можно замер?","source":"сайт"},{"name":"Олег","phone":"+7 000 000-22-02","email":"","message":"Сколько стоит столешница из кварца на 2,4 м?","source":"Авито"},{"name":"Мария Громова","phone":"80000003303","email":"maria@mail.example","message":"Шкаф-купе в прихожую, 1,8 м","source":"Instagram"},{"name":"Игорь Лебедев","phone":"8 000 000 44 04","email":"","message":"Переделать фасады на старой кухне","source":"Авито"},{"name":"Светлана","phone":"+7 000 000-55-05","email":"sveta@mail.example","message":"Кухня в новостройку, бюджет до 300 тыс.","source":"сайт"}],"bot":{"name":"Раскрутка сайта","phone":"80000000000","email":"","message":"Дешево поднимем сайт в поиске!!!","source":"сайт"},"nophone":{"name":"Просто спросить","phone":"","email":"look@mail.example","message":"А ванные делаете?","source":"Instagram"}}};
   const LANG = document.documentElement.lang;
   const $ = (id) => document.getElementById(id);
   const root = document.documentElement;

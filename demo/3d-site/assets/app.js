@@ -46,7 +46,7 @@ const EN = {
   'final.title': 'Your product can have a page like this.',
   'final.lead': 'Built by FlowLab with Claude Code: a 3D model, scroll animation, two languages and two themes.',
   'final.cta': 'Contact FlowLab', 'final.more': 'More work',
-  'foot.demo': 'Concept demo: Candlewren, Lantern One and every number on this page are invented. Nothing here is for sale.',
+  'foot.demo': 'Self-initiated concept demo by Flow Lab. Candlewren, Lantern One and every number on this page are invented. Lantern One is not for sale. A page like this for your product: from $1,500, in 3 weeks. <a href="https://flowlab-dev.github.io/work/3d-site/">How it was built and what it costs</a>',
   'foot.made': '3D model, design and code: FlowLab.',
   title: 'Lantern One — your AI, in your room · FlowLab demo',
   err: { name: 'Enter your name.', long: 'Use 80 characters or fewer.', email: 'Enter your work email.', bad: 'Enter an email like name@company.com.', team: 'Choose your team size.' },
@@ -54,16 +54,18 @@ const EN = {
 };
 const RU = {
   title: document.title, langAria: 'EN — switch to English', themeAria: 'Сменить тему', sections: 'Разделы',
-  stageAria: '3D-модель компьютера Lantern One: прокрутка раскрывает её на слои',
+  stageAria: '3D-модель компьютера Lantern One: прокрутка раскрывает ее на слои',
   err: { name: 'Напишите, как вас зовут.', long: 'Не больше 80 символов.', email: 'Укажите рабочую почту.', bad: 'Почта должна быть вида name@company.com.', team: 'Выберите размер команды.' },
   done: (n, t, e) => `Спасибо, ${n}. Это демо, поэтому ничего не отправлено. На настоящем сайте Candlewren получила бы бронь для команды ${t} и прислала подтверждение на ${e}.`,
 };
 document.querySelectorAll('[data-i18n]').forEach((el) => { RU[el.dataset.i18n] = el.textContent; });
+document.querySelectorAll('[data-i18n-html]').forEach((el) => { RU[el.dataset.i18nHtml] = el.innerHTML; });
 
 function setLang(l) {
   const D = l === 'en' ? EN : RU;
   doc.lang = l;
   document.querySelectorAll('[data-i18n]').forEach((el) => { const v = D[el.dataset.i18n]; if (v != null) el.textContent = v; });
+  document.querySelectorAll('[data-i18n-html]').forEach((el) => { const v = D[el.dataset.i18nHtml]; if (v != null) el.innerHTML = v; });
   document.querySelectorAll('[data-i18n-aria]').forEach((el) => { const v = D[el.dataset.i18nAria]; if (v != null) el.setAttribute('aria-label', v); });
   document.title = D.title;
   refreshErrors();
@@ -136,7 +138,7 @@ form.addEventListener('input', (e) => {
 });
 if (doc.lang === 'en') setLang('en');
 
-/* ---------- шапка, появление, счётчики ---------- */
+/* ---------- шапка, появление, счетчики ---------- */
 const nav = document.getElementById('nav');
 const onScrollNav = () => nav.classList.toggle('is-solid', scrollY > 24);
 addEventListener('scroll', onScrollNav, { passive: true }); onScrollNav();
@@ -256,7 +258,7 @@ function stateAt(y, S, P) {
   const s = mix(mix(P.A0, P.B0, sp), mix(P.A1, P.B1, sp), ex);
   const g = stepAt(p);
   const k = Math.min(3, Math.floor(g));
-  const focus = k === 0 ? 0 : (k - 1) + smooth(clamp01((g - k) / 0.3)); // какой слой выходит вперёд (0…3)
+  const focus = k === 0 ? 0 : (k - 1) + smooth(clamp01((g - k) / 0.3)); // какой слой выходит вперед (0…3)
   s.ex = ex;
   s.focus = focus;
   s.glow = 1 + 0.5 * Math.max(0, 1 - Math.abs(focus - 1)) * ex; // на шаге «Ядро» свет ярче
@@ -264,7 +266,7 @@ function stateAt(y, S, P) {
 }
 
 /* ---------- запуск сцены ---------- */
-// видеокарта: проверяем после первой отрисовки; без неё — картинка, тяжёлую 3D-библиотеку не грузим
+// видеокарта: проверяем после первой отрисовки; без нее — картинка, тяжелую 3D-библиотеку не грузим
 const showFallback = () => doc.classList.add('no3d');
 let gl = null;
 function probe() {

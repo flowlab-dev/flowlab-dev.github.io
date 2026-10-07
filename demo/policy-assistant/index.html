@@ -163,7 +163,7 @@
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/policy-assistant/">Flow Lab</a>. Tallowby Freight is invented.</p>
+<p class="fl-band" role="note">Self-initiated demo by Flow Lab. Tallowby Freight is invented. An assistant built on your documents: from $240. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/policy-assistant/">How it was built and what it costs</a></span></p>
 <!-- /flowlab-band -->
 <main>
 <div class="wrap">
@@ -351,7 +351,7 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
     if (last && last.scrollIntoView) last.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
 
-  // Test sets: «unseen» was written after tuning and never used to change anything — that is the headline.
+  // Test sets: «unseen» was written after tuning and never used to change anything - that is the headline.
   var SETS = window.QSETS || { tuning: [], unseen: [] };
   var count = function (qs, k) { return qs.filter(function (q) { return q.expect === k; }).length; };
   var main = SETS.unseen.length ? SETS.unseen : SETS.tuning;
@@ -360,12 +360,12 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   function compare(res, mod) {
     var A = count(main, 'answer'), N = count(main, 'refuse');
     var rows = [
-      ['Right passage quoted, with the fact', res ? res.answers.ok + '/' + A : '…', mod ? mod.answers.ok + '/' + A : '—'],
-      ['Right passage among the three shown <small>search only; the model answers from one</small>', res ? res.answers.top3 + '/' + A : '…', '—'],
-      ['“Not in the documents” where nothing covers it', res ? res.refusals.ok + '/' + N : '…', mod ? mod.refusals.ok + '/' + N : '—'],
-      ['Wrong passage quoted', res ? res.wrong : '…', mod ? mod.wrong : '—'],
-      ['Quote not word for word <small>search copies text by code; each model quote is checked here</small>', 0, mod ? mod.notVerbatim : '—'],
-      ['Answer from a superseded version by mistake', res ? res.oldVersionLeaks : '…', mod ? mod.oldVersionLeaks : '—'],
+      ['Right passage quoted, with the fact', res ? res.answers.ok + '/' + A : '…', mod ? mod.answers.ok + '/' + A : '–'],
+      ['Right passage among the three shown <small>search only; the model answers from one</small>', res ? res.answers.top3 + '/' + A : '…', '–'],
+      ['“Not in the documents” where nothing covers it', res ? res.refusals.ok + '/' + N : '…', mod ? mod.refusals.ok + '/' + N : '–'],
+      ['Wrong passage quoted', res ? res.wrong : '…', mod ? mod.wrong : '–'],
+      ['Quote not word for word <small>search copies text by code; each model quote is checked here</small>', 0, mod ? mod.notVerbatim : '–'],
+      ['Answer from a superseded version by mistake', res ? res.oldVersionLeaks : '…', mod ? mod.oldVersionLeaks : '–'],
     ];
     $('tiles').innerHTML = '<table class="cmp"><thead><tr><th>' + main.length + ' unseen questions</th><th>Search in your browser<span>no model, runs now</span></th>' +
       (MR ? '<th>Search, then ' + esc(MR.model) + '<span>reads the top 5 passages · recorded run, ' + esc(MR.date) + '</span></th>' : '') + '</tr></thead><tbody>' +

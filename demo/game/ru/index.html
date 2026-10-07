@@ -187,7 +187,7 @@ a { color: inherit; }
   100% { transform: translate(140%, -10%) rotate(14deg); }
 }
 .stamp {
-  position: absolute; right: 3%; bottom: 6%; /* внизу справа — не закрывает имя заказчика в шапке чека (Штаб 24.09) */
+  position: absolute; right: 3%; bottom: 6%; /* внизу справа - не закрывает имя заказчика в шапке чека (Штаб 24.09) */
   padding: 0.1em 0.45em; border: 2px solid var(--good); border-radius: 4px;
   color: var(--good); font-weight: 800; font-size: 1.25em; letter-spacing: 0.04em;
   transform: rotate(-12deg);
@@ -322,7 +322,7 @@ kbd {
   *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
 }
 
-/* М-42: EN / RU switch (added by the shared demo translator) — the inactive language in the
+/* М-42: EN / RU switch (added by the shared demo translator) - the inactive language in the
    page's muted ink instead of a faded colour, so it keeps a 4.5:1 contrast in both themes. */
 .tools .fl-lang a:not([aria-current]) { opacity: 1; color: var(--muted); }
 .tools .fl-lang a:not([aria-current]):hover { color: var(--ink); }
@@ -346,7 +346,7 @@ kbd {
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Демо сделано <a href="/ru/work/promo-game/">Flow Lab</a> без заказчика. Пекарня Cedarline Bakehouse выдумана, рекорды хранятся только в вашем браузере. <span class="fl-band__more"><a href="../../telegram-orders/">Бот заказов для этой же пекарни</a></span></p>
+<p class="fl-band" role="note">Демо Flow Lab, сделанное без заказчика. Пекарня Cedarline Bakehouse вымышленная, рекорды хранятся только в вашем браузере. Промоигра для вашего бренда: от $400. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/ru/work/promo-game/">Как сделано и сколько стоит</a></span> · <span class="fl-band__more"><a href="../../telegram-orders/">Бот заказов для этой же пекарни</a></span></p>
 <!-- /flowlab-band -->
 <header class="topbar">
 <div class="wrap topbar-row">
@@ -391,7 +391,7 @@ kbd {
 <div class="overlay" hidden="" id="pause-screen">
 <div class="panel panel-small">
 <h2>Пауза</h2>
-<p class="lede" id="pause-note">Выпечка подождёт.</p>
+<p class="lede" id="pause-note">Выпечка подождет.</p>
 <button class="primary" id="resume" type="button">Продолжить</button>
 <button class="secondary" id="quit" type="button">Закончить смену сейчас</button>
 </div>
@@ -406,7 +406,7 @@ kbd {
 <div><dt>Точных ловов</dt><dd id="result-accuracy">0 из 0</dd></div>
 <div><dt>Лучшая серия</dt><dd id="result-streak">0</dd></div>
 </dl>
-<button class="primary" id="again" type="button">Сыграть ещё</button>
+<button class="primary" id="again" type="button">Сыграть еще</button>
 <button class="secondary" id="change" type="button">Другая смена</button>
 </div>
 </div>
@@ -422,7 +422,7 @@ kbd {
 <aside class="notes notes-how">
 <h2>Как играть</h2>
 <ul class="rules">
-<li><span class="rule-points plus">+10</span> <span>за каждую выпечку, которой ещё не хватает в заказе.</span></li>
+<li><span class="rule-points plus">+10</span> <span>за каждую выпечку, которой еще не хватает в заказе.</span></li>
 <li><span class="rule-points plus">x2–x4</span> <span>бонус: x2 с 6-го точного лова подряд, x3 с 11-го, x4 с 16-го.</span></li>
 <li><span class="rule-points plus">+20</span> <span>за каждую позицию собранного заказа, умножается на бонус.</span></li>
 <li><span class="rule-points minus">−10</span> <span>за выпечку не из заказа. Серия обрывается.</span></li>
@@ -434,7 +434,7 @@ kbd {
 </aside>
 <aside class="notes notes-about">
 <h2>Об этом демо</h2>
-<p>Промо-игра — короткая игра в цветах бренда: её открывают по ссылке и играют минуту. Эта сделана для выдуманной пекарни, чтобы показать, как это работает.</p>
+<p>Промо-игра: короткая игра в цветах бренда. Ее открывают по ссылке и играют минуту. Эта сделана для выдуманной пекарни, чтобы показать, как это работает.</p>
 <ul class="about-list">
 <li>Сразу открывается на телефоне: вся игра умещается в одну небольшую страницу, ничего не нужно устанавливать.</li>
 <li>Мышь, клавиатура и касание; три уровня сложности; сама ставит паузу, когда вы переключаете вкладку.</li>
@@ -1242,7 +1242,7 @@ kbd {
     if (on && sound.ctx && sound.ctx.state === 'suspended') sound.ctx.resume();
     soundButton.setAttribute('aria-pressed', String(on));
     soundButton.querySelector('.tool-label').textContent = on ? 'Со звуком' : 'Без звука';
-    soundButton.setAttribute('aria-label', on ? 'Звук включён. Выключить звук' : 'Звук выключен. Включить звук');
+    soundButton.setAttribute('aria-label', on ? 'Звук включен. Выключить звук' : 'Звук выключен. Включить звук');
     if (on) blip(660, 0.08, 'triangle', 0.12);
   }
   soundButton.addEventListener('click', () => setSound(!sound.on));
@@ -1636,7 +1636,7 @@ kbd {
     mode = 'paused';
     input.left = false; input.right = false;
     $('pause-note').textContent = reason === 'away'
-      ? 'Пауза, пока вас не было. Выпечка подождёт.' : 'Выпечка подождёт.';
+      ? 'Пауза, пока вас не было. Выпечка подождет.' : 'Выпечка подождет.';
     show('pause');
     pauseButton.querySelector('.tool-label').textContent = 'Продолжить';
     $('stage-pause').hidden = true;

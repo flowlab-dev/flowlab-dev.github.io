@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Доска заказов Northgate: демо внутреннего инструмента</title>
-<meta content="Демо для портфолио: доска заказов выдуманного цеха листового металла. Расчёты, запуск в работу, лазер, гибка, отделка и контроль на одном экране; роли офиса и цеха, фильтры, итоги недели и выгрузка в CSV." name="description"/>
+<meta content="Демо для портфолио: доска заказов выдуманного цеха листового металла. Расчеты, запуск в работу, лазер, гибка, отделка и контроль на одном экране; роли офиса и цеха, фильтры, итоги недели и выгрузка в CSV." name="description"/>
 <meta content="noindex" name="robots"/>
 <meta content="light dark" name="color-scheme"/>
 <style>
@@ -317,7 +317,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Демо сделано <a href="/ru/work/shop-floor-board/">Flow Lab</a> без заказчика. Цех Northgate Metalworks выдуман, заказы хранятся только в вашем браузере. <span class="fl-band__more"><a href="../../business-site/">Сайт, с которого приходят эти заявки</a></span></p>
+<p class="fl-band" role="note">Демо Flow Lab, сделанное без заказчика. Цех Northgate Metalworks вымышленный, заказы хранятся только в вашем браузере. Такой инструмент для вашей команды: от $800. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/ru/work/shop-floor-board/">Как сделано и сколько стоит</a></span> · <span class="fl-band__more"><a href="../../business-site/">Сайт, с которого приходят эти заявки</a></span></p>
 <!-- /flowlab-band -->
 <header class="appbar">
 <div class="wrap appbar-row">
@@ -352,10 +352,10 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 <label for="group">Показать</label>
 <select id="group">
 <option value="open">В работе</option>
-<option value="quotes">Только расчёты</option>
+<option value="quotes">Только расчеты</option>
 <option value="floor">В цехе</option>
 <option value="done">Отгрузки и отказы</option>
-<option value="all">Всё</option>
+<option value="all">Все</option>
 </select>
 </div>
 <div class="field">
@@ -376,7 +376,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 </fieldset>
 </section>
 <div class="resultbar wrap">
-<p><span aria-live="polite" id="result-count"></span> <span class="scroll-hint" hidden="" id="scroll-hint">Справа ещё этапы: прокрутите доску вбок.</span></p>
+<p><span aria-live="polite" id="result-count"></span> <span class="scroll-hint" hidden="" id="scroll-hint">Справа еще этапы: прокрутите доску вбок.</span></p>
 <div class="resultbar-actions">
 <fieldset class="views">
 <legend class="visually-hidden">Вид</legend>
@@ -388,7 +388,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
 </div>
 <section aria-label="Заказы" class="board-area" id="board" tabindex="-1"></section>
 <footer class="foot wrap">
-<p>Всё на этой странице работает в вашем браузере, без сервера и без входа. Цены считает тот же калькулятор, что и на <a href="../../business-site/">сайте Northgate</a>, поэтому расчёт на доске совпадает с тем, что видел клиент.</p>
+<p>Все на этой странице работает в вашем браузере, без сервера и без входа. Цены считает тот же калькулятор, что и на <a href="../../business-site/">сайте Northgate</a>, поэтому расчет на доске совпадает с тем, что видел клиент.</p>
 <p><button class="linkish" id="reset" type="button">Начать доску заново</button> <span class="muted">(ваши изменения сотрутся)</span></p>
 </footer>
 </main>
@@ -931,15 +931,15 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   // INTO this stage; the floor never touches quotes, the office never signs off
   // an operation it did not watch.
   var STAGES = [
-    { id: 'rfq', label: 'Запрос расчёта', short: 'Запрос', group: 'quotes', by: null },
-    { id: 'quoted', label: 'Расчёт отправлен', short: 'Расчёт', group: 'quotes', by: 'office' },
+    { id: 'rfq', label: 'Запрос расчета', short: 'Запрос', group: 'quotes', by: null },
+    { id: 'quoted', label: 'Расчет отправлен', short: 'Расчет', group: 'quotes', by: 'office' },
     { id: 'released', label: 'Передан в цех', short: 'В цехе', group: 'floor', by: 'office' },
     { id: 'cutting', label: 'Лазерная резка', short: 'Резка', group: 'floor', by: 'floor' },
     { id: 'forming', label: 'Гибка', short: 'Гибка', group: 'floor', by: 'floor' },
     { id: 'finishing', label: 'Отделка', short: 'Отделка', group: 'floor', by: 'floor' },
     { id: 'inspection', label: 'Контроль', short: 'Контроль', group: 'floor', by: 'floor' },
     { id: 'shipped', label: 'Отгружен', short: 'Отгружен', group: 'done', by: 'floor' },
-    { id: 'lost', label: 'Расчёт не принят', short: 'Не принят', group: 'done', by: 'office' }
+    { id: 'lost', label: 'Расчет не принят', short: 'Не принят', group: 'done', by: 'office' }
   ];
   var STAGE = {};
   STAGES.forEach(function (s, i) { s.index = i; STAGE[s.id] = s; });
@@ -950,13 +950,13 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   };
 
   var PEOPLE = [
-    { id: 'dana', name: 'Дана', desk: 'расчёты' },
-    { id: 'marco', name: 'Марко', desk: 'расчёты' },
+    { id: 'dana', name: 'Дана', desk: 'расчеты' },
+    { id: 'marco', name: 'Марко', desk: 'расчеты' },
     { id: 'priya', name: 'Прия', desk: 'лазер' },
     { id: 'tom', name: 'Том', desk: 'гибка' }
   ];
 
-  var HOLD_REASONS = ['Ждём материал', 'Ждём чертёж клиента', 'Станок стоит', 'Не прошёл контроль'];
+  var HOLD_REASONS = ['Ждем материал', 'Ждем чертеж клиента', 'Станок стоит', 'Не прошел контроль'];
 
   /**
    * A job's own route through the shop. A flat part skips the brake and a
@@ -1099,10 +1099,10 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     }
     if (job.stage === 'rfq') {
       var waiting = Q.businessDaysBetween(job.requestedOn, t);
-      if (waiting >= 2) return { kind: 'waiting', days: waiting, text: 'Ждёт расчёта ' + waiting + ' раб. дн.' };
+      if (waiting >= 2) return { kind: 'waiting', days: waiting, text: 'Ждет расчета ' + waiting + ' раб. дн.' };
     }
     if (!onFloor && job.neededBy !== null && job.neededBy < t) {
-      return { kind: 'passed', days: Q.businessDaysBetween(job.neededBy, t), text: "Срок клиента прошёл" };
+      return { kind: 'passed', days: Q.businessDaysBetween(job.neededBy, t), text: "Срок клиента прошел" };
     }
     return null;
   }
@@ -1247,7 +1247,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   var PARTS = [
     ['Кронштейн двигателя', 2, 4], ['Крышка электрошкафа', 4, 6], ['Боковое ограждение конвейера', 2, 12],
     ['Секция кабельного лотка', 3, 18], ['Опорная пластина полки', 1, 4], ['Основа вывески', 0, 8],
-    ['Опорная плита насоса', 0, 6], ['Фланец стойки поручня', 0, 4], ['Жалюзийная решётка', 2, 40],
+    ['Опорная плита насоса', 0, 6], ['Фланец стойки поручня', 0, 4], ['Жалюзийная решетка', 2, 40],
     ['Лоток аккумулятора', 4, 8], ['Усилитель петли', 1, 2], ['Палец захвата робота', 2, 3]
   ];
   var SIZES = [[180, 90], [320, 240], [640, 180], [1200, 150], [260, 260], [900, 600], [420, 300], [150, 150]];
@@ -1545,11 +1545,11 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       state.meta = { seededOn: got.seededOn, touched: got.touched };
       if (got.shiftedWeeks) {
         B.save(store || noStore, state.jobs, state.meta);
-        showNotice('Даты на доске сдвинуты вперёд на ' + (got.shiftedWeeks === 1 ? 'неделю' : got.shiftedWeeks + ' нед.') + ', чтобы демо не устаревало. Ваши изменения сохранены.');
+        showNotice('Даты на доске сдвинуты вперед на ' + (got.shiftedWeeks === 1 ? 'неделю' : got.shiftedWeeks + ' нед.') + ', чтобы демо не устаревало. Ваши изменения сохранены.');
       }
       return;
     }
-    if (got.problem === 'damaged') startBoard('Сохранённую доску не удалось прочитать, поэтому загружена новая демо-доска.');
+    if (got.problem === 'damaged') startBoard('Сохраненную доску не удалось прочитать, поэтому загружена новая демо-доска.');
     else if (got.problem === 'unavailable') startBoard('Этот браузер не сохраняет данные сайтов, поэтому изменения пропадут, когда вы закроете страницу.');
     else startBoard('');
   })();
@@ -1581,7 +1581,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   function wholeMoney(n) { return '$' + Math.round(n).toLocaleString('ru-RU'); }
 
   var MOVE_LABEL = {
-    quoted: 'Отметить: расчёт отправлен',
+    quoted: 'Отметить: расчет отправлен',
     released: 'Клиент согласен: передать в цех',
     lost: 'Клиент отказался',
     cutting: 'Начать лазерную резку',
@@ -1613,7 +1613,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   function setTheme(name, remember) {
     root.setAttribute('data-theme', name);
     $('theme-label').textContent = name === 'dark' ? 'Дневная смена' : 'Ночная смена';
-    $('theme-toggle').setAttribute('aria-label', name === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему');
+    $('theme-toggle').setAttribute('aria-label', name === 'dark' ? 'Включить светлую тему' : 'Включить темную тему');
     if (remember) { try { localStorage.setItem('ng-theme', name); } catch (e) { /* not saved: fine */ } }
   }
   (function () {
@@ -1635,7 +1635,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     $('week-start').textContent = (function (d) { return d.getUTCDate() + ' ' + ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'][d.getUTCMonth()]; })(new Date(t.weekStart));
     var parts = [];
     parts.push(plural(t.requested, 'заявка|заявки', 'заявок'));
-    parts.push(plural(t.quoted, 'расчёт отправлен|расчёта отправлено', 'расчётов отправлено') + (money && t.quoted ? ' на ' + wholeMoney(t.quotedValue) : ''));
+    parts.push(plural(t.quoted, 'расчет отправлен|расчета отправлено', 'расчетов отправлено') + (money && t.quoted ? ' на ' + wholeMoney(t.quotedValue) : ''));
     parts.push(plural(t.released, 'заказ запущен в работу|заказа запущено в работу', 'заказов запущено в работу') + (money && t.released ? ' (' + wholeMoney(t.releasedValue) + ')' : ''));
     parts.push(plural(t.shipped, 'заказ отгружен|заказа отгружено', 'заказов отгружено'));
     var html = 'За неделю: ' + esc(parts.slice(0, -1).join(', ')) + ' и ' + esc(parts[parts.length - 1]) + '.';
@@ -1645,7 +1645,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     html += trouble.length ? ' Сейчас ' + trouble.join(' и ') + '.' : ' Опозданий нет, на паузе ничего нет.';
     $('week-line').innerHTML = html;
     $('role-note').textContent = state.role === 'office'
-      ? 'Вид офиса: вы отправляете расчёты, запускаете принятые заказы и назначаете людей. По этапам цеха заказы двигает цех.'
+      ? 'Вид офиса: вы отправляете расчеты, запускаете принятые заказы и назначаете людей. По этапам цеха заказы двигает цех.'
       : 'Вид цеха: вы двигаете заказы по своим участкам и можете поставить заказ на паузу. Цены видит только офис.';
   }
 
@@ -1740,7 +1740,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       var cls = at === -1 ? '' : i < at ? 'done' : i === at ? (j.stage === 'shipped' ? 'done' : 'now') : '';
       return '<span class="dot ' + cls + '" title="' + esc(B.STAGE[step].label) + '"></span>';
     });
-    var label = at === -1 ? (j.stage === 'released' ? 'Ждёт лазер' : '') : 'Этап ' + (at + 1) + ' из ' + r.length;
+    var label = at === -1 ? (j.stage === 'released' ? 'Ждет лазер' : '') : 'Этап ' + (at + 1) + ' из ' + r.length;
     return '<span class="track" aria-hidden="true">' + cells.join('') + '</span>' + (label ? '<span class="track-label">' + esc(label) + '</span>' : '');
   }
 
@@ -1802,7 +1802,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
     $('result-count').textContent = plural(jobs.length, 'job', 'jobs') + ' из ' + total + (filtered ? ' (с фильтрами)' : '');
     var area = $('board');
     if (!jobs.length) {
-      area.innerHTML = '<div class="empty wrap"><p>Под эти фильтры заказов нет.</p><button type="button" class="btn" id="clear">Показать всё, что в работе</button></div>';
+      area.innerHTML = '<div class="empty wrap"><p>Под эти фильтры заказов нет.</p><button type="button" class="btn" id="clear">Показать все, что в работе</button></div>';
       $('clear').addEventListener('click', function () {
         state.filters = { q: '', group: 'open', material: 'all', owner: 'all', flag: '' };
         syncControls();
@@ -1869,7 +1869,7 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
   function historyLine(h) {
     var who = h.role === 'web' ? 'Форма на сайте' : B.ROLES[h.role].label;
     var what;
-    if ('stage' in h) what = h.stage === 'rfq' ? 'Расчёт запрошен на сайте' : 'Этап: ' + B.STAGE[h.stage].label.toLowerCase();
+    if ('stage' in h) what = h.stage === 'rfq' ? 'Расчет запрошен на сайте' : 'Этап: ' + B.STAGE[h.stage].label.toLowerCase();
     else if ('hold' in h) what = h.hold ? 'На паузе: ' + h.hold.toLowerCase() : 'Снят с паузы';
     else what = h.owner ? 'Ответственный: ' + B.personName(h.owner) : 'Ответственный снят';
     var d = new Date(h.at);
@@ -1934,14 +1934,14 @@ dialog#traveller::backdrop { background: rgb(10 12 11 / 0.45); }
       '<dl class="t-facts">' +
         '<div><dt>Деталь</dt><dd>' + esc(j.part) + '</dd></div>' +
         '<div><dt>Материал</dt><dd>' + esc(Q.MATERIALS[j.material].label + ', ' + j.thickness.toFixed(1).replace('.', ',') + ' мм') + '</dd></div>' +
-        '<div><dt>Развёртка</dt><dd class="num">' + esc(j.length + ' × ' + j.width + ' мм') + '</dd></div>' +
+        '<div><dt>Развертка</dt><dd class="num">' + esc(j.length + ' × ' + j.width + ' мм') + '</dd></div>' +
         '<div><dt>Количество</dt><dd class="num">' + esc(j.quantity) + '</dd></div>' +
         '<div><dt>Гибы и отверстия</dt><dd>' + esc((j.bends ? plural(j.bends, 'bend', 'bends') : 'Плоская, без гибов') + ', ' + plural(j.holes, 'hole', 'holes')) + '</dd></div>' +
         '<div><dt>Отделка</dt><dd>' + esc(Q.FINISHES[j.finish].label) + (j.tolerance === 'tight' ? ', точный допуск' : '') + '</dd></div>' +
         '<div><dt>Этап</dt><dd>' + esc(B.STAGE[j.stage].label) + '</dd></div>' +
         '<div><dt>Срок</dt><dd class="due ' + due.kind + '">' + esc(due.text) + '</dd></div>' +
         '<div><dt>Ответственный</dt><dd>' + esc(B.personName(j.owner)) + '</dd></div>' +
-        (money ? '<div><dt>' + (j.stage === 'rfq' ? 'Оценка с сайта' : 'Цена в расчёте') + '</dt><dd class="num">' + esc(Q.money(j.price)) + (j.rush ? ' <span class="tag tag-rush">Срочно</span>' : '') + '</dd></div>' : '') +
+        (money ? '<div><dt>' + (j.stage === 'rfq' ? 'Оценка с сайта' : 'Цена в расчете') + '</dt><dd class="num">' + esc(Q.money(j.price)) + (j.rush ? ' <span class="tag tag-rush">Срочно</span>' : '') + '</dd></div>' : '') +
       '</dl>' +
       '<section class="t-route" aria-labelledby="t-route-title"><h3 id="t-route-title">Маршрут по цеху</h3><ol class="steps">' + steps + '</ol></section>' +
       '<section class="t-actions" aria-label="Что можно сделать">' + actions + '</section>' +

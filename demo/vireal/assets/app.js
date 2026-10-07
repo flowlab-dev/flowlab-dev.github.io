@@ -26,12 +26,12 @@ const EN = {
   'final.title': 'Your product can have a page like this.',
   'final.lead': 'Built by FlowLab with Claude Code: a real 3D model, scroll animation, two languages and two themes.',
   'final.cta': 'Contact FlowLab', 'final.more': 'More work',
-  'foot.demo': 'Concept demo: the Vireal brand, product and specs are fictional.',
+  'foot.demo': 'Self-initiated concept demo by Flow Lab. The Vireal brand, product and specs are invented. A page like this for your product: from $1,500, in 3 weeks. <a href="https://flowlab-dev.github.io/work/vireal/">How it was built and what it costs</a>',
   'foot.model': '3D model: <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SunglassesKhronos">Sunglasses Khronos</a> (Khronos Group; Eric Chadwick, Darmstadt Graphics Group), <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Modified: temple logos replaced, materials changed.',
   title: 'Vireal Aero — see the light · FlowLab demo', pick: (f, l) => `Frame: ${f} · lenses: ${l}`,
 };
-const RU = { title: document.title, pick: (f, l) => `Оправа: ${f} · линзы: ${l}`, langAria: 'EN — switch to English', themeAria: 'Сменить тему', sections: 'Разделы', stageAria: '3D-модель очков Vireal Aero: прокрутка поворачивает её' };
-// русские тексты берём из разметки
+const RU = { title: document.title, pick: (f, l) => `Оправа: ${f} · линзы: ${l}`, langAria: 'EN — switch to English', themeAria: 'Сменить тему', sections: 'Разделы', stageAria: '3D-модель очков Vireal Aero: прокрутка поворачивает ее' };
+// русские тексты берем из разметки
 document.querySelectorAll('[data-i18n]').forEach((el) => { RU[el.dataset.i18n] = el.textContent; });
 document.querySelectorAll('[data-i18n-html]').forEach((el) => { RU[el.dataset.i18nHtml] = el.innerHTML; });
 
@@ -90,7 +90,7 @@ document.querySelectorAll('.swatches').forEach((group) => {
 updatePickNote();
 if (doc.lang === 'en') setLang('en');
 
-/* ---------- шапка, появление, счётчики ---------- */
+/* ---------- шапка, появление, счетчики ---------- */
 const nav = document.getElementById('nav');
 const onScrollNav = () => nav.classList.toggle('is-solid', scrollY > 24);
 addEventListener('scroll', onScrollNav, { passive: true }); onScrollNav();
@@ -121,7 +121,7 @@ const smooth = (t) => t * t * (3 - 2 * t);
 const band = (p, a, b) => smooth(clamp01((p - a) / (b - a)));
 function mix(A, B, t) { const o = {}; for (const k in A) o[k] = lerp(A[k], k in B ? B[k] : A[k], t); return o; }
 
-// место модели считаем по вёрстке: свободная полоса экрана (px) → поза вписывается в неё по настоящим границам модели
+// место модели считаем по верстке: свободная полоса экрана (px) → поза вписывается в нее по настоящим границам модели
 // align: 0 — прижать к верху полосы, 0.5 — по центру; maxW — предельная ширина в долях экрана (0…2)
 function place(pose, top, bottom, maxScale, x = pose.x, align = 0.5, maxW = wideNow() ? 0.9 : 1.7) {
   if (!stage) return pose;
@@ -153,7 +153,7 @@ function poses() {
     lensA:  wide ? { ...base, x: 0.40, scale: 0.84, rx: 0.06, ry: 0.6 } : place({ ...base, rx: 0.06, ry: 0.6 }, 72, lc - 12, 0.95),
     lensB:  wide ? { ...base, x: 0.40, scale: 0.92, rx: 0.02, ry: -0.6, shift: 1 } : place({ ...base, rx: 0.02, ry: -0.6, shift: 1 }, 72, lc - 12, 1),
     // разбор: поза считается по разобранной модели, чтобы все детали поместились между заголовком и цифрами
-    // собранная (A0/B0) и разобранная (A1/B1) — масштаб плавно меняется вместе с разлётом
+    // собранная (A0/B0) и разобранная (A1/B1) — масштаб плавно меняется вместе с разлетом
     buildA0: place({ ...base, rx: 0.36, ry: -0.6 }, tb + 12, ct - 12, 2, 0, 0.5, wide ? 0.82 : 1.7),
     buildB0: place({ ...base, rx: 0.3, ry: -0.3 }, tb + 12, ct - 12, 2, 0, 0.5, wide ? 0.82 : 1.7),
     buildA1: place({ ...base, rx: 0.36, ry: -0.6, ex: 1 }, tb + 12, ct - 12, 2, 0, 0.5, wide ? 0.9 : 1.8),
@@ -228,7 +228,7 @@ function stateAt(y, S, P) {
 
 /* ---------- запуск сцены ---------- */
 // видеокарта: проверяем сразу после первой отрисовки (создание WebGL не держит показ текста).
-// Без видеокарты или WebGL — класс no3d и картинка, тяжёлую 3D-библиотеку не грузим; с ней — тот же контекст отдаём сцене.
+// Без видеокарты или WebGL — класс no3d и картинка, тяжелую 3D-библиотеку не грузим; с ней — тот же контекст отдаем сцене.
 const showFallback = () => doc.classList.add('no3d');
 let gl = null;
 function probe() {
@@ -270,7 +270,7 @@ async function boot() {
   stage.set(stateAt(scrollY, sc.S, P), true);
   addEventListener('scroll', update, { passive: true });
   sc.ScrollTrigger.addEventListener('refresh', () => { P = poses(); update(); });
-  // спрятать сцену, когда её закрыли сплошные блоки
+  // спрятать сцену, когда ее закрыли сплошные блоки
   sc.ScrollTrigger.create({ trigger: '#specs', start: 'top top', onToggle: (st) => stage.setVisible(!st.isActive), end: () => 'max' });
   window.__scroll = sc;
   window.__poses = () => P;

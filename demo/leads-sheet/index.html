@@ -324,7 +324,7 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14p
     </div>
   </section>
 </main>
-<footer><div class="wrap">Ash &amp; Oak Kitchens and its customers are invented. I built this demo myself; it is not a client project. Flow Lab · Luna.</div></footer>
+<footer><div class="wrap">Ash &amp; Oak Kitchens and its customers are invented. I built this demo myself; it is not a client project. A lead sheet like this for your business: first step from $100, in 2 days. <a href="https://flowlab-dev.github.io/work/leads-sheet/">How it was built and what it costs</a>. Flow Lab · Luna.</div></footer>
 
 <script>
 "use strict";
@@ -334,32 +334,32 @@ function makeKit(G) {
   const { SpreadsheetApp, PropertiesService, LockService, ScriptApp, UrlFetchApp, MailApp, ContentService, Utilities, Date } = G;
   // ---- Core.js ----
   /**
-   * Flow Lab — Google Sheets automations (Apps Script). Core: language, settings, secrets, log, menu, setup.
-   * Settings (not secret) live on the settings sheet (column A — key, B — value), so the owner edits them himself.
-   * Secrets (Telegram token, webhook secret, API tokens) live ONLY in Script Properties — never in cells.
+   * Flow Lab - Google Sheets automations (Apps Script). Core: language, settings, secrets, log, menu, setup.
+   * Settings (not secret) live on the settings sheet (column A - key, B - value), so the owner edits them himself.
+   * Secrets (Telegram token, webhook secret, API tokens) live ONLY in Script Properties - never in cells.
    */
 
-  var LANG = 'en';   // 'en' — English sheet names, settings, alerts and report; set once, before the first «setup»
+  var LANG = 'en';   // 'en' - English sheet names, settings, alerts and report; set once, before the first «setup»
 
   var WORDS = {
     ru: {
       sheets: { settings: 'Настройки', leads: 'Заявки', dupes: 'Дубли', import: 'Импорт', log: 'Журнал' },
       set: { tz: 'Часовой пояс', country: 'Код страны', fields: 'Поля заявки', required: 'Обязательные поля', dupeBy: 'Дубли по полям',
-        dupeDays: 'Дубли за дней', reportTo: 'Отчёт на почту', reportSum: 'Отчёт: сумма по полю', importUrl: 'Импорт: адрес',
+        dupeDays: 'Дубли за дней', reportTo: 'Отчет на почту', reportSum: 'Отчет: сумма по полю', importUrl: 'Импорт: адрес',
         importKey: 'Импорт: ключ', importFields: 'Импорт: поля', importList: 'Импорт: путь к списку' },
       defaults: { tz: 'Europe/Moscow', country: '7', fields: 'Имя, Телефон, Email, Сообщение, Источник', required: 'Имя, Телефон',
         dupeBy: 'Телефон, Email', dupeDays: '1', reportTo: '', reportSum: '', importUrl: '', importKey: 'id', importFields: '', importList: '' },
       f: { date: 'Дата', name: 'Имя', phone: 'Телефон', email: 'Email', message: 'Сообщение', source: 'Источник', dupeOf: 'Дубль строки',
         param: 'Параметр', value: 'Значение', time: 'Время', what: 'Что', details: 'Подробности', key: 'Ключ', updated: 'Обновлено' },
-      menu: { setup: '1. Настроить таблицу и расписание', importNow: 'Импорт сейчас', dupes: 'Найти дубли', report: 'Отчёт сейчас', tg: 'Проверить Telegram' },
+      menu: { setup: '1. Настроить таблицу и расписание', importNow: 'Импорт сейчас', dupes: 'Найти дубли', report: 'Отчет сейчас', tg: 'Проверить Telegram' },
       src: { site: 'сайт', form: 'Google Форма', none: 'без источника', all: 'все' },
       log: { setup: 'setup', setupDone: 'листы и расписание готовы', lead: 'заявка', busy: 'таблица занята, заявка не записана: ',
         tg: 'telegram', tgFail: function (n) { return 'заявка №' + n + ' не отправлена в Telegram (заявка в таблице есть)'; },
-        tgOk: 'проверка: доставлено', tgBad: 'проверка: НЕ доставлено — проверьте TELEGRAM_TOKEN / TELEGRAM_CHAT_ID и нажмите /start в боте',
-        dupes: 'дубли', dupesBusy: 'таблица занята — попробую в следующий раз', dupesNone: 'дублей нет',
+        tgOk: 'проверка: доставлено', tgBad: 'проверка: НЕ доставлено. Проверьте TELEGRAM_TOKEN / TELEGRAM_CHAT_ID и нажмите /start в боте',
+        dupes: 'дубли', dupesBusy: 'таблица занята, повтор при следующем запуске', dupesNone: 'дублей нет',
         dupesMoved: function (n, sheet) { return 'перенесено в «' + sheet + '»: ' + n; },
-        report: 'отчёт', reportNoTo: 'не задан адрес — пропуск', reportSent: function (to, n) { return 'отправлен на ' + to + ': ' + n + ' заявок'; },
-        imp: 'импорт', impNoUrl: 'не задан адрес — пропуск', impFetch: 'ошибка загрузки: ', impParse: 'не удалось разобрать ответ: ',
+        report: 'отчет', reportNoTo: 'не задан адрес, пропуск', reportSent: function (to, n) { return 'отправлен на ' + to + ': ' + n + ' заявок'; },
+        imp: 'импорт', impNoUrl: 'не задан адрес, пропуск', impFetch: 'ошибка загрузки: ', impParse: 'не удалось разобрать ответ: ',
         impNoList: function (p) { return 'по пути «' + (p || '(корень)') + '» нет списка'; },
         impDone: function (n, a, c, s) { return 'записей ' + n + ': новых ' + a + ', изменено ' + c + (s ? ', без ключа ' + s : ''); } },
       err: { phone: 'Проверьте телефон', missing: 'Не заполнено: ' },
@@ -381,11 +381,11 @@ function makeKit(G) {
       src: { site: 'website', form: 'Google Form', none: 'no source', all: 'all' },
       log: { setup: 'setup', setupDone: 'sheets and schedule ready', lead: 'lead', busy: 'sheet busy, lead not written: ',
         tg: 'telegram', tgFail: function (n) { return 'lead #' + n + ' not sent to Telegram (the lead is in the sheet)'; },
-        tgOk: 'test: delivered', tgBad: 'test: NOT delivered — check TELEGRAM_TOKEN / TELEGRAM_CHAT_ID and press /start in the bot',
-        dupes: 'duplicates', dupesBusy: 'sheet busy — will try next time', dupesNone: 'no duplicates',
+        tgOk: 'test: delivered', tgBad: 'test: NOT delivered. Check TELEGRAM_TOKEN / TELEGRAM_CHAT_ID and press /start in the bot',
+        dupes: 'duplicates', dupesBusy: 'sheet busy, will retry on the next run', dupesNone: 'no duplicates',
         dupesMoved: function (n, sheet) { return 'moved to “' + sheet + '”: ' + n; },
-        report: 'report', reportNoTo: 'no e-mail set — skipped', reportSent: function (to, n) { return 'sent to ' + to + ': ' + n + ' leads'; },
-        imp: 'import', impNoUrl: 'no URL set — skipped', impFetch: 'download failed: ', impParse: 'could not read the response: ',
+        report: 'report', reportNoTo: 'no e-mail set, skipped', reportSent: function (to, n) { return 'sent to ' + to + ': ' + n + ' leads'; },
+        imp: 'import', impNoUrl: 'no URL set, skipped', impFetch: 'download failed: ', impParse: 'could not read the response: ',
         impNoList: function (p) { return 'no list at “' + (p || '(root)') + '”'; },
         impDone: function (n, a, c, s) { return n + ' records: ' + a + ' new, ' + c + ' changed' + (s ? ', ' + s + ' without a key' : ''); } },
       err: { phone: 'Please check the phone number', missing: 'Missing: ' },
@@ -466,8 +466,8 @@ function makeKit(G) {
 
   /**
    * One phone format for the sheet: +<country><number>, 11–15 digits. Empty string if it is not a phone.
-   * Written with «+» or «00» — taken as international. Otherwise the country code from settings is added:
-   * 7 — the Russian rules (8 900… / 900… → +7900…); any other — a 10-digit national number gets the code (US: 415… → +1415…).
+   * Written with «+» or «00» - taken as international. Otherwise the country code from settings is added:
+   * 7 - the Russian rules (8 900… / 900… → +7900…); any other - a 10-digit national number gets the code (US: 415… → +1415…).
    * `cc` may be passed in by loops, so the settings sheet is read once.
    */
   function normPhone_(v, cc) {
@@ -497,7 +497,7 @@ function makeKit(G) {
    * Upsert by key: new records are appended, changed ones updated in place, nothing is deleted.
    * Settings (names as on the settings sheet, RU / EN): «Импорт: адрес» / Import: URL; «Импорт: ключ» / Import: key (field with a unique id);
    * «Импорт: поля» / Import: columns («Column=path», e.g. «Name=name, Price=price.amount»); «Импорт: путь к списку» / Import: list path
-   * (where the array is inside JSON, e.g. «data.items»). Token (if the API needs one) — Script Property IMPORT_TOKEN.
+   * (where the array is inside JSON, e.g. «data.items»). Token (if the API needs one) - Script Property IMPORT_TOKEN.
    */
 
   function runImport() {
@@ -516,7 +516,7 @@ function makeKit(G) {
     var header = [W.f.key].concat(cols).concat([W.f.updated]);
     var sh = sheet_(SHEETS.import, header);
     var values = sh.getDataRange().getValues();
-    if (values[0].join('|') !== header.join('|')) {         // columns changed in settings — rewrite the header only
+    if (values[0].join('|') !== header.join('|')) {         // columns changed in settings - rewrite the header only
       sh.getRange(1, 1, 1, header.length).setValues([header]);
       values = sh.getDataRange().getValues();
     }
@@ -595,9 +595,9 @@ function makeKit(G) {
   // ---- Leads.js ----
   /**
    * Leads → the leads sheet + Telegram. Two entry points:
-   *  1) doPost — the script published as a web app: any site, Tilda webhook, n8n/Make can POST (form or JSON).
-   *     Every request must carry ?key=<WEBHOOK_SECRET> (Script Properties) — otherwise anyone could fill the sheet.
-   *  2) onFormSubmit — a Google Form linked to this spreadsheet (installable trigger «On form submit»).
+   *  1) doPost - the script published as a web app: any site, Tilda webhook, n8n/Make can POST (form or JSON).
+   *     Every request must carry ?key=<WEBHOOK_SECRET> (Script Properties) - otherwise anyone could fill the sheet.
+   *  2) onFormSubmit - a Google Form linked to this spreadsheet (installable trigger «On form submit»).
    */
 
   function doPost(e) {
@@ -685,7 +685,7 @@ function makeKit(G) {
         var code = r.getResponseCode();
         if (code === 200) sent = true;
         else if (code === 429 || code >= 500) Utilities.sleep(1000 * (attempt + 1));
-        else break;   // wrong token or chat — retrying will not help
+        else break;   // wrong token or chat - retrying will not help
       }
       ok = ok && sent;
     });
@@ -706,8 +706,8 @@ function makeKit(G) {
   /**
    * Duplicates and the daily report.
    * moveDuplicates: rows of the leads sheet that repeat an earlier row by phone or e-mail within N days are MOVED to the
-   * duplicates sheet (with the number of the original row) — never deleted, the owner can move them back.
-   * sendReport: yesterday's leads by source (+ sum of a numeric column, if set) — to the e-mail from settings.
+   * duplicates sheet (with the number of the original row) - never deleted, the owner can move them back.
+   * sendReport: yesterday's leads by source (+ sum of a numeric column, if set) - to the e-mail from settings.
    */
 
   function moveDuplicates() {

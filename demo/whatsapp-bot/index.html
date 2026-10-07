@@ -287,7 +287,7 @@ footer { border-top: 1px solid var(--line); padding: 20px 0 32px; font-size: 14p
     </div>
   </section>
 </main>
-<footer><div class="wrap">Cedarline Bakehouse and its customers are invented. I built this demo myself; it is not a client project. Flow Lab · Luna.</div></footer>
+<footer><div class="wrap">Cedarline Bakehouse and its customers are invented. I built this demo myself; it is not a client project. An order bot for your business: from $500. <a href="https://flowlab-dev.github.io/work/whatsapp-bot/">How it was built and what it costs</a>. Flow Lab · Luna.</div></footer>
 
 <script>
 "use strict";
@@ -605,7 +605,7 @@ const MONTH_STEMS_RU = ['янв', 'фев', 'мар', 'апр', 'ма', 'июн'
  * far enough ahead for this item's lead time and inside the booking window.
  */
 function parseDate(text, now, leadHours) {
-  const raw = String(text || '').trim().toLowerCase().replace(/ё/g, 'е').replace(/\.$/, '');
+  const raw = String(text || '').trim().toLowerCase().replace(/е/g, 'е').replace(/\.$/, '');
   if (!raw) return { ok: false, reason: 'unreadable' };
 
   const today = startOfDay(now);

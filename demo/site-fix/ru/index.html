@@ -102,7 +102,7 @@
   @media (max-width: 600px) { .go a { width: 100%; justify-content: center; } }
 </style>
 <style>
-  /* ---- v3: one scene — the fix, wiped across the phone (desktop only) ---- */
+  /* ---- v3: one scene - the fix, wiped across the phone (desktop only) ---- */
   .hero h1 { font-size: clamp(40px, 6.2vw, 80px); line-height: 1.02; letter-spacing: -.035em; max-width: 15ch; }
   .hero p { font-size: 19px; max-width: 62ch; color: var(--muted); }
   .wipe { display: none; }
@@ -134,10 +134,10 @@
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Демо <a href="/ru/work/site-fix/">Flow Lab</a> по собственной инициативе, не на заказ. Компания Tarnside Roofing вымышлена.</p>
+<p class="fl-band" role="note">Демо Flow Lab, сделанное без заказчика. Компания Tarnside Roofing вымышленная. Ускорение вашего сайта на телефоне: от $100, за 1–2 рабочих дня. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/ru/work/site-fix/">Как сделано и сколько стоит</a></span></p>
 <!-- /flowlab-band -->
 <div class="wrap">
-<header class="top"><div class="brand"><i aria-hidden="true"></i>Ускорение сайта для телефона</div><div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme" id="theme" type="button">Тёмная тема</button></header>
+<header class="top"><div class="brand"><i aria-hidden="true"></i>Ускорение сайта для телефона</div><div aria-label="Язык" class="fl-lang" role="group"><a href="../index.html" hreflang="en" lang="en" title="English">EN</a><a aria-current="page" href="index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button class="theme" id="theme" type="button">Темная тема</button></header>
 <div class="hero">
 <p class="ex">Пример: компания Tarnside Roofing придумана, сайт до и после настоящий</p>
 <h1>Тот же кровельщик, те же тексты. Теперь сайт работает на телефоне</h1>
@@ -207,10 +207,10 @@
 <p class="ps">P.S. Форма на вашем сайте точно доходит до вас? Отправьте себе тестовую заявку с телефона прямо сейчас. Если она не пришла, пришлите мне ссылку.</p>
 </div>
 </section>
-<footer><div class="wrap">Tarnside Roofing — вымышленная фирма. Обе версии её сайта написаны для этого демо и измерены так, как описано выше.</div></footer>
+<footer><div class="wrap">Фирма Tarnside Roofing вымышленная. Обе версии ее сайта написаны для этого демо и измерены так, как описано выше.</div></footer>
 <script>
 // Written by tests/measure.mjs. Do not edit by hand.
-window.MEASURE = {"before":{"lcp":19736,"cls":0,"layoutWidth":1101,"textPx":5.7,"h1":2,"noAlt":3,"telLinks":0,"labelled":false,"description":false,"title":"Home","structured":false,"loadMs":22741,"bytes":4469250,"requests":8,"failed":1,"runs":[{"loadMs":22714,"lcp":19732,"cls":0,"bytes":4469250},{"loadMs":22741,"lcp":19736,"cls":0,"bytes":4469250},{"loadMs":22745,"lcp":19736,"cls":0,"bytes":4469250}],"audit":{"red":4,"yellow":2,"small":6}},"after":{"lcp":680,"cls":0,"layoutWidth":390,"textPx":17,"h1":1,"noAlt":0,"telLinks":2,"labelled":true,"description":true,"title":"Roof Repairs in Leeds & West Yorkshire | Tarnside Roofing","structured":true,"loadMs":770,"bytes":85961,"requests":5,"failed":0,"runs":[{"loadMs":771,"lcp":688,"cls":0,"bytes":85961},{"loadMs":762,"lcp":644,"cls":0,"bytes":85961},{"loadMs":770,"lcp":680,"cls":0,"bytes":85961}],"audit":{"red":0,"yellow":0,"small":0}},"form":{"received":1,"status":"Thanks — we’ll call you back the same working day."}};
+window.MEASURE = {"before":{"lcp":19736,"cls":0,"layoutWidth":1101,"textPx":5.7,"h1":2,"noAlt":3,"telLinks":0,"labelled":false,"description":false,"title":"Home","structured":false,"loadMs":22741,"bytes":4469250,"requests":8,"failed":1,"runs":[{"loadMs":22714,"lcp":19732,"cls":0,"bytes":4469250},{"loadMs":22741,"lcp":19736,"cls":0,"bytes":4469250},{"loadMs":22745,"lcp":19736,"cls":0,"bytes":4469250}],"audit":{"red":4,"yellow":2,"small":6}},"after":{"lcp":680,"cls":0,"layoutWidth":390,"textPx":17,"h1":1,"noAlt":0,"telLinks":2,"labelled":true,"description":true,"title":"Roof Repairs in Leeds & West Yorkshire | Tarnside Roofing","structured":true,"loadMs":770,"bytes":85961,"requests":5,"failed":0,"runs":[{"loadMs":771,"lcp":688,"cls":0,"bytes":85961},{"loadMs":762,"lcp":644,"cls":0,"bytes":85961},{"loadMs":770,"lcp":680,"cls":0,"bytes":85961}],"audit":{"red":0,"yellow":0,"small":0}},"form":{"received":1,"status":"Thanks, we’ll call you back the same working day."}};
 
 </script>
 <script>
@@ -221,20 +221,20 @@ window.MEASURE = {"before":{"lcp":19736,"cls":0,"layoutWidth":1101,"textPx":5.7,
   var root = document.documentElement;
   var media = matchMedia('(prefers-color-scheme: dark)');
   function isDark() { return root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : media.matches; }
-  function label() { $('theme').textContent = isDark() ? 'Светлая тема' : 'Тёмная тема'; }
+  function label() { $('theme').textContent = isDark() ? 'Светлая тема' : 'Темная тема'; }
   $('theme').addEventListener('click', function () { var n = isDark() ? 'light' : 'dark'; root.setAttribute('data-theme', n); try { localStorage.setItem('fix-theme', n); } catch (e) {} label(); });
   if (media.addEventListener) media.addEventListener('change', label);
   label();
 
   // What was fixed: fixed content, shown whether or not the numbers loaded.
   var F = [
-    ['Страница не учитывала ширину телефона', 'Не было тега viewport, поэтому телефоны рисовали компьютерную вёрстку шириной 1 100 px и уменьшали её.', 'нет viewport, жёсткая ширина вёрстки 1 100 px', 'тег viewport, вёрстка под любую ширину'],
+    ['Страница не учитывала ширину телефона', 'Не было тега viewport, поэтому телефоны рисовали компьютерную верстку шириной 1 100 px и уменьшали ее.', 'нет viewport, жесткая ширина верстки 1 100 px', 'тег viewport, верстка под любую ширину'],
     ['Картинки в полном размере с камеры', 'Три картинки примерно по 1,3 МБ, как фото с телефона, целиком грузились на любом телефоне.', '3 × ~1,3 МБ, JPEG', 'WebP шириной 800 и 1 600 px, по 11–26 КБ; браузер сам выбирает размер под экран, а картинки ниже по странице помечены для отложенной загрузки'],
-    ['Скрипт на 510 КБ в начале кода страницы', 'Скрипты слайдера из старой темы задерживали показ страницы, пока грузились, и всё ради «слайд-шоу» из одной картинки.', 'скрипт на 510 КБ, блокирует показ страницы', 'удалён; остался только скрипт формы на 1 КБ, и он запускается, когда страница уже готова'],
+    ['Скрипт на 510 КБ в начале кода страницы', 'Скрипты слайдера из старой темы задерживали показ страницы, пока грузились, и все ради «слайд-шоу» из одной картинки.', 'скрипт на 510 КБ, блокирует показ страницы', 'удален; остался только скрипт формы на 1 КБ, и он запускается, когда страница уже готова'],
     ['Нет кнопки звонка', 'Номер был обычным текстом высотой около 6 px: одни телефоны сами превращают его в ссылку, многие нет, и в любом случае его было трудно найти и в него попасть.', 'обычный текст, нет ссылки для звонка в одно касание', 'кнопка «Call» («Позвонить») и ссылка для звонка в одно касание внизу страницы'],
     ['Форма, которая теряла все заявки', 'Она отправляла данные на contact.php, а такой страницы уже не было: посетитель видел страницу ошибки, и заявка пропадала.', 'отправка на несуществующую страницу', 'отправка на рабочий адрес; если не получилось, посетитель видит сообщение об этом и номер телефона'],
     ['Вид в поиске', 'Заголовок «Home» («Главная»), нет описания, два заголовка H1, картинки без alt-текста (описания).', 'заголовок «Home», нет описания', 'заголовок и описание с городом и услугой, один H1, alt-тексты, данные о фирме'],
-    ['Остатки старого', 'Пункт меню вёл на страницу Services, которой уже не было; код старого Google Analytics, который перестал собирать данные в 2023 году, а здесь ещё и ссылался на несуществующий файл; второй файл стилей грузился по цепочке; «© 2019»; серый текст на белом.', 'битая ссылка, мёртвая аналитика, стили по цепочке, бледный текст', 'удалено или исправлено; меню ведёт к разделам страницы; год обновляется сам'],
+    ['Остатки старого', 'Пункт меню вел на страницу Services, которой уже не было; код старого Google Analytics, который перестал собирать данные в 2023 году, а здесь еще и ссылался на несуществующий файл; второй файл стилей грузился по цепочке; «© 2019»; серый текст на белом.', 'битая ссылка, мертвая аналитика, стили по цепочке, бледный текст', 'удалено или исправлено; меню ведет к разделам страницы; год обновляется сам'],
   ];
   $('fixes').innerHTML = F.map(function (f) {
     return '<div class="panel fix"><h3>' + esc(f[0]) + '</h3><p>' + esc(f[1]) + '</p><div class="was">Было: ' + esc(f[2]) + '</div><div class="now">Стало: ' + esc(f[3]) + '</div></div>';
@@ -253,18 +253,18 @@ window.MEASURE = {"before":{"lcp":19736,"cls":0,"layoutWidth":1101,"textPx":5.7,
   var kb = function (x) { return x >= 1048576 ? (x / 1048576).toFixed(1).replace('.', ',') + ' МБ' : Math.round(x / 1024) + ' КБ'; };
   var sec = function (ms) { return (ms / 1000).toFixed(1).replace('.', ',') + ' с'; };
   var about = function (w) { return 'около ' + (Math.round(w / 10) * 10).toLocaleString('ru-RU'); };
-  $('capBefore').textContent = 'страница свёрстана на ширину ' + about(b.layoutWidth) + ' px и ужата под экран: основной текст ' + px(b.textPx) + ' на экране';
+  $('capBefore').textContent = 'страница сверстана на ширину ' + about(b.layoutWidth) + ' px и ужата под экран: основной текст ' + px(b.textPx) + ' на экране';
   $('capAfter').textContent = 'страница по ширине телефона: основной текст ' + px(a.textPx) + ' на экране';
   var rows = [
-    ['Объём данных для открытия страницы', kb(b.bytes), kb(a.bytes), 'Картинки уменьшены и сжаты, неиспользуемый скрипт удалён.'],
+    ['Объем данных для открытия страницы', kb(b.bytes), kb(a.bytes), 'Картинки уменьшены и сжаты, неиспользуемый скрипт удален.'],
     ['Запросы к серверу', b.requests, a.requests, ''],
     ['Время до появления главной картинки', sec(b.lcp), sec(a.lcp), 'Большая картинка вверху страницы.'],
     ['Страница загружена полностью', sec(b.loadMs), sec(a.loadMs), ''],
     ['Размер основного текста на экране телефона', px(b.textPx), px(a.textPx), 'Текст меньше 12 px трудно читать без увеличения.'],
     ['Ссылки для звонка в одно касание', b.telLinks, a.telLinks, ''],
     ['Поля формы с подписями', b.labelled ? 'да' : 'нет', a.labelled ? 'да' : 'нет', 'Программы чтения с экрана зачитывают подписи, а подсказки автозаполнения позволяют телефону подставить имя и номер.'],
-    ['Форма отправляется, и сервер её получает', 'нет (отправка на несуществующую страницу)', M.form && M.form.received ? 'да (тестовый сервер получил)' : 'не проверено', ''],
-    ['Главные заголовки (H1)', b.h1, a.h1, 'Один главный заголовок, который говорит, о чём страница, для посетителей и поисковиков.'],
+    ['Форма отправляется, и сервер ее получает', 'нет (отправка на несуществующую страницу)', M.form && M.form.received ? 'да (тестовый сервер получил)' : 'не проверено', ''],
+    ['Главные заголовки (H1)', b.h1, a.h1, 'Один главный заголовок, который говорит, о чем страница, для посетителей и поисковиков.'],
     ['Картинки без alt-текста', b.noAlt, a.noAlt, ''],
     ['Описание для результатов поиска', b.description ? 'да' : 'нет', a.description ? 'да' : 'нет', ''],
     ['Данные о фирме для поисковиков', b.structured ? 'да' : 'нет', a.structured ? 'да' : 'нет', 'Название, телефон и район работы в виде, понятном Google.'],

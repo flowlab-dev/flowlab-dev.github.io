@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Vireal Aero — видеть свет · демо FlowLab</title>
+<title>Vireal Aero: видеть свет · демо FlowLab</title>
 <meta name="description" content="Демо-концепт страницы продукта: 3D-модель очков, которую поворачивает прокрутка. Сделано FlowLab с Claude Code.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Vireal Aero — видеть свет">
+<meta property="og:title" content="Vireal Aero: видеть свет">
 <meta property="og:description" content="Демо страницы продукта: 3D-модель очков поворачивается и разбирается на детали при прокрутке. FlowLab с Claude Code.">
 <meta property="og:image" content="https://flowlab-dev.github.io/demo/vireal/assets/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 <script>
-  // тема и язык — до первой отрисовки, чтобы не мигало
+  // тема и язык - до первой отрисовки, чтобы не мигало
   (function () {
     var d = document.documentElement, t = null, l = null;
     try { t = localStorage.getItem('vireal-theme'); l = localStorage.getItem('vireal-lang'); } catch (e) {}
@@ -49,7 +49,7 @@
       <a href="#specs" data-i18n="nav.specs">Характеристики</a>
     </nav>
     <div class="nav__tools">
-      <button class="tool" id="lang" type="button" aria-label="EN — switch to English" data-i18n-aria="langAria"><span data-i18n="langBtn">EN</span></button>
+      <button class="tool" id="lang" type="button" aria-label="EN: switch to English" data-i18n-aria="langAria"><span data-i18n="langBtn">EN</span></button>
       <button class="tool" id="theme" type="button" aria-label="Светлая тема" data-i18n-aria="themeAria">
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
@@ -58,7 +58,7 @@
   </div>
 </header>
 
-<canvas id="stage" role="img" aria-label="3D-модель очков Vireal Aero: прокрутка поворачивает её" data-i18n-aria="stageAria"></canvas>
+<canvas id="stage" role="img" aria-label="3D-модель очков Vireal Aero: прокрутка поворачивает ее" data-i18n-aria="stageAria"></canvas>
 
 <main id="top">
   <section class="hero" id="hero">
@@ -78,10 +78,10 @@
     <div class="sticky">
       <div class="chapter__copy">
         <p class="eyebrow" data-i18n="lens.eyebrow">Линзы</p>
-        <h2 class="h1" id="lens-h"><span data-i18n="lens.t1">Цвет, который</span> <span class="grad" data-i18n="lens.t2">живёт.</span></h2>
+        <h2 class="h1" id="lens-h"><span data-i18n="lens.t1">Цвет, который</span> <span class="grad" data-i18n="lens.t2">живет.</span></h2>
         <ol class="beats">
-          <li data-beat="0" data-i18n="lens.b1">Напыление тоньше мыльной плёнки разбирает свет на оттенки.</li>
-          <li data-beat="1" data-i18n="lens.b2">Повернёте голову — цвет перетечёт из фиолетового в бирюзовый.</li>
+          <li data-beat="0" data-i18n="lens.b1">Напыление тоньше мыльной пленки разбирает свет на оттенки.</li>
+          <li data-beat="1" data-i18n="lens.b2">Повернете голову, и цвет перетечет из фиолетового в бирюзовый.</li>
           <li data-beat="2" data-i18n="lens.b3">А глаза защищены полностью: фильтр UV400.</li>
         </ol>
       </div>
@@ -131,7 +131,7 @@
   <section class="specs" id="specs" aria-labelledby="specs-h">
     <div class="wrap">
       <p class="eyebrow" data-i18n="specs.eyebrow">Характеристики</p>
-      <h2 class="h1" id="specs-h" data-i18n="specs.title">Всё главное — в цифрах.</h2>
+      <h2 class="h1" id="specs-h" data-i18n="specs.title">Все главное в цифрах.</h2>
       <dl class="grid">
         <div><dt data-i18n="specs.w">Вес</dt><dd><span data-count="21">21</span> <small data-i18n="u.g">г</small></dd></div>
         <div><dt data-i18n="specs.uv">Защита</dt><dd>UV400</dd></div>
@@ -146,7 +146,7 @@
   <section class="final" id="final" aria-labelledby="final-h">
     <div class="wrap">
       <h2 class="h1" id="final-h" data-i18n="final.title">Такую страницу можно сделать для вашего продукта.</h2>
-      <p class="lead" data-i18n="final.lead">Её сделала студия FlowLab с Claude Code: настоящая 3D-модель, анимация по прокрутке, два языка и две темы.</p>
+      <p class="lead" data-i18n="final.lead">Ее сделала студия FlowLab с Claude Code: настоящая 3D-модель, анимация по прокрутке, два языка и две темы.</p>
       <div class="cta">
         <a class="btn" href="https://flowlab-dev.github.io/" data-i18n="final.cta">Написать FlowLab</a>
         <a class="link" href="https://flowlab-dev.github.io/work/" data-i18n="final.more">Другие работы <span aria-hidden="true">›</span></a>
@@ -157,7 +157,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p data-i18n="foot.demo">Концепт-демо: бренд Vireal, продукт и характеристики вымышлены.</p>
+    <p data-i18n-html="foot.demo">Концепт-демо Flow Lab, сделанное без заказчика. Бренд Vireal, продукт и характеристики вымышленные. Такая страница для вашего продукта: от $1 500, за 3 недели. <a href="https://flowlab-dev.github.io/ru/work/vireal/">Как сделано и сколько стоит</a></p>
     <p data-i18n-html="foot.model">3D-модель: <a href="https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/SunglassesKhronos">Sunglasses Khronos</a> (Khronos Group; Eric Chadwick, Darmstadt Graphics Group), <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Изменена: заменены логотипы на дужках и материалы.</p>
   </div>
 </footer>

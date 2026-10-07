@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lantern One — ИИ в вашей комнате · демо FlowLab</title>
+<title>Lantern One: ИИ в вашей комнате · демо FlowLab</title>
 <meta name="description" content="Демо-концепт страницы продукта: 3D-модель ИИ-компьютера раскрывается на слои при прокрутке. Сделано FlowLab с Claude Code.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Lantern One — ИИ в вашей комнате">
+<meta property="og:title" content="Lantern One: ИИ в вашей комнате">
 <meta property="og:description" content="Демо страницы продукта: 3D-модель раскрывается на слои при прокрутке. FlowLab с Claude Code.">
 <meta property="og:image" content="https://flowlab-dev.github.io/demo/3d-site/assets/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
 <link rel="preload" href="assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 <script>
-  // тема и язык — до первой отрисовки, чтобы не мигало
+  // тема и язык - до первой отрисовки, чтобы не мигало
   (function () {
     var d = document.documentElement, t = null, l = null;
     try { t = localStorage.getItem('lantern-theme'); l = localStorage.getItem('lantern-lang'); } catch (e) {}
@@ -49,7 +49,7 @@
       <a href="#reserve" data-i18n="nav.reserve">Заказать</a>
     </nav>
     <div class="nav__tools">
-      <button class="tool" id="lang" type="button" aria-label="EN — switch to English" data-i18n-aria="langAria"><span data-i18n="langBtn">EN</span></button>
+      <button class="tool" id="lang" type="button" aria-label="EN: switch to English" data-i18n-aria="langAria"><span data-i18n="langBtn">EN</span></button>
       <button class="tool" id="theme" type="button" aria-label="Сменить тему" data-i18n-aria="themeAria">
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.6A8.2 8.2 0 0 1 9.4 4a8.2 8.2 0 1 0 10.6 10.6Z"/></svg>
@@ -58,7 +58,7 @@
   </div>
 </header>
 
-<canvas id="stage" role="img" aria-label="3D-модель компьютера Lantern One: прокрутка раскрывает её на слои" data-i18n-aria="stageAria"></canvas>
+<canvas id="stage" role="img" aria-label="3D-модель компьютера Lantern One: прокрутка раскрывает ее на слои" data-i18n-aria="stageAria"></canvas>
 
 <main id="top">
   <section class="hero" id="hero">
@@ -115,7 +115,7 @@
         <p class="lead" data-i18n="privacy.lead">Облачный ИИ означает ваши файлы на чужих серверах. Lantern One читает их там, где они уже лежат.</p>
       </div>
       <ul class="rows">
-        <li data-anim><h3 data-i18n="p1.t">Работает без интернета</h3><p data-i18n="p1.b">Выньте сетевой кабель, и всё продолжит работать: чат, поиск, краткие пересказы и расшифровка записей.</p></li>
+        <li data-anim><h3 data-i18n="p1.t">Работает без интернета</h3><p data-i18n="p1.b">Выньте сетевой кабель, и все продолжит работать: чат, поиск, краткие пересказы и расшифровка записей.</p></li>
         <li data-anim><h3 data-i18n="p2.t">Модели остаются вашими</h3><p data-i18n="p2.b">Дообучайте модели на своих документах. Веса хранятся на устройстве, их можно выгрузить или стереть в любой момент.</p></li>
         <li data-anim><h3 data-i18n="p3.t">Журнал простым языком</h3><p data-i18n="p3.b">Каждый вопрос, файл и ответ записан понятными словами, поэтому аудитор видит, что именно делала машина.</p></li>
       </ul>
@@ -130,7 +130,7 @@
       </div>
       <ul class="rows">
         <li data-anim><h3 data-i18n="u1.t">Юридические фирмы</h3><p data-i18n="u1.b">Поиск по десяти годам дел и первые черновики документов, и ни одна бумага с адвокатской тайной не попадает к третьим лицам.</p></li>
-        <li data-anim><h3 data-i18n="u2.t">Клиники</h3><p data-i18n="u2.b">Записи приёмов превращаются в заметки на машине, которая стоит за дверью самой клиники.</p></li>
+        <li data-anim><h3 data-i18n="u2.t">Клиники</h3><p data-i18n="u2.b">Записи приемов превращаются в заметки на машине, которая стоит за дверью самой клиники.</p></li>
         <li data-anim><h3 data-i18n="u3.t">Студии и издательства</h3><p data-i18n="u3.b">Пересказы рукописей и сценариев до выхода, без риска, что текст окажется в чужих обучающих данных.</p></li>
       </ul>
     </div>
@@ -141,7 +141,7 @@
       <div>
         <p class="eyebrow" data-i18n="reserve.eyebrow">Заказ</p>
         <h2 class="h1" id="reserve-h" data-i18n="reserve.title">Забронируйте Lantern One.</h2>
-        <p class="lead" data-i18n="reserve.lead">Первые устройства отправим весной. Бронь бесплатная, отменить её можно одним письмом.</p>
+        <p class="lead" data-i18n="reserve.lead">Первые устройства отправим весной. Бронь бесплатная, отменить ее можно одним письмом.</p>
         <p class="price"><b data-i18n="reserve.price">$4 800</b> <span data-i18n="reserve.note">за устройство, обновления на три года включены</span></p>
       </div>
       <form class="form" id="reserve-form" novalidate>
@@ -179,9 +179,9 @@
       </div>
       <div class="faq">
         <details><summary data-i18n="q1">Какие модели он запускает?</summary><p data-i18n="a1">Открытые языковые модели примерно до 70 млрд параметров, распознавание речи и модели для картинок. Новые модели ставятся с флешки или, если вы разрешите, по сети.</p></details>
-        <details><summary data-i18n="q2">Нужен ли интернет?</summary><p data-i18n="a2">Только для обновлений, и их тоже можно поставить с флешки. Повседневная работа идёт полностью без сети.</p></details>
+        <details><summary data-i18n="q2">Нужен ли интернет?</summary><p data-i18n="a2">Только для обновлений, и их тоже можно поставить с флешки. Повседневная работа идет полностью без сети.</p></details>
         <details><summary data-i18n="q3">Сколько человек могут работать одновременно?</summary><p data-i18n="a3">Около двадцати человек в чате одновременно или пятеро с долгими задачами по документам. Командам больше обычно ставят второе устройство.</p></details>
-        <details><summary data-i18n="q4">Что будет с данными, если мы его вернём?</summary><p data-i18n="a4">Вы стираете их в настройках перед отправкой или оставляете себе модуль хранения, а мы бесплатно ставим новый.</p></details>
+        <details><summary data-i18n="q4">Что будет с данными, если мы его вернем?</summary><p data-i18n="a4">Вы стираете их в настройках перед отправкой или оставляете себе модуль хранения, а мы бесплатно ставим новый.</p></details>
       </div>
     </div>
   </section>
@@ -189,7 +189,7 @@
   <section class="final" id="final" aria-labelledby="final-h">
     <div class="wrap">
       <h2 class="h1" id="final-h" data-i18n="final.title">Такую страницу можно сделать для вашего продукта.</h2>
-      <p class="lead" data-i18n="final.lead">Её сделала студия FlowLab с Claude Code: 3D-модель, анимация по прокрутке, два языка и две темы.</p>
+      <p class="lead" data-i18n="final.lead">Ее сделала студия FlowLab с Claude Code: 3D-модель, анимация по прокрутке, два языка и две темы.</p>
       <div class="cta">
         <a class="btn" href="https://flowlab-dev.github.io/" data-i18n="final.cta">Написать FlowLab</a>
         <a class="link" href="https://flowlab-dev.github.io/work/"><span data-i18n="final.more">Другие работы</span> <span aria-hidden="true">›</span></a>
@@ -200,7 +200,7 @@
 
 <footer class="foot">
   <div class="wrap">
-    <p data-i18n="foot.demo">Концепт-демо: Candlewren, Lantern One и все цифры на этой странице выдуманы, ничего не продаётся.</p>
+    <p data-i18n-html="foot.demo">Концепт-демо Flow Lab, сделанное без заказчика. Candlewren, Lantern One и все цифры на этой странице вымышленные, Lantern One не продается. Такая страница для вашего продукта: от $1 500, за 3 недели. <a href="https://flowlab-dev.github.io/ru/work/3d-site/">Как сделано и сколько стоит</a></p>
     <p data-i18n="foot.made">3D-модель, дизайн и код: FlowLab.</p>
   </div>
 </footer>

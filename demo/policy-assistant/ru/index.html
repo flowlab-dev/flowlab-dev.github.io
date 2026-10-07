@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ассистент по регламентам · Tallowby Freight (демо)</title>
-<meta name="description" content="Ассистент по документам: отвечает сотрудникам по PDF-регламентам компании, цитирует точный отрывок со страницей и версией, берёт заменённые версии только для вопросов о прошлом и прямо говорит, когда в документах ответа нет.">
+<meta name="description" content="Ассистент по документам: отвечает сотрудникам по PDF-регламентам компании, цитирует точный отрывок со страницей и версией, берет замененные версии только для вопросов о прошлом и прямо говорит, когда в документах ответа нет.">
 <meta name="color-scheme" content="light dark">
 <link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/policy-assistant/">
 <link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/policy-assistant/ru/">
@@ -163,7 +163,7 @@
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Демо сделано <a href="https://flowlab-dev.github.io/ru/work/policy-assistant/">Flow Lab</a> без заказчика. Компания Tallowby Freight выдумана.</p>
+<p class="fl-band" role="note">Демо Flow Lab, сделанное без заказчика. Компания Tallowby Freight вымышленная. Ассистент по вашим документам: от $240. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/ru/work/policy-assistant/">Как сделано и сколько стоит</a></span></p>
 <!-- /flowlab-band -->
 <main>
 <div class="wrap">
@@ -177,7 +177,7 @@
 
   <div class="hero">
     <h1>Спросите регламенты. Получите точный отрывок, страницу и версию.</h1>
-    <p>Сотрудники спрашивают своими словами. Ассистент ищет по PDF-регламентам компании, цитирует точный отрывок, даёт ссылку на страницу, не берёт заменённые версии и прямо говорит, если в документах ответа нет.</p>
+    <p>Сотрудники спрашивают своими словами. Ассистент ищет по PDF-регламентам компании, цитирует точный отрывок, дает ссылку на страницу, не берет замененные версии и прямо говорит, если в документах ответа нет.</p>
     <div class="facts" id="facts"></div>
   </div>
 
@@ -209,20 +209,20 @@
     <h2>Как это работает</h2>
     <p>Пять шагов, и каждый можно проверить отдельно. В проекте для клиента те же шаги подключаются к SharePoint, Google Диску или общей папке.</p>
     <div class="steps">
-      <div class="step panel"><h3>Читает PDF</h3><p>Текст берётся постранично. Код, версия, дата вступления в силу и статус берутся из служебного блока самого документа.</p></div>
-      <div class="step panel"><h3>Делит на разделы</h3><p>Нумерованные заголовки (4., 4.2) становятся отрывками. У каждого остаётся номер страницы, поэтому ссылка открывает нужную страницу.</p></div>
+      <div class="step panel"><h3>Читает PDF</h3><p>Текст берется постранично. Код, версия, дата вступления в силу и статус берутся из служебного блока самого документа.</p></div>
+      <div class="step panel"><h3>Делит на разделы</h3><p>Нумерованные заголовки (4., 4.2) становятся отрывками. У каждого остается номер страницы, поэтому ссылка открывает нужную страницу.</p></div>
       <div class="step panel"><h3>Понимает слова сотрудников</h3><p>Список бытовых слов, составленный вручную (бензин → пробег, стащили → кража), и <span id="asks">около тысячи примеров</span> вопросов, которые модель написала к отрывкам при импорте. Опечатку поиск исправляет на ближайшее знакомое слово.</p></div>
-      <div class="step panel"><h3>Цитирует, а не гадает</h3><p>Ответ — сам отрывок. Если лучшее совпадение слабое или в нём мало слов из вопроса, ассистент говорит, что не нашёл.</p></div>
-      <div class="step panel"><h3>Проверяет версию</h3><p>Заменённые версии берутся, только если вопрос о прошлом. Если правило поменялось, старая формулировка показывается с датой, когда она перестала действовать.</p></div>
+      <div class="step panel"><h3>Цитирует, а не гадает</h3><p>Ответ: сам отрывок. Если лучшее совпадение слабое или в нем мало слов из вопроса, ассистент говорит, что не нашел.</p></div>
+      <div class="step panel"><h3>Проверяет версию</h3><p>Замененные версии берутся, только если вопрос о прошлом. Если правило поменялось, старая формулировка показывается с датой, когда она перестала действовать.</p></div>
     </div>
-    <div class="honest panel"><b>Два способа ответа, оба измерены ниже.</b> Чат на этой странице — только шаг поиска, он работает в вашем браузере: без сервера и ключей, поэтому открывается и без интернета. Он скорее осторожный, чем сообразительный. В проверке ниже он говорит «не нашёл» и на вопросы, у которых ответ есть (таких <span id="refusedN">несколько</span>), и тогда перечисляет, где ответ может быть. В проекте для клиента следующим шагом идёт языковая модель: она читает пять отрывков, которые нашёл поиск, и отвечает цитатой с номером раздела. В проверку входит записанный прогон этого шага.</div>
+    <div class="honest panel"><b>Два способа ответа, оба измерены ниже.</b> Чат на этой странице выполняет только шаг поиска и работает в вашем браузере: без сервера и ключей, поэтому открывается и без интернета. Он скорее осторожный, чем сообразительный. В проверке ниже он говорит «не нашел» и на вопросы, у которых ответ есть (таких <span id="refusedN">несколько</span>), и тогда перечисляет, где ответ может быть. В проекте для клиента следующим шагом идет языковая модель: она читает пять отрывков, которые нашел поиск, и отвечает цитатой с номером раздела. В проверку входит записанный прогон этого шага.</div>
   </div>
 </section>
 
 <section class="block">
   <div class="wrap reveal">
     <h2>Проверено, а не обещано</h2>
-    <p id="evalintro">40 вопросов, которые не использовались при настройке поиска. Английский набор написала отдельная сессия ассистента, которая видела документы, но не код; русский набор пересказала живым языком ещё одна отдельная сессия, тоже без доступа к коду. Русский поиск был заморожен до первого прогона этих вопросов. Среди них есть ловушки: темы, которых нет ни в одном документе, и правила, которые поменялись между версиями. Левая колонка показывает поиск в вашем браузере, правая показывает записанный прогон всей цепочки: для каждого вопроса тот же поиск выбрал пять отрывков, и языковая модель отвечала только по ним. Каждую её цитату страница проверяет здесь же, слово в слово. Все промахи с обеих сторон перечислены ниже.</p>
+    <p id="evalintro">40 вопросов, которые не использовались при настройке поиска. Английский набор написала отдельная сессия ассистента, которая видела документы, но не код; русский набор пересказала живым языком еще одна отдельная сессия, тоже без доступа к коду. Русский поиск был заморожен до первого прогона этих вопросов. Среди них есть ловушки: темы, которых нет ни в одном документе, и правила, которые поменялись между версиями. Левая колонка показывает поиск в вашем браузере, правая показывает записанный прогон всей цепочки: для каждого вопроса тот же поиск выбрал пять отрывков, и языковая модель отвечала только по ним. Каждую ее цитату страница проверяет здесь же, слово в слово. Все промахи с обеих сторон перечислены ниже.</p>
     <div class="tiles" id="tiles"></div>
     <button class="run" id="run" type="button">Запустить проверку</button>
     <div class="results panel" id="results"></div>
@@ -238,15 +238,15 @@
       <div class="card panel"><h3>Ответы своими словами со ссылками</h3><p>Языковая модель пишет два-три предложения по найденным отрывкам. Если сослаться не на что, она не отвечает.</p></div>
       <div class="card panel"><h3>Там, где спрашивают</h3><p>Страница во внутренней сети, Slack, Teams или Telegram. Доступ по ролям: водители не видят документы только для финансового отдела.</p></div>
       <div class="card panel"><h3>Большие библиотеки</h3><p>Когда страниц больше нескольких сотен, к поиску по словам добавляется смысловой поиск (эмбеддинги) и пересортировка лучших отрывков. Набор проверки работает так же, поэтому выигрыш измеряется, а не предполагается.</p></div>
-      <div class="card panel"><h3>Сканы и таблицы</h3><p>Сканы сначала проходят распознавание текста. Таблицы сохраняются построчно, как здесь сохранён лимит на гостиницу в Лондоне.</p></div>
-      <div class="card panel"><h3>Ежемесячная поддержка</h3><p>Журнал того, о чём спрашивали и на что в документах не нашлось ответа. Набор проверки растёт каждый месяц, а пробелы уходят владельцу документа.</p></div>
+      <div class="card panel"><h3>Сканы и таблицы</h3><p>Сканы сначала проходят распознавание текста. Таблицы сохраняются построчно, как здесь сохранен лимит на гостиницу в Лондоне.</p></div>
+      <div class="card panel"><h3>Ежемесячная поддержка</h3><p>Журнал того, о чем спрашивали и на что в документах не нашлось ответа. Набор проверки растет каждый месяц, а пробелы уходят владельцу документа.</p></div>
     </div>
   </div>
 </section>
 </main>
 
 <footer>
-  <div class="wrap">Tallowby Freight Ltd — выдуманная компания, восемь регламентов написаны для этого демо (английские оригиналы и их перевод на русский). PDF свёрстаны как типичные внутренние документы. Сканы, файлы Word и документы без нумерованных заголовков требуют дополнительной работы при импорте (распознавание текста, разбор вёрстки), она входит в проект для клиента.</div>
+  <div class="wrap">Компания Tallowby Freight Ltd выдумана, восемь регламентов написаны для этого демо (английские оригиналы и их перевод на русский). PDF сверстаны как типичные внутренние документы. Сканы, файлы Word и документы без нумерованных заголовков требуют дополнительной работы при импорте (распознавание текста, разбор верстки), она входит в проект для клиента.</div>
 </footer>
 
 <script>
@@ -285,7 +285,7 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   function label() {
     var dark = root.getAttribute('data-theme') ? root.getAttribute('data-theme') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     $('theme').textContent = dark ? 'День' : 'Ночь';
-    $('theme').setAttribute('aria-label', dark ? 'День: включить светлую тему' : 'Ночь: включить тёмную тему');
+    $('theme').setAttribute('aria-label', dark ? 'День: включить светлую тему' : 'Ночь: включить темную тему');
   }
   label();
 
@@ -296,14 +296,14 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   var cur = KB.docs.filter(function (d) { return d.status === 'current'; }).length;
   var old = KB.docs.length - cur;
   $('facts').innerHTML = '<span><b>' + KB.docs.length + '</b> PDF</span><span><b>' + pages + '</b> ' + plural(pages, 'страница', 'страницы', 'страниц') + '</span><span><b>' +
-    KB.chunks.length + '</b> ' + plural(KB.chunks.length, 'отрывок', 'отрывка', 'отрывков') + '</span><span><b>' + old + '</b> ' + plural(old, 'заменённая версия', 'заменённые версии', 'заменённых версий') + ', только для вопросов о прошлом</span>';
+    KB.chunks.length + '</b> ' + plural(KB.chunks.length, 'отрывок', 'отрывка', 'отрывков') + '</span><span><b>' + old + '</b> ' + plural(old, 'замененная версия', 'замененные версии', 'замененных версий') + ', только для вопросов о прошлом</span>';
   var docs = KB.docs.slice().sort(function (a, b) { return a.code === b.code ? b.version - a.version : a.code < b.code ? -1 : 1; });
   $('docs').innerHTML = docs.map(function (d) {
     var old = d.status !== 'current';
     return '<a class="doc' + (old ? ' old' : '') + '" href="' + esc(d.file) + '" target="_blank" rel="noopener">' +
       '<div class="t">' + esc(d.title) + '</div>' +
       '<div class="m">' + esc(d.code) + ' · v' + esc(d.version) + ' · ' + d.pages + ' ' + plural(d.pages, 'страница', 'страницы', 'страниц') +
-      (old ? '<span class="tag old">Заменён ' + date(d.superseded_on) + '</span>' : '<span class="tag">Действует</span>') + '</div></a>';
+      (old ? '<span class="tag old">Заменен ' + date(d.superseded_on) + '</span>' : '<span class="tag">Действует</span>') + '</div></a>';
   }).join('');
   if (matchMedia('(max-width: 560px)').matches) $('libdetails').removeAttribute('open');
 
@@ -327,7 +327,7 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
           return r.quote.indexOf(x) >= 0 ? '<mark>' + esc(x) + '</mark>' : '<span class="dim">' + esc(x) + '</span>';
         }).join('\n') + '</blockquote>' +
         '<div class="src"><span><b>' + esc(s.code) + ' ' + esc(s.title) + '</b></span><span>v' + esc(s.version) +
-        (s.status === 'superseded' ? ' <span class="tag old">заменён</span>' : '') + '</span><span>§' + esc(s.section) + ' ' + esc(s.heading) + '</span><span>' + link(s) + '</span></div>';
+        (s.status === 'superseded' ? ' <span class="tag old">заменен</span>' : '') + '</span><span>§' + esc(s.section) + ' ' + esc(s.heading) + '</span><span>' + link(s) + '</span></div>';
       if (r.changed) {
         var c = r.changed;
         html += '<div class="changed">' + (c.status === 'superseded'
@@ -335,12 +335,12 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
           : '<b>Это старое правило.</b> Версия ' + esc(c.version) + ', действует с ' + date(c.effective) + ': <q>' + esc(c.quote) + '</q> (' + link({ file: c.file, page: c.page }) + ')') + '</div>';
       }
       if (r.others.length) {
-        html += '<div class="also">Ещё по теме:' + r.others.map(function (o) {
+        html += '<div class="also">Еще по теме:' + r.others.map(function (o) {
           return '<div>' + esc(o.code) + ' v' + esc(o.version) + ' §' + esc(o.section) + ' ' + esc(o.heading) + ' · ' + link(o) + '</div>';
         }).join('') + '</div>';
       }
     } else {
-      html += '<div class="refuse"><b>Не нашёл этого в документах.</b><span>' +
+      html += '<div class="refuse"><b>Не нашел этого в документах.</b><span>' +
         'В регламентах нет отрывка, который отвечает на вопрос достаточно точно, чтобы его процитировать. Чтобы не гадать, спросите руководителя или владельца регламента.</span>' +
         '<div class="might">Может быть здесь: ' + engine.retrieve(q, 3).filter(function (p, i, all) {
           return all.findIndex(function (o) { return o.code === p.code && o.version === p.version && o.section === p.section; }) === i;
@@ -354,7 +354,7 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
     if (last && last.scrollIntoView) last.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
 
-  // Test sets: «unseen» was written after tuning and never used to change anything — that is the headline.
+  // Test sets: «unseen» was written after tuning and never used to change anything - that is the headline.
   var SETS = window.QSETS || { tuning: [], unseen: [] };
   var count = function (qs, k) { return qs.filter(function (q) { return q.expect === k; }).length; };
   var main = SETS.unseen.length ? SETS.unseen : SETS.tuning;
@@ -363,12 +363,12 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
   function compare(res, mod) {
     var A = count(main, 'answer'), N = count(main, 'refuse');
     var rows = [
-      ['Процитирован нужный отрывок, и в нём есть факт', res ? res.answers.ok + '/' + A : '…', mod ? mod.answers.ok + '/' + A : '—'],
-      ['Нужный отрывок среди трёх показанных <small>только поиск; модель отвечает по одному</small>', res ? res.answers.top3 + '/' + A : '…', '—'],
-      ['«В документах нет» там, где ответа действительно нет', res ? res.refusals.ok + '/' + N : '…', mod ? mod.refusals.ok + '/' + N : '—'],
-      ['Процитирован не тот отрывок', res ? res.wrong : '…', mod ? mod.wrong : '—'],
-      ['Цитата не дословная <small>поиск копирует текст кодом; каждую цитату модели страница проверяет здесь</small>', 0, mod ? mod.notVerbatim : '—'],
-      ['Ответ по заменённой версии по ошибке', res ? res.oldVersionLeaks : '…', mod ? mod.oldVersionLeaks : '—'],
+      ['Процитирован нужный отрывок, и в нем есть факт', res ? res.answers.ok + '/' + A : '…', mod ? mod.answers.ok + '/' + A : '–'],
+      ['Нужный отрывок среди трех показанных <small>только поиск; модель отвечает по одному</small>', res ? res.answers.top3 + '/' + A : '…', '–'],
+      ['«В документах нет» там, где ответа действительно нет', res ? res.refusals.ok + '/' + N : '…', mod ? mod.refusals.ok + '/' + N : '–'],
+      ['Процитирован не тот отрывок', res ? res.wrong : '…', mod ? mod.wrong : '–'],
+      ['Цитата не дословная <small>поиск копирует текст кодом; каждую цитату модели страница проверяет здесь</small>', 0, mod ? mod.notVerbatim : '–'],
+      ['Ответ по замененной версии по ошибке', res ? res.oldVersionLeaks : '…', mod ? mod.oldVersionLeaks : '–'],
     ];
     $('tiles').innerHTML = '<table class="cmp"><thead><tr><th>' + main.length + ' ' + plural(main.length, 'новый вопрос', 'новых вопроса', 'новых вопросов') + '</th><th>Поиск в вашем браузере<span>без модели, работает сейчас</span></th>' +
       (MR ? '<th>Поиск, затем ' + esc(MR.model).replace(/ /g, ' ') + '<span>читает 5 лучших отрывков · записанный прогон, ' + esc(MR.date).replace(/ /g, ' ') + ' · отвечает на «ты», как в чате</span></th>' : '') + '</tr></thead><tbody>' +
@@ -397,10 +397,10 @@ requestAnimationFrame(function () { setTimeout(function () { boot(function () {
     var mod = MR ? RAGEval.evaluateRecorded(KB, main, MR.answers) : null;
     var tun = SETS.unseen.length && SETS.tuning.length ? RAGEval.evaluate(engine, KB, SETS.tuning) : null;
     compare(res, mod);
-    $('run').textContent = 'Запустить ещё раз';
+    $('run').textContent = 'Запустить еще раз';
     $('results').innerHTML = '<h3 class="rh">Каждый вопрос, обоими способами</h3><div class="scroll">' + table(res, mod) + '</div>' +
       (tun ? '<h3 class="rh">Для сравнения: поиск в браузере на ' + tun.total + ' вопросах, по которым его настраивали</h3><p class="rp">Нужный отрывок процитирован: ' +
-        tun.answers.ok + '/' + tun.answers.total + ' · среди трёх показанных: ' + tun.answers.top3 + '/' + tun.answers.total +
+        tun.answers.ok + '/' + tun.answers.total + ' · среди трех показанных: ' + tun.answers.top3 + '/' + tun.answers.total +
         ' · «в документах нет», где ответа нет: ' + tun.refusals.ok + '/' + tun.refusals.total + ' · не тот отрывок: ' + tun.wrong + '</p>' +
         '<details><summary>Показать все ' + tun.total + '</summary><div class="scroll">' + table(tun, null) + '</div></details>' : '');
     $('results').classList.add('on');
