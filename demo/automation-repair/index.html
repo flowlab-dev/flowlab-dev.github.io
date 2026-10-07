@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23a6432a'/><circle cx='9' cy='16' r='3.2' fill='white'/><circle cx='23' cy='10' r='3.2' fill='white'/><circle cx='23' cy='22' r='3.2' fill='white'/><path d='M12 15l8-4M12 17l8 4' stroke='white' stroke-width='2.2' stroke-linecap='round'/></svg>">
 <meta name="description" content="A broken n8n order-intake automation, the root cause of each failure, and the repaired workflow. Both versions are replayed over the same shift so the difference can be counted.">
 <style>
-/* Palewood repair report — light and dark, phone first. */
+/* Palewood repair report - light and dark, phone first. */
 
 :root {
   --bg: #f6f3ee;
@@ -425,7 +425,7 @@ a { color: var(--accent); }
 
 </style>
 <style>
-/* ---- v3: one scene — the shift, run by run (desktop only) ---- */
+/* ---- v3: one scene - the shift, run by run (desktop only) ---- */
 h1 { font-size: clamp(38px, 5.2vw, 68px) !important; line-height: 1.04 !important; letter-spacing: -.03em !important; max-width: 18ch; }
 .shift { display: none; }
 html.scenes .shift { display: block; height: 100vh; }
@@ -461,7 +461,7 @@ html.shift-done .col .end { opacity: 1; }
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by <a href="https://flowlab-dev.github.io/work/automation-repair/">Flow Lab</a>. Palewood Ceramics is invented.</p>
+<p class="fl-band" role="note">Self-initiated demo by Flow Lab. Palewood Ceramics is invented. Fixing your n8n, Make or Zapier workflow: $150. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/automation-repair/">How it was built and what it costs</a></span></p>
 <!-- /flowlab-band -->
 <header class="top">
   <div class="top-inner">
@@ -664,7 +664,7 @@ html.shift-done .col .end { opacity: 1; }
 
 <script>
 /*
- * Palewood Ceramics — one 5-hour shift of real-looking shop traffic.
+ * Palewood Ceramics - one 5-hour shift of real-looking shop traffic.
  *
  * Everything here is deterministic: the same seed always produces the same
  * orders, the same timestamps and the same outages. Both versions of the
@@ -739,7 +739,7 @@ html.shift-done .col .end { opacity: 1; }
       var id = 'PC-' + (10001 + i);
 
       // The shop's queue publishes an order to the API a few seconds after it is
-      // written — how long varies with load. This ordinary jitter is what makes a
+      // written - how long varies with load. This ordinary jitter is what makes a
       // fixed "last N minutes" window unsafe in both directions.
       var availableAt = createdAt + Math.floor((5 + rand() * 50) * 1000);
       var publishedLate = PUBLISHED_LATE.indexOf(i) !== -1;
@@ -748,7 +748,7 @@ html.shift-done .col .end { opacity: 1; }
       }
 
       // Some customers change their delivery address minutes after ordering. The
-      // shop then exposes the same order id again with a newer updated_at — which
+      // shop then exposes the same order id again with a newer updated_at - which
       // is where duplicate rows and duplicate emails come from.
       var edit = null;
       if (EDITED_BY_CUSTOMER.indexOf(i) !== -1) {
@@ -782,7 +782,7 @@ html.shift-done .col .end { opacity: 1; }
         currency: 'EUR',
         created_at: new Date(createdAt).toISOString(),
         updated_at: new Date(createdAt).toISOString(),
-        // Not part of the API payload — the mock shop uses these to decide when the
+        // Not part of the API payload - the mock shop uses these to decide when the
         // order becomes visible and which version it serves. Stripped before the
         // order is handed to a workflow.
         _available_at: availableAt,
@@ -881,7 +881,7 @@ html.shift-done .col .end { opacity: 1; }
  *
  * They behave like the real ones in the ways that matter for this repair:
  * paging, a filter by timestamp, publishing lag, rate limits, outages and
- * permanent email bounces. Nothing leaves this file — no network calls, no
+ * permanent email bounces. Nothing leaves this file - no network calls, no
  * keys, no accounts.
  */
 (function (root) {
@@ -905,7 +905,7 @@ html.shift-done .col .end { opacity: 1; }
 
   /*
    * A virtual clock. Retries and waits move it forward, so "retry 3 times,
-   * 2 seconds apart" cannot survive a seven-minute outage — exactly as in
+   * 2 seconds apart" cannot survive a seven-minute outage - exactly as in
    * production.
    */
   function Clock(startMs) {
@@ -971,7 +971,7 @@ html.shift-done .col .end { opacity: 1; }
 
     // The order as the shop would serve it right now: if the customer edited it
     // and the edit has been published, the same id comes back with a newer
-    // updated_at — the shape of a real shop API, and the source of the duplicates.
+    // updated_at - the shape of a real shop API, and the source of the duplicates.
     function currentVersion(order, now) {
       var payload = publicOrder(order);
       if (order._edit && order._edit.available_at <= now) {
@@ -1105,7 +1105,7 @@ html.shift-done .col .end { opacity: 1; }
  * cannot be faked: both go through this same runner, the same mock services
  * and the same outages. Only the JSON differs.
  *
- * It is not n8n itself — see "What this runner does not model" in README.md.
+ * It is not n8n itself - see "What this runner does not model" in README.md.
  */
 (function (root) {
   'use strict';
@@ -1738,14 +1738,14 @@ html.shift-done .col .end { opacity: 1; }
 </script>
 <script>
 /*
- * Generated by build-embedded.js — do not edit by hand.
+ * Generated by build-embedded.js - do not edit by hand.
  * Verbatim copy of demo/workflows/*.json so the page can run from file://.
  */
 (function (root) {
   'use strict';
   root.PalewoodWorkflows = {
   "order-intake-BROKEN.json": {
-    "name": "Palewood — Order intake v3 (live)",
+    "name": "Palewood: Order intake v3 (live)",
     "nodes": [
       {
         "parameters": {
@@ -1889,7 +1889,7 @@ html.shift-done .col .end { opacity: 1; }
             "mode": "name",
             "cachedResultName": "orders"
           },
-          "text": "=New order {{ $json.order_id }} — {{ $json.customer_name }} — EUR {{ $json.total }}",
+          "text": "=New order {{ $json.order_id }} · {{ $json.customer_name }} · EUR {{ $json.total }}",
           "otherOptions": {}
         },
         "id": "b1a00000-0000-4000-8000-000000000007",
@@ -1982,7 +1982,7 @@ html.shift-done .col .end { opacity: 1; }
     "pinData": {}
   },
   "order-intake-FIXED.json": {
-    "name": "Palewood — Order intake v4 (repaired)",
+    "name": "Palewood: Order intake v4 (repaired)",
     "nodes": [
       {
         "parameters": {
@@ -2007,7 +2007,7 @@ html.shift-done .col .end { opacity: 1; }
       {
         "parameters": {
           "mode": "runOnceForAllItems",
-          "jsCode": "// The cursor is the only thing that decides what we ask the shop for.\n// It is written at the very end of a run, after the orders are safely stored.\nconst store = $getWorkflowStaticData('global');\n\nif (!store.cursor) {\n  store.cursor = $now.minus({ minutes: 15 }).toISO();\n}\n\n// Deliberate overlap. The shop's queue publishes an order some time after its\n// updated_at timestamp, so a window starting exactly at the cursor skips those\n// orders for ever. The overlap must be larger than the worst publishing delay\n// the shop shows in practice — measure it before trusting this number.\n// Everything the overlap re-reads is dropped again by \"Skip orders already handled\".\nconst overlapMinutes = 10;\nconst from = new Date(new Date(store.cursor).getTime() - overlapMinutes * 60 * 1000).toISOString();\n\nreturn [{ json: { cursor: from } }];"
+          "jsCode": "// The cursor is the only thing that decides what we ask the shop for.\n// It is written at the very end of a run, after the orders are safely stored.\nconst store = $getWorkflowStaticData('global');\n\nif (!store.cursor) {\n  store.cursor = $now.minus({ minutes: 15 }).toISO();\n}\n\n// Deliberate overlap. The shop's queue publishes an order some time after its\n// updated_at timestamp, so a window starting exactly at the cursor skips those\n// orders for ever. The overlap must be larger than the worst publishing delay\n// the shop shows in practice - measure it before trusting this number.\n// Everything the overlap re-reads is dropped again by \"Skip orders already handled\".\nconst overlapMinutes = 10;\nconst from = new Date(new Date(store.cursor).getTime() - overlapMinutes * 60 * 1000).toISOString();\n\nreturn [{ json: { cursor: from } }];"
         },
         "id": "f1a00000-0000-4000-8000-000000000002",
         "name": "Load cursor",
@@ -2082,7 +2082,7 @@ html.shift-done .col .end { opacity: 1; }
             "mode": "name",
             "cachedResultName": "ops-alerts"
           },
-          "text": "=:rotating_light: Order intake could not reach the shop API (3 attempts). Nothing is lost — the cursor has not moved, so the next run reads the same window again. Error: {{ $json.error }}",
+          "text": "=:rotating_light: Order intake could not reach the shop API (3 attempts). Nothing is lost. The cursor has not moved, so the next run reads the same window again. Error: {{ $json.error }}",
           "otherOptions": {}
         },
         "id": "f1a00000-0000-4000-8000-000000000004",
@@ -2292,7 +2292,7 @@ html.shift-done .col .end { opacity: 1; }
             "mode": "name",
             "cachedResultName": "ops-alerts"
           },
-          "text": "=:rotating_light: Order {{ $json.order_id }} could not be written to the orders sheet after 3 attempts. The cursor has not moved past it, so the next run tries again — add it by hand if the alert repeats.",
+          "text": "=:rotating_light: Order {{ $json.order_id }} could not be written to the orders sheet after 3 attempts. The cursor has not moved past it, so the next run tries again. Add it by hand if the alert repeats.",
           "otherOptions": {}
         },
         "id": "f1a00000-0000-4000-8000-000000000012",
@@ -2313,7 +2313,7 @@ html.shift-done .col .end { opacity: 1; }
       {
         "parameters": {
           "mode": "runOnceForAllItems",
-          "jsCode": "// Runs only after the row exists in the sheet. Both the memory of handled\n// orders and the cursor move here — never earlier — so anything that fails\n// on the way is simply read again by the next run.\nconst store = $getWorkflowStaticData('global');\nif (!store.handled) store.handled = {};\n\nconst items = $input.all();\nlet newest = store.cursor;\n\nfor (const item of items) {\n  const id = item.json.order_id;\n  const stamp = item.json.updated_at || item.json.placed_at;\n  if (id) store.handled[id] = stamp;\n  if (stamp && (!newest || stamp > newest)) newest = stamp;\n}\n\nstore.cursor = newest;\n\n// Forget orders older than three days, otherwise the store grows for ever.\nconst cutoff = new Date(new Date(newest).getTime() - 3 * 24 * 60 * 60 * 1000).toISOString();\nfor (const id of Object.keys(store.handled)) {\n  if (store.handled[id] < cutoff) delete store.handled[id];\n}\n\nreturn items;"
+          "jsCode": "// Runs only after the row exists in the sheet. Both the memory of handled\n// orders and the cursor move here - never earlier - so anything that fails\n// on the way is simply read again by the next run.\nconst store = $getWorkflowStaticData('global');\nif (!store.handled) store.handled = {};\n\nconst items = $input.all();\nlet newest = store.cursor;\n\nfor (const item of items) {\n  const id = item.json.order_id;\n  const stamp = item.json.updated_at || item.json.placed_at;\n  if (id) store.handled[id] = stamp;\n  if (stamp && (!newest || stamp > newest)) newest = stamp;\n}\n\nstore.cursor = newest;\n\n// Forget orders older than three days, otherwise the store grows for ever.\nconst cutoff = new Date(new Date(newest).getTime() - 3 * 24 * 60 * 60 * 1000).toISOString();\nfor (const id of Object.keys(store.handled)) {\n  if (store.handled[id] < cutoff) delete store.handled[id];\n}\n\nreturn items;"
         },
         "id": "f1a00000-0000-4000-8000-000000000013",
         "name": "Remember what was stored",
@@ -2367,7 +2367,7 @@ html.shift-done .col .end { opacity: 1; }
             "mode": "name",
             "cachedResultName": "orders"
           },
-          "text": "=:pencil2: Order {{ $json.order_id }} was updated by the customer — the row now shows the new details. No second confirmation was sent.",
+          "text": "=:pencil2: Order {{ $json.order_id }} was updated by the customer. The row now shows the new details. No second confirmation was sent.",
           "otherOptions": {}
         },
         "id": "f1a00000-0000-4000-8000-000000000015",
@@ -2421,7 +2421,7 @@ html.shift-done .col .end { opacity: 1; }
             "mode": "name",
             "cachedResultName": "orders"
           },
-          "text": "=New order {{ $json.order_id }} — {{ $json.customer_name }} — EUR {{ $json.total }}",
+          "text": "=New order {{ $json.order_id }} · {{ $json.customer_name }} · EUR {{ $json.total }}",
           "otherOptions": {}
         },
         "id": "f1a00000-0000-4000-8000-000000000017",
@@ -2448,7 +2448,7 @@ html.shift-done .col .end { opacity: 1; }
             "mode": "name",
             "cachedResultName": "ops-alerts"
           },
-          "text": "=:warning: Confirmation email for order {{ $json.order_id }} was not delivered to {{ $json.email }} after 3 attempts. The order itself is stored — reply to the customer by hand.",
+          "text": "=:warning: Confirmation email for order {{ $json.order_id }} was not delivered to {{ $json.email }} after 3 attempts. The order itself is stored. Reply to the customer by hand.",
           "otherOptions": {}
         },
         "id": "f1a00000-0000-4000-8000-000000000018",
@@ -2469,7 +2469,7 @@ html.shift-done .col .end { opacity: 1; }
       {
         "parameters": {
           "mode": "runOnceForAllItems",
-          "jsCode": "// Same bookkeeping for the review branch: the order is stored in the\n// \"Needs review\" tab, so the cursor may pass it — but no email is sent.\n// Runs only after the row exists in the sheet. Both the memory of handled\n// orders and the cursor move here — never earlier — so anything that fails\n// on the way is simply read again by the next run.\nconst store = $getWorkflowStaticData('global');\nif (!store.handled) store.handled = {};\n\nconst items = $input.all();\nlet newest = store.cursor;\n\nfor (const item of items) {\n  const id = item.json.order_id;\n  const stamp = item.json.updated_at || item.json.placed_at;\n  if (id) store.handled[id] = stamp;\n  if (stamp && (!newest || stamp > newest)) newest = stamp;\n}\n\nstore.cursor = newest;\n\n// Forget orders older than three days, otherwise the store grows for ever.\nconst cutoff = new Date(new Date(newest).getTime() - 3 * 24 * 60 * 60 * 1000).toISOString();\nfor (const id of Object.keys(store.handled)) {\n  if (store.handled[id] < cutoff) delete store.handled[id];\n}\n\nreturn items;"
+          "jsCode": "// Same bookkeeping for the review branch: the order is stored in the\n// \"Needs review\" tab, so the cursor may pass it, but no email is sent.\n// Runs only after the row exists in the sheet. Both the memory of handled\n// orders and the cursor move here - never earlier - so anything that fails\n// on the way is simply read again by the next run.\nconst store = $getWorkflowStaticData('global');\nif (!store.handled) store.handled = {};\n\nconst items = $input.all();\nlet newest = store.cursor;\n\nfor (const item of items) {\n  const id = item.json.order_id;\n  const stamp = item.json.updated_at || item.json.placed_at;\n  if (id) store.handled[id] = stamp;\n  if (stamp && (!newest || stamp > newest)) newest = stamp;\n}\n\nstore.cursor = newest;\n\n// Forget orders older than three days, otherwise the store grows for ever.\nconst cutoff = new Date(new Date(newest).getTime() - 3 * 24 * 60 * 60 * 1000).toISOString();\nfor (const id of Object.keys(store.handled)) {\n  if (store.handled[id] < cutoff) delete store.handled[id];\n}\n\nreturn items;"
         },
         "id": "f1a00000-0000-4000-8000-000000000019",
         "name": "Remember the parked order",
@@ -2671,7 +2671,7 @@ html.shift-done .col .end { opacity: 1; }
     "pinData": {}
   },
   "error-handler.json": {
-    "name": "Palewood — Error handler",
+    "name": "Palewood: Error handler",
     "nodes": [
       {
         "parameters": {},
@@ -2818,7 +2818,7 @@ html.shift-done .col .end { opacity: 1; }
 
       if (!metrics) {
         value.className += ' is-idle';
-        value.textContent = '—';
+        value.textContent = '–';
       } else {
         value.textContent = formatValue(row, metrics);
         if (row.tone === 'lowerIsBetter') {
@@ -2835,7 +2835,7 @@ html.shift-done .col .end { opacity: 1; }
   function renderHeadline() {
     var box = document.getElementById('headline');
     if (!results.broken || !results.fixed) {
-      box.innerHTML = '<div><div class="big">—</div><div class="cap">Run the comparison to see the difference over one shift.</div></div>';
+      box.innerHTML = '<div><div class="big">–</div><div class="cap">Run the comparison to see the difference over one shift.</div></div>';
       return;
     }
 
@@ -2882,7 +2882,7 @@ html.shift-done .col .end { opacity: 1; }
 
   function field(workflow, nodeName, key, fallbackComment) {
     var target = node(workflow, nodeName);
-    if (target[key] === undefined) return '// "' + key + '" is not set' + (fallbackComment ? ' — ' + fallbackComment : '');
+    if (target[key] === undefined) return '// "' + key + '" is not set' + (fallbackComment ? ' - ' + fallbackComment : '');
     return '"' + key + '": ' + JSON.stringify(target[key]);
   }
 
