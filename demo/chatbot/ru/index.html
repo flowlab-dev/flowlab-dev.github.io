@@ -292,7 +292,12 @@ html[data-theme="dark"] .composer button, html[data-theme="dark"] .primary { col
 
 @media (max-width: 920px) {
   .hero { grid-template-columns: 1fr; gap: 32px; padding-top: 34px; }
-  .assistant { position: static; order: -1; }
+  .assistant { position: static; order: 0; margin-top: 26px; }
+  /* phone: heading and intro first, then the assistant, then the rota (first screen rule, 18.10) */
+  .hero { row-gap: 0; }
+  .hero__copy { display: contents; }
+  .hero__copy > h1, .hero__copy > .lede { order: -1; }
+  .hero__copy > .rota, .hero__copy > .disclaimer { order: 1; }
   .thread { max-height: none; min-height: 0; }
   .rota { max-width: none; }
 }
