@@ -346,3 +346,6 @@ html[lang=ru]{--dm:Roboto,system-ui,sans-serif}
 html[lang=ru] .city h3{font-family:var(--play);font-weight:700}
 html[lang=ru] .foot__bottom p{font-family:var(--rob)}
 @media (max-width:600px){html[lang=ru] .hero h1{font-size:36px;line-height:40px}html[lang=ru] .hero__text p{font-size:18px;line-height:27px;margin-top:20px}}
+
+/* первый экран ноутбука (слово Луны 18.10 15:13): форма поиска видна без прокрутки, высота от окна */
+@media (min-width:901px){.hero{height:clamp(600px,calc(100vh - 40px),942px)}.hero__text{padding-top:clamp(110px,20vh,237px)}.hero__text p{width:auto;max-width:790px}}
