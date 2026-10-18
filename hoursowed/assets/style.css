@@ -113,6 +113,8 @@ input:disabled { opacity: .45; }
   .day-side .f { grid-template-columns: auto 90px; align-items: center; gap: 10px; }
   .brk { width: 90px; }
   .day-total { padding-top: 0; text-align: right; }
+  .segs:not(:has(.icon-btn)) .seg { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .segs:not(:has(.icon-btn)) .seg > span:last-child { display: none; }
 }
 .daily { display: grid; gap: 6px; font-size: 14px; color: var(--muted); font-weight: 500; }
 .daily .row { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 8px; align-items: center; }
