@@ -964,7 +964,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = FEEDS; els
     { id: 'start', title: 'Запуск клуба: история обеих систем', note: 'Брони Апартаментов и Деревни за год с небольшим, по датам', run: function (c) { c.importHistory([step('a1'), step('v1')]); } },
     { id: 'a2', title: 'Апартаменты прислали все заново', note: 'Среди них доплата за поздний выезд и отмена будущей брони', run: function (c) { c.importFeed('apartments', step('a2').records); } },
     { id: 'v2', title: 'Деревня прислала все заново', note: 'Две отмены, закрытая бронь и поездка, о которой клуб раньше не знал', run: function (c) { c.importFeed('village', step('v2').records); } },
-    { id: 'again', title: 'И еще раз то же самое', note: 'Сбой на стороне системы: те же брони пришли повторно', run: function (c) { c.importFeed('apartments', step('a2').records); c.importFeed('village', step('v2').records); } },
+    { id: 'again', title: 'И еще раз то же самое', note: 'Система бронирования присылает те же брони повторно', run: function (c) { c.importFeed('apartments', step('a2').records); c.importFeed('village', step('v2').records); } },
   ];
   function step(id) { return FEEDS.steps.filter(function (s) { return s.id === id; })[0]; }
   var rules = JSON.parse(JSON.stringify(Club.DEFAULT_RULES));
