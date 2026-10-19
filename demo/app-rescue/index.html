@@ -122,7 +122,7 @@
 
 <section class="block">
   <div class="wrap">
-    <h2>What we found and fixed</h2>
+    <h2>Ten findings, all fixed</h2>
     <p class="lead">Each finding shows who could do what, the same check before and after the fix, and the fix itself.</p>
     <div id="findings"></div>
   </div>
@@ -131,7 +131,7 @@
 <section class="block">
   <div class="wrap reveal">
     <h2>Still works for the right people</h2>
-    <p class="lead">Locking things down is easy if you break the app. These actions were run on the fixed database as the people who need them, and the fix was also run on data the old app could have produced.</p>
+    <p class="lead">Each action below works for the person it is meant for. These actions were run on the fixed database as the people who need them, and the fix was also run on data the old app could have produced.</p>
     <ul class="works" id="works"></ul>
     <p class="method" style="margin-top:22px">The fix also gives the owner a list of past bookings to review: a price that differs from the price list, or a booking filed under someone else’s customer record. Only the server and the Supabase dashboard can read the list.</p>
     <p class="method">Left for the owner to decide: how late a walk can be cancelled, the hours bookings are open, whether 10 upcoming walks per customer is the right limit, and whether edits other than cancelling should be possible in the app. For now those go through the Supabase dashboard.</p>
@@ -231,7 +231,7 @@ window.RESULTS = {
    },
    "after": {
     "through": false,
-    "detail": "saw 1 bookings (their own: 1)"
+    "detail": "saw 1 booking (their own: 1)"
    }
   },
   {
