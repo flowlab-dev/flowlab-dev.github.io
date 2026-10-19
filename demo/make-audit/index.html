@@ -6,7 +6,7 @@
 <title>Make Scenario Rescue: Sample Audit | Flow Lab</title>
 <link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/make-audit/">
 <link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/make-audit/ru/">
-<meta name="description" content="A broken Make.com lead-intake scenario, the audit that found 11 problems (6 of them cost leads), and the fixed version. Demo case by Flow Lab.">
+<meta name="description" content="Audit of a Make.com lead-intake scenario: 11 findings, 6 in lead alerts, all closed. Urgent requests reach the on-call tech. Demo case by Flow Lab.">
 <script>(function(){try{var t=localStorage.getItem('fl-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root {
@@ -132,7 +132,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
     <p class="note demo">Demo scenario built for this case, modeled on a typical home-services lead flow. Not a client's scenario.</p>
     <div class="stats">
       <div class="stat reveal"><b>11</b><span>findings, all closed: 9 from the automatic review, 2 from the manual review</span></div>
-      <div class="stat reveal"><b>6</b><span>of them: a lead gets no alert, or the alert has blank fields</span></div>
+      <div class="stat reveal"><b>6</b><span>of them in lead delivery and alert fields</span></div>
       <div class="stat reveal"><b>0</b><span>findings from the same automatic checks after the fix</span></div>
     </div>
   </div>
@@ -239,7 +239,7 @@ AFTER: all automatic checks pass. (Manual review: done.)</pre>
     <ol class="steps">
       <li>You export the scenario: in the editor, <b>…</b> (More) → <b>Export Blueprint</b>, and send the .json file. No login needed for the first look.</li>
       <li>Within one business day: a plain-English list of what to fix, how it affects your business, and the proposed changes.</li>
-      <li>You approve; I fix it in your account, run test submissions through every route and show you the results.</li>
+      <li>You approve the changes. Flow Lab then fixes the scenario in your account, runs test submissions through every route and shows you the results.</li>
       <li>Optional monthly support: ongoing scenario monitoring and fixes for new errors.</li>
     </ol>
   </section>
