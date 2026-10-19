@@ -114,8 +114,8 @@
     </div>
   </header>
   <div class="hero">
-    <h1>Built in a weekend with an AI app builder. Checked before it goes wrong.</h1>
-    <p>Kettleby Dog Walks booked walks through Walkwren, a React and Supabase app made with an AI app builder. It worked, and it also let anyone read every customer’s home address. This is the review: ten problems, seven reproduced on a real PostgreSQL database and three found in the code. Each one was fixed and checked again.</p>
+    <h1>Built in a weekend with an AI app builder. Checked, fixed and checked again.</h1>
+    <p>Kettleby Dog Walks booked walks through Walkwren, a React and Supabase app made with an AI app builder. All ten findings from the review are now fixed. Seven were reproduced on a real PostgreSQL database, and three were found in the code. Each fix was then checked again.</p>
     <div class="stats" id="stats"></div>
   </div>
 </div>
@@ -123,7 +123,7 @@
 <section class="block">
   <div class="wrap">
     <h2>What we found and fixed</h2>
-    <p class="lead">Each finding says who could do what, shows what happened when the attack was tried before and after the fix, and shows the fix itself.</p>
+    <p class="lead">Each finding shows who could do what, the same check before and after the fix, and the fix itself.</p>
     <div id="findings"></div>
   </div>
 </section>
@@ -133,7 +133,7 @@
     <h2>Still works for the right people</h2>
     <p class="lead">Locking things down is easy if you break the app. These actions were run on the fixed database as the people who need them, and the fix was also run on data the old app could have produced.</p>
     <ul class="works" id="works"></ul>
-    <p class="method" style="margin-top:22px">The fix also leaves the owner a list of bookings that suggest the old holes were already used: a price that differs from the price list, or a booking filed under someone else’s customer record. Only the server and the Supabase dashboard can read it.</p>
+    <p class="method" style="margin-top:22px">The fix also gives the owner a list of past bookings to review: a price that differs from the price list, or a booking filed under someone else’s customer record. Only the server and the Supabase dashboard can read the list.</p>
     <p class="method">Left for the owner to decide: how late a walk can be cancelled, the hours bookings are open, whether 10 upcoming walks per customer is the right limit, and whether edits other than cancelling should be possible in the app. For now those go through the Supabase dashboard.</p>
   </div>
 </section>
@@ -149,10 +149,10 @@
   <div class="wrap reveal">
     <h2>What a rescue project includes</h2>
     <div class="grid2">
-      <div class="card"><h3>1 · Review</h3><p>Read the code and the Supabase setup, try every finding as an attack, and send a report like this one. You decide what to fix.</p></div>
-      <div class="card"><h3>2 · Fix, with proof</h3><p>Fix migrations that keep your data, code changes, and the attack suite re-run until nothing gets through and the app still works.</p></div>
-      <div class="card"><h3>3 · Keys and launch</h3><p>Rotate any key that leaked, move server-only work to edge functions, and deploy with you watching.</p></div>
-      <div class="card"><h3>Monthly</h3><p>The app builder keeps generating code. Each month the attack suite runs again on what changed, and new findings go into a short report.</p></div>
+      <div class="card"><h3>1 · Review</h3><p>Flow Lab reads the code and the Supabase setup, tests every finding in practice and sends a report like this one. You choose what to fix.</p></div>
+      <div class="card"><h3>2 · Fix, with proof</h3><p>Flow Lab fixes the database with migrations that keep your data, updates the code and re-runs every check until all of them pass and the app works as before.</p></div>
+      <div class="card"><h3>3 · Keys and launch</h3><p>Flow Lab replaces any exposed keys, moves server-only work to edge functions and deploys the app with you watching.</p></div>
+      <div class="card"><h3>Monthly</h3><p>The app builder keeps generating code, so each month every check runs again on what changed. New findings go into a short report.</p></div>
     </div>
   </div>
 </section>
@@ -166,21 +166,21 @@ window.RESULTS = {
  "results": [
   {
    "id": "F1",
-   "who": "anyone with the public key",
+   "who": "a visitor with the public key",
    "what": "read every customer’s name, phone and address",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "read 2 customers, e.g. Alice Carter, 07700 900101"
+    "detail": "data of 2 test customers read, e.g. Alice Carter, 07700 900101"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: permission denied for table customers"
+    "detail": "blocked by the database: permission denied for table customers"
    }
   },
   {
    "id": "F1",
-   "who": "anyone with the public key",
+   "who": "a visitor with the public key",
    "what": "change a customer’s phone number",
    "kind": "database",
    "before": {
@@ -189,17 +189,17 @@ window.RESULTS = {
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: permission denied for table customers"
+    "detail": "blocked by the database: permission denied for table customers"
    }
   },
   {
    "id": "F2",
-   "who": "anyone who opens the site",
-   "what": "take the service key out of the page and bypass every rule",
+   "who": "a site visitor",
+   "what": "copy the service key from the page and skip every database rule",
    "kind": "code",
    "before": {
     "through": true,
-    "detail": "VITE_SUPABASE_SERVICE_ROLE_KEY is built into the public JavaScript"
+    "detail": "VITE_SUPABASE_SERVICE_ROLE_KEY found in the public JavaScript"
    },
    "after": {
     "through": false,
@@ -209,25 +209,25 @@ window.RESULTS = {
   {
    "id": "F3",
    "who": "a signed-in customer",
-   "what": "book a walk for £0",
+   "what": "set their own price, such as £0",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "a 60-minute walk booked at £0.00"
+    "detail": "a 60-minute walk saved at £0.00"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: permission denied for table bookings"
+    "detail": "blocked by the database: permission denied for table bookings"
    }
   },
   {
    "id": "F4",
    "who": "a customer who sets role: admin in their own profile",
-   "what": "see every booking",
+   "what": "view all bookings",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "saw 2 bookings (their own: 1)"
+    "detail": "2 bookings visible (their own: 1)"
    },
    "after": {
     "through": false,
@@ -237,15 +237,15 @@ window.RESULTS = {
   {
    "id": "F5",
    "who": "a signed-in customer",
-   "what": "lower the price of their own booking",
+   "what": "change the price of their own booking",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "their walk now costs 1p"
+    "detail": "booking price changed to 1p"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: permission denied for table bookings"
+    "detail": "blocked by the database: permission denied for table bookings"
    }
   },
   {
@@ -255,11 +255,11 @@ window.RESULTS = {
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "a walk booked under Alice’s name and address"
+    "detail": "a walk saved under Alice’s name and address"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: permission denied for table bookings"
+    "detail": "blocked by the database: permission denied for table bookings"
    }
   },
   {
@@ -269,11 +269,11 @@ window.RESULTS = {
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "status: Alice’s booking cancelled by Ben; price: price of Alice’s walk set to 1p"
+    "detail": "status: Ben cancelled Alice’s booking; price: Alice’s walk set to 1p"
    },
    "after": {
     "through": false,
-    "detail": "status: no row changed; price: refused by the database: permission denied for table bookings"
+    "detail": "status: rows stay as they were; price: blocked by the database: permission denied for table bookings"
    }
   },
   {
@@ -283,25 +283,25 @@ window.RESULTS = {
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "both saved: Priya booked twice at 11:00"
+    "detail": "two bookings saved: both for Priya at 11:00"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: that slot has just been taken"
+    "detail": "the database answers: that slot has just been taken"
    }
   },
   {
    "id": "F6",
    "who": "a customer who books 30 seconds later",
-   "what": "slip past the same-slot check",
+   "what": "get past the same-slot check",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "both saved, 30 seconds apart"
+    "detail": "two bookings saved, 30 seconds apart"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: pick a future slot on the quarter hour"
+    "detail": "the database answers: pick a future slot on the quarter hour"
    }
   },
   {
@@ -311,21 +311,21 @@ window.RESULTS = {
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "both saved: a 60-minute walk at 12:00 and a 30-minute one at 12:15"
+    "detail": "two bookings saved: 60 minutes at 12:00 and 30 minutes at 12:15"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: that slot has just been taken"
+    "detail": "the database answers: that slot has just been taken"
    }
   },
   {
    "id": "F7",
    "who": "the owner",
-   "what": "gets the day’s walks in the wrong order",
+   "what": "opens the day’s walks",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "10:00 is listed before 9:00 (text order: 2026-10-03 10:00, 2026-10-03 9:00)"
+    "detail": "listed in text order: 2026-10-03 10:00, then 2026-10-03 9:00"
    },
    "after": {
     "through": false,
@@ -334,26 +334,26 @@ window.RESULTS = {
   },
   {
    "id": "F8",
-   "who": "a customer whose booking fails",
-   "what": "is still told “Booked!”",
+   "who": "a customer whose booking does not go through",
+   "what": "sees a message with the booking result",
    "kind": "code",
    "before": {
     "through": true,
-    "detail": "the insert result is never checked"
+    "detail": "confirmation shown without checking the save result"
    },
    "after": {
     "through": false,
-    "detail": "errors are shown; a taken slot gets its own message"
+    "detail": "the form shows the database’s message; a taken slot gets its own"
    }
   },
   {
    "id": "F9",
    "who": "a customer with many walks",
-   "what": "waits for one request per walk",
+   "what": "opens the “my walks” list",
    "kind": "code",
    "before": {
     "through": true,
-    "detail": "1 + N requests (walker name fetched inside the loop)"
+    "detail": "1 + N requests, one per walker name"
    },
    "after": {
     "through": false,
@@ -362,30 +362,30 @@ window.RESULTS = {
   },
   {
    "id": "F10",
-   "who": "anyone with the public key",
+   "who": "a visitor with the public key",
    "what": "change the price list",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "a 60-minute walk now costs 1p for everyone"
+    "detail": "a 60-minute walk set to 1p for everyone"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: permission denied for table walk_types"
+    "detail": "blocked by the database: permission denied for table walk_types"
    }
   },
   {
    "id": "F10",
-   "who": "anyone with the public key",
+   "who": "a visitor with the public key",
    "what": "switch every walker off",
    "kind": "database",
    "before": {
     "through": true,
-    "detail": "2 walkers switched off: no one can book"
+    "detail": "2 walkers switched off, booking closed"
    },
    "after": {
     "through": false,
-    "detail": "refused by the database: permission denied for table walkers"
+    "detail": "blocked by the database: permission denied for table walkers"
    }
   }
  ],
@@ -403,7 +403,7 @@ window.RESULTS = {
    "ok": true
   },
   {
-   "name": "A dog is turned away when the group walk is full",
+   "name": "A group walk stops taking dogs once it is full",
    "ok": true
   },
   {
@@ -423,11 +423,11 @@ window.RESULTS = {
    "ok": true
   },
   {
-   "name": "A booking for “infinity” or years ahead is refused",
+   "name": "The database accepts bookings up to a year ahead, not “infinity”",
    "ok": true
   },
   {
-   "name": "An 11th open booking by one customer is refused",
+   "name": "One customer holds up to 10 open bookings",
    "ok": true
   },
   {
@@ -435,7 +435,7 @@ window.RESULTS = {
    "ok": true
   },
   {
-   "name": "A booking in the past is refused",
+   "name": "Bookings are accepted only for future slots",
    "ok": true
   },
   {
@@ -443,27 +443,27 @@ window.RESULTS = {
    "ok": true
   },
   {
-   "name": "The fix stops safely on a slot typed as text (“tomorrow 10am”): nothing changed, the rows are named",
+   "name": "On a slot typed as text (“tomorrow 10am”), the fix stops safely, keeps the data unchanged and names the rows",
    "ok": true
   },
   {
-   "name": "The fix stops safely on a date that does not exist (“2026-02-30 10:00”): nothing changed, the rows are named",
+   "name": "On a date that does not exist (“2026-02-30 10:00”), the fix stops safely, keeps the data unchanged and names the rows",
    "ok": true
   },
   {
-   "name": "The fix stops safely on the same time written two ways (“09:00” and “9:00”): nothing changed, the rows are named",
+   "name": "On the same time written two ways (“09:00” and “9:00”), the fix stops safely, keeps the data unchanged and names the rows",
    "ok": true
   },
   {
-   "name": "The fix stops safely on overlapping walks (10:00 for an hour, then 10:30): nothing changed, the rows are named",
+   "name": "On overlapping walks (10:00 for an hour, then 10:30), the fix stops safely, keeps the data unchanged and names the rows",
    "ok": true
   },
   {
-   "name": "The fix stops safely on a booking with no status: nothing changed, the rows are named",
+   "name": "On a booking with no status, the fix stops safely, keeps the data unchanged and names the rows",
    "ok": true
   },
   {
-   "name": "The fix stops safely on a walker already booked twice: nothing changed, the rows are named",
+   "name": "On a walker already booked twice, the fix stops safely, keeps the data unchanged and names the rows",
    "ok": true
   },
   {
@@ -490,28 +490,28 @@ window.RESULTS = {
   });
 
   // Words the script puts on the page (the Russian build swaps this line).
-  var T = { sev: { critical: 'critical', high: 'high', medium: 'medium' }, before: 'Before', after: 'After', reproduced: 'problem reproduced', gone: 'problem gone', inCode: '(checked in the code)', fixLabel: 'The fix' };
+  var T = { sev: { critical: 'critical', high: 'high', medium: 'medium' }, before: 'Before', after: 'After', reproduced: 'found', gone: 'fixed', inCode: '(checked in the code)', fixLabel: 'The fix' };
 
   var F = {
-    F1: { sev: 'critical', title: 'Customer records were open to anyone', why: 'The customers table had no row level security and was granted to the public key, which every visitor’s browser holds. Names, phone numbers and home addresses of everyone who booked a walk could be read, and changed, without signing in.',
+    F1: { sev: 'critical', title: 'Customer data is now closed to outsiders', why: 'Each signed-in customer now reads only their own record, and the public key has no access to the customers table. Before the fix, the table had no row level security and was granted to the public key, which every visitor’s browser holds.',
       fix: "revoke all on public.customers from anon;\nalter table public.customers enable row level security;\ncreate policy \"customer reads own record\" on public.customers\n  for select to authenticated using (user_id = (select auth.uid()));" },
-    F2: { sev: 'critical', title: 'The service key was shipped to the browser', why: 'The admin page used the service role key, which skips every database rule. Vite hands every VITE_… variable to browser code, and this one was used there, so it sat in the public JavaScript for anyone to copy. Removing it is not enough: the key has to be replaced (switching to the new secret keys, or rotating the JWT secret, which also signs everyone out), and the user list checked for anyone who gave themselves admin rights with it.',
+    F2: { sev: 'critical', title: 'The service key now stays on the server', why: 'Only the public key now reaches the browser, and the service key lives in server-side code. Before the fix, the admin page used the service role key, which skips every database rule. Vite hands every VITE_… variable to browser code, so the key sat in the public JavaScript. The old key is replaced too, in one of two ways: by switching to the new secret keys or by rotating the JWT secret, which also signs everyone out. After that, the user list has to be checked for anyone who gave themselves admin rights with the old key.',
       fix: "- const serviceKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;\n- export const supabaseAdmin = createClient(url, serviceKey);\n+ // Only the public key reaches the browser; the service key was rotated\n+ // and lives only in server-side code." },
-    F3: { sev: 'critical', title: 'The browser decided the price', why: 'The booking form sent the price with the booking, and the database stored whatever arrived. A customer could book any walk for £0. Bookings now go through one database function that takes the price from the price list (which F10 locks down).',
+    F3: { sev: 'critical', title: 'The price now comes from the price list', why: 'Bookings now go through one database function that takes the price from the price list, which F10 locks down. Before the fix, the database stored the price that the booking form sent with each booking.',
       fix: "revoke insert on public.bookings from authenticated;\ncreate function public.book_walk(p_walker uuid, p_walk_type text, p_slot timestamptz)\n  ... security definer set search_path = '' ...\n  select * into v_type from public.walk_types where id = p_walk_type;\n  insert into public.bookings (..., price_pence) values (..., v_type.price_pence);" },
-    F4: { sev: 'high', title: 'Anyone could make themselves admin', why: 'The “admin sees all bookings” rule read the role from user_metadata. Every signed-in user can edit their own user_metadata from the browser. The role now comes from app_metadata, which only the server can set.',
+    F4: { sev: 'high', title: 'Only the server can grant admin rights', why: 'The role now comes from app_metadata, which only the server can set. Before the fix, the “admin sees all bookings” rule read the role from user_metadata, which every signed-in user can edit from the browser.',
       fix: "- using ((auth.jwt() -> 'user_metadata' ->> 'role') = 'admin')\n+ using ((select public.is_admin()))   -- reads app_metadata.role" },
-    F5: { sev: 'high', title: 'Bookings could be changed by the wrong person', why: 'Any customer could change every column of their own bookings, the price included, and could file a booking under another customer’s name and address. With F4 on top, they could also cancel or reprice other people’s walks. Now the browser can only change a booking’s status: customers can cancel their own, and the owner can set any status. Other edits go through the Supabase dashboard.',
+    F5: { sev: 'high', title: 'The browser now changes only a booking’s status', why: 'The browser can now change only a booking’s status: customers cancel their own bookings, and the owner sets any status. Other edits go through the Supabase dashboard. Before the fix, customers could edit every column of their own bookings from the browser, the price included.',
       fix: "revoke insert, update, delete, truncate on public.bookings from authenticated;\ngrant update (status) on public.bookings to authenticated;\ncreate policy \"customer cancels own booking\" on public.bookings for update to authenticated\n  using (user_id = (select auth.uid()))\n  with check (user_id = (select auth.uid()) and status = 'cancelled');\ncreate policy \"owner sets any status\" on public.bookings for update to authenticated\n  using ((select public.is_admin())) with check ((select public.is_admin()));" },
-    F6: { sev: 'high', title: 'A walker booked for two solo walks at once', why: 'Nothing stopped two customers booking the same walker for the same time, or for walks that overlap (12:00 for an hour, then 12:15). The app showed both as confirmed. Now a solo walk may not overlap anything else for that walker; a group walk takes up to four dogs at the same start time. Slots must be whole quarter hours up to a year ahead, one customer can hold up to 10 upcoming walks, and bookings for one walker are taken one at a time, so two people pressing “Book” together can’t both win.',
+    F6: { sev: 'high', title: 'Each walker’s solo walks no longer overlap', why: 'A solo walk now never overlaps anything else for that walker, and a group walk takes up to four dogs at the same start time. Slots are whole quarter hours up to a year ahead, and one customer can hold up to 10 upcoming walks. Bookings for one walker are taken one at a time, so when two people press “Book” together, the slot goes to one of them. The review reproduced same-time and overlapping bookings for one walker, such as 12:00 for an hour and then 12:15, and both cases are now closed.',
       fix: "perform pg_advisory_xact_lock(hashtextextended(p_walker::text, 0));\nif exists (select 1 from public.bookings b join public.walk_types t on t.id = b.walk_type\n  where b.walker_id = p_walker and b.status <> 'cancelled'\n    and tstzrange(b.slot, b.slot + make_interval(mins => t.duration_min)) && tstzrange(p_slot, v_end)\n    and not (v_type.max_dogs > 1 and b.walk_type = p_walk_type and b.slot = p_slot))\n  or (/* group walk already has max_dogs */) then\n  raise exception 'that slot has just been taken' using errcode = '23505';" },
-    F7: { sev: 'medium', title: 'Times were text: 10:00 came before 9:00', why: 'Slots were saved as the text typed in the form. Sorting put 10:00 before 9:00. With no time zone, any code that compares or converts them, such as reminders or the owner’s calendar, has to guess whether 9:00 means summer or winter time.',
+    F7: { sev: 'medium', title: 'Walks now sort by start time: 9:00 before 10:00', why: 'Slots are now stored with a time zone, so 9:00 UK time is saved as 08:00 UTC and comes before 10:00. Reminders, the owner’s calendar and any other code that compares or converts times now get the exact moment, in summer and winter time alike. Before the fix, slots were saved as the text typed in the form.',
       fix: "alter table public.bookings\n  alter column slot type timestamptz using (slot::timestamp at time zone 'Europe/London');" },
-    F8: { sev: 'medium', title: '“Booked!” even when the booking failed', why: 'The form never looked at the result of the save, so customers were told they had a walk that did not exist.',
+    F8: { sev: 'medium', title: 'Customers now see a confirmation only for a saved booking', why: 'The form now checks the result of the save and shows the database’s message when a booking does not go through, with its own message for a taken slot. Before the fix, the form did not check the result of the save.',
       fix: "const { error } = await supabase.rpc('book_walk', { ... });\nif (error) {\n  toast(error.code === '23505' ? 'Sorry, that slot has just been taken.' : error.message, 'error');\n  return;\n}" },
-    F10: { sev: 'critical', title: 'Anyone could change the price list', why: 'The price list and the walkers table had no row level security, and Supabase opens every new table to the public key. Anyone could set a walk’s price to 1p for everyone, add walkers, or switch them all off so nobody could book. Now everyone can read both tables and only the server can change them.',
+    F10: { sev: 'critical', title: 'Only the server can change the price list', why: 'Everyone can read the price list and the walkers table, and only the server can change them. Before the fix, both tables had no row level security, and Supabase opens every new table to the public key.',
       fix: "alter table public.walk_types enable row level security;\nalter table public.walkers enable row level security;\nrevoke insert, update, delete, truncate on public.walk_types, public.walkers from anon, authenticated;\ncreate policy \"everyone reads the price list\" on public.walk_types for select to anon, authenticated using (true);" },
-    F9: { sev: 'medium', title: 'One request per walk', why: 'The “my walks” list fetched each walker’s name separately: 1 + N requests, slow on a phone signal. Now it is one request.',
+    F9: { sev: 'medium', title: '“My walks” now loads in one request', why: 'The “my walks” list now loads in one request instead of 1 + N, with walker names included. Before the fix, each walker’s name was fetched separately.',
       fix: "- for (const b of data) { await supabase.from('walkers')... }\n+ supabase.from('bookings').select('id, slot, status, walkers(name)')" },
   };
 
@@ -522,10 +522,10 @@ window.RESULTS = {
   var after = R.results.filter(function (r) { return r.after.through; }).length;
   var ok = R.works.filter(function (w) { return w.ok; }).length;
   $('stats').innerHTML = [
-    ['bad', before + '/' + R.results.length, 'checks that showed a problem before the fixes'],
+    ['bad', before + '/' + R.results.length, 'checks confirmed a finding before the fixes'],
     ['good', after, 'that still show one after them'],
     ['good', ok + '/' + R.works.length, 'things that must keep working, still working'],
-    ['', Object.keys(F).length, 'findings, ' + Object.keys(F).filter(function (k) { return F[k].sev === 'critical'; }).length + ' of them critical'],
+    ['', Object.keys(F).length, 'findings closed, ' + Object.keys(F).filter(function (k) { return F[k].sev === 'critical'; }).length + ' of them critical'],
   ].map(function (s) { return '<div class="stat ' + s[0] + '"><div class="n">' + s[1] + '</div><div class="l">' + s[2] + '</div></div>'; }).join('');
 
   var ids = Object.keys(F).sort(function (a, b) { return a.slice(1) - b.slice(1); });
