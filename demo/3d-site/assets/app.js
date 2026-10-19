@@ -32,7 +32,7 @@ const EN = {
   'uses.eyebrow': 'Who it is for', 'uses.title': 'Made for work you cannot upload.',
   'u1.t': 'Law firms', 'u1.b': 'Search ten years of case files and draft first versions without privileged documents reaching a third party.',
   'u2.t': 'Clinics', 'u2.b': "Turn consultation recordings into notes on a machine that stays behind the clinic's own door.",
-  'u3.t': 'Studios and publishers', 'u3.b': "Summarise manuscripts and scripts before release, with no risk of them turning up in someone's training data.",
+  'u3.t': 'Studios and publishers', 'u3.b': 'Summarize manuscripts and scripts before release, right on the device.',
   'reserve.eyebrow': 'Reserve', 'reserve.title': 'Reserve a Lantern One.',
   'reserve.lead': 'First units ship in spring. Reserving costs nothing, and you can cancel with one email.',
   'reserve.price': '$4,800', 'reserve.note': 'per unit, with three years of updates',
