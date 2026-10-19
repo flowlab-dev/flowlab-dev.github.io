@@ -6,7 +6,7 @@
 <title>Починка сценария Make: пример аудита | Flow Lab</title>
 <link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/make-audit/">
 <link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/make-audit/ru/">
-<meta name="description" content="Сломанный сценарий Make.com для заявок с сайта, аудит, который нашел 11 проблем (из-за 6 терялись заявки), и исправленная версия. Демо-кейс Flow Lab.">
+<meta name="description" content="Аудит сценария Make.com для заявок с сайта: 11 находок, 6 из них в уведомлениях, все закрыты. Срочные заявки приходят дежурному мастеру. Демо-кейс Flow Lab.">
 <script>(function(){try{var t=localStorage.getItem('fl-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root {
@@ -132,7 +132,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
     <p class="note demo">Демо-сценарий собран для этого кейса по образцу типичного потока заявок компании бытовых услуг. Это не сценарий клиента.</p>
     <div class="stats">
       <div class="stat reveal"><b>11</b><span>находок, все закрыты: 9 при автоматической проверке, 2 при ручном разборе</span></div>
-      <div class="stat reveal"><b>6</b><span>из них: о заявке никто не узнает или в уведомлении пустые поля</span></div>
+      <div class="stat reveal"><b>6</b><span>из них в доставке заявок и полях уведомлений</span></div>
       <div class="stat reveal"><b>0</b><span>находок у тех же автоматических проверок после исправления</span></div>
     </div>
   </div>
@@ -239,7 +239,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
     <ol class="steps">
       <li>Вы выгружаете сценарий: в редакторе <b>…</b> (More) → <b>Export Blueprint</b>, и присылаете файл .json. Для первого просмотра входить в ваш аккаунт не нужно.</li>
       <li>В течение одного рабочего дня: понятный список того, что стоит исправить, как это влияет на ваш бизнес и какие изменения предлагаются.</li>
-      <li>Вы соглашаетесь, я исправляю сценарий в вашем аккаунте, прогоняю тестовые заявки по каждому маршруту и показываю результат.</li>
+      <li>Вы утверждаете изменения. Затем Flow Lab исправляет сценарий в вашем аккаунте, проверяет каждый маршрут тестовыми заявками и показывает вам результат.</li>
       <li>По желанию ежемесячная поддержка: сценарий остается под наблюдением, а новые ошибки исправляются.</li>
     </ol>
   </section>
