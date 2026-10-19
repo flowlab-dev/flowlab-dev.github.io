@@ -272,7 +272,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = FEEDS; els
   const maskPhone = (p) => !p ? '' : p.startsWith('+7') && p.length === 12 ? `${p.slice(0, 2)} ${p.slice(2, 5)} ***-${p.slice(8, 10)}-${p.slice(10)}` : p.slice(0, 4) + '***' + p.slice(-4);
   const maskEmail = (e) => { const i = e.indexOf('@'); return i > 2 ? e.slice(0, 2) + '***' + e.slice(i) : e; };
 
-  const nameWords = (n) => new Set(String(n || '').toLowerCase().replace(/ё/g, 'е').split(/[^a-zа-я]+/).filter(Boolean));
+  const nameWords = (n) => new Set(String(n || '').toLowerCase().replace(/\u0451/g, 'е').split(/[^a-zа-я]+/).filter(Boolean));
   function sameName(a, b) {
     const A = nameWords(a), B = nameWords(b);
     if (!A.size || !B.size) return true;
@@ -915,7 +915,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = FEEDS; els
     { id: 'start', title: 'Club launch: history from both systems', note: 'Apartments and Village bookings for a little over a year, by date', run: function (c) { c.importHistory([step('a1'), step('v1')]); } },
     { id: 'a2', title: 'The Apartments system resends everything', note: 'Including an extra charge for late checkout and a cancelled future booking', run: function (c) { c.importFeed('apartments', step('a2').records); } },
     { id: 'v2', title: 'The Village system resends everything', note: 'Two cancellations, a closed booking and a stay the club did not know about', run: function (c) { c.importFeed('village', step('v2').records); } },
-    { id: 'again', title: 'And the same again', note: 'A glitch on the system side: the same bookings arrive again', run: function (c) { c.importFeed('apartments', step('a2').records); c.importFeed('village', step('v2').records); } },
+    { id: 'again', title: 'And the same again', note: 'A booking system sends the same bookings again', run: function (c) { c.importFeed('apartments', step('a2').records); c.importFeed('village', step('v2').records); } },
   ];
   function step(id) { return FEEDS.steps.filter(function (s) { return s.id === id; })[0]; }
   var rules = JSON.parse(JSON.stringify(Club.DEFAULT_RULES));
@@ -987,7 +987,7 @@ if (typeof module !== 'undefined' && module.exports) module.exports = FEEDS; els
       '<h4>Bonuses</h4><table class="t"><tbody>' +
       g.ledger.filter(function (l) { return !l.adminOnly; }).map(function (l) { return '<tr><td class="nw">' + date(l.date) + '</td><td>' + esc(l.amount < 0 && l.kind !== 'spend' ? 'taken back' : l.amount > 0 && l.kind === 'spend' ? 'bonuses returned' : (KIND[l.kind] || l.kind)) + (l.booking ? ' · ' + esc(l.booking) : '') + '<br><span class="hint">' + esc(l.note).replace(/ %/g, '\u00a0%') + '</span></td><td class="' + (l.amount >= 0 ? 'plus' : 'minus') + '">' + (l.amount >= 0 ? '+' : '−') + num(Math.abs(l.amount)) + '</td></tr>'; }).join('') +
       '</tbody></table>' +
-      '<details class="admin"><summary>For the admin</summary><p>Card #' + g.id + '. Phones: ' + (g.phonesMasked.join(', ') || '—') + '. Email: ' + (g.emailsMasked.join(', ') || '—') + '.' +
+      '<details class="admin"><summary>For the admin</summary><p>Card #' + g.id + '. Phones: ' + (g.phonesMasked.join(', ') || 'none') + '. Email: ' + (g.emailsMasked.join(', ') || 'none') + '.' +
       (g.names.length > 1 ? ' Names in bookings: ' + g.names.map(esc).join(', ') + '.' : '') +
       (g.merged.length ? ' Merged with ' + (g.merged.length > 1 ? 'cards ' : 'card ') + g.merged.map(function (m) { return '#' + m.from + ' (' + esc(m.reason.replace(/\.$/, '')) + ')'; }).join(', ') + '.' : '') +
       g.ledger.filter(function (l) { return l.adminOnly; }).map(function (l) { return ' Internal ledger row: ' + (l.amount >= 0 ? '+' : '−') + num(Math.abs(l.amount)) + ', ' + esc(l.note) + '.'; }).join('') + '</p></details>';
