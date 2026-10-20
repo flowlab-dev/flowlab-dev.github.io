@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Supabase Oct 30 Check · Sample Report</title>
-<meta name="description" content="Sample readiness check for the Supabase change of October 30, 2026: which tables your app will not be able to reach, which are open without RLS, and ready-to-apply GRANT SQL.">
+<meta name="description" content="Supabase change of October 30, 2026: a sample readiness check that lists tables needing an explicit GRANT, tables open without RLS, and ready-to-apply SQL.">
 <style>
 :root{--bg:#FBF8F5;--card:#fff;--ink:#1F1A17;--sub:#5B514B;--line:#EADFD7;--accent:#C2412D;--red:#B42318;--redbg:#FDECEA;--amber:#8A5A00;--amberbg:#FFF4DB;--green:#1E6B3A;--greenbg:#E6F4EA;--grey:#5B514B;--greybg:#F1ECE8}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171412;--card:#211D1A;--ink:#F3EEEA;--sub:#B9ADA5;--line:#3A332E;--accent:#F08A76;--red:#FF8A80;--redbg:#3A1E1B;--amber:#F5C66B;--amberbg:#352A14;--green:#8BD7A3;--greenbg:#16301F;--grey:#B9ADA5;--greybg:#2A2522}}
@@ -46,38 +46,38 @@ ul{padding-left:20px}
 </head>
 <body>
 <div class="wrap">
-<div class="band">Self-initiated demo by Flow Lab · checked on our own test Supabase project (schema copied from our own Lovable demo app) · no client data · the flagged table was created by us for the test and deleted afterwards</div>
+<div class="band">Self-initiated demo by Flow Lab · checked on its own test Supabase project (schema copied from its own Lovable demo app) · no client data · the flagged table was created for the test and deleted afterwards</div>
 
 <div class="kicker">Sample report · Supabase October 30 readiness</div>
 <h1>Will your app still reach its new tables after October 30?</h1>
-<p class="lead">From <b>October 30, 2026</b> Supabase stops opening new tables in the <code>public</code> schema to the Data API automatically — on every existing project. Tables you already have keep working. A table added after that date without an explicit <code>GRANT</code> answers every app request with <code>permission denied</code> (error 42501), however good its row level security is. Source: <a href="https://supabase.com/changelog/45329-breaking-change-tables-not-exposed-to-data-and-graphql-api-automatically">Supabase changelog</a>.</p>
+<p class="lead">From <b>October 30, 2026</b>, Supabase no longer opens new tables in the <code>public</code> schema to the Data API automatically. The change applies to every existing project. Tables you already have keep working. A table added after that date without an explicit <code>GRANT</code> answers every app request with <code>permission denied</code> (error 42501), however good its row level security is. Source: <a href="https://supabase.com/changelog/45329-breaking-change-tables-not-exposed-to-data-and-graphql-api-automatically">Supabase changelog</a>.</p>
 
 <div class="meta">
 <div><b>16</b><span>tables in <code>public</code> checked</span></div>
 <div><b>15</b><span>ready: RLS on, a policy, API roles have access</span></div>
-<div><b>1</b><span>the app can’t reach it (42501) — fix included</span></div>
+<div><b>1</b><span>new table needs an explicit GRANT (42501), SQL fix included</span></div>
 <div><b>0</b><span>tables open without RLS</span></div>
 </div>
 
 <h2>What was checked</h2>
-<p>One read-only query in the project’s SQL Editor (the owner runs it with their own login — no passwords or keys leave the account). For every table in <code>public</code>: is row level security on, how many policies it has, and what the API roles <code>anon</code>, <code>authenticated</code> and <code>service_role</code> are allowed to do. If the app keeps its migrations in a repository, the same check runs on the migration files: which tables are created without an explicit <code>GRANT</code> or without RLS.</p>
+<p>The owner runs one read-only query in the project’s SQL Editor with their own login, so passwords and keys stay in the account. For every table in <code>public</code>: is row level security on, how many policies it has, and what the API roles <code>anon</code>, <code>authenticated</code> and <code>service_role</code> are allowed to do. If the app keeps its migrations in a repository, the same check runs on the migration files: which tables are created without an explicit <code>GRANT</code> or without RLS.</p>
 
 <h2>Summary</h2>
 <table>
-<tr><th>#</th><th>What we found</th><th>Risk</th><th>Result</th></tr>
-<tr><td>1</td><td><code>t_after_1030</code> — created the way every new table will be created after October 30: no grants for the API roles. Any screen reading it would get “permission denied”.</td><td><span class="tag t-amber">Breaks new features</span></td><td><span class="tag t-green">Fix SQL generated</span></td></tr>
-<tr><td>—</td><td>15 existing tables (bookings, clients, dogs, leads, outbox, services, settings…) — RLS on, one policy each, API roles have access</td><td><span class="tag t-green">OK</span></td><td><span class="tag t-grey">No change</span></td></tr>
-<tr><td>—</td><td>Tables readable by anyone because RLS is off</td><td><span class="tag t-green">None found</span></td><td><span class="tag t-grey">—</span></td></tr>
+<tr><th>#</th><th>What the check found</th><th>Risk</th><th>Result</th></tr>
+<tr><td>1</td><td><code>t_after_1030</code>: created the way every new table will be created after October 30, with no grants for the API roles. Any screen reading it would get “permission denied” until the grants are added.</td><td><span class="tag t-amber">Needs GRANT for new features</span></td><td><span class="tag t-green">Fix SQL generated</span></td></tr>
+<tr><td>2</td><td>15 existing tables (bookings, clients, dogs, leads, outbox, services, settings…): RLS on, one policy each, API roles have access</td><td><span class="tag t-green">OK</span></td><td><span class="tag t-grey">Ready as is</span></td></tr>
+<tr><td>3</td><td>Tables open without RLS</td><td><span class="tag t-green">None found</span></td><td><span class="tag t-grey">Nothing to fix</span></td></tr>
 </table>
 
 <h2>Finding</h2>
 <div class="f">
-<span class="tag t-amber">Breaks new features</span>
-<h3>A new table the app can’t see</h3>
+<span class="tag t-amber">Needs GRANT for new features</span>
+<h3>A new table that needs API grants</h3>
 <dl>
-<dt>What</dt><dd>The table exists, but <code>anon</code>, <code>authenticated</code> and <code>service_role</code> have no privileges on it. The app’s request fails with 42501 before row level security is even consulted.</dd>
-<dt>Why now</dt><dd>In projects created before May 30, 2026, Supabase adds these grants for you until October 30. After it, every table created by a migration, by an AI builder or in the dashboard starts like this one.</dd>
-<dt>Fix</dt><dd>Explicit grants in the same migration that creates the table — generated by the check, applied only after the table’s RLS policies are reviewed:</dd>
+<dt>What</dt><dd>The table exists, but <code>anon</code>, <code>authenticated</code> and <code>service_role</code> have no privileges on it. The app’s request receives error 42501 before row level security is even consulted.</dd>
+<dt>Why now</dt><dd>In projects created before May 30, 2026, Supabase adds these grants for you until October 30. After that date, every table created by a migration, by an AI builder or in the dashboard needs an explicit GRANT, the same as this one.</dd>
+<dt>Fix</dt><dd>Explicit grants in the same migration that creates the table. The check generates them, and they are applied only after the table’s RLS policies are reviewed:</dd>
 </dl>
 <pre>grant select, insert, update, delete on public.t_after_1030 to authenticated;
 grant select, insert, update, delete on public.t_after_1030 to service_role;
@@ -87,18 +87,18 @@ grant select, insert, update, delete on public.t_after_1030 to service_role;
 
 <h2>The check, as it ran</h2>
 <pre>tbl            rls    policies  anon  authenticated  service_role  risk
-t_after_1030   false  0         —     —              —             API can't see it (42501) — needs GRANT
+t_after_1030   false  0         none  none           none          needs GRANT; API requests get 42501
 automation_runs true  1         ✓     ✓              ✓             ready; write GRANT for new tables
 bookings       true   1         ✓     ✓              ✓             ready; write GRANT for new tables
 clients        true   1         ✓     ✓              ✓             ready; write GRANT for new tables
 …               15 tables ready in total</pre>
-<p class="note">Run on September 30, 2026 in the SQL Editor of our own test project. The query only reads the system catalog; it changes nothing.</p>
+<p class="note">Run by Flow Lab on September 30, 2026, in the SQL Editor of its own test project. The query only reads the system catalog; it changes nothing.</p>
 
 <h2>What you get for your app</h2>
 <ul>
-<li>You run one read-only query in your SQL Editor (we send it as text) — or give us read access to the repository with your migrations.</li>
-<li>Within a day: the list of tables at risk, tables open without RLS, and ready-to-apply SQL.</li>
-<li>We add the grants to your migrations (or hand them over), you apply, we re-run the check together.</li>
+<li>Flow Lab sends one read-only query as text, and you run it in your SQL Editor. Alternatively, you give Flow Lab read access to the repository with your migrations.</li>
+<li>Within a day: the list of tables that need an explicit GRANT, tables open without RLS, and ready-to-apply SQL.</li>
+<li>Flow Lab adds the grants to your migrations or hands them over. You apply them, and Flow Lab re-runs the check with you.</li>
 <li>Fixed price <b>USD 150</b>. Built with Claude Code; every change is checked before it ships.</li>
 </ul>
 <p class="note">Flow Lab · trading.flowlab@gmail.com · The Supabase change applies to new tables only: existing tables keep their access before and after October 30.</p>
