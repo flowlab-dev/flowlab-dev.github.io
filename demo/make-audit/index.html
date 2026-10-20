@@ -128,12 +128,12 @@ html.js .reveal.in { opacity: 1; transform: none; }
   <div class="hero">
     <p class="eyebrow">Make.com scenario rescue · demo&nbsp;case</p>
     <h1>Urgent quote requests now go to the on-call tech, the rest to sales.</h1>
-    <p class="lead">A website quote form feeds a Make scenario: it logs the request, looks up the service area, alerts the on-call tech about urgent jobs and emails sales about the rest. Most runs look fine in History. The audit produced 11 findings, 6 of which affected lead delivery and alert fields. All 11 are now closed.</p>
-    <p class="note demo">Demo scenario built for this case, modeled on a typical home-services lead flow. Not a client's scenario.</p>
+    <p class="lead">A website quote form feeds a Make scenario, which logs the request, looks up the service area, alerts the on-call tech about urgent jobs, and emails sales about the rest. In Make's run history, almost every run looks successful. Every finding from the audit is now fixed.</p>
+    <p class="note demo">This demo scenario was built for this case and modeled on a typical home-services lead flow. It is not a client's scenario.</p>
     <div class="stats">
-      <div class="stat reveal"><b>11</b><span>findings, all closed: 9 from the automatic review, 2 from the manual review</span></div>
-      <div class="stat reveal"><b>6</b><span>of them in lead delivery and alert fields</span></div>
-      <div class="stat reveal"><b>0</b><span>findings from the same automatic checks after the fix</span></div>
+      <div class="stat reveal"><b>11</b><span>findings, all fixed: 9 from the automated review, 2 from the manual review</span></div>
+      <div class="stat reveal"><b>6</b><span>of them related to lead delivery and alert content</span></div>
+      <div class="stat reveal"><b>0</b><span>findings when the same automated checks ran again after the fix</span></div>
     </div>
   </div>
 
@@ -153,46 +153,46 @@ html.js .reveal.in { opacity: 1; transform: none; }
     <h2 class="reveal">What was found and fixed</h2>
     <div class="cards">
       <article class="card reveal">
-        <span class="tag high">HIGH · lead delivery</span>
+        <span class="tag high">HIGH PRIORITY · lead delivery</span>
         <h3>A step now waits and retries, and the scenario stays on</h3>
-        <p>Before the fix, "Allow storing of incomplete executions" was off. A run stopped at Google Sheets, Slack or Gmail could not be retried, because the website does not resend a form. With the default error settings, Make also switches off a webhook-triggered scenario right after its first error.</p>
-        <p class="fix"><b>Fix:</b> incomplete executions on, plus Break handlers with automatic retry on the Sheets, Slack and Gmail steps. If one of these steps does not go through, it now waits and retries, and the scenario keeps running.</p>
+        <p>Before the fix, "Allow storing of incomplete executions" was off. A run that stopped at Google Sheets, Slack, or Gmail could not be retried, because the website does not resend the form. With default settings, Make also turns off a webhook-triggered scenario right after its first error.</p>
+        <p class="fix"><b>Fix:</b> storing of incomplete executions is now on, and the Sheets, Slack, and Gmail steps have Break handlers with automatic retry. If one of these steps does not go through, it now waits and retries, and the scenario keeps running.</p>
       </article>
       <article class="card reveal">
-        <span class="tag high">HIGH · alert fields</span>
-        <h3>"Area" now always shows the service area or a clear note</h3>
-        <p>Before the fix, the ZIP lookup ran on the legacy HTTP module with "Evaluate all states as errors" off. Make read a 401 or 500 reply from the API as the service area.</p>
-        <p class="fix"><b>Fix:</b> the current HTTP "Make a request" module with "Return error if HTTP request fails" on, and a Resume handler that writes "area lookup failed, check ZIP". The lead reaches sales with this clear note.</p>
+        <span class="tag high">HIGH PRIORITY · alert content</span>
+        <h3>The "Area" field now always shows the service area or a clear note</h3>
+        <p>Before the fix, the ZIP lookup ran on the legacy HTTP module with "Evaluate all states as errors" off. Make treated a 401 or 500 error response from the API as the service area.</p>
+        <p class="fix"><b>Fix:</b> the ZIP lookup now runs on the current HTTP "Make a request" module with "Return error if HTTP request fails" on, and a Resume handler writes the note "area lookup failed, check ZIP" to the field. The lead reaches sales with this note.</p>
       </article>
       <article class="card reveal">
-        <span class="tag high">HIGH · security</span>
+        <span class="tag high">HIGH PRIORITY · security</span>
         <h3>The API key now lives in a Make keychain</h3>
-        <p>Before the fix, the live key sat in the module URL and travelled with every exported blueprint, for example to a freelancer or in a shared template.</p>
-        <p class="fix"><b>Fix:</b> key moved into a Make keychain (API key authentication in the HTTP module), so it never appears in an export, and the old key rotated.</p>
+        <p>Before the fix, the live key sat in the module URL and traveled with every exported blueprint, for example to a freelancer or into a shared template.</p>
+        <p class="fix"><b>Fix:</b> the key moved into a Make keychain (API key authentication in the HTTP module), so it no longer appears in exports, and the old key was replaced with a new one.</p>
       </article>
       <article class="card reveal">
-        <span class="tag high">HIGH · alert fields</span>
-        <h3>Two fields now take data from a step that always runs</h3>
+        <span class="tag high">HIGH PRIORITY · alert content</span>
+        <h3>The quote number now appears in both the Slack alert and the sales email</h3>
         <p>Before the fix, the Slack alert took "Quote #" from the Gmail module on the other route, and the sales email took a field from a deleted module, so both always came out empty.</p>
-        <p class="fix"><b>Fix:</b> both now use the Google Sheets row number from the "Log request" step, which runs before the router on every path.</p>
+        <p class="fix"><b>Fix:</b> both fields now use the Google Sheets row number from the "Log request" step, which every request passes through before the router.</p>
       </article>
       <article class="card reveal">
-        <span class="tag med">MEDIUM · sales emails</span>
-        <h3>Sales now get one email per request</h3>
-        <p>Before the fix, an iterator over "services" fed Gmail directly: three ticked services meant three near-identical emails. The manual review added the case of no services ticked, where the iterator had nothing to pass on and no email was sent.</p>
-        <p class="fix"><b>Fix:</b> no iterator. The email lists the services with <code>join()</code> and says "not specified" when the list is empty: one request, always one email.</p>
+        <span class="tag med">MEDIUM PRIORITY · sales emails</span>
+        <h3>Sales now gets one email per request</h3>
+        <p>Before the fix, an Iterator went through the "services" list and sent each one straight to Gmail: three checked services meant three near-identical emails. The manual review found one more case: with no services checked, the Iterator had nothing to pass on, and no email was sent.</p>
+        <p class="fix"><b>Fix:</b> the Iterator is gone. The email lists the services with the <code>join()</code> function and says "not specified" when the list is empty. One request always means one email.</p>
       </article>
       <article class="card reveal">
-        <span class="tag high">HIGH · routing, found in manual review</span>
-        <h3>"Urgent" and "urgent" now take the same route</h3>
+        <span class="tag high">HIGH PRIORITY · request routing, found in the manual review</span>
+        <h3>Requests marked "Urgent" and "urgent" now take the same route</h3>
         <p>Before the fix, the router filters matched "urgent" and "standard" exactly, letter case included, and there was no fallback route. A form value of "Urgent", or an empty value, was written to the sheet but matched neither route.</p>
-        <p class="fix"><b>Fix:</b> case-insensitive match for "urgent", and the sales route became the fallback route: anything not urgent reaches sales.</p>
+        <p class="fix"><b>Fix:</b> "urgent" now matches regardless of letter case, and the sales route is now the fallback: every request that is not urgent reaches sales.</p>
       </article>
       <article class="card reveal">
-        <span class="tag low">LOW · sheet format</span>
+        <span class="tag low">LOW PRIORITY · sheet format</span>
         <h3>Dates and numbers now sort and filter in Sheets</h3>
         <p>Before the fix, rows went into Sheets as plain text.</p>
-        <p class="fix"><b>Fix:</b> <code>valueInputOption: USER_ENTERED</code>.</p>
+        <p class="fix"><b>Fix:</b> rows are now written with <code>valueInputOption: USER_ENTERED</code>, so Google Sheets recognizes dates and numbers.</p>
       </article>
     </div>
   </section>
@@ -203,12 +203,12 @@ html.js .reveal.in { opacity: 1; transform: none; }
       <table>
         <thead><tr><th scope="col">Situation</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
         <tbody>
-          <tr><td>Gmail or Sheets is unavailable for a minute</td><td class="bad" data-label="Before">Run stops, scenario switches off</td><td class="ok" data-label="After">Step retried, scenario keeps running</td></tr>
-          <tr><td>ZIP API replies with an error code</td><td class="bad" data-label="Before">"Area" left blank</td><td class="ok" data-label="After">Lead sent with "check ZIP" note</td></tr>
+          <tr><td>Gmail or Sheets is unavailable for a minute</td><td class="bad" data-label="Before">Run stops, scenario turns off</td><td class="ok" data-label="After">Step is retried, scenario keeps running</td></tr>
+          <tr><td>ZIP lookup service returns an error</td><td class="bad" data-label="Before">Make takes the error reply as the service area</td><td class="ok" data-label="After">Lead sent with "check ZIP" note</td></tr>
           <tr><td>Form sends "Urgent" (capital U)</td><td class="bad" data-label="Before">No route matches, no alert sent</td><td class="ok" data-label="After">On-call tech alerted</td></tr>
           <tr><td>Customer picks 3 services / none</td><td class="bad" data-label="Before">3 emails / no email</td><td class="ok" data-label="After">Always 1 email</td></tr>
-          <tr><td>Quote reference in alerts</td><td class="bad" data-label="Before">Field always empty</td><td class="ok" data-label="After">Sheet row number</td></tr>
-          <tr><td>Exported blueprint shared</td><td class="bad" data-label="Before">Includes the API key</td><td class="ok" data-label="After">No secrets inside</td></tr>
+          <tr><td>Quote number in alerts</td><td class="bad" data-label="Before">Field always empty</td><td class="ok" data-label="After">Sheet row number</td></tr>
+          <tr><td>Exported blueprint shared</td><td class="bad" data-label="Before">Includes the API key</td><td class="ok" data-label="After">No API key inside</td></tr>
         </tbody>
       </table>
     </div>
@@ -216,7 +216,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
 
   <section class="reveal">
     <h2>The audit report</h2>
-    <p>The first pass is an automatic review of the exported blueprint. It needs only the file, with no run of the scenario and no login to your accounts. Next comes a manual review of the logic, and every item is confirmed in the editor before any change is made. Excerpt:</p>
+    <p>The audit starts with an automated review of the exported blueprint. It needs only the file: the scenario does not run, and no access to your accounts is needed. Next comes a manual review of the logic, and Flow Lab confirms every finding in the editor before making any change. Excerpt:</p>
 <pre>Make scenario review: Quote requests → Sheet → Sales alerts (BEFORE)
 7 modules, trigger: instant (webhook).
 
@@ -231,16 +231,16 @@ AFTER: all automatic checks pass. (Manual review: done.)</pre>
       <a href="scenarios/REPORT-BEFORE.txt">Report before (.txt)</a>
       <a href="scenarios/REPORT-AFTER.txt">Report after (.txt)</a>
     </div>
-    <p class="note">The blueprints are written by hand for this demo to show how the fix is built. They are shown as files, without an import into Make, and the module settings are illustrative. On a real job every change is made and tested in your own account.</p>
+    <p class="note">The blueprints were written by hand for this demo to show how the fix is built. They were not imported into Make, and the module settings in them are illustrative. On a real project, Flow Lab makes and tests every change in your own account.</p>
   </section>
 
   <section class="reveal">
     <h2>How a rescue works</h2>
     <ol class="steps">
-      <li>You export the scenario: in the editor, <b>…</b> (More) → <b>Export Blueprint</b>, and send the .json file. No login needed for the first look.</li>
-      <li>Within one business day: a plain-English list of what to fix, how it affects your business, and the proposed changes.</li>
+      <li>You export the scenario: in the editor, <b>…</b> (More) → <b>Export Blueprint</b>, and send the .json file. The first look needs no access to your account.</li>
+      <li>Within one business day, you get a plain-English list of what to fix, how it affects your business, and the changes Flow Lab proposes.</li>
       <li>You approve the changes. Flow Lab then fixes the scenario in your account, runs test submissions through every route and shows you the results.</li>
-      <li>Optional monthly support: ongoing scenario monitoring and fixes for new errors.</li>
+      <li>Optional monthly support: Flow Lab monitors the scenario and makes fixes as needed.</li>
     </ol>
   </section>
 
