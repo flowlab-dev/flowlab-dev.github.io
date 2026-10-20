@@ -34,7 +34,7 @@
     ['carry', 'carried', 'unused'],
     ['probation', 'trial', 'probationary'],
     ['doctor', 'gp', 'medical'],
-    ['petrol', 'fuel', 'mileage', 'diesel', 'miles'],
+    ['petrol', 'gas', 'fuel', 'mileage', 'diesel', 'miles'],
     ['car', 'vehicle', 'van', 'lorry', 'truck', 'hgv', 'wagon'],
     ['crash', 'collision', 'accident', 'rtc', 'bump', 'scrape', 'scraped', 'hit'],
     ['boss', 'manager', 'supervisor'],

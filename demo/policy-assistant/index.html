@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Policy assistant · Tallowby Freight (demo)</title>
-<meta name="description" content="A document assistant that answers staff questions from company PDFs, quotes the exact paragraph with page and version, uses superseded versions only for questions about the past, and says so when the documents don't cover a question.">
+<meta name="description" content="A document assistant that searches company PDF policies and shows the passage it finds word for word, with page and version. Superseded versions are used only for questions about the past.">
 <meta name="color-scheme" content="light dark">
 <link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/policy-assistant/">
 <link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/policy-assistant/ru/">
@@ -163,7 +163,7 @@
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by Flow Lab. Tallowby Freight is invented. An assistant built on your documents: from $240. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/policy-assistant/">How it was built and what it costs</a></span></p>
+<p class="fl-band" role="note">A self-initiated demo by Flow Lab. Tallowby Freight is a fictional company. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/policy-assistant/">How it was built and what it costs</a></span></p>
 <!-- /flowlab-band -->
 <main>
 <div class="wrap">
@@ -171,13 +171,14 @@
     <div class="brand"><i aria-hidden="true"></i>Tallowby Freight · Policy assistant</div>
     <div class="tools">
       <div class="fl-lang" role="group" aria-label="Language"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div>
-      <button class="theme" id="theme" type="button" aria-label="Switch colour theme">Dark</button>
+      <button class="theme" id="theme" type="button" aria-label="Switch color theme">Dark</button>
     </div>
   </header>
 
   <div class="hero">
-    <h1>Ask the handbook. Get the paragraph, the page and the version.</h1>
-    <p>Staff ask in their own words. The assistant searches the company’s PDF policies, quotes the exact passage, links to the page, skips versions that were replaced, and says so plainly when the documents don’t cover a question.</p>
+    <h1>Ask the handbook. Get the passage, the page and the version.</h1>
+    <p>Staff ask in their own words. The assistant searches the company’s PDF policies and shows the passage it finds word for word, with a link to the page. It uses superseded versions only for questions about the past. If the answer isn’t in the documents, it says so plainly.</p>
+    <p>This is a technical demo. The chat runs the document search only. Answers from search plus a language model were recorded in advance and are shown under “Checked, not promised.”</p>
     <div class="facts" id="facts"></div>
   </div>
 
@@ -187,7 +188,7 @@
         <summary><h2>Documents searched <span class="caret" aria-hidden="true">▾</span></h2></summary>
         <div class="docs" id="docs"></div>
       </details>
-      <div class="note">Passage text, headings, page numbers, versions and status come straight from these PDFs, read by the import script.</div>
+      <div class="note">Passage text, headings, page numbers, versions and status are taken straight from these PDFs.</div>
     </aside>
 
     <section class="panel chat" aria-label="Ask a question">
@@ -209,20 +210,20 @@
     <h2>How it works</h2>
     <p>Five steps, and each one can be checked on its own. In a client project the same steps can be connected to SharePoint, Google Drive or a shared folder.</p>
     <div class="steps">
-      <div class="step panel"><h3>Read the PDFs</h3><p>Text is taken page by page. Code, version, effective date and status come from the document’s own control box.</p></div>
-      <div class="step panel"><h3>Split by section</h3><p>Numbered headings (4., 4.2) become passages. Each one keeps its page number, so a link opens the right page.</p></div>
-      <div class="step panel"><h3>Search in staff’s words</h3><p>A hand-made list of everyday words (petrol → mileage, nicked → stolen), and <span id="asks">about a thousand</span> sample questions a model wrote for the passages at import. Typos are matched to the nearest known word.</p></div>
-      <div class="step panel"><h3>Quote, don’t guess</h3><p>The answer is the passage itself. If the best match is weak, or shares too few of the question’s words, the assistant says it can’t find it.</p></div>
+      <div class="step panel"><h3>Read the PDFs</h3><p>Text is taken page by page. Document code, version, effective date and status come from the document control block in each PDF.</p></div>
+      <div class="step panel"><h3>Split by section</h3><p>Each numbered section (4., 4.2) becomes a passage. The passage keeps its page number, so a link opens the right page.</p></div>
+      <div class="step panel"><h3>Match everyday words</h3><p>Search draws on a hand-built list of everyday words (gas → mileage) and <span id="asks">about a thousand</span> sample questions a model wrote for the passages when the documents were prepared. Typos are matched to the nearest known word.</p></div>
+      <div class="step panel"><h3>Quote, don’t guess</h3><p>The answer is the passage itself. If the passage found fits the question poorly, the assistant says it found no answer.</p></div>
       <div class="step panel"><h3>Check the version</h3><p>Superseded versions are used only when a question is about the past. When a rule changed, the old wording is shown with the date it stopped applying.</p></div>
     </div>
-    <div class="honest panel"><b>Two ways to answer, both measured below.</b> The chat on this page is the search step alone, running in your browser: no server and no keys, so it opens offline. It is careful rather than clever. In the test below it says “I can’t find this” for <span id="refusedN">many</span> questions that do have an answer, and then lists where the answer might be. In a client project the next step is a language model that reads the five passages the search found and answers with a quote and its section. The test includes a recorded run of that step.</div>
+    <div class="honest panel"><b>Two ways to answer, tested below: search alone, and search followed by a language model.</b> Once the page has loaded, the search runs in your browser, with no server calls and no API keys. It is tuned to be cautious. In the test below it says “I can’t find this” for <span id="refusedN">many</span> questions that do have an answer, and then lists where the answer might be. The second way, the one a client project uses, adds a language model: it reads the five passages the search found and answers with a quote and its section.</div>
   </div>
 </section>
 
 <section class="block">
   <div class="wrap reveal">
     <h2>Checked, not promised</h2>
-    <p id="evalintro">40 questions written separately, in another assistant session that saw the documents but not the code, and checked to be unlike the questions used for tuning. The search was frozen before they were first run. They include traps: topics no document covers, and rules that changed between versions. The left column is the search in your browser. The right column is a recorded run of the full pipeline: for each question the same search picked five passages, and a language model answered from those five only. Every quote it gave is checked here, word for word. Every miss on both sides is listed below.</p>
+    <p id="evalintro">The test set has 40 questions the search never saw during tuning. An AI assistant wrote them in English in a separate chat, with access to the documents but not the code. For the Russian version, they were rewritten in everyday Russian in another separate chat, also without the code. The search was left unchanged until the first test run. The questions include traps: topics no document covers, and rules that changed between versions. The left column shows how the search in your browser answers. The right column shows answers recorded in advance from a language model that used only the five passages the search found. This page checks every quote the model gave against the document, word for word. Every miss on both sides is listed below.</p>
     <div class="tiles" id="tiles"></div>
     <button class="run" id="run" type="button">Run the test set</button>
     <div class="results panel" id="results"></div>
@@ -231,22 +232,22 @@
 
 <section class="block">
   <div class="wrap reveal">
-    <h2>What a real project adds</h2>
+    <h2>What a client project adds</h2>
     <p>The demo shows the part that decides whether staff trust the answers. A client project adds the rest.</p>
     <div class="grid2">
-      <div class="card panel"><h3>Your sources, kept in sync</h3><p>SharePoint, Google Drive, Notion or a shared folder. A new version replaces the old one on upload, with no re-typing.</p></div>
+      <div class="card panel"><h3>Your sources, kept in sync</h3><p>The assistant connects to SharePoint, Google Drive, Notion or a shared folder. When you upload a new version of a document, it replaces the old one, and nothing has to be copied over by hand.</p></div>
       <div class="card panel"><h3>Written answers with citations</h3><p>A language model writes two or three sentences from the quoted passages. If it can’t cite a passage, it doesn’t answer.</p></div>
-      <div class="card panel"><h3>Where people ask</h3><p>A page on the intranet, Slack or Teams, or Telegram. Access by role, so drivers don’t see finance-only documents.</p></div>
-      <div class="card panel"><h3>Bigger libraries</h3><p>Past a few hundred pages, search adds embeddings next to keyword ranking and re-ranks the best passages. The test set works the same way, so the gain is measured, not assumed.</p></div>
-      <div class="card panel"><h3>Scans and tables</h3><p>Scanned PDFs go through text recognition first. Tables are kept row by row, the way the London hotel limit is kept here.</p></div>
-      <div class="card panel"><h3>Monthly upkeep</h3><p>A log of what people asked and what the documents didn’t answer. The test set grows each month, and gaps go back to the document owner.</p></div>
+      <div class="card panel"><h3>Where people ask</h3><p>An intranet page, Slack, Teams or Telegram. Access by role, so drivers don’t see finance-only documents.</p></div>
+      <div class="card panel"><h3>Bigger libraries</h3><p>Past a few hundred pages, the search adds meaning-based matching (embeddings) to keyword ranking, then re-ranks the best passages. The same test set runs against it, so the gain is measured, not assumed.</p></div>
+      <div class="card panel"><h3>Scans and tables</h3><p>Scanned PDFs go through text recognition first. Tables are stored row by row. In this demo, the London hotel limit is one of those rows.</p></div>
+      <div class="card panel"><h3>Monthly support</h3><p>A log of what people asked and what the documents didn’t answer. The test set grows each month, and topics with no answer are passed on to the document owner.</p></div>
     </div>
   </div>
 </section>
 </main>
 
 <footer>
-  <div class="wrap">Tallowby Freight Ltd is an invented company, and the eight policies were written for this demo. The PDFs are laid out like typical policy documents. Scans, Word files and documents without numbered headings need extra import work (OCR, layout parsing), which a client project includes.</div>
+  <div class="wrap">Tallowby Freight Ltd is a fictional company, and the eight policies were written for this demo. The PDFs are laid out like typical policy documents. Scans, Word files and documents without numbered headings need extra work: text recognition and analysis of each document’s structure. A client project includes this.</div>
 </footer>
 
 <script>
