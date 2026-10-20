@@ -40,8 +40,8 @@
     update();
   });
 
-  // Date fields: typed MM / DD / YYYY or picked from the native calendar
-  function fmt(v) { var p = v.split('-'); return p.length === 3 ? p[1] + ' / ' + p[2] + ' / ' + p[0] : ''; }
+  // Date fields: typed DD / MM / YYYY or picked from the native calendar
+  function fmt(v) { var p = v.split('-'); return p.length === 3 ? p[2] + ' / ' + p[1] + ' / ' + p[0] : ''; }
   document.querySelectorAll('.field--date').forEach(function (f) {
     var text = f.querySelector('input[name]'), picker = f.querySelector('.picker');
     f.querySelector('.cal').addEventListener('click', function () {
@@ -59,7 +59,7 @@
 
   // Search form: demo only, nothing is sent
   var form = document.getElementById('plan'), msg = form.querySelector('.plan__msg');
-  function toDate(v) { var m = /^(\d{2}) \/ (\d{2}) \/ (\d{4})$/.exec(v); return m ? new Date(+m[3], m[1] - 1, +m[2]) : null; }
+  function toDate(v) { var m = /^(\d{2}) \/ (\d{2}) \/ (\d{4})$/.exec(v); return m ? new Date(+m[3], m[2] - 1, +m[1]) : null; }
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var bad = [];
