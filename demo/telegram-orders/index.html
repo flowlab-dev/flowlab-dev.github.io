@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="notranslate" name="google"/>
-<title>Cedarline Bakehouse - order bot demo</title>
+<title>Cedarline Bakehouse: order bot demo</title>
 <link href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'&gt;&lt;rect width='32' height='32' rx='7' fill='%237b3f2b'/&gt;&lt;path d='M7 10.5a3.5 3.5 0 0 1 3.5-3.5h11A3.5 3.5 0 0 1 25 10.5v7a3.5 3.5 0 0 1-3.5 3.5H14l-5 4v-4.3A3.5 3.5 0 0 1 7 17.5z' fill='white'/&gt;&lt;/svg&gt;" rel="icon"/>
 <meta content="A Telegram bot that takes bakery orders around the clock. Working demo: the same dialog engine that will run the live bot, replayed in the browser." name="description"/>
 <style>
@@ -197,42 +197,38 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by Flow Lab. Cedarline Bakehouse is invented. An order bot like this for your business: $500. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/telegram-orders/">How it was built and what it costs</a></span></p>
+<p class="fl-band" role="note">Flow Lab's own demo project. Cedarline Bakehouse is fictional. An order bot like this for your business costs $500. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/telegram-orders/">How it was built and what it costs</a></span></p>
 <!-- /flowlab-band -->
 <header class="top">
 <div class="wrap top-inner">
-<div class="logo"><span aria-hidden="true" class="logo-mark">🥐</span> Cedarline Bakehouse</div>
+<div class="logo"><span aria-hidden="true" class="logo-mark">C</span> Cedarline Bakehouse:</div>
 <span class="pill">order bot demo</span>
 <div class="top-spacer"></div>
-<div aria-label="Language" class="fl-lang" role="group"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Switch between day and night" id="theme-toggle" type="button">🌙 Night</button>
+<div aria-label="Language" class="fl-lang" role="group"><a aria-current="page" href="index.html" hreflang="en" lang="en" title="English">EN</a><a href="ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a></div><button aria-label="Switch between day and night" id="theme-toggle" type="button">Night</button>
 </div>
 </header>
 <main class="wrap">
 <div class="hero">
 <span class="tagline">Telegram bot · takes orders while you sleep</span>
-<h1>The bakery is closed. The order still gets taken.</h1>
+<h1>The bakery is closed, but the order is already taken.</h1>
 <p class="lead">
-      A customer opens Telegram at 01:39, picks a cake, gets a real price and a real pickup slot,
-      and leaves a phone number. The owner wakes up to a finished order, not a missed message.
-      Everything on this page runs the same dialog engine that will drive the live bot - press the buttons and see.
+      A customer opens Telegram at 1:39 a.m., picks a cake, sees the exact price and the earliest available pickup time,
+      and then leaves a phone number. The owner wakes up to a complete order.
+      The demo on this page runs on the same code that connects to Telegram. Press the buttons and see for yourself.
     </p>
-<div class="note">
-<b>This is my own demo project.</b> Cedarline Bakehouse, its menu and the night below are invented -
-      no client's data is shown here. The phone on this page is a Telegram-style window running the bot's engine in your browser,
-      not Telegram itself; the same engine file is built to drive the live bot through the Telegram Bot API.
-    </div>
+<div class="note">The phone on this page is a Telegram-style window, not Telegram itself: the bot runs right in your browser. To work in Telegram, this code uses the Telegram Bot API.</div>
 </div>
 <section id="try">
 <div class="sec-head">
-<h2>Order something</h2>
-<p class="muted">Tap the buttons, or type - the bot understands <code>25.09</code>, <code>25 Sep</code>, <code>tomorrow</code>,
-      plain numbers, and it says so plainly when something will not work.</p>
+<h2>Place an order</h2>
+<p class="muted">Tap the buttons or type. The bot understands <code>Sep 25</code>, <code>25.09</code>, <code>tomorrow</code>,
+      and plain numbers. If something isn't possible, it says so right away.</p>
 </div>
 <div class="split">
 <div>
 <div class="phone">
 <div class="phone-bar">
-<div aria-hidden="true" class="avatar">🥐</div>
+<div aria-hidden="true" class="avatar">C</div>
 <div>
 <div class="phone-title">Cedarline Bakehouse</div>
 <div class="phone-sub">bot · online</div>
@@ -245,29 +241,29 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 </form>
 </div>
 <div class="controls" style="margin-top:12px">
-<button id="restart" type="button">↺ Start over</button>
-<span class="small muted">Nothing leaves this page - no network, no keys.</span>
+<button id="restart" type="button">↺︎ Start over</button>
+<span class="small muted">The demo runs right in your browser, and nothing you enter is sent anywhere.</span>
 </div>
 </div>
 <div>
 <div class="card" style="margin-bottom:16px">
 <div class="card-head"><h3>What the owner's phone shows</h3><span class="pill" id="owner-count">0</span></div>
 <div class="card-body">
-<div class="owner-feed" id="owner-feed"><div class="empty">Nothing yet - finish an order in the chat and it appears here instantly.</div></div>
+<div class="owner-feed" id="owner-feed"><div class="empty">Nothing yet. Place an order in the chat, and it appears here instantly.</div></div>
 </div>
 </div>
 <div class="card">
-<div class="card-head"><h3>Orders as they are stored</h3></div>
+<div class="card-head"><h3>How orders are saved</h3></div>
 <div class="card-body">
 <div class="table-scroll">
 <table id="live-orders">
-<thead><tr><th>Order</th><th>Item</th><th>Ready</th><th>Handover</th><th class="num">Total</th></tr></thead>
+<thead><tr><th>Order</th><th>Item</th><th>Ready by</th><th>Pickup/Delivery</th><th class="num">Total</th></tr></thead>
 <tbody><tr><td class="empty" colspan="5">No orders yet.</td></tr></tbody>
 </table>
 </div>
 <p class="small muted" style="margin:12px 0 0">
-              In the live bot this same record is written to <code>orders.json</code> - or to the shop's spreadsheet or CRM,
-              which is one small file to swap.
+              The bot's code for Telegram saves the same record to an order file. Instead of a file, orders can go to the bakery's Google Sheet or CRM;
+              switching only takes a change to one small part of the code.
             </p>
 </div>
 </div>
@@ -277,23 +273,23 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 <section id="night">
 <div class="sec-head">
 <h2>One night, replayed</h2>
-<p class="muted" id="night-intro">Press the button: a written night of customers - one September night, invented like
-      the rest of this demo - is handled by the engine here, in your browser. Every number below is counted from that run,
+<p class="muted" id="night-intro">Press the button, and the bot will handle the pre-written orders of one fictional September night
+      right here in your browser. Every number below comes from that replay,
       not typed in by hand.</p>
 </div>
 <div class="controls">
-<button class="btn-primary" id="run-night" type="button">▶ Run the night</button>
-<span class="small muted" id="night-state">Not run yet.</span>
+<button class="btn-primary" id="run-night" type="button">▶︎ Run the night</button>
+<span class="small muted" id="night-state">The replay hasn't run yet.</span>
 </div>
 <div class="stats" hidden="" id="night-stats">
 <div class="stat"><div class="v" id="s-orders">-</div><div class="k">orders taken</div></div>
-<div class="stat"><div class="v" id="s-revenue">-</div><div class="k">booked overnight</div></div>
-<div class="stat"><div class="v" id="s-questions">-</div><div class="k">passed to a human</div></div>
+<div class="stat"><div class="v" id="s-revenue">-</div><div class="k">total order value for the night</div></div>
+<div class="stat"><div class="v" id="s-questions">-</div><div class="k">questions passed to the bakery</div></div>
 <div class="stat"><div class="v" id="s-chats">-</div><div class="k">chats handled</div></div>
 </div>
 <div class="split" hidden="" id="night-result">
 <div class="card">
-<div class="card-head"><h3>The summary waiting when the ovens go on</h3></div>
+<div class="card-head"><h3>The owner's morning summary</h3></div>
 <div class="card-body"><div class="owner-msg" id="night-summary"></div></div>
 </div>
 <div class="card">
@@ -301,7 +297,7 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 <div class="card-body">
 <div class="table-scroll">
 <table id="night-orders">
-<thead><tr><th>Order</th><th>Item</th><th>Ready</th><th>Handover</th><th class="num">Total</th></tr></thead>
+<thead><tr><th>Order</th><th>Item</th><th>Ready by</th><th>Pickup/Delivery</th><th class="num">Total</th></tr></thead>
 <tbody></tbody>
 </table>
 </div>
@@ -310,8 +306,8 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 </div>
 <div hidden="" id="night-transcripts" style="margin-top:20px">
 <h3>Every chat from that night</h3>
-<p class="small muted">Open any of them - including the ones that did not end in an order. A bot that only works when
-      the customer behaves is not worth putting in front of customers.</p>
+<p class="small muted">Open any of them, including the ones that didn't end in an order. They show how the bot handles
+      customers who go off script.</p>
 <div id="transcript-list"></div>
 </div>
 </section>
@@ -321,43 +317,42 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 </div>
 <div class="cols">
 <div class="card"><div class="card-body">
-<h3>One engine, two front doors</h3>
-<p class="small">The dialog is a pure state machine: it takes the current state and one event, and returns the next
-        state plus what to send. The live bot feeds it Telegram updates; this page feeds it your clicks. There is no second
-        version written for the demo - a test fails if the copy on this page drifts from the source files.</p>
+<h3>Same code in the demo and in Telegram</h3>
+<p class="small">The bot moves through the conversation in clear steps: it knows what stage the order is at and, with each new message, picks the next
+        step and reply. In Telegram it receives customer messages; on this page it receives your button clicks. There is no separate
+        version for the demo: an automated check compares the code on this page with the bot's main code and flags any difference. The English and Russian versions run on the same code and differ only in phrases, menu and prices.</p>
 </div></div>
 <div class="card"><div class="card-body">
-<h3>Built to survive the night</h3>
-<p class="small">Telegram re-sends an update when an answer is lost, so every update id is remembered and never served
-        twice. Network errors and rate limits are retried with growing pauses. Buttons from older messages are recognised and
-        answered politely instead of corrupting a half-finished order. Orders are written to disk before the customer is told "booked".</p>
+<h3>Working through the night</h3>
+<p class="small">If the bot's reply doesn't reach Telegram, Telegram sends the message again, so the bot remembers each message number and handles it
+        only once. If the connection drops or Telegram limits the request rate, the bot retries with growing pauses. Buttons from older messages are recognized and
+        answered politely, and the order in progress stays unchanged. Each order is saved before the customer sees "booked".</p>
 </div></div>
 <div class="card"><div class="card-body">
-<h3>No packages, no keys in code</h3>
-<p class="small">The bot is plain Node.js - no npm dependencies to audit or update. The token lives in a
-        <code>.env</code> file that never enters the repository, and the log lines never print it. Hosting runs on the shop's own
+<h3>No third-party libraries, key kept out of the code</h3>
+<p class="small">The bot is written in plain Node.js with no third-party libraries, so there is nothing extra to audit or update. Its access key is stored separately from the code and never appears in the logs. Hosting runs on the shop's own
         account, so the shop keeps control of its data.</p>
 </div></div>
 </div>
 </section>
 <section id="support">
 <div class="sec-head">
-<h2>What a month of support covers</h2>
-<p class="muted">A bot is not a poster - the menu changes, prices change, Telegram changes. The monthly part keeps it working:</p>
+<h2>What monthly support covers</h2>
+<p class="muted">Menus, prices, and Telegram itself change over time. Monthly support keeps the bot working:</p>
 </div>
 <div class="cols">
 <div class="card"><div class="card-body">
 <ul class="plain small">
 <li>Menu, prices, lead times and delivery zones updated whenever the shop changes them.</li>
-<li>The bot watched: if it stops answering, I hear about it before the customers do.</li>
-<li>Telegram API changes handled before they break anything.</li>
+<li>Monitoring: Flow Lab watches the bot's replies and hears about any pause before customers do.</li>
+<li>Flow Lab updates the bot for Telegram API changes.</li>
 </ul>
 </div></div>
 <div class="card"><div class="card-body">
 <ul class="plain small">
-<li>Small additions as the shop learns what customers ask for - new items, new questions, a new slot.</li>
-<li>Monthly note: how many orders the bot took and how many customers complete each step.</li>
-<li>Backups of the order file, and export to whatever the shop uses for bookkeeping.</li>
+<li>Small additions based on what customers ask: new items, answers to new questions, new pickup times.</li>
+<li>Monthly report: how many orders the bot took and how many customers reach each step of the order.</li>
+<li>Order backups and export to the shop's bookkeeping software.</li>
 </ul>
 </div></div>
 </div>
@@ -365,10 +360,10 @@ footer { border-top: 1px solid var(--line); padding: 26px 0 40px; color: var(--i
 </main>
 <footer>
 <div class="wrap">
-<p><b>Honest notes.</b> Cedarline Bakehouse is invented for this demo. The customers, the menu, the addresses and the
-    night above are written by me - no real client's data appears here. The figures come from running the engine on that
-    invented night, in this page, while you watch.</p>
-<p class="small">Demo project for my portfolio · the same code is what runs the live bot once a token from @BotFather is added.</p>
+<p><b>About this demo.</b> Cedarline Bakehouse is fictional. The customers, the menu, the addresses, and the
+    night's orders above are fictional too; no real customer data appears here. The bot calculates the figures from that
+    fictional night, right on this page, while you watch.</p>
+<p class="small">Flow Lab portfolio demo · the same code becomes a working Telegram bot once an access key from @BotFather is added.</p>
 </div>
 </footer>
 <script>
@@ -2102,7 +2097,7 @@ function tapNth(chat, { like, index }) {
   var root = document.documentElement;
   function setTheme(name) {
     root.setAttribute('data-theme', name);
-    $('theme-toggle').textContent = name === 'dark' ? '☀️ Day' : '🌙 Night';
+    $('theme-toggle').textContent = name === 'dark' ? 'Day' : 'Night';
   }
   var wantedTheme = params.get('theme');
   setTheme(wantedTheme === 'dark' || wantedTheme === 'light' ? wantedTheme
@@ -2173,7 +2168,7 @@ function tapNth(chat, { like, index }) {
     var feed = $('owner-feed');
     $('owner-count').textContent = String(chat.ownerMessages.length);
     if (chat.ownerMessages.length === 0) {
-      feed.innerHTML = '<div class="empty">Nothing yet - finish an order in the chat and it appears here instantly.</div>';
+      feed.innerHTML = '<div class="empty">Nothing yet. Place an order in the chat, and it appears here instantly.</div>';
       return;
     }
     feed.innerHTML = '';
