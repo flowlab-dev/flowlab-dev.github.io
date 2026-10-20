@@ -74,11 +74,11 @@ ul{padding-left:20px}
 <body>
 <div class="wrap">
 <header class="top"><nav class="lang-switch" aria-label="Language"><a aria-current="page" href="./" hreflang="en" lang="en" title="English">EN</a><a href="ru/" hreflang="ru" lang="ru" title="Русский">RU</a></nav><button class="theme-toggle" id="theme" type="button" title="Switch between day and night" data-to-dark="Night" data-to-light="Day">Night</button></header>
-<div class="band">Self-initiated demo by Flow Lab. The app is real and works; Bramblewash Mobile Grooming is invented, and there is no real customer data. An external check of your app, phone test included: from $150, in 1 business day. <a href="https://flowlab-dev.github.io/work/lovable-check/">How it was built and what it costs</a></div>
+<div class="band">Self-initiated demo by Flow Lab. The app is real and works; Bramblewash Mobile Grooming is fictional, and there is no real customer data. Flow Lab runs the same check on your app, phone test included, in 1 business day, from $150. <a href="https://flowlab-dev.github.io/work/lovable-check/">How it was built and what it costs</a></div>
 
 <div class="kicker">Sample report · Lovable app check · one business day, from $150</div>
 <h1>In one business day, find out what your Lovable app shows visitors and lets them do without logging in</h1>
-<p class="lead">Lovable gets a working app live fast. What visitors can see without logging in depends on the app's access settings. This check answers that question in one business day. To show how the check works, Flow Lab built a booking app in Lovable for a mobile dog grooming business and published it. Then the app went through the same check as client apps: first from the outside, using only the public link, then through every main step a customer and the owner take on a phone. The top-priority finding concerned the owner role. Sign-up is now turned off and the one-time "Make me the owner" button is removed, so no visitor can claim that role. The full report is below: 7 findings, all fixed and retested on the working app.</p>
+<p class="lead">Lovable gets a working app live fast. What visitors can see without logging in depends on the app's access settings. This check shows which data and actions your app opens to visitors without a login. To show how the check works, Flow Lab built a booking app in Lovable for a mobile dog grooming business and published it. Then the app went through the same check as client apps: first from the outside, using only the public link, then through every main step a customer and the owner take on a phone. The top-priority finding concerned the owner role. Sign-up is now turned off and the one-time "Make me the owner" button is removed, so no visitor can claim that role. The full report is below: 7 findings, all fixed and retested on the working app.</p>
 
 <div class="meta">
   <div><span>7 findings: 1 top priority, 5 in bookings and customer messages, 1 low priority</span></div>
@@ -87,9 +87,9 @@ ul{padding-left:20px}
 </div>
 
 <h2>What the check covers</h2>
-<p><b>From the outside, using only the public link.</b> Your app is viewed the way anyone without a password sees it. The check shows whether customer data stays hidden without a login, whether new accounts get only the access they're meant to have, whether uploaded files are closed to the public and whether the page code is free of secret keys that give access to customer data. The check is view-only: nothing in the app is changed or copied.</p>
+<p><b>From the outside, using only the public link.</b> Your app is checked exactly as anyone without a password would see it. The check shows whether customer data stays hidden without a login, whether new accounts get only the access they're meant to have, whether uploaded files are closed to the public and whether the page code is free of secret keys that give access to customer data. The check is view-only: nothing in the app is changed or copied.</p>
 <p><b>On a phone, as your customer and as the owner.</b> Each main step is tested on a phone screen: booking, rescheduling, late cancellation, the waitlist, reminders and the owner dashboard.</p>
-<p class="note">This check doesn't include a line-by-line review of the code and the access settings for your data. That's the full review, and the <a href="https://flowlab-dev.github.io/demo/app-rescue/">Walkwren sample</a> shows what it covers.</p>
+<p class="note">This check doesn't include a line-by-line review of the code and the access settings for your data. That's part of the full review, and the <a href="https://flowlab-dev.github.io/demo/app-rescue/">Walkwren sample</a> shows what it covers.</p>
 
 <h2>The short version: what was found and fixed</h2>
 <table>
@@ -98,9 +98,9 @@ ul{padding-left:20px}
 <tr><td>3</td><td>At most one reminder per person every 7 days</td><td><span class="tag t-amber">protects message delivery</span></td><td><span class="tag t-green">fixed</span></td></tr>
 <tr><td>4</td><td>The Book button now works in one tap</td><td><span class="tag t-amber">protects bookings</span></td><td><span class="tag t-green">fixed</span></td></tr>
 <tr><td>5</td><td>Messages now have full links to the site</td><td><span class="tag t-amber">working links</span></td><td><span class="tag t-green">fixed</span></td></tr>
-<tr><td>6</td><td>Screens now show the accurate message status</td><td><span class="tag t-amber">customer trust</span></td><td><span class="tag t-green">fixed</span></td></tr>
-<tr><td>7</td><td>The server and the browser now show the same owner dashboard</td><td><span class="tag t-grey">low priority</span></td><td><span class="tag t-green">fixed</span></td></tr>
-<tr><td></td><td>Customer data stays hidden without a login, no secret keys in the page code, no public files</td><td colspan="2"><span class="tag t-green">checked</span></td></tr>
+<tr><td>6</td><td>6 Screens now show accurate message status</td><td><span class="tag t-amber">customer trust</span></td><td><span class="tag t-green">fixed</span></td></tr>
+<tr><td>7</td><td>The owner dashboard now loads the same way every time</td><td><span class="tag t-grey">low priority</span></td><td><span class="tag t-green">fixed</span></td></tr>
+<tr><td></td><td>Checked: customer data stays hidden without a login, there are no secret keys in the page code and no files are publicly open.</td><td colspan="2"><span class="tag t-green">checked</span></td></tr>
 </table>
 
 <div class="f">
@@ -119,19 +119,19 @@ ul{padding-left:20px}
 <div class="f">
 <span class="tag t-amber">protects revenue</span>
 <h3>2. A freed-up slot now goes only to a client whose visit fits</h3>
-<p><b>What was found.</b> After a cancellation, the app offered the free 45 minutes to a waitlisted client whose dog needs 100. They tapped "Take it" and saw "Already taken, someone was a little faster", although the slot was still free.</p>
+<p><b>What was found.</b> After a cancellation, the app offered the free 45 minutes to a waitlisted client whose dog needs 100 minutes. They tapped "Take it" and saw "Already taken, someone was a little faster," even though the slot was still free.</p>
 <p><b>What it means for the business.</b> The waitlist now does what it was built for: it fills empty slots. A visit booked from the waitlist shows up in the owner's week.</p>
-<p><b>What was fixed.</b> Offers now go only to people whose visit fits the gap, counting the area, travel time and closing time. The offer shows their own service and how long it takes. If the booking cannot be completed, the screen shows the real reason.</p>
-<p><b>How it was retested.</b> Cancel, offer to a client whose visit fits, "Take it", then "It's yours!", and the visit shows up in the owner's week.</p>
+<p><b>What was fixed.</b> Offers now go only to people whose visit fits the gap, based on the area, travel time and closing time. The offer shows their own service and how long it takes. If the booking can't go through, the screen shows the actual reason.</p>
+<p><b>How it was retested.</b> A visit was canceled, the app offered the slot to a client whose visit fits, the client tapped "Take it" and saw "It's yours!", and the visit showed up in the owner's week.</p>
 </div>
 
 <div class="f">
 <span class="tag t-amber">protects message delivery</span>
 <h3>3. At most one reminder per person every 7 days</h3>
 <p><b>What was found.</b> Every booking someone started created a new lead, so a person who started twice from the same number got the same "Still want that groom?" message several times.</p>
-<p><b>What it means for the business.</b> Customers get one reminder instead of several. Email and text providers flag senders who repeat themselves, and the app no longer sends repeats.</p>
+<p><b>What it means for the business.</b> Customers get one reminder instead of several. Email and text providers flag senders of repeat messages, and the app no longer sends them.</p>
 <p><b>What was fixed.</b> Leads are merged by phone and email. One person gets at most one reminder every 7 days, and reminders stop once a booking is finished.</p>
-<p><b>How it was retested.</b> Running the reminders twice in a row sends nothing twice.</p>
+<p><b>How it was retested.</b> Running the reminders twice in a row sends each message only once.</p>
 </div>
 
 <div class="f">
@@ -145,14 +145,14 @@ ul{padding-left:20px}
 <span class="tag t-amber">working links · customer trust</span>
 <h3>5 and 6. Working links and accurate message status</h3>
 <p><b>What was found.</b> Links in emails and texts were missing the site address. Screens showed "sent" while the messages were still waiting in the outbox.</p>
-<p><b>What was fixed and how it was retested.</b> Messages now have full links to the site. The screens show the statuses "handled" and "ready to send", with a note that real sending connects to the business's own email address.</p>
+<p><b>What was fixed and how it was retested.</b> Messages now have full links to the site. The screens show the statuses "handled" and "ready to send," with a note that messages are actually sent once the business's own email address is connected.</p>
 </div>
 
 <div class="f">
 <span class="tag t-grey">low priority</span>
-<h3>7. The server and the browser now show the same owner dashboard</h3>
-<p><b>What was found.</b> On the first load, the server and the browser showed different versions of the dashboard, and the browser console logged an error. The owner never sees this error.</p>
-<p><b>What was fixed and how it was retested.</b> The server and the browser now show the same first screen, and a clean load shows no errors.</p>
+<h3>7. The owner dashboard now loads the same way every time</h3>
+<p><b>What was found.</b> On the first load, the dashboard could look different from the fully loaded version, because the server's copy didn't match the browser's. The browser also logged an error that the owner never sees.</p>
+<p><b>What was fixed and how it was retested.</b> The dashboard's first screen now matches the fully loaded version, and a fresh page load shows no errors.</p>
 </div>
 
 <h2>The outside check: a log for your developer</h2>
@@ -177,8 +177,8 @@ Lovable security scan ........... 0 issues</pre>
 
 <section class="end">
 <h2>The same check for your app</h2>
-<p>A report on your working app within one business day, from $150. For every finding, you see what was found, what it means for the business and how to fix it. You can make the fixes yourself or have Flow Lab make them as a separate stage, and then the app is checked again. Flow Lab works only with your written permission. The check is view-only, and your customers' data is never copied.</p>
-<p><b>The easiest way to start: send the link to your app and one sentence about what your customers do in it. Flow Lab will reply with where the check would start and what it would cost. No commitment.</b></p>
+<p>You get a report on your working app within one business day, from $150. For every finding, you see what was found, what it means for the business and how to fix it. You can make the fixes yourself or have Flow Lab make them as a separate stage, and then the app is checked again. Flow Lab works only with your written permission. The check is view-only, and your customers' data is never copied.</p>
+<p><b>The easiest way to start: send the link to your app and one sentence about what your customers do in it. Flow Lab will reply with where the check would begin and what it would cost. No commitment.</b></p>
 <div class="cta"><a class="btn solid" href="https://flowlab-dev.github.io/#contact">Get a free estimate</a><a class="btn ghost" href="https://bramblewash-bookings.lovable.app">Open the demo app</a></div>
 <p class="note">Demo app: <a href="https://bramblewash-bookings.lovable.app">bramblewash-bookings.lovable.app</a>. Tap "Open Maya's dashboard (demo)" to see the owner side.</p>
 <p class="ps">P.S. If your app already takes bookings or payments, the best time for the check is before the first few hundred customers sign up. The report then shows what to fix and how while your customer list is still small.</p>
