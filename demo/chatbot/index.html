@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shiftbloom: support assistant demo</title>
-<meta name="description" content="A support assistant that answers only from a company's own help centre, shows its source, and says when it does not know.">
+<meta name="description" content="A support assistant that answers only from a company's own help center, shows its source, and says when it does not know.">
 <link rel="alternate" hreflang="en" href="https://flowlab-dev.github.io/demo/chatbot/">
 <link rel="alternate" hreflang="ru" href="https://flowlab-dev.github.io/demo/chatbot/ru/">
 <style>
@@ -356,7 +356,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
 .fl-band a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 .fl-band a:focus-visible{outline:2px solid #9db2ff;outline-offset:2px;border-radius:2px}
 .fl-band__more{white-space:nowrap}</style>
-<p class="fl-band" role="note">Self-initiated demo by Flow Lab. Shiftbloom is invented. An assistant like this for your site: from $240. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/support-assistant/">How it was built and what it costs</a></span></p>
+<p class="fl-band" role="note">A Flow Lab portfolio demo, made without a client. Shiftbloom is a fictional company. An assistant like this for your site starts at $240. <span class="fl-band__more"><a href="https://flowlab-dev.github.io/work/support-assistant/">How it was built and what it costs</a></span></p>
 <!-- /flowlab-band -->
 <header class="topbar">
   <div class="wrap topbar__inner">
@@ -380,13 +380,13 @@ html.scenes .tests-run { display: block; height: 100vh; }
 <main>
   <section class="hero wrap">
     <div class="hero__copy">
-      <h1>The rota your team actually reads.</h1>
-      <p class="lede">Shiftbloom plans shifts for cafés and restaurants. Its support assistant answers from the company help centre, and only from there.</p>
+      <h1>The schedule your team actually reads.</h1>
+      <p class="lede">Shiftbloom builds shift schedules for cafes and restaurants. Its support assistant answers questions using only the company's help center.</p>
 
       <div class="rota" role="img" aria-label="Example schedule for Tuesday: Nadia bar 07:00 to 15:00, Petar kitchen 08:00 to 16:00, Lena floor 11:00 to 19:00, Sam bar 15:00 to 23:00">
         <div class="rota__head">
-          <span class="rota__day">Tue 22 Sep</span>
-          <span class="rota__meta">4 on shift · labour 26.4%</span>
+          <span class="rota__day">Tue, Sep 22</span>
+          <span class="rota__meta">4 on shift · labor cost 26.4%</span>
         </div>
         <ul class="rota__list">
           <li class="shift shift--bar"><span class="shift__who">Nadia</span><span class="shift__role">Bar</span><span class="shift__time">07:00–15:00</span></li>
@@ -396,63 +396,63 @@ html.scenes .tests-run { display: block; height: 100vh; }
         </ul>
       </div>
 
-      <p class="disclaimer">Shiftbloom is an invented company, written for this demonstration. Every fact the assistant states comes from the 33 help-centre sections published on this page.</p>
+      <p class="disclaimer">Shiftbloom is a fictional company created for this demo. Every fact the assistant states comes from the 33 help center sections published on this page.</p>
     </div>
 
     <div class="assistant" id="assistant">
       <div class="assistant__head">
         <div>
           <p class="assistant__title">Shiftbloom support</p>
-          <p class="assistant__status"><span class="pulse" aria-hidden="true"></span>Answers from the help centre, updated 18 Sep 2026</p>
+          <p class="assistant__status"><span class="pulse" aria-hidden="true"></span>Help center updated Sep 18, 2026</p>
         </div>
         <button type="button" class="linkish" id="resetChat">Start over</button>
       </div>
 
-      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Conversation with the Shiftbloom support assistant"><div class="msg msg--bot"><div class="bubble"><p>Hello. I answer questions about Shiftbloom from our help centre: pricing, scheduling, time clock, integrations, data and support.</p><p>If something is not written there, I will tell you instead of inventing it.</p></div></div></div>
+      <div class="thread" id="thread" role="log" aria-live="polite" aria-label="Conversation with the Shiftbloom support assistant"><div class="msg msg--bot"><div class="bubble"><p>Hello. Ask about Shiftbloom pricing, scheduling, time clock, integrations, data, and support. Answers come only from the help center.</p><p>If the help center does not cover your question, you will get a straight answer saying so, with nothing made up.</p></div></div></div>
 
       <div class="suggestions" id="suggestions" aria-label="Example questions"><button class="suggestion" type="button">How much does it cost?</button><button class="suggestion" type="button">Do you have a free trial?</button><button class="suggestion" type="button">Which POS systems do you support?</button><button class="suggestion" type="button">Are you GDPR compliant?</button></div>
 
       <form class="composer" id="composer" autocomplete="off">
         <label class="visually-hidden" for="question">Ask the assistant a question</label>
-        <input id="question" name="question" type="text" placeholder="Ask about pricing, shifts, payroll, data…" maxlength="200">
+        <input id="question" name="question" type="text" placeholder="Ask about pricing, shifts, data…" maxlength="200">
         <button type="submit" id="send">Ask</button>
       </form>
     </div>
   </section>
 
   <section class="band wrap" id="grounding">
-    <h2>Three answers, three honest outcomes</h2>
-    <p class="section-lede">The assistant answers only from the help center, so customers get answers they can rely on. In this demo the assistant has no generative step, so it can only do one of three things. In a real project the same rules wrap a language model, so answers stay grounded in your documents.</p>
+    <h2>Three kinds of answer, none of them a guess</h2>
+    <p class="section-lede">The assistant answers only from the help center, so customers get answers they can rely on. In this demo the assistant shows ready-made help center sections instead of writing its own text, so it has just three possible responses. In a real project a language model writes the replies, and the same rules keep each reply based on your documents.</p>
 
     <div class="states">
       <article class="state">
         <p class="state__name"><span class="dot dot--answer" aria-hidden="true"></span>It answers</p>
-        <p>The question matches a help-centre section closely enough. The reply is that section's text, with the source printed underneath.</p>
+        <p>When a question fits a help center section, the assistant shows that section's text with the source below it.</p>
         <button class="try" type="button" data-ask="How much does Shiftbloom cost per month?">Try “How much does Shiftbloom cost per month?”</button>
       </article>
       <article class="state">
         <p class="state__name"><span class="dot dot--clarify" aria-hidden="true"></span>It asks which topic you mean</p>
-        <p>The topic is in the help centre, but the exact question is not: there is nothing about commission. Rather than pass off a nearby page as the answer, it offers the closest topics and lets you choose.</p>
+        <p>The help center covers the topic but not this exact question: it says nothing about commission. The assistant does not pass off a similar section as the answer and instead suggests the closest topics for you to choose from.</p>
         <button class="try" type="button" data-ask="what commission do you take on card payments">Try “what commission do you take on card payments”</button>
       </article>
       <article class="state">
         <p class="state__name"><span class="dot dot--unknown" aria-hidden="true"></span>It says it does not know</p>
-        <p>Nothing in the help centre covers the question. It says so, names the word it did not recognise, and offers a human.</p>
+        <p>Nothing in the help center covers the question. The assistant says so, lists the words from the question it could not find, and suggests contacting support.</p>
         <button class="try" type="button" data-ask="do you have a loyalty program for customers">Try “do you have a loyalty program for customers”</button>
       </article>
     </div>
   </section>
 
-<section class="tests-run" aria-label="The test set, run question by question">
+<section class="tests-run" aria-label="Test questions, one by one">
     <div class="tr-in">
       <div>
-        <h2>Every question, checked on every change.</h2>
-        <p class="section-lede">Scroll to run the test set. Each question below really goes through the assistant on this page.</p>
+        <h2>Every change is checked against every question.</h2>
+        <p class="section-lede">Scroll down to run the check. The assistant on this page answers each question below for real.</p>
         <div class="tr-count"><span id="tr-pass">0</span><small>of <span id="tr-total">0</span> passed</small></div>
         <ul class="tr-stats">
           <li><span class="dot dot--answer" aria-hidden="true"></span><b id="tr-a">0</b>answered from the right section</li>
           <li><span class="dot dot--clarify" aria-hidden="true"></span><b id="tr-c">0</b>asked which topic was meant</li>
-          <li><span class="dot dot--unknown" aria-hidden="true"></span><b id="tr-u">0</b>said “I don’t know” and offered a person</li>
+          <li><span class="dot dot--unknown" aria-hidden="true"></span><b id="tr-u">0</b>said “I don’t know” and suggested contacting support</li>
         </ul>
       </div>
       <ol class="tr-feed" id="tr-feed" aria-hidden="true"></ol>
@@ -462,9 +462,9 @@ html.scenes .tests-run { display: block; height: 100vh; }
     <div class="eval__head">
       <div>
         <h2>Checked, not promised</h2>
-        <p class="section-lede">A fixed set of questions runs against the assistant on every change: real phrasings for things the help centre covers, plus questions it must not answer. Run it here, in your browser.</p>
+        <p class="section-lede">After every change, the assistant answers the same set of questions again. The set includes questions the help center covers, worded the way customers really ask, and questions the assistant must not answer. Run the check here, right in your browser.</p>
       </div>
-      <button class="primary" type="button" id="runEval">Run the test set</button>
+      <button class="primary" type="button" id="runEval">Run the check</button>
     </div>
     <div class="eval" id="evalResult" aria-live="polite">
       <p class="eval__idle">Not run yet.</p>
@@ -472,8 +472,8 @@ html.scenes .tests-run { display: block; height: 100vh; }
   </section>
 
   <section class="band wrap" id="knowledge">
-    <h2>What the assistant was given</h2>
-    <p class="section-lede">Nothing else. Pick any line to ask it.</p>
+    <h2>What the assistant knows</h2>
+    <p class="section-lede">That is all it knows. Pick any line to ask about it.</p>
     <div class="kb" id="kb"></div>
   </section>
 
@@ -481,16 +481,16 @@ html.scenes .tests-run { display: block; height: 100vh; }
     <h2>What this looks like as a project</h2>
     <div class="delivery">
       <div>
-        <h3>Build</h3>
-        <p>Your help centre, PDFs, policies and past support replies become the knowledge base. The assistant is embedded on your site and in your help centre, in your own colours.</p>
+        <h3>Setup and launch</h3>
+        <p>Your help center, PDFs, policies, and past support replies become the knowledge base. The assistant runs on your site and in your help center, styled in your colors.</p>
       </div>
       <div>
-        <h3>Proof</h3>
-        <p>You get the question set as a file you can read: what it must answer, what it must refuse. It runs on every content change, so a new price never leaves an old answer behind.</p>
+        <h3>Testing</h3>
+        <p>You get the test questions in a clear, readable file: what the assistant must answer and what it must decline. The set runs again after every content update, so when a price changes, the assistant answers with the new price, not the old one.</p>
       </div>
       <div>
-        <h3>Every month after</h3>
-        <p>A short report of the questions it could not answer (the gaps in your own documentation), plus the content updates and a re-run of the test set.</p>
+        <h3>Every month after launch</h3>
+        <p>A short report on the questions the assistant could not answer, which shows what to add to your documentation. Plus content updates and a fresh run of the test questions.</p>
       </div>
     </div>
   </section>
@@ -498,8 +498,8 @@ html.scenes .tests-run { display: block; height: 100vh; }
 
 <footer class="foot">
   <div class="wrap foot__inner">
-    <p>Portfolio demonstration. Shiftbloom, its staff, prices and policies are invented for this page.</p>
-    <p>Runs entirely in your browser: no server, no keys, no accounts.</p>
+    <p>Portfolio demo. Shiftbloom, its staff, prices, and policies are fictional, created for this page.</p>
+    <p>Runs entirely in your browser: no server, no access keys, no sign-up.</p>
   </div>
 </footer>
 
@@ -1355,7 +1355,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
       {
         id: 'pricing',
         title: 'Pricing & Billing',
-        type: 'Help centre article',
+        type: 'Help center article',
         category: 'Pricing',
         updated: '2026-09-12',
         sections: [
@@ -1495,7 +1495,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
       {
         id: 'scheduling',
         title: 'Scheduling & Shifts',
-        type: 'Help centre article',
+        type: 'Help center article',
         category: 'Scheduling',
         updated: '2026-09-05',
         sections: [
@@ -1538,15 +1538,15 @@ html.scenes .tests-run { display: block; height: 100vh; }
           },
           {
             id: 'forecasting',
-            title: 'Sales forecasting and labour cost',
+            title: 'Sales forecasting and labor cost',
             category: 'Scheduling',
             tags: ['forecast', 'labour cost', 'budget', 'sales'],
             questions: [
               'Can it tell me how many people I need?',
-              'Does it show labour cost as I plan?',
+              'Does it show labor cost as I plan?',
               'How does the sales forecast work?'
             ],
-            body: 'On the Growth and Multi-site plans, Shiftbloom forecasts hourly sales from the last 8 weeks of your POS data and weekday patterns, then suggests how many people each hour needs. The planner shows live labour cost and labour-cost percentage against that forecast, so you see a problem while you are building the week rather than at month end.'
+            body: 'On the Growth and Multi-site plans, Shiftbloom forecasts hourly sales from the last 8 weeks of your POS data and weekday patterns, then suggests how many people each hour needs. The planner shows live labor cost and labor-cost percentage against that forecast, so you see a problem while you are building the week rather than at month end.'
           },
           {
             id: 'templates',
@@ -1565,7 +1565,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
       {
         id: 'time-payroll',
         title: 'Time Clock & Payroll',
-        type: 'Help centre article',
+        type: 'Help center article',
         category: 'Time & pay',
         updated: '2026-09-10',
         sections: [
@@ -1625,7 +1625,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
             questions: [
               'Does it handle overtime rules?',
               'Can it enforce breaks?',
-              'Will it warn me about labour law?'
+              'Will it warn me about labor law?'
             ],
             body: 'You set the rules per location: weekly hours before overtime, overtime multiplier, minimum rest between shifts, and required break length per shift length. The planner warns you while you build the schedule when a rule would be broken, and timesheets mark overtime separately. Rules for staff under 18 can be set to stricter limits.'
           }
@@ -1634,7 +1634,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
       {
         id: 'integrations',
         title: 'Integrations & Apps',
-        type: 'Help centre article',
+        type: 'Help center article',
         category: 'Integrations',
         updated: '2026-09-18',
         sections: [
@@ -1648,7 +1648,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
               'Does it connect to Tilltap?',
               'Can you pull sales data from my till?'
             ],
-            body: 'Shiftbloom connects to Tilltap, Brewline Restaurant, Panfare and Coinlane. The connection pulls hourly sales every 15 minutes and feeds the forecast and the labour-cost percentage. You connect it yourself under Settings → Integrations; it takes about two minutes and needs only a manager login to the POS.'
+            body: 'Shiftbloom connects to Tilltap, Brewline Restaurant, Panfare and Coinlane. The connection pulls hourly sales every 15 minutes and feeds the forecast and the labor-cost percentage. You connect it yourself under Settings → Integrations; it takes about two minutes and needs only a manager login to the POS.'
           },
           {
             id: 'other-integrations',
@@ -1672,7 +1672,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
               'Is Paywell supported?',
               'What if my system is not on the list?'
             ],
-            body: 'Kettle POS, Paywell, Bookline Accounts and Orbit POS are not supported today. For anything that is not on our list you can still use the CSV export, or build your own connection with the REST API. Tell us what you use at hello@shiftbloom.example. Requested integrations are prioritised by how many venues ask for them.'
+            body: 'Kettle POS, Paywell, Bookline Accounts and Orbit POS are not supported today. For anything that is not on our list you can still use the CSV export, or build your own connection with the REST API. Tell us what you use at hello@shiftbloom.example. Requested integrations are prioritized by how many venues ask for them.'
           },
           {
             id: 'api',
@@ -1860,7 +1860,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
     { q: 'How do staff find out about their shifts?', expect: 'answer', section: 'scheduling#publish' },
     { q: 'Can staff swap shifts with each other?', expect: 'answer', section: 'scheduling#swaps' },
     { q: 'How do holiday requests work?', expect: 'answer', section: 'scheduling#availability' },
-    { q: 'Does it show labour cost while I plan?', expect: 'answer', section: 'scheduling#forecasting' },
+    { q: 'Does it show labor cost while I plan?', expect: 'answer', section: 'scheduling#forecasting' },
     { q: "Can I copy last week's schedule?", expect: 'answer', section: 'scheduling#templates' },
     { q: 'How do staff clock in?', expect: 'answer', section: 'time-payroll#clock-in' },
     { q: 'Where do I approve worked hours?', expect: 'answer', section: 'time-payroll#timesheets' },
@@ -1886,7 +1886,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
 
     // --- the four starter questions offered on the demo page ------------------
     { q: 'How much does it cost?', expect: 'answer', section: 'pricing#plans' },
-    { q: 'labour cost while planning', expect: 'answer', section: 'scheduling#forecasting' },
+    { q: 'labor cost while planning', expect: 'answer', section: 'scheduling#forecasting' },
 
     // --- wording taken from real support inboxes ------------------------------
     { q: 'can i get an invoice with vat', expect: 'answer', section: 'pricing#payment-methods' },
@@ -1986,25 +1986,25 @@ html.scenes .tests-run { display: block; height: 100vh; }
     themeLabel: function (next) { return next === 'dark' ? 'Ночь' : 'День'; }
   } : {
     starters: ['How much does it cost?', 'Do you have a free trial?', 'Which POS systems do you support?', 'Are you GDPR compliant?'],
-    looking: 'Looking through the help centre',
+    looking: 'Looking through the help center',
     match: 'Match',
     source: 'Source:',
     updated: function (d) { return 'updated ' + d; },
     clarify: 'I can see a few sections that could be what you mean, and I would rather not guess. Which one is it?',
-    nothingAbout: function () { return 'There is nothing in the Shiftbloom help centre about '; },
+    nothingAbout: function () { return 'There is nothing in the Shiftbloom help center about '; },
     or: ' or ',
     quote: ['“', '”'],
     noGuess: ', so I will not guess at it.',
-    notFound: 'I cannot find that in the Shiftbloom help centre, so I will not guess at it.',
+    notFound: 'I cannot find that in the Shiftbloom help center, so I will not guess at it.',
     writeTo: 'Write to ',
     person: ' and a person will reply during support hours.',
     fallback: [
       { label: 'Pricing and billing', question: 'How much does Shiftbloom cost per month?' },
       { label: 'What it does', question: 'How do staff find out about their shifts?' }
     ],
-    failed: function (mail) { return 'Something went wrong while searching the help centre. Ask again, or write to ' + mail + '.'; },
-    hello: 'Hello. I answer questions about Shiftbloom from our help centre: pricing, scheduling, time clock, integrations, data and support.',
-    honest: 'If something is not written there, I will tell you instead of inventing it.',
+    failed: function (mail) { return 'Something went wrong while searching the help center. Ask again, or write to ' + mail + '.'; },
+    hello: 'Hello. Ask about Shiftbloom pricing, scheduling, time clock, integrations, data, and support. Answers come only from the help center.',
+    honest: 'If the help center does not cover your question, you will get a straight answer saying so, with nothing made up.',
     sections: function (n, d) { return n + ' sections · updated ' + d; },
     statAnswered: 'questions answered from the right section',
     statRefused: function (u, c) { return 'out-of-scope questions where no fact was stated: ' + u + ' said “I don’t know”, ' + c + ' asked which topic was meant'; },
@@ -2425,7 +2425,7 @@ html.scenes .tests-run { display: block; height: 100vh; }
     var engine = window.ChatEngine, kb = window.KNOWLEDGE_BASE, set = window.EVAL_QUESTIONS || [];
     if (!engine || !kb || !set.length) { root.classList.remove('scenes'); return; }
     var index = engine.buildIndex(kb.documents, kb.language);
-    // same rules as «Run the test set» below
+    // same rules as «Run the check» below
     var rows = set.map(function (t) {
       var r = engine.ask(t.q, index), ok;
       if (t.expect === 'answer') ok = r.status === 'answer' && r.source.id === t.section;
