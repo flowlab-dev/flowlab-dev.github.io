@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shopify product page fixes — before → after · Flow Lab demo</title>
-<meta name="description" content="Demo: typical Shopify product page fixes on an invented store — right-sized photos, correct sale badges, size buttons, sticky Add to cart, plus a bulk product import check.">
+<title>Shopify product page fixes: before → after · Flow Lab demo</title>
+<meta name="description" content="Shopify product page fixes on an invented demo store: right-sized photos, correct sale badges, size buttons, sticky Add to cart and a bulk product import check.">
 <style>
   :root { --bg:#f6f5f2; --card:#fff; --ink:#1d2a30; --muted:#667077; --line:#e6e3dd; --bad:#c2410c; --good:#15803d; --accent:#e96f3a; }
   @media (prefers-color-scheme: dark) { :root { --bg:#111416; --card:#1a1e21; --ink:#e9ecee; --muted:#9aa4aa; --line:#2a3035; --bad:#fb923c; --good:#4ade80; } }
@@ -44,7 +44,7 @@
 <div class="wrap">
   <div class="tag">Flow Lab · Shopify demo</div>
   <h1>Shopify product page fixes: before → after</h1>
-  <p class="lead">The small fixes store owners ask for most often, shown on one invented store (North Ridge Outfitters, a Dawn-style product page). Numbers are measured on these two demo pages with the same phone test I'd run on your store.</p>
+  <p class="lead">The small fixes store owners ask for most often, shown on one invented store (North Ridge Outfitters, a Dawn-style product page). Numbers are measured on these two demo pages with the same phone test Flow Lab would run on your store.</p>
 
   <div class="kpis">
     <div class="kpi"><small>Product photo file</small><div><s>2,400 px PNG</s> → <b>900 px WebP</b></div></div>
@@ -55,10 +55,10 @@
   <div class="phones">
     <div class="ph"><h3>Before</h3><div class="frame"><iframe src="before/" title="Product page before the fixes" loading="lazy"></iframe></div>
       <ul class="fix bad">
-        <li><b>Camera-size photos</b>2,400 px PNGs, 2 MB each, the same file for phones and desktops.</li>
-        <li><b>Sale price backwards</b>Compare-at price lower than the price, so the "discount" looks like a price rise.</li>
-        <li><b>Size chart breaks the layout</b>A wide table pushes the page to 543 px — the whole page slides sideways.</li>
-        <li><b>Add to cart far down</b>Long text and a dropdown before the button; sold-out sizes not marked.</li>
+        <li><b>Product photos at camera size</b>Each photo is a 2,400 px PNG of 2 MB. Phones and desktops load the same file.</li>
+        <li><b>Compare-at price below the selling price</b>The compare-at price of $79 is set lower than the $89 price.</li>
+        <li><b>Size chart wider than the phone</b>A wide size chart makes the page 543 px wide on a 390 px phone.</li>
+        <li><b>Add to cart below a size dropdown</b>Long text and a dropdown come before the button. Sold-out sizes look the same as sizes in stock.</li>
       </ul></div>
     <div class="ph"><h3>After</h3><div class="frame"><iframe src="after/" title="Product page after the fixes" loading="lazy"></iframe></div>
       <ul class="fix good">
@@ -70,14 +70,14 @@
   </div>
 
   <h2>Bulk product upload, checked before anything is sent</h2>
-  <p class="sub">A client's spreadsheet goes through a check first. Here is the real output for a sample file with four typical mistakes — nothing reaches the store until they're fixed.</p>
+  <p class="sub">A client's spreadsheet goes through a check first. Here is the real output for a sample file with four typical issues in prices, variants and image links. Products are sent to the store only after these issues are fixed.</p>
 <pre>$ python3 shopify_products.py products-client.csv
 3 product(s), 5 variant(s) in products-client.csv
 <span class="e">❌ fix the CSV first (nothing was sent):
   - row 2: Compare At Price 79.00 must be higher than Price 89.00 (or empty)
   - row 4: «trail-runner-shoe» variant ['42'] is listed twice
   - row 5: image «http://example.com/img/beanie.jpg» must be a public https:// link
-  - row 6: Price «1a9» — a number like 19.99</span>
+  - row 6: Price «1a9» must be a number like 19.99</span>
 <span class="ok"># after the fixes: products are created or updated in one pass through the Shopify Admin API,
 # existing variants keep their stock and links; a report lists every product that changed.</span></pre>
 
@@ -85,8 +85,8 @@
   <div class="grid">
     <div><b>Speed</b>Resize and convert product and banner images, lazy-load below the fold, remove unused apps' scripts.</div>
     <div><b>Product page</b>Variant buttons, correct sale badges, size guides, sticky Add to cart, delivery and returns info.</div>
-    <div><b>Mobile layout</b>Find what makes the page wider than the phone and fix it in the theme, not with a hack.</div>
-    <div><b>Upsells</b>"Complete the look", cart cross-sells, a free-shipping bar — with the store's own products.</div>
+    <div><b>Mobile layout</b>Find what makes the page wider than the phone and fix it in the theme.</div>
+    <div><b>Upsells</b>"Complete the look", cart cross-sells and a free-shipping bar, using the store's own products.</div>
     <div><b>Catalogue</b>Bulk upload or update products from a spreadsheet, with a check and a change report.</div>
     <div><b>Safe changes</b>Work on a duplicate theme, a preview link to check, then publish; the old theme stays as a backup.</div>
   </div>
