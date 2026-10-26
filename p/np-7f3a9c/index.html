@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Система управления с ИИ для Натурпласта</title>
+<meta name="description" content="Тестовое задание: два ориентира и вариант системы управления бизнесом с ИИ для Натурпласта.">
+<style>
+:root{--bg:#fbfaf7;--paper:#ffffff;--ink:#1d2321;--muted:#5c6762;--line:#dfe3df;--accent:#1f6b4f;--soft:#eef5f1}
+@media (prefers-color-scheme:dark){:root{--bg:#141816;--paper:#1b201d;--ink:#e8ede9;--muted:#9aa7a0;--line:#2c352f;--accent:#6fd0a4;--soft:#1f2b25}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+main{max-width:800px;margin:0 auto;padding:32px 16px 56px}
+header{padding-bottom:20px;border-bottom:2px solid var(--accent);margin-bottom:8px}
+.kicker{margin:0 0 6px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{margin:0 0 6px;font-size:28px;line-height:1.2}
+.by{margin:0;color:var(--muted);font-size:14px}
+h2{margin:32px 0 10px;font-size:21px;line-height:1.25}
+h3{margin:24px 0 8px;font-size:17px;line-height:1.3}
+p{margin:0 0 10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px 20px 14px;margin:14px 0}
+.card h3{margin-top:14px}
+b{font-weight:650}
+a{color:var(--accent);overflow-wrap:anywhere}
+a:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:2px}
+.src{font-size:14px;color:var(--muted)}
+figure{margin:12px 0 4px}
+figure img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:8px}
+figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+ol,ul{margin:0 0 10px;padding-left:22px}
+li{margin:0 0 6px}
+.steps{list-style:none;padding:0;counter-reset:s}
+.steps li{counter-increment:s;background:var(--soft);border-radius:10px;padding:10px 14px 10px 48px;position:relative}
+.steps li::before{content:counter(s);position:absolute;left:14px;top:10px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:14px;text-align:center;line-height:24px}
+.note{background:var(--soft);border-left:4px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0}
+footer{margin-top:32px;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+@media (max-width:480px){h1{font-size:23px}h2{font-size:19px}.card{padding:2px 14px 10px}}
+@media print{
+ @page{size:A4;margin:14mm}
+ body{background:#fff;color:#000;font-size:10.5pt;line-height:1.4}
+ main{max-width:none;padding:0}
+ .card{border:0;padding:0;margin:6pt 0;background:none}
+ figure img{max-width:55%}
+ h2{margin-top:14pt}
+ a{color:#000}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <p class="kicker">Тестовое задание</p>
+ <h1>Система управления с ИИ для «Натурпласта»</h1>
+ <p class="by">Автор: Луна Kuzniatsova · Telegram @flowlabdev · <a href="https://flowlab-dev.github.io/">flowlab-dev.github.io</a></p>
+</header>
+
+<h2>1. Два ориентира</h2>
+<p>Оба ориентира я разбирала по демонстрации продукта и публичной документации. Личного опыта работы с этими системами и внедрений в компаниях у меня нет. Выводы ниже опираются на описание производителя и на то, как я сама собираю похожие связки на Python, n8n и LLM.</p>
+
+<section class="card" aria-labelledby="ref-a">
+<h3 id="ref-a">А. CoPilot в Битрикс24</h3>
+<p>Битрикс24 у вас уже есть, это самый близкий ориентир.</p>
+<p><b>Что делает.</b> CoPilot встроен в ленту, задачи, почту, CRM, конструктор сайтов и чат с ассистентом. В задачах составляет чек-листы и распределяет их между сотрудниками и отделами. В почте пересказывает суть переписки, готовит черновик письма и переводит. В чате работает ассистент с выбором роли. В CRM заявлены расшифровка записей звонков, выделение главного и заполнение полей карточки. На дату статьи эта функция была только анонсирована, ее статус нужно сверить с текущей документацией.</p>
+<p><b>Роль ИИ.</b> Берет на себя рутину с текстами и задачами.</p>
+<p><b>Что перенять.</b> ИИ работает внутри системы, где сотрудники уже ведут дела. Задача создается прямо из контекста, из звонка или письма.</p>
+<p><b>Ограничения.</b> Это помощник по текстам и рутине, а не аналитика продаж и прибыли. Данные Wildberries, Ozon и 1С он сам не видит. На странице нет тарифов, лимитов, прав доступа и требования, чтобы результат проверял человек.</p>
+<p class="src">Источник, статья от 19.08.2024: <a href="https://www.bitrix24.ru/blogs/bitriks24-copilot-dostupen-v-korobochnoy-versii.php">bitrix24.ru/blogs/bitriks24-copilot-dostupen-v-korobochnoy-versii.php</a></p>
+<figure><img src="bitrix24-copilot.jpg" width="1600" height="1000" alt="Снимок страницы-источника: статья «Битрикс24 CoPilot доступен в коробочной версии»" loading="lazy"><figcaption>Скриншот со страницы-источника</figcaption></figure>
+</section>
+
+<section class="card" aria-labelledby="ref-b">
+<h3 id="ref-b">Б. Copilot в Power BI</h3>
+<p><b>Что делает.</b> Пересказывает страницу отчета короткой сводкой. Отвечает простым языком на вопросы по данным отчета и модели данных и показывает визуал, из которого взят ответ. Если готового графика нет, строит его по модели данных. Сводку можно вложить в письмо-рассылку отчета. Автору отчета помогает собрать страницу, написать запрос DAX и описать показатели.</p>
+<p><b>Роль ИИ.</b> Объясняет данные и помогает их найти. Решений не принимает.</p>
+<p><b>Что перенять.</b> Вопрос к данным обычными словами, ответ с указанием источника, сводка в рассылке для руководителя.</p>
+<p><b>Ограничения.</b> Нужен подготовленный источник данных, то есть модель, и качество ответа зависит от нее. Если вопрос не про данные, Copilot может ответить из общих знаний модели. Нужны лицензия и емкость Microsoft, условия описаны на странице требований. Задач и согласований он не создает.</p>
+<p class="src">Источник, документация от 26.05.2026: <a href="https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-reports-overview">learn.microsoft.com/en-us/power-bi/create-reports/copilot-reports-overview</a></p>
+<figure><img src="powerbi-copilot.jpg" width="1600" height="815" alt="Снимок страницы-источника: документация Microsoft «Use Copilot with Power BI reports and semantic models»" loading="lazy"><figcaption>Скриншот со страницы-источника</figcaption></figure>
+</section>
+
+<h2>2. Мой вариант для «Натурпласта»</h2>
+<p>Ниже проект решения. Он опирается на то, что я умею делать: Python и TypeScript, API и интеграции, LLM и агенты (OpenAI, Claude, RAG), Supabase и базы данных, Google Таблицы, n8n и Make, Битрикс24 как облачный сервис.</p>
+
+<h3>Что берем готовым и что связываем</h3>
+<p>Готовыми берем Битрикс24 с CoPilot для задач, звонков и почты, отчеты Wildberries и Ozon через их API или личные кабинеты, 1С как источник себестоимости и остатков. На пилоте хранилищем служат Supabase или Google Таблицы. Панель показателей строим на готовом BI-инструменте, ассистента на LLM с RAG подключаем к тем же данным.</p>
+<p>Связать нужно сами источники. Каждый день данные из WB, Ozon, 1С и Битрикс24 загружаются в одно хранилище. После загрузки идет проверка: итог сверяется с выручкой, ошибки загрузки пишутся в журнал. С 1С в боевом проекте я не работала: подключение к ней возможно через стандартный обмен или выгрузку, а схему подтвердит ваш специалист по 1С или вы.</p>
+<p>Похожие части я показываю в демонстрационных работах, сделанных по собственной инициативе. Заявки попадают в таблицу: <a href="https://flowlab-dev.github.io/demo/leads-sheet/ru/">flowlab-dev.github.io/demo/leads-sheet/ru/</a></p>
+<p>Разбор сбоя автоматизации: <a href="https://flowlab-dev.github.io/demo/automation-repair/ru/">flowlab-dev.github.io/demo/automation-repair/ru/</a></p>
+
+<h3>Как пользуются системой</h3>
+<p>Руководитель утром получает короткую сводку: продажи, прибыль по товарам, расходы и отклонения. Вопрос можно задать обычными словами, ответ приходит с указанием источника. Так устроен мой демонстрационный помощник по документам: <a href="https://flowlab-dev.github.io/demo/policy-assistant/ru/">flowlab-dev.github.io/demo/policy-assistant/ru/</a></p>
+<p>Сотрудники видят свои задачи в Битрикс24 и там же подтверждают выполнение. Отдельная программа им не нужна.</p>
+
+<h3>Сценарий: у товара падает маржа</h3>
+<ol class="steps">
+ <li><b>Проблема.</b> На маркетплейсе растут расходы на рекламу товара, цена не меняется, маржа падает.</li>
+ <li><b>Решение.</b> Система находит отклонение, показывает числа и источник и предлагает варианты: снизить ставку рекламы, поднять цену или убрать товар из рекламы.</li>
+ <li><b>Согласование.</b> Руководитель выбирает вариант одной кнопкой или комментарием. ИИ сам ничего не меняет.</li>
+ <li><b>Задача.</b> В Битрикс24 создается задача менеджеру маркетплейса со сроком.</li>
+ <li><b>Проверка.</b> Через 7 дней система сравнивает маржу и сообщает руководителю, помогло ли решение.</li>
+</ol>
+
+<h3>Пилот на 4 недели</h3>
+<p>Берем один маркетплейс и от 20 до 50 товаров с самой большой выручкой.</p>
+<ul>
+ <li><b>Неделя 1.</b> Доступы, схема данных, справочник соответствия артикулов.</li>
+ <li><b>Неделя 2.</b> Загрузка и проверка данных.</li>
+ <li><b>Неделя 3.</b> Утренняя сводка и ассистент.</li>
+ <li><b>Неделя 4.</b> Сценарий с задачей в Битрикс24 и итоги.</li>
+</ul>
+<p>Пилот удался, если сводка совпадает с отчетами 1С и маркетплейса, а руководитель пользуется ею каждый день.</p>
+
+<h3>Главный риск</h3>
+<p class="note">Главный риск в данных. Артикулы одного товара в WB, Ozon и 1С разные, себестоимость и комиссии считаются по-разному. Без единого справочника товаров ИИ будет уверенно объяснять неверные числа. Справочник соответствия артикулов я делаю первым шагом. Каждый ответ системы идет с источником, решения принимает человек.</p>
+
+<h3>Вопросы к вам</h3>
+<ol>
+ <li>Какая версия 1С и кто ее ведет?</li>
+ <li>Есть ли доступ по API к Wildberries и Ozon? Какие сервисы аналитики уже оплачены?</li>
+ <li>Какой тариф Битрикс24 и включен ли CoPilot?</li>
+ <li>Сколько у вас товаров и сотрудников?</li>
+ <li>Кто принимает решения по ценам и рекламе?</li>
+ <li>Какие данные нельзя выносить за пределы компании, должны ли они храниться в России?</li>
+ <li>Какие бюджет и срок у проекта?</li>
+ <li>Какие показатели руководитель смотрит сейчас?</li>
+</ol>
+
+<footer>Документ открывается без входа и запроса доступа. Для печати: Ctrl+P или Cmd+P, формат A4.</footer>
+</main>
+</body>
+</html>
