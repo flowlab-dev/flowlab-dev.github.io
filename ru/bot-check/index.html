@@ -311,7 +311,7 @@ h1{letter-spacing:-.04em}
 <div class="kicker">Следующий шаг</div>
 <h2>План настройки бота в подарок к заявке</h2>
 <p class="sub">Напишите, в каких пунктах получился ответ «нет» и где работает бот: Telegram, WhatsApp или сайт. В ответном письме будет план: что настроить первым, цена и срок каждого пункта.</p>
-<div class="cta"><a class="btn solid" href="mailto:trading.flowlab@gmail.com?subject=%D0%9F%D0%BB%D0%B0%D0%BD%20%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B8%20%D0%B1%D0%BE%D1%82%D0%B0%20%D0%B2%20%D0%BF%D0%BE%D0%B4%D0%B0%D1%80%D0%BE%D0%BA%20%D0%BA%20%D0%B7%D0%B0%D1%8F%D0%B2%D0%BA%D0%B5">Получить план настройки<svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
+<div class="cta"><a class="btn solid" href="mailto:trading.flowlab@gmail.com?subject=Flow%20Lab%20%C2%B7%20%D0%9F%D0%BB%D0%B0%D0%BD%20%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B9%D0%BA%D0%B8%20%D0%B1%D0%BE%D1%82%D0%B0%20%D0%B2%20%D0%BF%D0%BE%D0%B4%D0%B0%D1%80%D0%BE%D0%BA%20%D0%BA%20%D0%B7%D0%B0%D1%8F%D0%B2%D0%BA%D0%B5">Получить план настройки<svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
 <p class="cl-meta">В подарок к заявке · Без звонков · Ответ письмом</p>
 <p class="cl-contacts"><a href="/ru/">flowlab-dev.github.io</a> · Telegram <a href="https://t.me/flowlabdev">@flowlabdev</a> · <a href="mailto:trading.flowlab@gmail.com">trading.flowlab@gmail.com</a></p>
 </div>
@@ -333,11 +333,27 @@ h1{letter-spacing:-.04em}
 </script>
 <script>
 (function(){
+  var M={"intro": "Здравствуйте. Прошу составить план настройки бота по моим ответам в самопроверке {url}", "list": "Пункты с ответом «нет»:", "none": "Ответ «нет» не отмечен ни в одном пункте.", "where": "Где работает бот (Telegram, WhatsApp или сайт):", "names": ["Ответ ночью и в выходные", "Уведомление менеджеру о заявке", "Все заявки в одной таблице или CRM", "Передача разговора менеджеру", "Понимание вопросов своими словами", "Ответ на голосовые и фото", "Запись, заказ и оплата в чате", "Напоминание клиенту после паузы", "Отчет по шагам разговора"]};
   var items=[].slice.call(document.querySelectorAll('.bc-item')),total=items.length;
   var count=document.querySelector('.bc-count'),tpl=count.getAttribute('data-tpl');
   var segs=document.querySelectorAll('.bc-seg i'),res=document.getElementById('bc-res');
   var rs=[].slice.call(res.querySelectorAll('.bc-r')),reset=res.querySelector('.bc-reset'),done=false;
   var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mail=document.querySelector('.nextstep a.btn.solid[href^="mailto:"]'),base=mail?mail.getAttribute('href'):'';
+  function letter(){
+    if(!mail)return;
+    var no=[],nums=[];
+    items.forEach(function(it,i){if(it.getAttribute('data-v')==='0'){no.push((i+1)+'. '+M.names[i]);nums.push(i+1)}});
+    var url=location.origin+location.pathname;
+    function href(list){
+      var body=[M.intro.replace('{url}',url),''].concat(nums.length?list:[M.none],['',M.where+' ']);
+      return base+'&body='+encodeURIComponent(body.join('\r\n'));
+    }
+    // mailto длиннее ~2000 знаков часть почтовых программ на Windows обрезает: тогда только номера пунктов
+    var h=href([M.list].concat(no));
+    if(h.length>1900)h=href([M.list+' '+nums.join(', ')]);
+    mail.setAttribute('href',h);
+  }
   function render(){
     var n=0,a=0;
     items.forEach(function(it,i){var v=it.getAttribute('data-v');segs[i].className=v==='1'?'y':v==='0'?'n':'';if(v)a++;if(v==='0')n++});
@@ -348,7 +364,7 @@ h1{letter-spacing:-.04em}
     rs.forEach(function(r){r.hidden=!all||r.getAttribute('data-r')!==k});
     reset.hidden=!all;
     if(all&&!done&&res.getBoundingClientRect().top>innerHeight-120)res.scrollIntoView({behavior:still?'auto':'smooth',block:'center'});
-    done=all;
+    done=all;letter();
   }
   items.forEach(function(it){
     var bs=[].slice.call(it.querySelectorAll('.bc-b'));

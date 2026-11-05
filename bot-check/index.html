@@ -316,7 +316,7 @@ h1{letter-spacing:-.04em}
 <div class="kicker">Next step</div>
 <h2>A bot setup plan, a gift with your request</h2>
 <p class="sub">Email the points that got a “no” and where your bot runs: Telegram, WhatsApp or your website. The reply includes a plan: what to set up first, with a price and timeline for each item.</p>
-<div class="cta"><a class="btn solid" href="mailto:trading.flowlab@gmail.com?subject=A%20bot%20setup%20plan%2C%20a%20gift%20with%20your%20request">Get your setup plan<svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
+<div class="cta"><a class="btn solid" href="mailto:trading.flowlab@gmail.com?subject=Flow%20Lab%20%C2%B7%20A%20bot%20setup%20plan%2C%20a%20gift%20with%20your%20request">Get your setup plan<svg aria-hidden="true" class="i" viewbox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a></div>
 <p class="cl-meta">A gift with your request · No calls · Reply by email</p>
 <p class="cl-contacts"><a href="/">flowlab-dev.github.io</a> · Telegram <a href="https://t.me/flowlabdev">@flowlabdev</a> · <a href="mailto:trading.flowlab@gmail.com">trading.flowlab@gmail.com</a></p>
 </div>
@@ -338,11 +338,27 @@ h1{letter-spacing:-.04em}
 </script>
 <script>
 (function(){
+  var M={"intro": "Hello, I would like a bot setup plan based on my self-check answers at {url}", "list": "Points I answered “no” to:", "none": "I did not answer “no” to any point.", "where": "Where my bot runs (Telegram, WhatsApp or website):", "names": ["Replies at night and on weekends", "Instant alert for each new inquiry", "All inquiries in one sheet or CRM", "Handoff to a manager", "Understands free-form questions", "Replies to voice and photos", "Book, order and pay in the chat", "Follow-up reminder after a pause", "Report on where customers drop off"]};
   var items=[].slice.call(document.querySelectorAll('.bc-item')),total=items.length;
   var count=document.querySelector('.bc-count'),tpl=count.getAttribute('data-tpl');
   var segs=document.querySelectorAll('.bc-seg i'),res=document.getElementById('bc-res');
   var rs=[].slice.call(res.querySelectorAll('.bc-r')),reset=res.querySelector('.bc-reset'),done=false;
   var still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mail=document.querySelector('.nextstep a.btn.solid[href^="mailto:"]'),base=mail?mail.getAttribute('href'):'';
+  function letter(){
+    if(!mail)return;
+    var no=[],nums=[];
+    items.forEach(function(it,i){if(it.getAttribute('data-v')==='0'){no.push((i+1)+'. '+M.names[i]);nums.push(i+1)}});
+    var url=location.origin+location.pathname;
+    function href(list){
+      var body=[M.intro.replace('{url}',url),''].concat(nums.length?list:[M.none],['',M.where+' ']);
+      return base+'&body='+encodeURIComponent(body.join('\r\n'));
+    }
+    // mailto длиннее ~2000 знаков часть почтовых программ на Windows обрезает: тогда только номера пунктов
+    var h=href([M.list].concat(no));
+    if(h.length>1900)h=href([M.list+' '+nums.join(', ')]);
+    mail.setAttribute('href',h);
+  }
   function render(){
     var n=0,a=0;
     items.forEach(function(it,i){var v=it.getAttribute('data-v');segs[i].className=v==='1'?'y':v==='0'?'n':'';if(v)a++;if(v==='0')n++});
@@ -353,7 +369,7 @@ h1{letter-spacing:-.04em}
     rs.forEach(function(r){r.hidden=!all||r.getAttribute('data-r')!==k});
     reset.hidden=!all;
     if(all&&!done&&res.getBoundingClientRect().top>innerHeight-120)res.scrollIntoView({behavior:still?'auto':'smooth',block:'center'});
-    done=all;
+    done=all;letter();
   }
   items.forEach(function(it){
     var bs=[].slice.call(it.querySelectorAll('.bc-b'));
