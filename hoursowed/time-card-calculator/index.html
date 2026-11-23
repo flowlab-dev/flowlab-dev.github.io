@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Time Card Calculator with Overtime and Split Shifts — Free</title>
+<title>Time Card Calculator with Overtime and Split Shifts | Free</title>
 <meta name="description" content="Free weekly time card calculator: several shifts a day, overnight shifts, unpaid breaks, overtime after 40 hours at 1.5x, gross pay. Print or copy for payroll.">
 <link rel="canonical" href="https://flowlab-dev.github.io/hoursowed/time-card-calculator/">
-<meta property="og:type" content="website"><meta property="og:title" content="Time Card Calculator with Overtime and Split Shifts — Free"><meta property="og:description" content="Free weekly time card calculator: several shifts a day, overnight shifts, unpaid breaks, overtime after 40 hours at 1.5x, gross pay. Print or copy for payroll."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/time-card-calculator/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:title" content="Time Card Calculator with Overtime and Split Shifts | Free"><meta property="og:description" content="Free weekly time card calculator: several shifts a day, overnight shifts, unpaid breaks, overtime after 40 hours at 1.5x, gross pay. Print or copy for payroll."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/time-card-calculator/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b0f0e" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/icon-180.png">
@@ -42,14 +42,14 @@
     </div>
 
     <div id="days"></div>
-    <p class="err" id="err" hidden>Some times could not be read — check the fields marked in red.</p>
+    <p class="err" id="err" hidden>Some times could not be read. Check the fields marked in red.</p>
 
     <div class="results" aria-live="polite">
       <div class="stat"><span class="muted small">Total hours</span><b id="r-total">0:00</b><span class="muted small" id="r-total-dec">0.00 h</span></div>
       <div class="stat"><span class="muted small">Regular</span><b id="r-reg">0:00</b></div>
       <div class="stat"><span class="muted small">Overtime</span><b id="r-ot">0:00</b></div>
       <div class="stat" id="s-dbl" hidden><span class="muted small">Double time</span><b id="r-dbl">0:00</b></div>
-      <div class="stat pay"><span class="small">Gross pay</span><b id="r-pay">—</b><span class="small" id="r-pay-note"></span></div>
+      <div class="stat pay"><span class="small">Gross pay</span><b id="r-pay">Add rate</b><span class="small" id="r-pay-note"></span></div>
     </div>
     <div class="tools">
       <button type="button" class="btn ghost small" id="print">Print or save PDF</button>
@@ -77,8 +77,8 @@
   </ol>
 
   <h2>How overtime is worked out</h2>
-  <p>Under the federal Fair Labor Standards Act, non-exempt employees get at least time and a half for hours over 40 in a workweek (<a href="https://www.dol.gov/agencies/whd/overtime" rel="noopener">U.S. Department of Labor</a>). That is the default here: 40 hours, 1.5×.</p>
-  <p>Some states also count overtime by the day. In California it is 1.5× for hours over 8 in a workday and double time over 12 (<a href="https://www.dir.ca.gov/dlse/faq_overtime.htm" rel="noopener">California DIR</a>). Turn on <b>Daily overtime</b> to count hours over 8 a day at 1.5× and hours over 12 a day at 2×. Hours already paid as daily overtime are not counted again toward the weekly 40. California’s seventh-consecutive-day rules are not calculated here.</p>
+  <p>Under the federal Fair Labor Standards Act, non-exempt employees get at least time and a half for hours over 40 in a workweek (<a href="https://www.dol.gov/agencies/whd/overtime" rel="noopener" target="_blank">U.S. Department of Labor</a>). That is the default here: 40 hours, 1.5×.</p>
+  <p>Some states also count overtime by the day. In California it is 1.5× for hours over 8 in a workday and double time over 12 (<a href="https://www.dir.ca.gov/dlse/faq_overtime.htm" rel="noopener" target="_blank">California DIR</a>). Turn on <b>Daily overtime</b> to count hours over 8 a day at 1.5× and hours over 12 a day at 2×. Hours already paid as daily overtime are not counted again toward the weekly 40. California’s seventh-consecutive-day rules are not calculated here.</p>
 
   <h2>Hours and minutes to decimal</h2>
   <p>Payroll forms often want decimal hours. Divide the minutes by 60: 7 hours 45 minutes is 7.75 hours. The calculator shows both.</p>

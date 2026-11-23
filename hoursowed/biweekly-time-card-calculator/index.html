@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Biweekly Time Card Calculator with Lunch Breaks — Free</title>
+<title>Biweekly Time Card Calculator with Lunch Breaks | Free</title>
 <meta name="description" content="Free biweekly time card calculator: two weeks of shifts with lunch breaks, overtime counted per workweek as the FLSA requires, total hours and gross pay.">
 <link rel="canonical" href="https://flowlab-dev.github.io/hoursowed/biweekly-time-card-calculator/">
-<meta property="og:type" content="website"><meta property="og:title" content="Biweekly Time Card Calculator with Lunch Breaks — Free"><meta property="og:description" content="Free biweekly time card calculator: two weeks of shifts with lunch breaks, overtime counted per workweek as the FLSA requires, total hours and gross pay."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/biweekly-time-card-calculator/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:title" content="Biweekly Time Card Calculator with Lunch Breaks | Free"><meta property="og:description" content="Free biweekly time card calculator: two weeks of shifts with lunch breaks, overtime counted per workweek as the FLSA requires, total hours and gross pay."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/biweekly-time-card-calculator/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b0f0e" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/icon-180.png">
@@ -41,14 +41,14 @@
     </div>
 
     <div id="days"></div>
-    <p class="err" id="err" hidden>Some times could not be read — check the fields marked in red.</p>
+    <p class="err" id="err" hidden>Some times could not be read. Check the fields marked in red.</p>
 
     <div class="results" aria-live="polite">
       <div class="stat"><span class="muted small">Total hours</span><b id="r-total">0:00</b><span class="muted small" id="r-total-dec">0.00 h</span></div>
       <div class="stat"><span class="muted small">Regular</span><b id="r-reg">0:00</b></div>
       <div class="stat"><span class="muted small">Overtime</span><b id="r-ot">0:00</b></div>
       <div class="stat" id="s-dbl" hidden><span class="muted small">Double time</span><b id="r-dbl">0:00</b></div>
-      <div class="stat pay"><span class="small">Gross pay</span><b id="r-pay">—</b><span class="small" id="r-pay-note"></span></div>
+      <div class="stat pay"><span class="small">Gross pay</span><b id="r-pay">Add rate</b><span class="small" id="r-pay-note"></span></div>
     </div>
     <div class="tools">
       <button type="button" class="btn ghost small" id="print">Print or save PDF</button>
@@ -68,7 +68,7 @@
 
 <section><div class="narrow prose">
   <h2>Why each week is counted on its own</h2>
-  <p>Under the Fair Labor Standards Act, overtime is counted for each workweek on its own: averaging hours over two or more weeks is not permitted (<a href="https://www.dol.gov/agencies/whd/fact-sheets/23-flsa-overtime-pay" rel="noopener">U.S. Department of Labor, Fact Sheet #23</a>). If you work 50 hours in week 1 and 30 hours in week 2, you are owed 10 hours of overtime for week 1, even though the pay period adds up to 80 hours.</p>
+  <p>Under the Fair Labor Standards Act, overtime is counted for each workweek on its own: averaging hours over two or more weeks is not permitted (<a href="https://www.dol.gov/agencies/whd/fact-sheets/23-flsa-overtime-pay" rel="noopener" target="_blank">U.S. Department of Labor, Fact Sheet #23</a>). If you work 50 hours in week 1 and 30 hours in week 2, you are owed 10 hours of overtime for week 1, even though the pay period adds up to 80 hours.</p>
   <p>A workweek is a fixed period of seven days in a row. It does not have to start on Sunday or Monday, so choose the day your employer’s week starts on in <b>Week starts on</b>.</p>
 
   <h2>Lunch and other unpaid breaks</h2>

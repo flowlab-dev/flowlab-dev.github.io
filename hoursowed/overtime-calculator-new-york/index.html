@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>New York Overtime Calculator: Weekly Hours and Pay — Free</title>
+<title>New York Overtime Calculator: Weekly Hours and Pay | Free</title>
 <meta name="description" content="Free New York overtime calculator: time and a half after 40 hours a week, split and night shifts, unpaid breaks, regular hours, overtime and gross pay.">
 <link rel="canonical" href="https://flowlab-dev.github.io/hoursowed/overtime-calculator-new-york/">
-<meta property="og:type" content="website"><meta property="og:title" content="New York Overtime Calculator: Weekly Hours and Pay — Free"><meta property="og:description" content="Free New York overtime calculator: time and a half after 40 hours a week, split and night shifts, unpaid breaks, regular hours, overtime and gross pay."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/overtime-calculator-new-york/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:type" content="website"><meta property="og:title" content="New York Overtime Calculator: Weekly Hours and Pay | Free"><meta property="og:description" content="Free New York overtime calculator: time and a half after 40 hours a week, split and night shifts, unpaid breaks, regular hours, overtime and gross pay."><meta property="og:url" content="https://flowlab-dev.github.io/hoursowed/overtime-calculator-new-york/"><meta property="og:image" content="https://flowlab-dev.github.io/hoursowed/assets/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0f766e" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0b0f0e" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="../assets/icon-180.png">
@@ -41,14 +41,14 @@
     </div>
 
     <div id="days"></div>
-    <p class="err" id="err" hidden>Some times could not be read — check the fields marked in red.</p>
+    <p class="err" id="err" hidden>Some times could not be read. Check the fields marked in red.</p>
 
     <div class="results" aria-live="polite">
       <div class="stat"><span class="muted small">Total hours</span><b id="r-total">0:00</b><span class="muted small" id="r-total-dec">0.00 h</span></div>
       <div class="stat"><span class="muted small">Regular</span><b id="r-reg">0:00</b></div>
       <div class="stat"><span class="muted small">Overtime</span><b id="r-ot">0:00</b></div>
       <div class="stat" id="s-dbl" hidden><span class="muted small">Double time</span><b id="r-dbl">0:00</b></div>
-      <div class="stat pay"><span class="small">Gross pay</span><b id="r-pay">—</b><span class="small" id="r-pay-note"></span></div>
+      <div class="stat pay"><span class="small">Gross pay</span><b id="r-pay">Add rate</b><span class="small" id="r-pay-note"></span></div>
     </div>
     <div class="tools">
       <button type="button" class="btn ghost small" id="print">Print or save PDF</button>
@@ -68,7 +68,7 @@
 
 <section><div class="narrow prose">
   <h2>The rules this calculator uses</h2>
-  <p>In New York, nearly all covered employees get overtime at one and one-half times their regular rate for hours over 40 in a workweek. Residential employees — people who live in their employer’s home — get overtime after 44 hours (<a href="https://dol.ny.gov/overtime-faq-1" rel="noopener">New York State Department of Labor, Overtime FAQ</a>). If you are a residential employee, set <b>Overtime after</b> to 44.</p>
+  <p>In New York, nearly all covered employees get overtime at one and one-half times their regular rate for hours over 40 in a workweek. Residential employees, people who live in their employer’s home, get overtime after 44 hours (<a href="https://dol.ny.gov/overtime-faq-1" rel="noopener" target="_blank">New York State Department of Labor, Overtime FAQ</a>). If you are a residential employee, set <b>Overtime after</b> to 44.</p>
   <p>Overtime is counted by the week, not by the day, and each workweek on its own. For two weeks at once, use the <a href="../biweekly-time-card-calculator/">biweekly calculator</a>.</p>
 
   <h2>What it does not cover</h2>
@@ -80,8 +80,8 @@
   </ul>
 
   <h2>Questions</h2>
-  <details><summary>Does New York require overtime after 8 hours in a day?</summary><p>No. New York counts overtime by the workweek, not by the day (<a href="https://dol.ny.gov/overtime-faq-1" rel="noopener">NYS DOL Overtime FAQ</a>). If your contract pays daily overtime, turn on <b>Daily overtime</b> in the calculator.</p></details>
-  <details><summary>Is this legal advice?</summary><p>No. It is an estimate to check your own hours, not legal or payroll advice. For questions about your pay, see the <a href="https://dol.ny.gov/overtime-faq-1" rel="noopener">New York State Department of Labor</a>.</p></details>
+  <details><summary>Does New York require overtime after 8 hours in a day?</summary><p>No. New York counts overtime by the workweek, not by the day (<a href="https://dol.ny.gov/overtime-faq-1" rel="noopener" target="_blank">NYS DOL Overtime FAQ</a>). If your contract pays daily overtime, turn on <b>Daily overtime</b> in the calculator.</p></details>
+  <details><summary>Is this legal advice?</summary><p>No. It is an estimate to check your own hours, not legal or payroll advice. For questions about your pay, see the <a href="https://dol.ny.gov/overtime-faq-1" rel="noopener" target="_blank">New York State Department of Labor</a>.</p></details>
   <p class="small">More calculators: <a href="../time-card-calculator/">weekly time card</a> · <a href="../biweekly-time-card-calculator/">biweekly</a> · <a href="../overtime-calculator-california/">California</a> · <a href="../overtime-calculator-texas/">Texas</a> · <a href="../overtime-calculator-florida/">Florida</a> · <a href="../split-shift-calculator/">split shifts</a></p>
 </div></section>
 <script type="module" src="../assets/calculator.js"></script>
