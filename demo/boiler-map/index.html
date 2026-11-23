@@ -122,7 +122,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
     <ul class="results" id="res"></ul>
   </div>
 
-  <p class="note">Демо на открытых данных OpenStreetMap (© участники OpenStreetMap, лицензия <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a>; файл boilers.geojson: под той же лицензией): 95 объектов, у части нет адреса и оператора. Ваши 213 котельных с координатами, мощностью и любыми полями подставим из таблицы: карточка покажет все поля. Та же база собирает векторный макет для печати.</p>
+  <p class="note">Демо на открытых данных OpenStreetMap (© участники OpenStreetMap, лицензия <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL 1.0</a>; файл boilers.geojson: под той же лицензией): 95 объектов, у части нет адреса и оператора. Ваши 213 котельных с координатами, мощностью и любыми полями подставим из таблицы: карточка покажет все поля. Та же база собирает векторный макет для печати.</p>
 </aside>
 
 <script src="vendor/leaflet.js"></script>
@@ -150,7 +150,7 @@ h1{font-size:22px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
   L.control.zoom({ position: 'topright' }).addTo(map);
   // standard OSM tiles, muted by CSS (grey in light theme, inverted in dark); client's own key → Yandex/2GIS/Mapbox here
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19,
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">участники OpenStreetMap</a>' }).addTo(map);
+    attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">участники OpenStreetMap</a>' }).addTo(map);
   const root = document.documentElement, themeBtn = document.getElementById('theme');
   const isDark = () => (root.dataset.theme ? root.dataset.theme === 'dark' : dark.matches);
   const themeLabel = () => { themeBtn.textContent = isDark() ? 'День' : 'Ночь'; };
